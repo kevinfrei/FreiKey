@@ -81,7 +81,10 @@
             "defines": [
                 "_DEBUG",
                 "UNICODE",
-                "_UNICODE"
+                "_UNICODE",
+                "DEBUG",
+                "STATUS_DUMP",
+                "__VSCODE_ONLY_"
             ],
             "intelliSenseMode": "clang-x64",
             "browse": {

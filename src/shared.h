@@ -1,9 +1,9 @@
 #include <bluefruit.h>
 
 #define MANUFACTURER "FreikyStuff"
-#define MODEL "BlErgoDox"
-#define BT_NAME "BlErgoDox"
-#define HW_REV "0000"
+#define MODEL "FreiKeyboard"
+#define BT_NAME "FreiKeys"
+#define HW_REV "0001"
 #define LHS_NAME BT_NAME "-LHS"
 
 using scancode_t = uint8_t;

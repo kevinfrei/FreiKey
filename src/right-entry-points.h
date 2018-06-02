@@ -1,3 +1,5 @@
+#include "dbgcfg.h"
+
 void startAdv();
 void cent_connect_callback(uint16_t conn_handle);
 void cent_disconnect_callback(uint16_t conn_handle, uint8_t reason);

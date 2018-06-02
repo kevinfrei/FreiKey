@@ -27,12 +27,15 @@ uint8_t readBattery(uint32_t now, uint8_t prev) {
 }
 
 namespace sw {
+
 bool cmp(const uint8_t (&swa)[numrows], const uint8_t (&swb)[numrows]) {
   return memcmp(swa, swb, numrows);
 }
+
 void cpy(uint8_t (&swdst)[numrows], const uint8_t (&swsrc)[numrows]) {
   memcpy(swdst, swsrc, numrows);
 }
+
 void clr(uint8_t (&sw)[numrows]) {
   memset(sw, 0, numrows);
 }
@@ -45,25 +48,30 @@ void dmp(const uint8_t (&sw)[numrows]) {
   Serial.println("");
 }
 #endif
+
 } // namespace sw
 
 hwstate::hwstate(uint8_t bl) : battery_level(bl) {
   sw::clr(switches);
 }
+
 hwstate::hwstate(uint32_t now, const hwstate& prev)
     : battery_level(readBattery(now, prev.battery_level)) {
   sw::cpy(switches, prev.switches);
   readSwitches();
 }
+
 hwstate::hwstate(BLEClientUart& clientUart, const hwstate& prev) {
   if (!receive(clientUart, prev))
     memcpy(reinterpret_cast<uint8_t*>(this),
            reinterpret_cast<const uint8_t*>(&prev),
            sizeof(hwstate));
 }
+
 hwstate::hwstate(const hwstate& c) : battery_level(c.battery_level) {
   sw::cpy(switches, c.switches);
 }
+
 void hwstate::readSwitches() {
   uint8_t newSwitches[numrows];
   sw::clr(newSwitches);
