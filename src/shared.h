@@ -1,5 +1,7 @@
 #include <bluefruit.h>
 
+#include "hwstate.h"
+
 #define MANUFACTURER "FreikyStuff"
 #define MODEL "FreiKeyboard"
 #define BT_NAME "FreiKeys"
@@ -8,4 +10,4 @@
 
 using scancode_t = uint8_t;
 
-void shared_setup();
+void shared_setup(const PinData &pd);

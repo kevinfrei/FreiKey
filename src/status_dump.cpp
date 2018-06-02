@@ -12,11 +12,11 @@ extern const char* layer_names[];
 extern uint16_t core_handle;
 
 // If you hold this configuration down, it types out status
-constexpr uint8_t status_keys_left[] = {0, 0, 0, 0x80, 0x80};
-constexpr uint8_t status_keys_right[] = {0, 0, 0, 1, 1};
+constexpr uint8_t status_keys_left[numrows] = {0, 0, 0, 0x80, 0x80};
+constexpr uint8_t status_keys_right[numrows] = {0, 0, 0, 1, 1};
 // If you hold this down, just on the right keyboard, it should RHS status only
 // (might be made helpful in the future...)
-constexpr uint8_t just_right_stat[] = {0, 0, 0, 3, 3};
+constexpr uint8_t just_right_stat[numrows] = {0, 0, 0, 3, 3};
 // Hit these six keys, and the bluetooth bonds get removed... (Both Shifts, the
 // keys 3 rows above the shifts, and the 'innermost' keys logically  between the
 // 5 & the 6 keys)

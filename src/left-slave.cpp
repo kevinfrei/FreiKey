@@ -9,7 +9,7 @@ BLEUart bleuart;
 hwstate lastRead{};
 
 void setup() {
-  shared_setup();
+  shared_setup(LeftPins);
   Bluefruit.begin();
   Bluefruit.autoConnLed(false);
   // I had turned this all the way down. Given that my receiver is less than 20
@@ -41,13 +41,33 @@ void setup() {
   Bluefruit.Advertising.start(0); // 0 = Don't stop advertising after n seconds
 }
 
+uint8_t curState = 0;
+uint32_t stateTime = 0;
+
 void loop() {
-  hwstate down{millis(), lastRead};
+  uint32_t time = millis();
+  hwstate down{time, lastRead, LeftPins};
 
   if (down != lastRead) {
     lastRead = down;
     DBG2(down.dump());
     down.send(bleuart, lastRead);
+    if (!curState) {
+      // if we're not already in a state, check to see if we're transitioning into one
+      if (down.switches == 0x18800000000ULL) {
+        curState = 1;
+        stateTime = time + 500;
+      }
+    }
+  }
+  if (curState) {
+    // We're in some random display state: deal with it...
+    if (time < stateTime) {
+      analogWrite(LeftPins.led, 15);
+    } else {
+      analogWrite(LeftPins.led, 0);
+      curState = 0;
+    }
   }
   waitForEvent(); // Request CPU enter low-power mode until an event occurs
 }

@@ -13,8 +13,8 @@
 hwstate leftSide{};
 hwstate rightSide{};
 
-constexpr uint8_t status_clear_bonds_left[] = {0x82, 0, 0, 0x80, 0};
-constexpr uint8_t status_clear_bonds_right[] = {0x41, 0, 0, 1, 0};
+constexpr uint8_t status_clear_bonds_left[numrows] = {0x82, 0, 0, 0x80, 0};
+constexpr uint8_t status_clear_bonds_right[numrows] = {0x41, 0, 0, 1, 0};
 
 // Declarations
 
@@ -155,7 +155,7 @@ void loop() {
   uint32_t now = millis();
 
   // Get the hardware state for the two sides...
-  hwstate downRight{now, rightSide};
+  hwstate downRight{now, rightSide, RightPins};
   hwstate downLeft{clientUart, leftSide};
 
   // Update the combined battery level

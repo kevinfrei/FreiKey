@@ -115,7 +115,7 @@
 
 #if STATUS_DUMP
 // For the status dumper thingamajig
-const char *layer_names[] = {
+const char* layer_names[] = {
     "Base/Mac", "Win", "Fn", "MacCaps", "WinCaps", "WinCtrl"};
 #endif
 

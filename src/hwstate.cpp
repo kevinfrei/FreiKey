@@ -1,13 +1,13 @@
 #include "hwstate.h"
 
 constexpr uint8_t VBAT_PIN = 31; // pin 31 is available for sampling the battery
-// I had this set to 10, but would still occasionally see bounces. Let's try 15.
-constexpr uint8_t DEBOUNCE_COUNT = 15;
+// I had this set to 15, but still sometimes saw bounces :/
+constexpr uint8_t DEBOUNCE_COUNT = 24;
 
 // Some globals used by both halves
 uint32_t last_bat_time = 0;
 uint8_t stableCount = 0;
-uint8_t recordedChange[numrows];
+uint64_t recordedChange;
 
 uint8_t getBatteryPercent() {
   float measuredvbat = analogRead(VBAT_PIN) * 6.6 / 1024;
@@ -51,14 +51,12 @@ void dmp(const uint8_t (&sw)[numrows]) {
 
 } // namespace sw
 
-hwstate::hwstate(uint8_t bl) : battery_level(bl) {
-  sw::clr(switches);
-}
+hwstate::hwstate(uint8_t bl) : switches(0), battery_level(bl) {}
 
-hwstate::hwstate(uint32_t now, const hwstate& prev)
-    : battery_level(readBattery(now, prev.battery_level)) {
-  sw::cpy(switches, prev.switches);
-  readSwitches();
+hwstate::hwstate(uint32_t now, const hwstate& prev, const PinData& pd)
+    : switches(prev.switches),
+      battery_level(readBattery(now, prev.battery_level)) {
+  readSwitches(pd);
 }
 
 hwstate::hwstate(BLEClientUart& clientUart, const hwstate& prev) {
@@ -68,37 +66,32 @@ hwstate::hwstate(BLEClientUart& clientUart, const hwstate& prev) {
            sizeof(hwstate));
 }
 
-hwstate::hwstate(const hwstate& c) : battery_level(c.battery_level) {
-  sw::cpy(switches, c.switches);
-}
+hwstate::hwstate(const hwstate& c)
+    : switches(c.switches), battery_level(c.battery_level) {}
 
-void hwstate::readSwitches() {
-  uint8_t newSwitches[numrows];
-  sw::clr(newSwitches);
-  for (uint8_t colNum = 0; colNum < numcols; ++colNum) {
-    uint8_t val = 1 << colNum;
-    digitalWrite(colPins[colNum], LOW);
-    for (uint8_t rowNum = 0; rowNum < numrows; ++rowNum) {
-      if (!digitalRead(rowPins[rowNum])) {
-        newSwitches[rowNum] |= val;
+void hwstate::readSwitches(const PinData& pd) {
+  uint64_t newSwitches = 0;
+  for (uint64_t colNum = 0; colNum < numcols; ++colNum) {
+    uint64_t val = 1ULL << (colNum * numrows);
+    digitalWrite(pd.cols[colNum], LOW);
+    for (uint64_t rowNum = 0; rowNum < numrows; ++rowNum) {
+      if (!digitalRead(pd.rows[rowNum])) {
+        newSwitches |= (val << rowNum);
       }
     }
-    digitalWrite(colPins[colNum], HIGH);
+    digitalWrite(pd.cols[colNum], HIGH);
   }
   // Debouncing: This just waits for stable DEBOUNCE_COUNT reads before
   // reporting
-  if (sw::cmp(newSwitches, stableCount ? recordedChange : switches)) {
+  if (newSwitches != (stableCount ? recordedChange : switches)) {
     // We've observed a change (in either the delta or the reported: doesn't
     // matter which) record the change and (re)start the timer
-    DBG2(if (stableCount) dumpVal(stableCount, "Resetting Debouncer!"));
+    DBG2(if (stableCount) dumpVal(stableCount, "Resetting Debouncer: "));
     stableCount = 1;
-    sw::cpy(recordedChange, newSwitches);
+    recordedChange = newSwitches;
   } else if (stableCount > DEBOUNCE_COUNT) {
-    // We've had a stable reading for long enough: report it & clear the timer
-    // If the micros() timer wraps around while waiting for stable readings,
-    // we just wind up with a shorter debounce timer, which shouldn't really
-    // hurt anything
-    sw::cpy(switches, newSwitches);
+    // We've had a stable reading for long enough: report it & clear the count
+    switches = newSwitches;
     stableCount = 0;
   } else if (stableCount) {
     stableCount++;
@@ -125,7 +118,7 @@ bool hwstate::receive(BLEClientUart& clientUart, const hwstate& prev) {
       // knew what he was doing :)
       Serial.print("Incorrect datagram size:");
       Serial.print(" expected ");
-      Serial.print(sizeof(hwstate));
+      Serial.print(static_cast<uint8_t>(sizeof(hwstate)));
       Serial.print(" got ");
       Serial.println(size);
 #endif
@@ -136,28 +129,25 @@ bool hwstate::receive(BLEClientUart& clientUart, const hwstate& prev) {
 }
 
 bool hwstate::operator==(const hwstate& o) const {
-  return o.battery_level == battery_level && !sw::cmp(o.switches, switches);
+  return o.battery_level == battery_level && o.switches == switches;
 }
 
 bool hwstate::operator!=(const hwstate& o) const {
   return !((*this) == o);
 }
 
-uint64_t hwstate::toUI64() const {
-  uint64_t res = 0;
-  for (int i = numrows - 1; i >= 0; i--)
-    res = (res * 256) + switches[i];
-  return res;
-}
-
 #if DEBUG
 void hwstate::dump() const {
   Serial.print("Battery Level:");
   Serial.println(battery_level);
-  for (int r = 0; r < numrows; r++) {
-    for (int c = numcols - 1; c >= 0; c--) {
-      unsigned int mask = 1 << c;
-      if (switches[r] & mask) {
+  Serial.print("Integer value:");
+  Serial.print(static_cast<unsigned int>(switches >> 32), 16);
+  Serial.print("|");
+  Serial.println(static_cast<unsigned int>(switches), 16);
+  for (int64_t r = 0; r < numrows; r++) {
+    for (int64_t c = numcols - 1; c >= 0; c--) {
+      uint64_t mask = 1ULL << (c * numrows + r);
+      if (switches & mask) {
         Serial.print("X ");
       } else {
         Serial.print("- ");

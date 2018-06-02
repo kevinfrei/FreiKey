@@ -4,18 +4,18 @@
 #include "hwstate.h"
 #include "shared.h"
 
-void shared_setup() {
+void shared_setup(const PinData &pd) {
   static_assert(numcols <= 8, "No more than 8 columns, please.");
 
   // For my wiring, the columns are output, and the rows are input...
-  for (auto pin : colPins) {
+  for (auto pin : pd.cols) {
     pinMode(pin, OUTPUT);
     digitalWrite(pin, HIGH);
   }
-  for (auto pin : rowPins) {
+  for (auto pin : pd.rows) {
     pinMode(pin, INPUT_PULLUP);
   }
-
+  pinMode(pd.led, OUTPUT);
   DBG(Serial.begin(115200));
 }
 

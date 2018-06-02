@@ -7,46 +7,49 @@
 
 // These numbers correspond to the *port pin* numbers in the nRF52 documentation
 // not the physical pin numbers...
-
-constexpr uint8_t colPins[] = {16, 15, 7, 11, 30, 27, 26, 25};
-constexpr uint8_t rowPins[] = {2, 3, 4, 5, 28};
-constexpr uint8_t numcols = sizeof(colPins) / sizeof(*colPins);
-constexpr uint8_t numrows = sizeof(rowPins) / sizeof(*rowPins);
-
-// A set of helpers for compilers/copying/clearing the switch-matrix array
-namespace sw {
-bool cmp(const uint8_t (&swa)[numrows], const uint8_t (&swb)[numrows]);
-void cpy(uint8_t (&swdst)[numrows], const uint8_t (&swsrc)[numrows]);
-void clr(uint8_t (&sw)[numrows]);
-DBG(void dmp(const uint8_t (&sw)[numrows]));
-} // namespace sw
+constexpr uint64_t numcols = 7;
+constexpr uint64_t numrows = 6;
+struct PinData {
+  uint8_t cols[numcols];
+  uint8_t rows[numrows];
+  uint8_t led;
+};
+constexpr PinData LeftPins = {
+    {15, 2, 16, 7, 30, 27, 11}, {5, 12, 13, 28, 4, 3}, 29};
+constexpr PinData RightPins = {
+    {29, 16, 15, 7, 27, 11, 30}, {13, 4, 2, 3, 5, 12}, 28};
 
 // This struct is to encapsulate the complete hardware state, including both
 // which switches are down, as well as the current battery level.
 struct hwstate {
-  uint8_t switches[numrows];
+  uint64_t switches;
   uint8_t battery_level;
 
   // This is just a dump constructor
   hwstate(uint8_t bl = 0);
+  
   // This is for reading the data from the hardware
-  hwstate(uint32_t now, const hwstate& prev);
+  hwstate(uint32_t now, const hwstate& prev, const PinData &pd);
+  
   // This is for reading the data from the left hand side over the UART
   hwstate(BLEClientUart& clientUart, const hwstate& prev);
+  
   // Generic copy constructor...
   hwstate(const hwstate& c);
+  
   // Just reads the switches...
-  void readSwitches();
+  void readSwitches(const PinData &pd);
+  
   // Send the relevant data over the wire
   void send(BLEUart& bleuart, const hwstate& prev) const;
+  
   // Try to receive any relevant switch data from the wire.
   // Returns true if something was received
   bool receive(BLEClientUart& clientUart, const hwstate& prev);
 
   bool operator==(const hwstate& o) const;
   bool operator!=(const hwstate& o) const;
-  // This converts the switch values to a single 64 bit uint.
-  uint64_t toUI64() const;
+
   // A little helper for serial port dumping...
   DBG(void dump() const);
 };
