@@ -12,14 +12,13 @@ extern const char* layer_names[];
 extern uint16_t core_handle;
 
 // If you hold this configuration down, it types out status
-constexpr uint8_t status_keys_left[numrows] = {0, 0, 0, 0x80, 0x80};
-constexpr uint8_t status_keys_right[numrows] = {0, 0, 0, 1, 1};
-// If you hold this down, just on the right keyboard, it should RHS status only
+// Lower left two keys on the edge
+constexpr uint64_t status_keys_left = 0x10800000000ULL;
+// Lower right two keys on the edge
+constexpr uint64_t status_keys_right = 0x810ULL;
+// If you hold this down, just on the right keyboard, it shows RHS status only
 // (might be made helpful in the future...)
-constexpr uint8_t just_right_stat[numrows] = {0, 0, 0, 3, 3};
-// Hit these six keys, and the bluetooth bonds get removed... (Both Shifts, the
-// keys 3 rows above the shifts, and the 'innermost' keys logically  between the
-// 5 & the 6 keys)
+constexpr uint64_t just_right_stat = 0xC10ULL;
 
 // A very limited version of typing the string. It dumps lower case, nubmers,
 // a few other things, defaults to '.' for everything else.
@@ -120,9 +119,9 @@ void type_number(uint32_t val) {
 }
 
 bool status_dump_check(const hwstate& rightSide, const hwstate& leftSide) {
-  bool justRight = !sw::cmp(rightSide.switches, just_right_stat);
-  bool leftCheck = !sw::cmp(leftSide.switches, status_keys_left);
-  bool rightCheck = !sw::cmp(rightSide.switches, status_keys_right);
+  bool justRight = rightSide.switches == just_right_stat;
+  bool leftCheck = leftSide.switches == status_keys_left;
+  bool rightCheck = rightSide.switches == status_keys_right;
   // Check for hardware request thingamajig:
   // This is hard coded, mostly because I'm just hacking
   if (justRight || (leftCheck && rightCheck)) {

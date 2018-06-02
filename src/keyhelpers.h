@@ -65,27 +65,31 @@ constexpr layer_t kSwitchLayer = 4;
 #define LYR_SHIFT(n) kLayerShift | n
 #define LYR_SET(n) kLayerSwitch | n
 
-#define LROW1(l00, l01, l02, l03, l04, l05, l06) \
-  ___, l06, l05, l04, l03, l02, l01, l00
-#define LROW2(l10, l11, l12, l13, l14, l15, l16) \
-  ___, l16, l15, l14, l13, l12, l11, l10
-#define LROW3(l20, l21, l22, l23, l24, l25, l26, lt01) \
-  lt01, l26, l25, l24, l23, l22, l21, l20
-#define LROW4(l30, l31, l32, l33, l34, l35, lt00, lt12) \
-  lt12, lt00, l35, l34, l33, l32, l31, l30
-#define LROW5(l40, l41, l42, l43, l44, lt10, lt11, lt22) \
-  lt22, lt11, lt10, l44, l43, l42, l41, l40
+#define LROW1(l00, l01, l02, l03, l04, l05) \
+  ___, l05, l04, l03, l02, l01, l00
+#define LROW2(l10, l11, l12, l13, l14, l15) \
+  ___, l15, l14, l13, l12, l11, l10
+#define LROW3(l20, l21, l22, l23, l24, l25) \
+  ___, l25, l24, l23, l22, l21, l20
+#define LROW4(l30, l31, l32, l33, l34, l35) \
+  ___, l35, l34, l33, l32, l31, l30
+#define LROW5(l40, l41, l42, l43, l44, l45, lt56) \
+  lt56, l45, l44, l43, l42, l41, l40
+#define LROW6(l51, l52, l53, l54, lt65, lt66) \
+  lt66, lt65, l54, l53, l52, l51, ___
 
-#define RROW1(r00, r01, r02, r03, r04, r05, r06) \
-  r06, r05, r04, r03, r02, r01, r00, ___
-#define RROW2(r10, r11, r12, r13, r14, r15, r16) \
-  r16, r15, r14, r13, r12, r11, r10, ___
-#define RROW3(rt00, r20, r21, r22, r23, r24, r25, r26) \
-  r26, r25, r24, r23, r22, r21, r20, rt00
-#define RROW4(rt10, rt01, r31, r32, r33, r34, r35, r36) \
-  r36, r35, r34, r33, r32, r31, rt01, rt10
-#define RROW5(rt20, rt11, rt12, r42, r43, r44, r45, r46) \
-  r46, r45, r44, r43, r42, rt12, rt11, rt20
+#define RROW1(r00, r01, r02, r03, r04, r05) \
+  r05, r04, r03, r02, r01, r00, ___
+#define RROW2(r10, r11, r12, r13, r14, r15) \
+  r15, r14, r13, r12, r11, r10, ___
+#define RROW3(r20, r21, r22, r23, r24, r25) \
+  r25, r24, r23, r22, r21, r20, ___
+#define RROW4(r30, r31, r32, r33, r34, r35) \
+  r35, r34, r33, r32, r31, r30, ___
+#define RROW5(rt40, r40, r41, r42, r43, r44, r45) \
+  r45, r44, r43, r42, r41, r40, rt40
+#define RROW6(rt50, rt51, r51, r52, r53, r54) \
+  ___, r54, r53, r52, r51, rt51, rt50
 
 // Some missing keycodes from the Arduino/AdaFruit API's that I need. You can
 // find these from the QMK firmware HIDClassCommon.h file. I also find them in

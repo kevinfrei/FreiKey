@@ -13,8 +13,9 @@
 hwstate leftSide{};
 hwstate rightSide{};
 
-constexpr uint8_t status_clear_bonds_left[numrows] = {0x82, 0, 0, 0x80, 0};
-constexpr uint8_t status_clear_bonds_right[numrows] = {0x41, 0, 0, 1, 0};
+// The are the top left & right keys, plus the lowest 'outer' keys
+constexpr uint64_t status_clear_bonds_left = 0x1800000040ULL;
+constexpr uint64_t status_clear_bonds_right = 0x40000801ULL;
 
 // Declarations
 
@@ -176,8 +177,8 @@ void loop() {
   }
 
   // Get the before & after of each side into a 64 bit value
-  uint64_t beforeLeft = leftSide.toUI64(), afterLeft = downLeft.toUI64();
-  uint64_t beforeRight = rightSide.toUI64(), afterRight = downRight.toUI64();
+  uint64_t beforeLeft = leftSide.switches, afterLeft = downLeft.switches;
+  uint64_t beforeRight = rightSide.switches, afterRight = downRight.switches;
   uint64_t deltaLeft = beforeLeft ^ afterLeft;
   uint64_t deltaRight = beforeRight ^ afterRight;
   bool keysChanged = deltaLeft || deltaRight;
@@ -300,12 +301,12 @@ void loop() {
     hid.keyboardReport(mods, report);
     DBG2(Serial.println("============================="));
     DBG2(Serial.print("Left side "));
-    DBG2(sw::dmp(downLeft.switches));
+    DBG2(downLeft.dump());
     DBG2(Serial.print("Right side "));
-    DBG2(sw::dmp(downRight.switches));
+    DBG2(downRight.dump());
 
-    if (!sw::cmp(rightSide.switches, status_clear_bonds_right) &&
-        !sw::cmp(leftSide.switches, status_clear_bonds_left)) {
+    if (rightSide.switches == status_clear_bonds_right &&
+        leftSide.switches == status_clear_bonds_left) {
       DBG(Serial.println("CLEARING BLUETOOTH BONDS!"));
       Bluefruit.clearBonds();
     }

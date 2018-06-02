@@ -14,7 +14,7 @@ endif
 
 ifeq ($(uname), Windows)
 ADAFRUIT=${HOME}/AppData/Local/Arduino15/packages/adafruit
-PORT=COM3
+PORT=COM8
 NRFUTIL=${ADAFRUIT}/hardware/nrf52/${VER}/tools/nrfutil-0.5.2/binaries/win32/nrfutil
 RMFILES=del
 RMDIR=rmdir /s /q
