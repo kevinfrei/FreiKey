@@ -1,124 +1,7 @@
-// Some stuff to make the action maps prettier. I use Clang Format, and it
-// messes up the keymaps badly if they're over 80 characters on any individual
-// line...
-#define LCMD MOD(LEFTCOMMAND)
-#define LSHFT MOD(LEFTSHIFT)
-#define LCTL MOD(LEFTCTRL)
-#define LOPT MOD(LEFTOPTION)
-#define RCMD MOD(RIGHTCOMMAND)
-#define RSHFT MOD(LEFTSHIFT)
-#define RCTL MOD(RIGHTSHIFT)
-#define ROPT MOD(RIGHTOPTION)
+#if !defined(KEYMAP_H)
+#define KEYMAP_H
 
-#define LGUI MOD(LEFTGUI)
-#define LALT MOD(LEFTALT)
-#define RGUI MOD(RIGHTGUI)
-#define RALT MOD(RIGHTALT)
-
-#define GRV GRAVE
-#define OBRC BRACKET_LEFT
-#define CBRC BRACKET_RIGHT
-#define BKSP BACKSPACE
-#define DEL DELETE
-#define PGUP PAGE_UP
-#define PGDN PAGE_DOWN
-#define EQ_ KEY(EQUAL)
-#define SEMI_ KEY(SEMICOLON)
-#define COMMA_ KEY(COMMA)
-#define DOT_ KEY(PERIOD)
-#define QUOTE_ KEY(APOSTROPHE)
-#define ENTER_ KEY(RETURN)
-#define UP_ KEY(ARROW_UP)
-#define DOWN_ KEY(ARROW_DOWN)
-#define LEFT_ KEY(ARROW_LEFT)
-#define RIGHT_ KEY(ARROW_RIGHT)
-#define SPACE_ KEY(SPACE)
-#define MUTE_ KEY(M_MUTE)
-#define VOLUP_ KEY(M_VOLUME_UP)
-#define VOLDN_ KEY(M_VOLUME_DOWN)
-
-#define PLAY_ CONS(M_PLAY)
-#define PRVT_ CONS(M_PREVIOUS_TRACK)
-#define NXTT_ CONS(M_NEXT_TRACK)
-
-#define SHFTCM LSHFT | LCMD
-#define CTLCM LCTL | LCMD
-#define OPTCM LOPT | LCMD
-#define SHFTCT LSHFT | LCMD
-#define GUICT LGUI | LCMD
-#define ALTCT LALT | LCMD
-
-// Some shortcuts for modifiers & stuff
-#define CMK(a) KMOD(a, LEFTCOMMAND)
-#define CM(a) MOD1(a, LEFTCOMMAND)
-#define CTK(a) KMOD(a, LEFTCTRL)
-#define CT(a) MOD1(a, LEFTCTRL)
-#define OPK(a) KMOD(a, LEFTOPTION)
-#define OP(a) MOD1(a, LEFTOPTION)
-#define AL(a) MOD1(a, LEFTALT)
-#define ALK(a) KMOD(a, LEFTALT)
-#define GU(a) MOD1(a, LEFTGUI)
-#define GUK(a) KMOD((a, LEFTGUI)
-#define COSK(a) KMOD3(a, LEFTCTRL, LEFTSHIFT, LEFTOPTION)
-#define COS(a) MOD3(a, LEFTCTRL, LEFTSHIFT, LEFTOPTION)
-#define ALLK(a) KMOD4(a, LEFTCTRL, LEFTSHIFT, LEFTOPTION, LEFTCOMMAND)
-#define ALL(a) MOD4(a, LEFTCTRL, LEFTSHIFT, LEFTOPTION, LEFTCOMMAND)
-
-// CM == Command, OP = Option
-#define CM_EQ CM(EQ_)
-#define CM_SEMI CM(SEMI_)
-#define CM_QUOTE CM(QUOTE_)
-#define CM_CMA CM(COMMA_)
-#define CM_DOT CM(DOT_)
-#define CM_SLSH CMK(SLASH)
-#define CM_SPC CMK(SPACE)
-#define CM_PUP CMK(PGUP)
-#define CM_PDN CMK(PGDN)
-#define CM_RET CMK(RETURN)
-#define OP_LEFT OP(LEFT_)
-#define OP_RIGHT OP(RIGHT_)
-#define CM_OBRC CMK(OBRC)
-#define CM_CBRC CMK(CBRC)
-#define CM_UP CM(UP_)
-#define CM_DN CM(DOWN_)
-#define MAC_WNL COS(LEFT_)
-#define MAC_WNR COS(RIGHT_)
-#define MAC_WNMX COS(UP_)
-
-// CT = Control
-#define CT_OBRC CTK(OBRC)
-#define CT_CBRC CTK(CBRC)
-#define CT_QUOTE CT(QUOTE_)
-#define CT_SEMI CT(SEMI_)
-#define CT_EQ CTK(EQUAL)
-#define CT_SLSH CTK(SLASH)
-#define CT_CMA CT(COMMA_)
-#define CT_DOT CT(DOT_)
-#define CT_PUP CTK(PGUP)
-#define CT_PDN CTK(PGDN)
-#define CT_UP CT(UP_)
-#define CT_DN CT(DOWN_)
-#define CT_LEFT CT(LEFT_)
-#define CT_RIGHT CT(RIGHT_)
-#define CT_SPC CT(SPACE_)
-#define CT_RET CTK(RETURN)
-#define WIN_WNL GU(LEFT_)
-#define WIN_WNR GU(RIGHT_)
-#define WIN_WNMX GU(UP_)
-
-#define LAYER_MAC_BASE 0
-#define LAYER_WIN_BASE 1
-#define LAYER_FUNC 2
-#define LAYER_MAC_CAP 3
-#define LAYER_WIN_CAP 4
-#define LAYER_WIN_CTL 5
-
-#define LYR_WIN LYR_TOG(LAYER_WIN_BASE)
-#define LYR_MAC LYR_TOG(LAYER_WIN_BASE)
-#define LYR_FN LYR_TOG(LAYER_FUNC)
-#define MAC_CAP LYR_SHIFT(LAYER_MAC_CAP)
-#define WIN_CAP LYR_SHIFT(LAYER_WIN_CAP)
-#define WIN_CTL LYR_SHIFT(LAYER_WIN_CTL)
+#include "keyhelpers.h"
 
 #if STATUS_DUMP
 // For the status dumper thingamajig
@@ -126,7 +9,6 @@ const char* layer_names[] = {
     "Base/Mac", "Win", "Fn", "MacCaps", "WinCaps", "WinCtrl"};
 #endif
 
-// PRVT_, NXTT_, KEY(INSERT), CQ_EQ
 const action_t keymap[][numcols * numrows * 2] = {
     {// LAYER_MAC_BASE (0)
      LROW1(KEY(ESCAPE), KEY(1), KEY(2), KEY(3), KEY(4), KEY(5)),
@@ -237,3 +119,5 @@ const action_t keymap[][numcols * numrows * 2] = {
      RROW4(DOWN_, CTK(M), CT_CMA, CT_DOT, CT_SLSH, RSHFT | LCTL),
      RROW5(CT_RET, CT_SPC, CT_EQ, CT_UP, ___, ___, ___),
      RROW6(CT_CBRC, ___, CT_LEFT, CT_DN, CT_RIGHT, NXTT_)}};
+
+#endif

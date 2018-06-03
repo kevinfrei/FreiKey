@@ -2,6 +2,7 @@
 
 #include "dbgcfg.h"
 #include "hwstate.h"
+#include "led_states.h"
 #include "shared.h"
 
 BLEDis bledis;
@@ -41,7 +42,7 @@ void setup() {
   Bluefruit.Advertising.start(0); // 0 = Don't stop advertising after n seconds
 }
 
-uint8_t curState = 0;
+const led_state* curState = nullptr;
 uint32_t stateTime = 0;
 
 void loop() {
@@ -55,23 +56,20 @@ void loop() {
     if (!curState) {
       // if we're not already in a state, check to see if we're transitioning
       // into one
-      if (down.switches == 0x10408000000ULL) {
-        curState = 1;
-        stateTime = time + 1000;
+      curState = getState(down);
+      if (curState) {
+        stateTime = time;
       }
     }
   }
   if (curState) {
-    // We're in "Check if battery is geting kinda low" mode
-    if (time < stateTime) {
-      if (down.battery_level < 15) {
-        analogWrite(LeftPins.led, abs(16-((stateTime - time)/4) & 31));
-      } else {
-        analogWrite(LeftPins.led, 10);
-      }
+    // We're in "Check if battery is getting kinda low" mode
+    if (time - curState->time < stateTime) {
+      analogWrite(LeftPins.led,
+                  curState->get_led_value(down, time - stateTime));
     } else {
       analogWrite(LeftPins.led, 0);
-      curState = 0;
+      curState = nullptr;
     }
   }
   waitForEvent(); // Request CPU enter low-power mode until an event occurs

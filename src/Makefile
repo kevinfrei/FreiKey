@@ -14,13 +14,15 @@ endif
 
 ifeq ($(uname), Windows)
 ADAFRUIT=${HOME}/AppData/Local/Arduino15/packages/adafruit
-PORT=COM8
+RPORT=COM8
+LPORT=COM3
 NRFUTIL=${ADAFRUIT}/hardware/nrf52/${VER}/tools/nrfutil-0.5.2/binaries/win32/nrfutil
 RMFILES=del
 RMDIR=rmdir /s /q
 else
 ADAFRUIT=${HOME}/Library/Arduino15/packages/adafruit
-PORT=/dev/cu.SLAB_USBtoUART
+LPORT=/dev/cu.SLAB_USBtoUART
+RPORT=/dev/cu.SLAB_USBtoUART
 NRFUTIL=/usr/local/bin/nrfutil
 RMFILES=rm
 RMDIR=rm -rf
@@ -59,7 +61,7 @@ CLANG=-std=gnu11 -DSOFTDEVICE_PRESENT
 SLANG=-x assembler-with-cpp
 OPT=-Os
 
-SHARED_SRC = dbgcfg.cpp hwstate.cpp shared.cpp
+SHARED_SRC = dbgcfg.cpp hwstate.cpp shared.cpp led_states.cpp
 RIGHT_SRC = status_dump.cpp right-entry-points.cpp globals.cpp
 USER_SRC = ${SHARED_SRC} ${RIGHT_SRC} left-slave.cpp right-master.cpp
 
@@ -280,10 +282,10 @@ DEPS = $(CORE_OBJS:.o=.d) $(NFFS_OBJS:.o=.d) $(BFLIB_OBJS:.o=.d) $(USER_OBJS:.o=
 -include ${DEPS}
 
 flashl: ${OUT}/left-slave.zip
-	${NRFUTIL} --verbose dfu serial -pkg $< -p ${PORT} -b 115200
+	${NRFUTIL} --verbose dfu serial -pkg $< -p ${LPORT} -b 115200
 
 flashr: ${OUT}/right-master.zip
-	${NRFUTIL} --verbose dfu serial -pkg $< -p ${PORT} -b 115200
+	${NRFUTIL} --verbose dfu serial -pkg $< -p ${RPORT} -b 115200
 
 left: ${OUT}/left-slave.zip
 

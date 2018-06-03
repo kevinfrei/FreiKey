@@ -3,12 +3,11 @@
 #include "dbgcfg.h"
 #include "globals.h"
 #include "hwstate.h"
-#include "shared.h"
-#include "status_dump.h"
-
-#include "keyhelpers.h"
 #include "keymap.h"
 #include "keystate.h"
+#include "led_states.h"
+#include "shared.h"
+#include "status_dump.h"
 
 hwstate leftSide{};
 hwstate rightSide{};
@@ -152,7 +151,7 @@ void layer_switch(layer_t layer) {
   DBG(dumpLayers());
 }
 
-uint8_t curState = 0;
+const led_state* curState = nullptr;
 uint32_t stateTime = 0;
 
 void loop() {
@@ -186,25 +185,22 @@ void loop() {
   uint64_t deltaRight = beforeRight ^ afterRight;
   bool keysChanged = deltaLeft || deltaRight;
   if (deltaRight && !curState) {
-    // We're not in a state currently, and some keys changed.
-    // Maybe we're entering a display state...
-    if (rightSide.switches == 0x1010200000ULL) {
-      curState = 1;
-      stateTime = now + 1000;
+    // if we're not already in a state, check to see if we're transitioning
+    // into one
+    curState = getState(downRight, layer_pos + 1);
+    if (curState) {
+      stateTime = now;
     }
   }
 
   if (curState) {
-    // We're in "Check if battery is geting kinda low" mode
-    if (now < stateTime) {
-      if (rightSide.battery_level < 15) {
-        analogWrite(RightPins.led, abs(16 - ((stateTime - now) / 4) & 31));
-      } else {
-        analogWrite(RightPins.led, 10);
-      }
+    // We're in some random LED display state. Do something...
+    if (now - curState->time < stateTime) {
+      analogWrite(RightPins.led,
+                  curState->get_led_value(downRight, now - stateTime));
     } else {
       analogWrite(RightPins.led, 0);
-      curState = 0;
+      curState = nullptr;
     }
   }
 

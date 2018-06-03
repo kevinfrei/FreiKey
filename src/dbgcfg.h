@@ -33,7 +33,7 @@ extern void waitForEvent(void);
 extern uint32_t analogRead(uint32_t ulPin);
 extern void analogWrite(uint32_t ulPin, uint32_t value);
 extern void pinMode(uint32_t dwPin, uint32_t dwMode);
-extern struct ble_gap_evt_adv_report_t;
+struct ble_gap_evt_adv_report_t;
 #endif
 
 #endif

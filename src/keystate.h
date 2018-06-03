@@ -1,3 +1,9 @@
+#if !defined(KEYSTATE_H)
+#define KEYSTATE_H
+
+#include "keyhelpers.h"
+#include "shared.h"
+
 action_t resolveActionForScanCodeOnActiveLayer(uint8_t scanCode);
 
 struct keystate {
@@ -59,3 +65,5 @@ struct keystate {
   };
 #endif
 };
+
+#endif
