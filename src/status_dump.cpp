@@ -19,7 +19,7 @@ constexpr uint64_t status_keys_right = 0x1010000000ULL;
 // If you hold this down, just on the right keyboard, it shows RHS status only
 // Right-most keys on the bottom 3 rows
 // (might be made helpful in the future...)
-constexpr uint64_t just_right_stat = 0x1010200000ULL;
+constexpr uint64_t just_right_stat = 0x1000200000ULL;
 
 // A very limited version of typing the string. It dumps lower case, nubmers,
 // a few other things, defaults to '.' for everything else.

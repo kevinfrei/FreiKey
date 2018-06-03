@@ -133,15 +133,15 @@ const action_t keymap[][numcols * numrows * 2] = {
      LROW2(KEY(TAB), KEY(Q), KEY(W), KEY(E), KEY(R), KEY(T)),
      LROW3(MAC_CAP, KEY(A), KEY(S), KEY(D), KEY(F), KEY(G)),
      LROW4(LSHFT, KEY(Z), KEY(X), KEY(C), KEY(V), KEY(B)),
-     LROW5(LCTL, LOPT, LCMD, KEY(PGUP), KEY(GRAVE), KEY(OBRC), KEY(BKSP)),
-     LROW6(PLAY_, KEY(HOME), KEY(PGDN), KEY(END), LYR_FN, KEY(DEL)),
+     LROW5(LCTL, LOPT, LCMD, KEY(PGUP), KEY(GRAVE), KEY(BKSP), KEY(DEL)),
+     LROW6(PLAY_, KEY(HOME), KEY(PGDN), KEY(END), LYR_FN, KEY(OBRC)),
 
      RROW1(KEY(6), KEY(7), KEY(8), KEY(9), KEY(0), KEY(MINUS)),
      RROW2(KEY(Y), KEY(U), KEY(I), KEY(O), KEY(P), KEY(BACKSLASH)),
      RROW3(KEY(H), KEY(J), KEY(K), KEY(L), SEMI_, QUOTE_),
      RROW4(KEY(N), KEY(M), COMMA_, DOT_, KEY(SLASH), RSHFT),
-     RROW5(SPACE_, KEY(CBRC), EQ_, UP_, VOLDN_, MUTE_, VOLUP_),
-     RROW6(ENTER_, LYR_WIN, LEFT_, DOWN_, RIGHT_, ROPT)},
+     RROW5(ENTER_, SPACE_, EQ_, UP_, VOLDN_, MUTE_, VOLUP_),
+     RROW6(KEY(CBRC), LYR_WIN, LEFT_, DOWN_, RIGHT_, ROPT)},
 
     {// LAYER_WIN_BASE (1)
      // Put Alt & GUI in the right spots, Add the Insert key (instead of PRVT),
@@ -185,15 +185,15 @@ const action_t keymap[][numcols * numrows * 2] = {
      LROW2(CMK(TAB), CMK(Q), CMK(W), CMK(E), CMK(R), CMK(T)),
      LROW3(___, CMK(A), CMK(S), CMK(D), CMK(F), CMK(G)),
      LROW4(SHFTCM, CMK(Z), CMK(X), CMK(C), CMK(V), CMK(B)),
-     LROW5(CTLCM, OPTCM, ___, CM_PUP, CMK(GRAVE), CM_OBRC, OPK(BKSP)),
-     LROW6(PRVT_, CMK(HOME), CM_PDN, CMK(END), ___, OPK(DEL)),
+     LROW5(CTLCM, OPTCM, ___, CM_PUP, CMK(GRAVE), OPK(BKSP), OPK(DEL)),
+     LROW6(PRVT_, CMK(HOME), CM_PDN, CMK(END), ___, CM_OBRC),
 
      RROW1(CMK(6), CMK(7), CMK(8), CMK(9), CMK(0), CMK(MINUS)),
      RROW2(CMK(Y), CMK(U), CMK(I), CMK(O), CMK(P), CMK(BACKSLASH)),
      RROW3(CMK(H), CMK(J), CMK(K), CMK(L), CM_SEMI, CM_QUOTE),
      RROW4(CMK(N), CMK(M), CM_CMA, CM_DOT, CM_SLSH, CM_SPC),
-     RROW5(CM_SPC, CM_CBRC, CM_EQ, CM_UP, MAC_WNL, MAC_WNMX, MAC_WNR),
-     RROW6(CM_RET, ___, OP_LEFT, CM_DN, OP_RIGHT, NXTT_)},
+     RROW5(CM_RET, CM_SPC, CM_EQ, CM_UP, MAC_WNL, MAC_WNMX, MAC_WNR),
+     RROW6(CM_CBRC, ___, OP_LEFT, CM_DN, OP_RIGHT, NXTT_)},
 
     {// LAYER_WIN_CAP (4)
      // This is magic to get a bunch of mac commands to send their Windows
@@ -206,15 +206,15 @@ const action_t keymap[][numcols * numrows * 2] = {
      LROW2(CTK(TAB), ALK(F4), CTK(F4), CTK(E), CTK(R), CTK(T)),
      LROW3(___, CTK(A), CTK(S), CTK(D), CTK(F), CTK(G)),
      LROW4(SHFTCT, CTK(Z), CTK(X), CTK(C), CTK(V), CTK(B)),
-     LROW5(LCTL, GUICT, ALTCT, CT_PUP, CTK(GRAVE), CT_OBRC, CTK(BKSP)),
-     LROW6(PRVT_, CTK(HOME), CT_PDN, CTK(END), ___, CTK(DEL)),
+     LROW5(LCTL, GUICT, ALTCT, CT_PUP, CTK(GRAVE), CTK(BKSP), CTK(DEL)),
+     LROW6(PRVT_, CTK(HOME), CT_PDN, CTK(END), ___, CT_OBRC),
 
      RROW1(CTK(6), CTK(7), CTK(8), CTK(9), CTK(0), CTK(MINUS)),
      RROW2(CTK(Y), CTK(U), CTK(I), CTK(O), CTK(P), CTK(BACKSLASH)),
      RROW3(CTK(H), CTK(J), CTK(K), CTK(L), CT_SEMI, CT_QUOTE),
      RROW4(CTK(N), CTK(M), CT_CMA, KEY(ESCAPE), CT_SLSH, RGUI),
-     RROW5(CT_SPC, CT_CBRC, CT_EQ, CT_UP, WIN_WNL, WIN_WNMX, WIN_WNR),
-     RROW6(CT_RET, ___, CT_LEFT, CT_DN, CT_RIGHT, NXTT_)},
+     RROW5(CT_RET, CT_SPC, CT_EQ, CT_UP, WIN_WNL, WIN_WNMX, WIN_WNR),
+     RROW6(CT_CBRC, ___, CT_LEFT, CT_DN, CT_RIGHT, NXTT_)},
     {// LAYER_WIN_CTL (5)
      // This is magic to make Unix line editing controls to work like they do in
      // Unix, but when working on Windows. The only one I can't really do is
@@ -228,12 +228,12 @@ const action_t keymap[][numcols * numrows * 2] = {
      LROW2(CTK(TAB), CTK(Q), CTK(W), KEY(END), CTK(R), CTK(T)),
      LROW3(LCTL, KEY(HOME), CTK(S), KEY(DEL), RIGHT_, CTK(G)),
      LROW4(SHFTCT, CTK(Z), CTK(X), CTK(C), CTK(V), CTK(B)),
-     LROW5(___, GUICT, ALTCT, CT_PUP, CTK(GRAVE), CT_OBRC, CTK(BKSP)),
-     LROW6(___, CTK(HOME), CT_PDN, CTK(END), ___, CTK(DEL)),
+     LROW5(___, GUICT, ALTCT, CT_PUP, CTK(GRAVE), CTK(BKSP), CTK(DEL)),
+     LROW6(___, CTK(HOME), CT_PDN, CTK(END), ___, CT_OBRC),
 
      RROW1(CTK(6), CTK(7), CTK(8), CTK(9), CTK(0), CTK(MINUS)),
      RROW2(CTK(Y), CTK(U), CTK(I), CTK(O), UP_, CTK(BACKSLASH)),
      RROW3(CTK(H), CTK(J), CTK(K), CTK(L), CT_SEMI, CT_QUOTE),
      RROW4(DOWN_, CTK(M), CT_CMA, CT_DOT, CT_SLSH, RSHFT | LCTL),
-     RROW5(CT_SPC, CT_CBRC, CT_EQ, CT_UP, ___, ___, ___),
-     RROW6(CT_RET, ___, CT_LEFT, CT_DN, CT_RIGHT, NXTT_)}};
+     RROW5(CT_RET, CT_SPC, CT_EQ, CT_UP, ___, ___, ___),
+     RROW6(CT_CBRC, ___, CT_LEFT, CT_DN, CT_RIGHT, NXTT_)}};

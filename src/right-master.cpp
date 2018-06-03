@@ -152,6 +152,9 @@ void layer_switch(layer_t layer) {
   DBG(dumpLayers());
 }
 
+uint8_t curState = 0;
+uint32_t stateTime = 0;
+
 void loop() {
   uint32_t now = millis();
 
@@ -182,6 +185,28 @@ void loop() {
   uint64_t deltaLeft = beforeLeft ^ afterLeft;
   uint64_t deltaRight = beforeRight ^ afterRight;
   bool keysChanged = deltaLeft || deltaRight;
+  if (deltaRight && !curState) {
+    // We're not in a state currently, and some keys changed.
+    // Maybe we're entering a display state...
+    if (rightSide.switches == 0x1010200000ULL) {
+      curState = 1;
+      stateTime = now + 1000;
+    }
+  }
+
+  if (curState) {
+    // We're in "Check if battery is geting kinda low" mode
+    if (now < stateTime) {
+      if (rightSide.battery_level < 15) {
+        analogWrite(RightPins.led, abs(16 - ((stateTime - now) / 4) & 31));
+      } else {
+        analogWrite(RightPins.led, 10);
+      }
+    } else {
+      analogWrite(RightPins.led, 0);
+      curState = 0;
+    }
+  }
 
   while (deltaLeft || deltaRight) {
     scancode_t sc;
