@@ -16,6 +16,7 @@ void shared_setup(const PinData &pd) {
     pinMode(pin, INPUT_PULLUP);
   }
   pinMode(pd.led, OUTPUT);
+  analogWrite(pd.led, 0);
   DBG(Serial.begin(115200));
 }
 

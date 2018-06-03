@@ -13,9 +13,9 @@
 hwstate leftSide{};
 hwstate rightSide{};
 
-// The are the top left & right keys, plus the lowest 'outer' keys
-constexpr uint64_t status_clear_bonds_left = 0x1800000040ULL;
-constexpr uint64_t status_clear_bonds_right = 0x40000801ULL;
+// The are the top left & right keys, plus the lowest 'outer' key
+constexpr uint64_t status_clear_bonds_left = 0x1000000042ULL;
+constexpr uint64_t status_clear_bonds_right = 0x1000000021ULL;
 
 // Declarations
 

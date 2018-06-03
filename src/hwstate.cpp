@@ -72,11 +72,11 @@ hwstate::hwstate(const hwstate& c)
 void hwstate::readSwitches(const PinData& pd) {
   uint64_t newSwitches = 0;
   for (uint64_t colNum = 0; colNum < numcols; ++colNum) {
-    uint64_t val = 1ULL << (colNum * numrows);
+    uint64_t val = 1ULL << colNum;
     digitalWrite(pd.cols[colNum], LOW);
     for (uint64_t rowNum = 0; rowNum < numrows; ++rowNum) {
       if (!digitalRead(pd.rows[rowNum])) {
-        newSwitches |= (val << rowNum);
+        newSwitches |= val << (rowNum * numcols);
       }
     }
     digitalWrite(pd.cols[colNum], HIGH);
@@ -146,7 +146,7 @@ void hwstate::dump() const {
   Serial.println(static_cast<unsigned int>(switches), 16);
   for (int64_t r = 0; r < numrows; r++) {
     for (int64_t c = numcols - 1; c >= 0; c--) {
-      uint64_t mask = 1ULL << (c * numrows + r);
+      uint64_t mask = 1ULL << (r * numcols + c);
       if (switches & mask) {
         Serial.print("X ");
       } else {

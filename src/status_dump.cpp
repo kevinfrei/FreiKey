@@ -13,12 +13,13 @@ extern uint16_t core_handle;
 
 // If you hold this configuration down, it types out status
 // Lower left two keys on the edge
-constexpr uint64_t status_keys_left = 0x10800000000ULL;
+constexpr uint64_t status_keys_left = 0x10400000000ULL;
 // Lower right two keys on the edge
-constexpr uint64_t status_keys_right = 0x810ULL;
+constexpr uint64_t status_keys_right = 0x1010000000ULL;
 // If you hold this down, just on the right keyboard, it shows RHS status only
+// Right-most keys on the bottom 3 rows
 // (might be made helpful in the future...)
-constexpr uint64_t just_right_stat = 0xC10ULL;
+constexpr uint64_t just_right_stat = 0x1010200000ULL;
 
 // A very limited version of typing the string. It dumps lower case, nubmers,
 // a few other things, defaults to '.' for everything else.

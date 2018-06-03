@@ -53,17 +53,22 @@ void loop() {
     DBG2(down.dump());
     down.send(bleuart, lastRead);
     if (!curState) {
-      // if we're not already in a state, check to see if we're transitioning into one
-      if (down.switches == 0x18800000000ULL) {
+      // if we're not already in a state, check to see if we're transitioning
+      // into one
+      if (down.switches == 0x10408000000ULL) {
         curState = 1;
-        stateTime = time + 500;
+        stateTime = time + 1000;
       }
     }
   }
   if (curState) {
-    // We're in some random display state: deal with it...
+    // We're in "Check if battery is geting kinda low" mode
     if (time < stateTime) {
-      analogWrite(LeftPins.led, 15);
+      if (down.battery_level < 15) {
+        analogWrite(LeftPins.led, abs(16-((stateTime - time)/4) & 31));
+      } else {
+        analogWrite(LeftPins.led, 10);
+      }
     } else {
       analogWrite(LeftPins.led, 0);
       curState = 0;
