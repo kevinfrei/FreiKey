@@ -3,7 +3,7 @@
 #include "dbgcfg.h"
 #include "globals.h"
 #include "shared.h"
-#include "hwstate.h"
+#include "hardware.h"
 
 void startAdv();
 void resetKeyMatrix();

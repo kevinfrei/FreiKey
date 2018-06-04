@@ -1,7 +1,7 @@
 #include <bluefruit.h>
 
 #include "dbgcfg.h"
-#include "hwstate.h"
+#include "hardware.h"
 #include "shared.h"
 
 void shared_setup(const PinData &pd) {

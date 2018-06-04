@@ -2,15 +2,15 @@
 
 #include "dbgcfg.h"
 #include "globals.h"
-#include "hwstate.h"
+#include "hardware.h"
 #include "keymap.h"
 #include "keystate.h"
 #include "led_states.h"
 #include "shared.h"
 #include "status_dump.h"
 
-hwstate leftSide{};
-hwstate rightSide{};
+state::hw leftSide{};
+state::hw rightSide{};
 
 // The are the top left & right keys, plus the lowest 'outer' key
 constexpr uint64_t status_clear_bonds_left = 0x1000000042ULL;
@@ -158,8 +158,8 @@ void loop() {
   uint32_t now = millis();
 
   // Get the hardware state for the two sides...
-  hwstate downRight{now, rightSide, RightPins};
-  hwstate downLeft{clientUart, leftSide};
+  state::hw downRight{now, rightSide, RightPins};
+  state::hw downLeft{clientUart, leftSide};
 
   // Update the combined battery level
   if (downRight.battery_level != rightSide.battery_level ||

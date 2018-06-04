@@ -1,13 +1,13 @@
 #include <bluefruit.h>
 
 #include "dbgcfg.h"
-#include "hwstate.h"
+#include "hardware.h"
 #include "led_states.h"
 #include "shared.h"
 
 BLEDis bledis;
 BLEUart bleuart;
-hwstate lastRead{};
+state::hw lastRead{};
 
 void setup() {
   shared_setup(LeftPins);
@@ -47,7 +47,7 @@ uint32_t stateTime = 0;
 
 void loop() {
   uint32_t time = millis();
-  hwstate down{time, lastRead, LeftPins};
+  state::hw down{time, lastRead, LeftPins};
 
   if (down != lastRead) {
     lastRead = down;

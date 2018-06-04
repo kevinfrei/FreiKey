@@ -119,7 +119,7 @@ void type_number(uint32_t val) {
   hid.keyboardReport(0, console);
 }
 
-bool status_dump_check(const hwstate& rightSide, const hwstate& leftSide) {
+bool status_dump_check(const state::hw& rightSide, const state::hw& leftSide) {
   bool justRight = rightSide.switches == just_right_stat;
   bool leftCheck = leftSide.switches == status_keys_left;
   bool rightCheck = rightSide.switches == status_keys_right;
@@ -127,13 +127,13 @@ bool status_dump_check(const hwstate& rightSide, const hwstate& leftSide) {
   // This is hard coded, mostly because I'm just hacking
   if (justRight || (leftCheck && rightCheck)) {
     if (!justRight) {
-      type_string("Left battery level: ");
+      type_string("Lbat:");
       type_number(leftSide.battery_level);
       type_string("%\n");
     }
-    type_string("Right battery level: ");
+    type_string("Rbat: ");
     type_number(rightSide.battery_level);
-    type_string("%\nLayer stack: ");
+    type_string("%\nLyr: ");
     for (int i = 0; i <= layer_pos; i++) {
       type_string(layer_names[layer_stack[i]]);
       type_string(" (");

@@ -1,6 +1,6 @@
 #include <bluefruit.h>
 
-#include "hwstate.h"
+#include "hardware.h"
 
 #define MANUFACTURER "FreikyStuff"
 #define MODEL "FreiKeyboard"

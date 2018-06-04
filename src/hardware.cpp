@@ -1,5 +1,6 @@
-#include "hwstate.h"
+#include "hardware.h"
 
+namespace state {
 constexpr uint8_t VBAT_PIN = 31; // pin 31 is available for sampling the battery
 // I had this set to 15, but still sometimes saw bounces :/
 constexpr uint8_t DEBOUNCE_COUNT = 24;
@@ -26,50 +27,24 @@ uint8_t readBattery(uint32_t now, uint8_t prev) {
   return bat_percentage;
 }
 
-namespace sw {
+hw::hw(uint8_t bl) : switches(0), battery_level(bl) {}
 
-bool cmp(const uint8_t (&swa)[numrows], const uint8_t (&swb)[numrows]) {
-  return memcmp(swa, swb, numrows);
-}
-
-void cpy(uint8_t (&swdst)[numrows], const uint8_t (&swsrc)[numrows]) {
-  memcpy(swdst, swsrc, numrows);
-}
-
-void clr(uint8_t (&sw)[numrows]) {
-  memset(sw, 0, numrows);
-}
-#if DEBUG
-void dmp(const uint8_t (&sw)[numrows]) {
-  Serial.print("Sw: ");
-  for (uint8_t i : sw) {
-    Serial.print(i, HEX);
-  }
-  Serial.println("");
-}
-#endif
-
-} // namespace sw
-
-hwstate::hwstate(uint8_t bl) : switches(0), battery_level(bl) {}
-
-hwstate::hwstate(uint32_t now, const hwstate& prev, const PinData& pd)
+hw::hw(uint32_t now, const hw& prev, const PinData& pd)
     : switches(prev.switches),
       battery_level(readBattery(now, prev.battery_level)) {
   readSwitches(pd);
 }
 
-hwstate::hwstate(BLEClientUart& clientUart, const hwstate& prev) {
+hw::hw(BLEClientUart& clientUart, const hw& prev) {
   if (!receive(clientUart, prev))
     memcpy(reinterpret_cast<uint8_t*>(this),
            reinterpret_cast<const uint8_t*>(&prev),
-           sizeof(hwstate));
+           sizeof(hw));
 }
 
-hwstate::hwstate(const hwstate& c)
-    : switches(c.switches), battery_level(c.battery_level) {}
+hw::hw(const hw& c) : switches(c.switches), battery_level(c.battery_level) {}
 
-void hwstate::readSwitches(const PinData& pd) {
+void hw::readSwitches(const PinData& pd) {
   uint64_t newSwitches = 0;
   for (uint64_t colNum = 0; colNum < numcols; ++colNum) {
     uint64_t val = 1ULL << colNum;
@@ -99,13 +74,13 @@ void hwstate::readSwitches(const PinData& pd) {
 }
 
 // Send the relevant data over the wire
-void hwstate::send(BLEUart& bleuart, const hwstate& prev) const {
+void hw::send(BLEUart& bleuart, const hw& prev) const {
   bleuart.write((uint8_t*)&switches, sizeof(switches) + 1);
 }
 
 // Try to receive any relevant switch data from the wire.
 // Returns true if something was received
-bool hwstate::receive(BLEClientUart& clientUart, const hwstate& prev) {
+bool hw::receive(BLEClientUart& clientUart, const hw& prev) {
   if (clientUart.available()) {
     uint8_t buffer[sizeof(switches) + 1];
     int size = clientUart.read(buffer, sizeof(switches) + 1);
@@ -118,7 +93,7 @@ bool hwstate::receive(BLEClientUart& clientUart, const hwstate& prev) {
       // knew what he was doing :)
       Serial.print("Incorrect datagram size:");
       Serial.print(" expected ");
-      Serial.print(static_cast<uint8_t>(sizeof(hwstate)));
+      Serial.print(static_cast<uint8_t>(sizeof(hw)));
       Serial.print(" got ");
       Serial.println(size);
 #endif
@@ -128,16 +103,16 @@ bool hwstate::receive(BLEClientUart& clientUart, const hwstate& prev) {
   return false;
 }
 
-bool hwstate::operator==(const hwstate& o) const {
+bool hw::operator==(const hw& o) const {
   return o.battery_level == battery_level && o.switches == switches;
 }
 
-bool hwstate::operator!=(const hwstate& o) const {
+bool hw::operator!=(const hw& o) const {
   return !((*this) == o);
 }
 
 #if DEBUG
-void hwstate::dump() const {
+void hw::dump() const {
   Serial.print("Battery Level:");
   Serial.println(battery_level);
   Serial.print("Integer value:");
@@ -157,3 +132,4 @@ void hwstate::dump() const {
   }
 }
 #endif
+} // namespace state
