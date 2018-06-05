@@ -30,7 +30,7 @@ void setup() {
   // I should experiment to see how low I can get it and still communicate with
   // both my Mac and my PC reliably. They're each within a meter of the
   // keyboard... Acceptable values: -40, -30, -20, -16, -12, -8, -4, 0, 4
-  Bluefruit.setTxPower(4);
+  Bluefruit.setTxPower(-8);
   Bluefruit.setName(BT_NAME);
 
   Bluefruit.Central.setConnectCallback(cent_connect_callback);

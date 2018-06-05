@@ -1,3 +1,6 @@
+#if !defined(SHARED_H)
+#define SHARED_H
+
 #include <bluefruit.h>
 
 #include "hardware.h"
@@ -11,3 +14,5 @@
 using scancode_t = uint8_t;
 
 void shared_setup(const PinData &pd);
+
+#endif

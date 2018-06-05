@@ -1,11 +1,13 @@
+#if STATUS_DUMP
+
 #include <bluefruit.h>
 
 #include "keyhelpers.h"
 #include "status_dump.h"
 #include "hardware.h"
 
-#if STATUS_DUMP
-
+// TODO: Expose this stuff somehow. This is a disgusting hack to get at some
+// necessary state, and it makes me slightly queasy
 extern BLEHidAdafruit hid;
 extern layer_t* layer_stack;
 extern layer_t layer_pos;
