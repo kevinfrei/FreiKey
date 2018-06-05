@@ -19,7 +19,7 @@ void setup() {
   // was set at 0. If you spread your keyboards apart greater distance, you may
   // want to try higher power. Acceptable values are -40, -30, -20, -16, -12,
   // -8, -4, 0, 4
-  Bluefruit.setTxPower(4);
+  Bluefruit.setTxPower(-30);
   Bluefruit.setName(LHS_NAME);
 
   bledis.setManufacturer(MANUFACTURER);

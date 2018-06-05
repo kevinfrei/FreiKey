@@ -2,6 +2,7 @@
 
 #include "keyhelpers.h"
 #include "status_dump.h"
+#include "hardware.h"
 
 #if STATUS_DUMP
 
