@@ -2,12 +2,13 @@
 
 #include <bluefruit.h>
 
+#include "hardware.h"
 #include "keyhelpers.h"
 #include "status_dump.h"
-#include "hardware.h"
 
 // TODO: Expose this stuff somehow. This is a disgusting hack to get at some
 // necessary state, and it makes me slightly queasy
+
 extern BLEHidAdafruit hid;
 extern layer_t* layer_stack;
 extern layer_t layer_pos;
@@ -132,18 +133,18 @@ bool status_dump_check(const state::hw& rightSide, const state::hw& leftSide) {
     if (!justRight) {
       type_string("Lbat:");
       type_number(leftSide.battery_level);
-      type_string("%\n");
+      type_string("% ");
     }
     type_string("Rbat: ");
     type_number(rightSide.battery_level);
-    type_string("%\nLyr: ");
-    for (int i = 0; i <= layer_pos; i++) {
-      type_string(layer_names[layer_stack[i]]);
+    type_string("% Layer: ");
+    for (uint8_t i = 0; i <= min(layer_pos, 5); i++) {
+      uint8_t layerLoc = min(layer_stack[i], 5);
+      type_string(layer_names[layerLoc]);
       type_string(" (");
       type_number(i);
       type_string(i == layer_pos ? ")" : "), ");
     }
-    type_string("\n");
     DBG(Bluefruit.printInfo());
     DBG(dumpHex(Bluefruit.connHandle(), "Connection handle: "));
     DBG(dumpHex(Bluefruit.connPaired(), "Connection paired: "));
