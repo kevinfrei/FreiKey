@@ -40,7 +40,7 @@ AR=${TOOLS}/bin/arm-none-eabi-ar
 # First, DEBUG and STATUS_DUMP configuration flags (then everything else)
 DEFINES=-DDEBUG=2 -DSTATUS_DUMP \
 -DF_CPU=64000000 \
--DARDUINO=10613 \
+-DARDUINO=10805 \
 -DARDUINO_NRF52_FEATHER \
 -DARDUINO_ARCH_NRF52 \
 -DARDUINO_BSP_VERSION=\"${VER}\" \
@@ -51,7 +51,7 @@ DEFINES=-DDEBUG=2 -DSTATUS_DUMP \
 -DNRF52832_XXAA \
 -DUSE_LFXO \
 -DS132 \
--DSD_VER=201 \
+-DSD_VER=510 \
 -DCFG_DEBUG=0
 TARGET=-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
 CODEGEN=-nostdlib --param max-inline-insns-single=500 -ffunction-sections -fdata-sections
@@ -73,7 +73,7 @@ INCLUDES=\
 	"-I${HWROOT}/cores/nRF5/SDK/components/drivers_nrf/delay/"\
 	"-I${HWROOT}/cores/nRF5/SDK/components/drivers_nrf/hal/"\
 	"-I${HWROOT}/cores/nRF5/SDK/components/libraries/util/"\
-	"-I${HWROOT}/cores/nRF5/softdevice/s132/2.0.1/headers/"\
+	"-I${HWROOT}/cores/nRF5/softdevice/s132/5.1.0/headers/"\
 	"-I${HWROOT}/cores/nRF5/freertos/source/include"\
 	"-I${HWROOT}/cores/nRF5/freertos/config"\
 	"-I${HWROOT}/cores/nRF5/freertos/portable/GCC/nrf52"\
@@ -262,7 +262,7 @@ USER_OBJS =  $(addprefix ${OUT}/, $(patsubst %.cpp, %.cpp.o, ${USER_SRC}))
 ELF_FLAGS = ${OPT} ${TARGET} -save-temps \
 -L${HWROOT}/cores/nRF5/linker \
 -L${OUT} \
-"-Tbluefruit52_s132_2.0.1.ld" \
+"-Tbluefruit52_s132_5.1.0.ld" \
 -u _printf_float \
 -Wl,--cref \
 -Wl,--check-sections \
@@ -292,7 +292,7 @@ left: ${OUT}/left-slave.zip
 right: ${OUT}/right-master.zip
 
 ${OUT}/%.zip : ${OUT}/%.hex
-	${NRFUTIL} dfu genpkg --dev-type 0x0052 --sd-req 0x0088 --application $< $@
+	${NRFUTIL} dfu genpkg --dev-type 0x0052 --sd-req 0x00A5 --application $< $@
 
 ${OUT}/%.hex : ${OUT}/%.elf
 	${OBJCOPY} -O ihex $< $@
