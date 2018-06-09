@@ -2,8 +2,8 @@
 
 #include "dbgcfg.h"
 #include "globals.h"
-#include "shared.h"
 #include "hardware.h"
+#include "shared.h"
 
 void startAdv();
 void resetKeyMatrix();
@@ -21,7 +21,7 @@ void setup() {
 
   // Central and peripheral
   Bluefruit.begin(true, true);
-  //Bluefruit.clearBonds();
+  // Bluefruit.clearBonds();
   Bluefruit.autoConnLed(true);
 
   battery.begin();
@@ -30,7 +30,7 @@ void setup() {
   // I should experiment to see how low I can get it and still communicate with
   // both my Mac and my PC reliably. They're each within a meter of the
   // keyboard... Acceptable values: -40, -30, -20, -16, -12, -8, -4, 0, 4
-  Bluefruit.setTxPower(0);
+  Bluefruit.setTxPower(4);
   Bluefruit.setName(BT_NAME);
 
   Bluefruit.Central.setConnectCallback(cent_connect_callback);
@@ -76,7 +76,7 @@ void startAdv(void) {
   Bluefruit.Advertising.addAppearance(BLE_APPEARANCE_HID_KEYBOARD);
   Bluefruit.Advertising.addService(hid);
 
-  Bluefruit.ScanResponse.addService(battery);
+  Bluefruit.ScanResponse.addService(battery); // This doesn't seem to work :(
 
   Bluefruit.Advertising.addName();
   Bluefruit.Advertising.restartOnDisconnect(true);
@@ -90,16 +90,15 @@ void cent_connect_callback(uint16_t conn_handle) {
   // is in the documentation :/
   char peer_name[32] = {0};
   Bluefruit.Gap.getPeerName(conn_handle, peer_name, sizeof(peer_name));
-  // TODO:
-  // I ought to at least make sure the peer_name is LHS_NAME, right?
   DBG(Serial.print("[Cent] Connected to "));
   DBG(Serial.println(peer_name));
   DBG(Bluefruit.printInfo());
-
-  if (clientUart.discover(conn_handle)) {
+  // I ought to at least make sure the peer_name is LHS_NAME, right?
+  if (!strcmp(LHS_NAME, peer_name) && clientUart.discover(conn_handle)) {
     // Enable TXD's notify
     clientUart.enableTXD();
   } else {
+    DBG(Serial.println("Not connecting to the other side..."));
     Bluefruit.Central.disconnect(conn_handle);
   }
 

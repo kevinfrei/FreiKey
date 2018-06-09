@@ -45,6 +45,8 @@ void setup() {
 const led_state* curState = nullptr;
 uint32_t stateTime = 0;
 
+// TODO: Add bidirectional communication, so the master can ask for info or set
+// an LED state somehow
 void loop() {
   uint32_t time = millis();
   state::hw down{time, lastRead, LeftPins};

@@ -103,8 +103,8 @@ constexpr layer_t kSwitchLayer = 4;
 #define HID_KEY_M_PLAY 0xCD
 #define HID_KEY_M_PREVIOUS_TRACK 0xB6
 #define HID_KEY_M_NEXT_TRACK 0xB5
-#define HID_KEY_M_VOLUME_UP 0x80
-#define HID_KEY_M_VOLUME_DOWN 0x81
+#define HID_KEY_M_VOLUME_UP 0xE9
+#define HID_KEY_M_VOLUME_DOWN 0xEA
 #define HID_KEY_M_MUTE 0x7F
 
 #define HID_KEY_M_BACKWARD 0xF1
@@ -154,8 +154,8 @@ constexpr layer_t kSwitchLayer = 4;
 #define RIGHT_ KEY(ARROW_RIGHT)
 #define SPACE_ KEY(SPACE)
 #define MUTE_ KEY(M_MUTE)
-#define VOLUP_ KEY(M_VOLUME_UP)
-#define VOLDN_ KEY(M_VOLUME_DOWN)
+#define VOLUP_ CONS(M_VOLUME_UP)
+#define VOLDN_ CONS(M_VOLUME_DOWN)
 
 #define PLAY_ CONS(M_PLAY)
 #define PRVT_ CONS(M_PREVIOUS_TRACK)

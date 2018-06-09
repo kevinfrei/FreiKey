@@ -16,29 +16,28 @@ extern const char* layer_names[];
 extern uint16_t core_handle;
 
 // If you hold this configuration down, it types out status
-// Lower left two keys on the edge
-constexpr uint64_t status_keys_left = 0x10400000000ULL;
-// Lower right two keys on the edge
-constexpr uint64_t status_keys_right = 0x1010000000ULL;
+// Lowest out, and the key directly above it
+constexpr uint64_t status_keys_left = 0x10200000000ULL;
+// Thumb low edge and right most bottom row
+constexpr uint64_t status_keys_right = 0x1020000000ULL;
 // If you hold this down, just on the right keyboard, it shows RHS status only
-// Right-most keys on the bottom 3 rows
-// (might be made helpful in the future...)
-constexpr uint64_t just_right_stat = 0x1000200000ULL;
+// Sameas above, just add the rightmost key on the second to bottom row
+constexpr uint64_t just_right_stat = 0x1030000000ULL;
 
-// A very limited version of typing the string. It dumps lower case, nubmers,
-// a few other things, defaults to '.' for everything else.
+// I used to implement this all myself, but then I discovered it was alread in
+// the hid class :)
 void type_string(const char* str) {
   hid.keySequence(str);
 }
 
+// Interview question ahead! 
 void type_number(uint32_t val) {
   char buffer[25];
-  int curPos = sizeof(buffer)-1;
+  int curPos = sizeof(buffer) - 1;
   buffer[curPos] = 0;
   do {
-    int digit = val % 10;
+    buffer[--curPos] = val % 10 + '0';
     val = val / 10;
-    buffer[--curPos] = digit;
   } while (val && curPos);
   type_string(&buffer[curPos]);
 }

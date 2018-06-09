@@ -17,8 +17,9 @@ ADAFRUIT=${HOME}/AppData/Local/Arduino15/packages/adafruit
 RPORT=COM8
 LPORT=COM3
 NRFUTIL=${ADAFRUIT}/hardware/nrf52/${VER}/tools/nrfutil-0.5.2/binaries/win32/nrfutil
-RMFILES=del
+RMFILES=del /q
 RMDIR=rmdir /s /q
+/=$(strip \)
 else
 ADAFRUIT=${HOME}/Library/Arduino15/packages/adafruit
 LPORT=/dev/cu.SLAB_USBtoUART
@@ -26,6 +27,7 @@ RPORT=/dev/cu.SLAB_USBtoUART
 NRFUTIL=/usr/local/bin/nrfutil
 RMFILES=rm
 RMDIR=rm -rf
+/=/
 endif
 TOOLS=${ADAFRUIT}/tools/gcc-arm-none-eabi/5_2-2015q4
 HWROOT=${ADAFRUIT}/hardware/nrf52/${VER}
@@ -52,7 +54,7 @@ DEFINES=-DDEBUG=2 -DSTATUS_DUMP \
 -DUSE_LFXO \
 -DS132 \
 -DSD_VER=510 \
--DCFG_DEBUG=3
+-DCFG_DEBUG=0
 TARGET=-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
 CODEGEN=-nostdlib --param max-inline-insns-single=500 -ffunction-sections -fdata-sections
 FLAGS=-g -Wall -u _printf_float -MMD
@@ -310,26 +312,25 @@ ${OUT}/right-master.elf : ${OUT}/right-master.cpp.o ${SHARED_OBJS} ${RIGHT_OBJS}
 	-Wl,--start-group -lm ${ALL_LIBS} -Wl,--end-group
 
 ${OUT}/core.a: ${CORE_OBJS}
-	-${RMFILES} $@
+	-${RMFILES} $(subst /,$/,$@)
 	${AR} rcs $@ ${CORE_OBJS}
 
 ${OUT}/nffs.a: ${NFFS_OBJS}
-	-${RMFILES} $@
+	-${RMFILES} $(subst /,$/,$@)
 	${AR} rcs $@ ${NFFS_OBJS}
 
 ${OUT}/bflib.a: ${BFLIB_OBJS}
-	-${RMFILES} $@
+	-${RMFILES} $(subst /,$/,$@)
 	${AR} rcs $@ ${BFLIB_OBJS}
 
 ${OUT}:
 	@-mkdir ${OUT}
 
 allclean:
-	@-${RMFILES} ${OUT}/*
+	@-${RMDIR} ${OUT}
 
 clean:
-	@-${RMFILES} ${USER_OBJS} \
-	${OUT}/*.elf ${OUT}/*.zip ${OUT}/*.hex ${OUT}/*.map
+	@-${RMFILES} $(subst /,$/,${USER_OBJS} ${OUT}/*.elf ${OUT}/*.zip ${OUT}/*.hex ${OUT}/*.map)
 
 # And now all the custom subdir rules :/
 

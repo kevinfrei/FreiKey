@@ -13,7 +13,7 @@ state::hw leftSide{};
 state::hw rightSide{};
 
 // The are the top left & right keys, plus the lowest 'outer' key
-constexpr uint64_t status_clear_bonds_left = 0x1000000042ULL;
+constexpr uint64_t status_clear_bonds_left = 0x10000000042ULL;
 constexpr uint64_t status_clear_bonds_right = 0x1000000021ULL;
 
 // Declarations
@@ -317,9 +317,9 @@ void loop() {
 
 #if STATUS_DUMP
     // If we do a status dump, don't pass the keys pressed on to the computer...
-    status_dump_check(rightSide, leftSide);
+    if (!status_dump_check(rightSide, leftSide))
 #endif
-    hid.keyboardReport(mods, report);
+      hid.keyboardReport(mods, report);
     DBG2(Serial.println("============================="));
     DBG2(Serial.print("Left side "));
     DBG2(downLeft.dump());
