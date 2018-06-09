@@ -52,7 +52,7 @@ DEFINES=-DDEBUG=2 -DSTATUS_DUMP \
 -DUSE_LFXO \
 -DS132 \
 -DSD_VER=510 \
--DCFG_DEBUG=0
+-DCFG_DEBUG=3
 TARGET=-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
 CODEGEN=-nostdlib --param max-inline-insns-single=500 -ffunction-sections -fdata-sections
 FLAGS=-g -Wall -u _printf_float -MMD

@@ -28,99 +28,19 @@ constexpr uint64_t just_right_stat = 0x1000200000ULL;
 // A very limited version of typing the string. It dumps lower case, nubmers,
 // a few other things, defaults to '.' for everything else.
 void type_string(const char* str) {
-  uint8_t console[6] = {0, 0, 0, 0, 0, 0};
-  char p = 0;
-  bool shift;
-  while (*str) {
-    shift = false;
-    char c = *str++;
-    char n = 0;
-    if (c >= 'a' && c <= 'z')
-      n = HID_KEY_A + c - 'a';
-    else if (c >= 'A' && c <= 'Z') {
-      n = HID_KEY_A + c - 'A';
-      shift = true;
-    } else if (c >= '1' && c <= '9')
-      n = HID_KEY_1 + c - '1';
-    else {
-      switch (c) {
-        case '0':
-          n = HID_KEY_0;
-          break;
-        case ' ':
-          n = HID_KEY_SPACE;
-          break;
-        case '\n':
-        case '\r':
-          n = HID_KEY_RETURN;
-          break;
-        case ':':
-          shift = true;
-        case ';':
-          n = HID_KEY_SEMICOLON;
-          break;
-        case ',':
-          n = HID_KEY_COMMA;
-          break;
-        case '(':
-          n = HID_KEY_9;
-          shift = true;
-          break;
-        case ')':
-          n = HID_KEY_0;
-          shift = true;
-          break;
-        case '-':
-          n = HID_KEY_MINUS;
-          break;
-        case '%':
-          n = HID_KEY_5;
-          shift = true;
-          break;
-        default:
-          n = HID_KEY_PERIOD;
-      }
-    }
-    if (n == p) {
-      console[0] = 0;
-      hid.keyboardReport(0, console);
-    }
-    console[0] = n;
-    hid.keyboardReport(shift ? 2 : 0, console);
-    p = n;
-  }
-  // Clear any final key out, just to be safe
-  console[0] = 0;
-  hid.keyboardReport(0, console);
+  hid.keySequence(str);
 }
 
 void type_number(uint32_t val) {
-  int p = -1;
   char buffer[25];
-  int curPos = 0;
+  int curPos = sizeof(buffer)-1;
+  buffer[curPos] = 0;
   do {
-    int v;
     int digit = val % 10;
     val = val / 10;
-    if (digit == 0) {
-      v = HID_KEY_0;
-    } else {
-      v = HID_KEY_1 - 1 + digit;
-    }
-    if (v == p) {
-      buffer[curPos++] = 0;
-    }
-    buffer[curPos++] = v;
-    p = v;
-  } while (val);
-  uint8_t console[6] = {0, 0, 0, 0, 0, 0};
-  do {
-    console[0] = buffer[--curPos];
-    hid.keyboardReport(0, console);
-  } while (curPos);
-  // Clear any final key out, just to be safe
-  console[0] = 0;
-  hid.keyboardReport(0, console);
+    buffer[--curPos] = digit;
+  } while (val && curPos);
+  type_string(&buffer[curPos]);
 }
 
 bool status_dump_check(const state::hw& rightSide, const state::hw& leftSide) {

@@ -21,7 +21,7 @@ void setup() {
 
   // Central and peripheral
   Bluefruit.begin(true, true);
-  // Bluefruit.clearBonds();
+  //Bluefruit.clearBonds();
   Bluefruit.autoConnLed(true);
 
   battery.begin();
