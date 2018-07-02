@@ -3,7 +3,6 @@
 #include "dbgcfg.h"
 #include "globals.h"
 #include "hardware.h"
-#include "shared.h"
 
 void startAdv();
 void resetKeyMatrix();
@@ -16,7 +15,7 @@ void scan_callback(ble_gap_evt_adv_report_t* report);
 // In Arduino world the 'setup' function is called to initialize the device.
 // The 'loop' function is called over & over again, after setup completes.
 void setup() {
-  shared_setup(RightPins);
+  state::shared_setup(RightPins);
   resetKeyMatrix();
 
   // Central and peripheral

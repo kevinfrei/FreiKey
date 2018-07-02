@@ -6,8 +6,23 @@
 #include "keymap.h"
 #include "keystate.h"
 #include "led_states.h"
-#include "shared.h"
 #include "status_dump.h"
+
+// I'm going to update this to keep track of additional state.
+// Each key 'previously' pressed should have a 'time last pressed'
+// Maybe keep track of whether other keys have been pressed since?
+//  Perhaps have a flag for something that's a "Normal" key?
+// The core idea:
+//  I want to be able to trigger something off of both the "key pressed"
+//  as well as the "key released". In addition, I want to do things that
+//  'cancel out' the key state if something specific occurs
+
+// Kind of things I want to do:
+// #1: Better, intentional debouncing
+// #2: Key-up triggering
+// #3: Cancellation
+// #4: Key-state back & forth (caps as a real cmd/ctrl, instead of a layer
+// shift)
 
 state::hw leftSide{};
 state::hw rightSide{};
@@ -253,10 +268,10 @@ void loop() {
         // For a consumer control button, there are no modifiers, it's
         // just a simple call. So just call it directly:
         if (state.down) {
-          DBG(dumpHex(state.action & 0xff, "Consumer key press: "));
+          DBG2(dumpHex(state.action & 0xff, "Consumer key press: "));
           hid.consumerKeyPress(state.action & 0xff);
         } else {
-          DBG(dumpHex(state.action & 0xff, "Consumer key release: "));
+          DBG2(dumpHex(state.action & 0xff, "Consumer key release: "));
           hid.consumerKeyRelease();
           // We have to clear this thing out when we're done, because we take
           // action on the key release as well. We don't do this for the normal

@@ -1,19 +1,62 @@
 #include "hardware.h"
 
 namespace state {
-constexpr uint8_t VBAT_PIN = 31; // pin 31 is available for sampling the battery
-// I had this set to 15, but still sometimes saw bounces :/
-constexpr uint8_t DEBOUNCE_COUNT = 24;
+// pin 31 is available for sampling the battery
+constexpr uint8_t VBAT_PIN = 31;
+// I had set this as high as 24, but I added logging, and I think
+// the high bounce count is making the keyboard behave weirdly :/
+constexpr uint8_t DEBOUNCE_COUNT = 10;
+// 3.0V ADC range and 12-bit ADC resolution = 3000mV/4096
+constexpr uint32_t VBAT_NUM = 3000;
+constexpr uint32_t VBAT_DEN = 4096;
 
 // Some globals used by both halves
 uint32_t last_bat_time = 0;
 uint8_t stableCount = 0;
 uint64_t recordedChange;
+#if !NO_WATCH_BOUNCINESS
+uint32_t bouncing = 0;
+uint32_t maxBounce = 0;
+#endif
+
+void shared_setup(const PinData& pd) {
+  static_assert(
+      numcols * numrows <= 64,
+      "Pervasive assumptions that the switch matrix fits in 64 bits.");
+
+  analogReference(AR_INTERNAL_3_0);
+  analogReadResolution(12);
+  delay(1);
+
+  // For my wiring, the columns are output, and the rows are input...
+  for (auto pin : pd.cols) {
+    pinMode(pin, OUTPUT);
+    digitalWrite(pin, HIGH);
+  }
+  for (auto pin : pd.rows) {
+    pinMode(pin, INPUT_PULLUP);
+  }
+  pinMode(pd.led, OUTPUT);
+
+  analogWrite(pd.led, 0);
+  DBG(Serial.begin(115200));
+}
 
 uint8_t getBatteryPercent() {
-  float measuredvbat = analogRead(VBAT_PIN) * 6.6 / 1024;
-  uint8_t bat_percentage = (uint8_t)round((measuredvbat - 3.7) * 200);
-  return min(bat_percentage, 100);
+  uint32_t bat = analogRead(VBAT_PIN) * VBAT_NUM / VBAT_DEN;
+  if (bat >= 3000) {
+    return 100;
+  } else if (bat > 2900) {
+    return 100 - ((3000 - bat) * 58) / 100;
+  } else if (bat > 2740) {
+    return 42 - ((2900 - bat) * 24) / 160;
+  } else if (bat > 2440) {
+    return 18 - ((2740 - bat) * 12) / 300;
+  } else if (bat > 2100) {
+    return 6 - ((2440 - bat) * 6) / 340;
+  } else {
+    return 0;
+  }
 }
 
 uint8_t readBattery(uint32_t now, uint8_t prev) {
@@ -61,13 +104,23 @@ void hw::readSwitches(const PinData& pd) {
   if (newSwitches != (stableCount ? recordedChange : switches)) {
     // We've observed a change (in either the delta or the reported: doesn't
     // matter which) record the change and (re)start the timer
-    DBG2(if (stableCount) dumpVal(stableCount, "Resetting Debouncer: "));
     stableCount = 1;
     recordedChange = newSwitches;
+#if !NO_WATCH_BOUNCINESS
+    bouncing++;
+#endif
   } else if (stableCount > DEBOUNCE_COUNT) {
     // We've had a stable reading for long enough: report it & clear the count
     switches = newSwitches;
     stableCount = 0;
+#if !NO_WATCH_BOUNCINESS
+    LOG(if (bouncing > 1) dumpVal(bouncing, "Bounced #"));
+    if (bouncing > maxBounce) {
+      maxBounce = bouncing;
+      LOG(dumpVal(maxBounce, "Max Bounce #"));
+    }
+    bouncing = 0;
+#endif
   } else if (stableCount) {
     stableCount++;
   }
@@ -133,3 +186,5 @@ void hw::dump() const {
 }
 #endif
 } // namespace state
+
+void rtos_idle_callback(void) {}

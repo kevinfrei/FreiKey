@@ -3,23 +3,23 @@
 #include "dbgcfg.h"
 #include "hardware.h"
 #include "led_states.h"
-#include "shared.h"
 
 BLEDis bledis;
 BLEUart bleuart;
 state::hw lastRead{};
 
 void setup() {
-  shared_setup(LeftPins);
+  state::shared_setup(LeftPins);
   Bluefruit.begin();
+  // Turn off the Bluetooth LED
   Bluefruit.autoConnLed(false);
   // I had turned this all the way down. Given that my receiver is less than 20
-  // cm away, I didn't know if it would be enough. I bumped it up to 30, because
+  // cm away, I didn't know if it would be enough. I bumped it up to 20, because
   // it seemed like I was occasionally seeing weirdness that I wasn't when it
   // was set at 0. If you spread your keyboards apart greater distance, you may
   // want to try higher power. Acceptable values are -40, -30, -20, -16, -12,
   // -8, -4, 0, 4
-  Bluefruit.setTxPower(-30);
+  Bluefruit.setTxPower(-20);
   Bluefruit.setName(LHS_NAME);
 
   bledis.setManufacturer(MANUFACTURER);

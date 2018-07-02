@@ -2,12 +2,29 @@
 #define KEYMAP_H
 
 #include "keyhelpers.h"
+#include "hardware.h"
 
 #if STATUS_DUMP
 // For the status dumper thingamajig
 const char* layer_names[] = {
     "Base/Mac", "Win", "Fn", "MacCaps", "WinCaps", "WinCtrl"};
 #endif
+
+// TODO: I'm not happy that in order to override "modifier + key" it requires
+// that I create an entire layer. I want to be able to make caps+shift+volup
+// do something, but not cause the caps+shift thing to be a full layer.
+//
+
+// Instead, maybe look at something like the KLL stuff from the InputClub
+// a key-action:
+// Default action: key, modifier, other
+// A key is just what it says.
+// A modifier is something like shift/cmd/ctrl/win/alt
+// other:
+//  Trigger, action
+//  Trigger: on Key down, or key up
+//  Action: keypress (either with exist modifiers, or 'unique')
+//          Layer change (latch, lock, or shift)
 
 const action_t keymap[][numcols * numrows * 2] = {
     {// LAYER_MAC_BASE (0)

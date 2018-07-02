@@ -1,8 +1,8 @@
 #if !defined(KEYSTATE_H)
 #define KEYSTATE_H
 
+#include "hardware.h"
 #include "keyhelpers.h"
-#include "shared.h"
 
 action_t resolveActionForScanCodeOnActiveLayer(uint8_t scanCode);
 

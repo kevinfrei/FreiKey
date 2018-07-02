@@ -18,8 +18,18 @@ constexpr PinData LeftPins = {
     {15, 2, 16, 7, 30, 27, 11}, {5, 12, 13, 28, 4, 3}, 29};
 constexpr PinData RightPins = {
     {29, 16, 15, 7, 27, 11, 30}, {13, 4, 2, 3, 5, 12}, 28};
+using scancode_t = uint8_t;
+
+constexpr char *MANUFACTURER = "FreikyStuff";
+constexpr char *MODEL = "FreiKeyboard";
+constexpr char *BT_NAME = "FreiKeys";
+constexpr char *HW_REV = "0001";
+constexpr char *LHS_NAME = "FreiKeys-Slave";
 
 namespace state {
+
+void shared_setup(const PinData &pd);
+
 // This struct is to encapsulate the complete hardware state, including both
 // which switches are down, as well as the current battery level.
 struct hw {
@@ -51,8 +61,10 @@ struct hw {
   bool operator==(const hw& o) const;
   bool operator!=(const hw& o) const;
 
-  // A little helper for serial port dumping...
-  DBG(void dump() const);
+// A little helper for serial port dumping...
+#if DEBUG
+  void dump() const;
+#endif
 };
 } // namespace state
 #endif

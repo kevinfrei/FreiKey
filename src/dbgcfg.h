@@ -7,7 +7,7 @@
 
 #if DEBUG
 #define DBG(a) a
-
+#define LOG(a) a
 void dumpVal(unsigned long v, const char* header = nullptr);
 void dumpHex(unsigned long v, const char* header = nullptr);
 
@@ -17,6 +17,7 @@ void dumpHex(unsigned long v, const char* header = nullptr);
 #define DBG2(a)
 #endif
 #else
+#define LOG(a)
 #define DBG(a)
 #define DBG2(a)
 #endif
