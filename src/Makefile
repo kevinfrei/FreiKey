@@ -67,7 +67,7 @@ SHARED_SRC = dbgcfg.cpp hardware.cpp led_states.cpp
 RIGHT_SRC = status_dump.cpp right-entry-points.cpp globals.cpp
 USER_SRC = ${SHARED_SRC} ${RIGHT_SRC} left-slave.cpp right-master.cpp
 
-INCLUDES=\
+INCLUDES=-Iinclude \
 	"-I${GITROOT}/cores/nRF5/SDK/components/toolchain/"\
 	"-I${GITROOT}/cores/nRF5/SDK/components/toolchain/cmsis/include"\
 	"-I${GITROOT}/cores/nRF5/SDK/components/toolchain/gcc/"\
