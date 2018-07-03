@@ -4,20 +4,23 @@
 // This is just a couple of dumpers that show stuff on the AdaFruit serial port,
 // and a couple of macros to do stuff when the system is build with DEBUG=1 (or
 // 2). Set the DEBUG flag in the Makefile :)
-
-#if DEBUG
-#define DBG(a) a
-#define LOG(a) a
+#if defined(DEBUG) || defined(LOGGING)
 void dumpVal(unsigned long v, const char* header = nullptr);
 void dumpHex(unsigned long v, const char* header = nullptr);
-
+#endif
+#if defined(LOGGING)
+#define LOG(a) a
+#else
+#define LOG(a)
+#endif
+#if defined(DEBUG)
+#define DBG(a) a
 #if DEBUG == 2
 #define DBG2(a) a
 #else
 #define DBG2(a)
 #endif
 #else
-#define LOG(a)
 #define DBG(a)
 #define DBG2(a)
 #endif

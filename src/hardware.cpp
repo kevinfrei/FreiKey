@@ -87,18 +87,23 @@ hw::hw(BLEClientUart& clientUart, const hw& prev) {
 
 hw::hw(const hw& c) : switches(c.switches), battery_level(c.battery_level) {}
 
-void hw::readSwitches(const PinData& pd) {
-  uint64_t newSwitches = 0;
+uint64_t justRead(const PinData &pd) {
+ uint64_t switches = 0;
   for (uint64_t colNum = 0; colNum < numcols; ++colNum) {
     uint64_t val = 1ULL << colNum;
     digitalWrite(pd.cols[colNum], LOW);
     for (uint64_t rowNum = 0; rowNum < numrows; ++rowNum) {
       if (!digitalRead(pd.rows[rowNum])) {
-        newSwitches |= val << (rowNum * numcols);
+        switches |= val << (rowNum * numcols);
       }
     }
     digitalWrite(pd.cols[colNum], HIGH);
   }
+  return switches;
+}
+
+void hw::readSwitches(const PinData& pd) {
+  uint64_t newSwitches = justRead(pd);
   // Debouncing: This just waits for stable DEBOUNCE_COUNT reads before
   // reporting
   if (newSwitches != (stableCount ? recordedChange : switches)) {
@@ -140,7 +145,7 @@ bool hw::receive(BLEClientUart& clientUart, const hw& prev) {
     if (size == sizeof(switches) + 1) {
       memcpy(reinterpret_cast<uint8_t*>(this), buffer, sizeof(switches) + 1);
     } else {
-#if DEBUG
+#if defined(DEBUG)
       // NOTE: This fires occasionally when button mashing on the left, so
       // perhaps I shouldn't have changed this just on a whim. Wez clearly
       // knew what he was doing :)
@@ -164,7 +169,7 @@ bool hw::operator!=(const hw& o) const {
   return !((*this) == o);
 }
 
-#if DEBUG
+#if defined(DEBUG)
 void hw::dump() const {
   Serial.print("Battery Level:");
   Serial.println(battery_level);

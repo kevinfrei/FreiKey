@@ -107,7 +107,7 @@ scancode_t getNextScanCode(uint64_t& delta, uint64_t curState, bool& pressed) {
   return sc;
 }
 
-#if DEBUG
+#if defined(DEBUG)
 void dumpScanCode(uint8_t sc, bool pressed) {
   Serial.print("Scan Code ");
   Serial.print(sc, HEX);
@@ -314,7 +314,7 @@ void loop() {
         }
       }
     }
-#if DEBUG > 1
+#if defined(DEBUG) && DEBUG > 1
     Serial.print("mods=");
     Serial.print(mods, HEX);
     Serial.print(" repsize=");
@@ -330,7 +330,7 @@ void loop() {
     rightSide = downRight;
     leftSide = downLeft;
 
-#if STATUS_DUMP
+#if defined(STATUS_DUMP)
     // If we do a status dump, don't pass the keys pressed on to the computer...
     if (!status_dump_check(rightSide, leftSide))
 #endif

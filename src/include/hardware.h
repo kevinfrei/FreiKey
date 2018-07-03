@@ -62,7 +62,7 @@ struct hw {
   bool operator!=(const hw& o) const;
 
 // A little helper for serial port dumping...
-#if DEBUG
+#if defined(DEBUG)
   void dump() const;
 #endif
 };

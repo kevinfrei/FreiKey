@@ -2,7 +2,7 @@
 
 #include "dbgcfg.h"
 
-#if DEBUG
+#if defined(DEBUG) || defined(LOGGING)
 
 void dumpVal(unsigned long v, const char* header) {
   if (header)

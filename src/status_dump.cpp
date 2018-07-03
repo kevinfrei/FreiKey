@@ -1,4 +1,4 @@
-#if STATUS_DUMP
+#if defined(STATUS_DUMP)
 
 #include <bluefruit.h>
 
@@ -30,7 +30,7 @@ void type_string(const char* str) {
   hid.keySequence(str);
 }
 
-// Interview question ahead! 
+// Interview question ahead!
 void type_number(uint32_t val) {
   char buffer[25];
   int curPos = sizeof(buffer) - 1;

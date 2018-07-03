@@ -1,107 +1,109 @@
 {
-    "configurations": [
-        {
-            "name": "Mac",
-            "includePath": [
-                "/usr/include",
-                "/usr/local/include",
-                "${workspaceRoot}"
-            ],
-            "defines": [],
-            "intelliSenseMode": "clang-x64",
-            "browse": {
-                "path": [
-                    "/usr/include",
-                    "/usr/local/include",
-                    "${workspaceRoot}"
-                ],
-                "limitSymbolsToIncludedHeaders": true,
-                "databaseFilename": ""
-            },
-            "macFrameworkPath": [
-                "/System/Library/Frameworks",
-                "/Library/Frameworks"
-            ]
-        },
-        {
-            "name": "Linux",
-            "includePath": [
-                "/usr/include",
-                "/usr/local/include",
-                "${workspaceRoot}"
-            ],
-            "defines": [],
-            "intelliSenseMode": "clang-x64",
-            "browse": {
-                "path": [
-                    "/usr/include",
-                    "/usr/local/include",
-                    "${workspaceRoot}"
-                ],
-                "limitSymbolsToIncludedHeaders": true,
-                "databaseFilename": ""
-            }
-        },
-        {
-            "name": "Win32",
-            "includePath": [
-                "c:/users/freik/AppData/Local/Arduino15/packages/adafruit/tools/gcc-arm-none-eabi/5_2-2015q4/arm-none-eabi/include/",
-                "c:/users/freik/AppData/Local/Arduino15/packages/adafruit/tools/gcc-arm-none-eabi/5_2-2015q4/arm-none-eabi/include/c++/5.2.1/",
-                "c:/users/freik/AppData/Local/Arduino15/packages/adafruit/tools/gcc-arm-none-eabi/5_2-2015q4/arm-none-eabi/include/c++/5.2.1/arm-none-eabi/",
-                "c:/users/freik/AppData/Local/Arduino15/packages/adafruit/tools/gcc-arm-none-eabi/5_2-2015q4/lib/gcc/arm-none-eabi/5.2.1/include/",
-                "${workspaceRoot}/src",
-                "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/SDK/components/toolchain/",
-                "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/SDK/components/toolchain/cmsis/include",
-                "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/SDK/components/toolchain/gcc/",
-                "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/SDK/components/device/",
-                "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/SDK/components/drivers_nrf/delay/",
-                "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/SDK/components/drivers_nrf/hal/",
-                "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/SDK/components/libraries/util/",
-                "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/softdevice/s132/2.0.1/headers/",
-                "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/freertos/source/include",
-                "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/freertos/config",
-                "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/freertos/portable/GCC/nrf52",
-                "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/freertos/portable/CMSIS/nrf52",
-                "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/sysview/SEGGER",
-                "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/sysview/Config",
-                "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/nffs/src/fs/nffs/include",
-                "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/nffs/src/fs/fs/include",
-                "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/nffs/src/fs/disk/include",
-                "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/nffs/src/util/crc/include",
-                "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/nffs/src/kernel/os/include",
-                "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/nffs/src/kernel/os/include/os/arch/cortex_m4",
-                "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/nffs/src/hw/hal/include",
-                "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/nffs/src/sys/flash_map/include",
-                "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/nffs/src/sys/defs/include",
-                "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5",
-                "${workspaceRoot}/../Adafruit_nRF52_Arduino/variants/feather52",
-                "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/Bluefruit52Lib/src",
-                "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/nffs/src"
-            ],
-            "defines": [
-                "_DEBUG",
-                "UNICODE",
-                "_UNICODE",
-                "DEBUG",
-                "STATUS_DUMP",
-                "__VSCODE_ONLY_"
-            ],
-            "intelliSenseMode": "clang-x64",
-            "browse": {
-                "path": [
-                    "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Tools/MSVC/14.11.25503/include/*",
-                    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/um",
-                    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/ucrt",
-                    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/shared",
-                    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/winrt",
-                    "${workspaceRoot}"
-                ],
-                "limitSymbolsToIncludedHeaders": true,
-                "databaseFilename": ""
-            },
-            "cStandard": "c11",
-            "cppStandard": "c++17"
-        }
-    ],
-    "version": 4
+  "configurations": [
+    {
+      "name": "Mac",
+      "includePath": [
+        "/Users/freik/Library/Arduino15/packages/adafruit/tools/gcc-arm-none-eabi/5_2-2015q4/arm-none-eabi/include/",
+        "/Users/freik/Library/Arduino15/packages/adafruit/tools/gcc-arm-none-eabi/5_2-2015q4/arm-none-eabi/include/c++/5.2.1/",
+        "/Users/freik/Library/Arduino15/packages/adafruit/tools/gcc-arm-none-eabi/5_2-2015q4/arm-none-eabi/include/c++/5.2.1/arm-none-eabi/",
+        "/Users/freik/Library/Arduino15/packages/adafruit/tools/gcc-arm-none-eabi/5_2-2015q4/lib/gcc/arm-none-eabi/5.2.1/include/",
+        "${workspaceRoot}/src/include/",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/SDK/components/toolchain/",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/SDK/components/toolchain/cmsis/include",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/SDK/components/toolchain/gcc/",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/SDK/components/device/",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/SDK/components/drivers_nrf/delay/",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/SDK/components/drivers_nrf/hal/",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/SDK/components/libraries/util/",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/softdevice/s132/2.0.1/headers/",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/freertos/source/include",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/freertos/config",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/freertos/portable/GCC/nrf52",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/freertos/portable/CMSIS/nrf52",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/sysview/SEGGER",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/sysview/Config",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/nffs/src/fs/nffs/include",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/nffs/src/fs/fs/include",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/nffs/src/fs/disk/include",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/nffs/src/util/crc/include",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/nffs/src/kernel/os/include",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/nffs/src/kernel/os/include/os/arch/cortex_m4",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/nffs/src/hw/hal/include",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/nffs/src/sys/flash_map/include",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/nffs/src/sys/defs/include",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/variants/feather52",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/Bluefruit52Lib/src",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/nffs/src"
+      ],
+      "defines": ["DEBUG", "LOGGING", "STATUS_DUMP", "__VSCODE_ONLY_"],
+      "intelliSenseMode": "clang-x64",
+      "browse": {
+        "path": ["/usr/include", "/usr/local/include", "${workspaceRoot}"],
+        "limitSymbolsToIncludedHeaders": true,
+        "databaseFilename": ""
+      },
+      "macFrameworkPath": ["/System/Library/Frameworks", "/Library/Frameworks"],
+      "cStandard": "c11",
+      "cppStandard": "c++17"
+    },
+    {
+      "name": "Linux",
+      "includePath": ["/usr/include", "/usr/local/include", "${workspaceRoot}"],
+      "defines": [],
+      "intelliSenseMode": "clang-x64",
+      "browse": {
+        "path": ["/usr/include", "/usr/local/include", "${workspaceRoot}"],
+        "limitSymbolsToIncludedHeaders": true,
+        "databaseFilename": ""
+      }
+    },
+    {
+      "name": "Win32",
+      "includePath": [
+        "c:/users/freik/AppData/Local/Arduino15/packages/adafruit/tools/gcc-arm-none-eabi/5_2-2015q4/arm-none-eabi/include/",
+        "c:/users/freik/AppData/Local/Arduino15/packages/adafruit/tools/gcc-arm-none-eabi/5_2-2015q4/arm-none-eabi/include/c++/5.2.1/",
+        "c:/users/freik/AppData/Local/Arduino15/packages/adafruit/tools/gcc-arm-none-eabi/5_2-2015q4/arm-none-eabi/include/c++/5.2.1/arm-none-eabi/",
+        "c:/users/freik/AppData/Local/Arduino15/packages/adafruit/tools/gcc-arm-none-eabi/5_2-2015q4/lib/gcc/arm-none-eabi/5.2.1/include/",
+        "${workspaceRoot}/src",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/SDK/components/toolchain/",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/SDK/components/toolchain/cmsis/include",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/SDK/components/toolchain/gcc/",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/SDK/components/device/",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/SDK/components/drivers_nrf/delay/",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/SDK/components/drivers_nrf/hal/",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/SDK/components/libraries/util/",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/softdevice/s132/2.0.1/headers/",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/freertos/source/include",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/freertos/config",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/freertos/portable/GCC/nrf52",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/freertos/portable/CMSIS/nrf52",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/sysview/SEGGER",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5/sysview/Config",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/nffs/src/fs/nffs/include",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/nffs/src/fs/fs/include",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/nffs/src/fs/disk/include",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/nffs/src/util/crc/include",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/nffs/src/kernel/os/include",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/nffs/src/kernel/os/include/os/arch/cortex_m4",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/nffs/src/hw/hal/include",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/nffs/src/sys/flash_map/include",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/nffs/src/sys/defs/include",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/cores/nRF5",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/variants/feather52",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/Bluefruit52Lib/src",
+        "${workspaceRoot}/../Adafruit_nRF52_Arduino/libraries/nffs/src"
+      ],
+      "defines": ["DEBUG", "STATUS_DUMP", "__VSCODE_ONLY_"],
+      "intelliSenseMode": "clang-x64",
+      "browse": {
+        "path": ["${workspaceRoot}"],
+        "limitSymbolsToIncludedHeaders": true,
+        "databaseFilename": ""
+      },
+      "cStandard": "c11",
+      "cppStandard": "c++17"
+    }
+  ],
+  "version": 4
 }

@@ -51,7 +51,7 @@ struct keystate {
     }
     return 0;
   };
-#if DEBUG
+#if defined(DEBUG)
   void dump() const {
     Serial.print("ScanCode=");
     Serial.print(scanCode, HEX);
