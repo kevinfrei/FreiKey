@@ -91,12 +91,6 @@ action_t resolveActionForScanCodeOnActiveLayer(uint8_t scanCode) {
   return keymap[layer_stack[s]][scanCode];
 }
 
-// Find last bit set in a long (BSD function, not available in Arduino)
-uint8_t flsl(uint64_t val) {
-  // GCC builtin function seems to work on Arduino :)
-  return static_cast<uint8_t>(63 - __builtin_clzll(val));
-}
-
 // Given a delta mask, get the scan code, update the delta mask and set pressed
 // while we're at it.
 scancode_t getNextScanCode(uint64_t& delta, uint64_t curState, bool& pressed) {

@@ -15,7 +15,7 @@ endif
 GITROOT=../../Adafruit_nRF52_Arduino
 ifeq ($(uname), Windows)
 ADAFRUIT=${HOME}/AppData/Local/Arduino15/packages/adafruit
-RPORT=COM8
+RPORT=COM6
 LPORT=COM3
 NRFUTIL=${GITROOT}/tools/nrfutil-0.5.2/binaries/win32/nrfutil
 RMFILES=del /q
