@@ -94,22 +94,6 @@ hw::hw(BLEClientUart& clientUart, const hw& prev) {
 
 hw::hw(const hw& c) : switches(c.switches), battery_level(c.battery_level) {}
 
-uint64_t justRead(const PinData& pd) {
-  uint64_t switches = 0;
-  for (uint64_t colNum = 0; colNum < PinData::numcols; ++colNum) {
-    uint64_t val = 1ULL << colNum;
-    digitalWrite(pd.cols[colNum], LOW);
-    for (uint64_t rowNum = 0; rowNum < PinData::numrows; ++rowNum) {
-      if (!digitalRead(pd.rows[rowNum])) {
-        switches |= val << (rowNum * PinData::numcols);
-      }
-    }
-    digitalWrite(pd.cols[colNum], HIGH);
-  }
-  scans_since_last_time++;
-  return switches;
-}
-
 uint64_t debounce(uint64_t cur_switches, uint32_t now) {
   // If we've read the same thing we last reported, there's nothing to do
   if (last_reported_switches == cur_switches)
@@ -137,7 +121,8 @@ uint64_t debounce(uint64_t cur_switches, uint32_t now) {
 }
 
 void hw::readSwitches(const PinData& pd, uint32_t now) {
-  uint64_t new_switches = justRead(pd);
+  uint64_t new_switches = pd.Read();
+  scans_since_last_time++;
   // Okay, we have the current state of switches: debounce them
   uint64_t switches_to_report = debounce(new_switches, now);
   // Save off the things we're reporting

@@ -9,6 +9,7 @@ struct PinData {
   uint8_t cols[numcols];
   uint8_t rows[numrows];
   uint8_t led;
+  uint64_t Read() const;
 };
 
 #endif
