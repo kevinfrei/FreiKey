@@ -4,16 +4,12 @@
 #include <bluefruit.h>
 
 #include "dbgcfg.h"
+#include "pindata.h"
+
+
 
 // These numbers correspond to the *port pin* numbers in the nRF52 documentation
 // not the physical pin numbers...
-constexpr uint64_t numcols = 7;
-constexpr uint64_t numrows = 6;
-struct PinData {
-  uint8_t cols[numcols];
-  uint8_t rows[numrows];
-  uint8_t led;
-};
 constexpr PinData LeftPins = {
     {15, 2, 16, 7, 30, 27, 11}, {5, 12, 13, 28, 4, 3}, 29};
 constexpr PinData RightPins = {

@@ -6,7 +6,7 @@
         {
             "label": "Build",
             "type": "shell",
-            "command": "cd src ; make",
+            "command": "make -j",
             "problemMatcher": [
                 "$gcc"
             ],
@@ -16,9 +16,17 @@
             }
         },
         {
-            "label": "Flash",
+            "label": "Flash Right",
             "type": "shell",
-            "command": "cd src ; make flashr",
+            "command": "make flashr",
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "Flash Left",
+            "type": "shell",
+            "command": "make flashl",
             "problemMatcher": [
                 "$gcc"
             ]

@@ -220,7 +220,7 @@ void loop() {
       sc = getNextScanCode(deltaLeft, afterLeft, pressed);
     } else {
       // Add offset to the right scan code...
-      sc = getNextScanCode(deltaRight, afterRight, pressed) + numcols * numrows;
+      sc = getNextScanCode(deltaRight, afterRight, pressed) + PinData::matrix_size;
     }
     DBG2(dumpScanCode(sc, pressed));
 

@@ -1,4 +1,5 @@
 #include "hardware.h"
+#include "pindata.h"
 
 namespace state {
 // pin 31 is available for sampling the battery
@@ -16,7 +17,7 @@ uint32_t scans_since_last_time = 0;
 // The last set of switches we reported
 uint64_t last_reported_switches = 0;
 // This is just the set of report times for switches
-uint32_t last_reported_time[numrows * numcols];
+uint32_t last_reported_time[PinData::matrix_size];
 // This is the # of msec to delay after reporting a change before reporting
 // another one. Rumor has it that Cherry claims a debounce period of 5ms, but
 // I still sometimes see a bounce or two, so I've increased it a bit.
@@ -24,7 +25,7 @@ constexpr uint8_t debounce_delay = 12;
 
 void shared_setup(const PinData& pd) {
   static_assert(
-      numcols * numrows <= 64,
+      PinData::matrix_size <= 64,
       "Pervasive assumptions that the switch matrix fits in 64 bits.");
 
   analogReference(AR_INTERNAL_3_0);
@@ -43,7 +44,7 @@ void shared_setup(const PinData& pd) {
 
   analogWrite(pd.led, 0);
   DBG(Serial.begin(115200));
-  memset(&last_reported_time[0], 0, sizeof(uint32_t) * numrows * numcols);
+  memset(&last_reported_time[0], 0, sizeof(uint32_t) * PinData::matrix_size);
 }
 
 uint8_t getBatteryPercent() {
@@ -95,12 +96,12 @@ hw::hw(const hw& c) : switches(c.switches), battery_level(c.battery_level) {}
 
 uint64_t justRead(const PinData& pd) {
   uint64_t switches = 0;
-  for (uint64_t colNum = 0; colNum < numcols; ++colNum) {
+  for (uint64_t colNum = 0; colNum < PinData::numcols; ++colNum) {
     uint64_t val = 1ULL << colNum;
     digitalWrite(pd.cols[colNum], LOW);
-    for (uint64_t rowNum = 0; rowNum < numrows; ++rowNum) {
+    for (uint64_t rowNum = 0; rowNum < PinData::numrows; ++rowNum) {
       if (!digitalRead(pd.rows[rowNum])) {
-        switches |= val << (rowNum * numcols);
+        switches |= val << (rowNum * PinData::numcols);
       }
     }
     digitalWrite(pd.cols[colNum], HIGH);
@@ -190,9 +191,9 @@ void hw::dump() const {
   Serial.print(static_cast<unsigned int>(switches >> 32), 16);
   Serial.print("|");
   Serial.println(static_cast<unsigned int>(switches), 16);
-  for (int64_t r = 0; r < numrows; r++) {
-    for (int64_t c = numcols - 1; c >= 0; c--) {
-      uint64_t mask = 1ULL << (r * numcols + c);
+  for (int64_t r = 0; r < PinData::numrows; r++) {
+    for (int64_t c = PinData::numcols - 1; c >= 0; c--) {
+      uint64_t mask = 1ULL << (r * PinData::numcols + c);
       if (switches & mask) {
         Serial.print("X ");
       } else {
