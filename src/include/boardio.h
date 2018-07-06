@@ -16,6 +16,7 @@ class BoardIO {
   void Configure() const;
   uint64_t Read() const;
   void setLED(uint32_t brightness) const;
+  static uint8_t getBatteryPercent();
 };
 
 #endif

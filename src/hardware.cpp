@@ -2,12 +2,6 @@
 #include "boardio.h"
 
 namespace state {
-// pin 31 is available for sampling the battery
-constexpr uint8_t VBAT_PIN = 31;
-
-// 3.0V ADC range and 12-bit ADC resolution = 3000mV/4096
-constexpr uint32_t VBAT_NUM = 3000;
-constexpr uint32_t VBAT_DEN = 4096;
 
 // Some globals used by each half
 // The last time we reported the battery
@@ -29,29 +23,12 @@ void shared_setup(const BoardIO& pd) {
   memset(&last_reported_time[0], 0, sizeof(uint32_t) * BoardIO::matrix_size);
 }
 
-uint8_t getBatteryPercent() {
-  uint32_t bat = analogRead(VBAT_PIN) * VBAT_NUM / VBAT_DEN;
-  if (bat >= 3000) {
-    return 100;
-  } else if (bat > 2900) {
-    return 100 - ((3000 - bat) * 58) / 100;
-  } else if (bat > 2740) {
-    return 42 - ((2900 - bat) * 24) / 160;
-  } else if (bat > 2440) {
-    return 18 - ((2740 - bat) * 12) / 300;
-  } else if (bat > 2100) {
-    return 6 - ((2440 - bat) * 6) / 340;
-  } else {
-    return 0;
-  }
-}
-
 uint8_t readBattery(uint32_t now, uint8_t prev) {
   if (prev && now - last_bat_time <= 30000) {
     // There's a lot of variance in the reading, so no need to over-report it.
     return prev;
   }
-  uint8_t bat_percentage = getBatteryPercent();
+  uint8_t bat_percentage = BoardIO::getBatteryPercent();
   last_bat_time = now;
   DBG(dumpVal(bat_percentage, "Battery level: "));
   DBG(dumpVal(scans_since_last_time, "# of scans in the past 30 seconds:"));
