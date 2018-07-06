@@ -1,5 +1,6 @@
 #include <bluefruit.h>
 
+#include "boardio.h"
 #include "dbgcfg.h"
 #include "hardware.h"
 #include "led_states.h"
@@ -8,8 +9,13 @@ BLEDis bledis;
 BLEUart bleuart;
 state::hw lastRead{};
 
+// These numbers correspond to the *port pin* numbers in the nRF52 documentation
+// not the physical pin numbers...
+constexpr BoardIO LeftBoard = {
+    {15, 2, 16, 7, 30, 27, 11}, {5, 12, 13, 28, 4, 3}, 29};
+
 void setup() {
-  state::shared_setup(LeftPins);
+  state::shared_setup(LeftBoard);
   Bluefruit.begin();
   // Turn off the Bluetooth LED
   Bluefruit.autoConnLed(false);
@@ -49,7 +55,7 @@ uint32_t stateTime = 0;
 // an LED state somehow
 void loop() {
   uint32_t time = millis();
-  state::hw down{time, lastRead, LeftPins};
+  state::hw down{time, lastRead, LeftBoard};
 
   if (down != lastRead) {
     lastRead = down;
@@ -67,10 +73,9 @@ void loop() {
   if (curState) {
     // We're in "Check if battery is getting kinda low" mode
     if (time - curState->time < stateTime) {
-      analogWrite(LeftPins.led,
-                  curState->get_led_value(down, time - stateTime));
+      LeftBoard.setLED(curState->get_led_value(down, time - stateTime));
     } else {
-      analogWrite(LeftPins.led, 0);
+      LeftBoard.setLED(0);
       curState = nullptr;
     }
   }

@@ -37,6 +37,7 @@ typedef unsigned int uint32_t;
 extern void digitalWrite(uint32_t dwPin, uint32_t dwVal);
 extern int digitalRead(uint32_t ulPin);
 extern uint32_t millis(void);
+extern void delay(uint32_t);
 extern void waitForEvent(void);
 extern uint32_t analogRead(uint32_t ulPin);
 extern void analogWrite(uint32_t ulPin, uint32_t value);

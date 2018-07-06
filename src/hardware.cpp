@@ -1,5 +1,5 @@
 #include "hardware.h"
-#include "pindata.h"
+#include "boardio.h"
 
 namespace state {
 // pin 31 is available for sampling the battery
@@ -17,34 +17,16 @@ uint32_t scans_since_last_time = 0;
 // The last set of switches we reported
 uint64_t last_reported_switches = 0;
 // This is just the set of report times for switches
-uint32_t last_reported_time[PinData::matrix_size];
+uint32_t last_reported_time[BoardIO::matrix_size];
 // This is the # of msec to delay after reporting a change before reporting
 // another one. Rumor has it that Cherry claims a debounce period of 5ms, but
 // I still sometimes see a bounce or two, so I've increased it a bit.
 constexpr uint8_t debounce_delay = 12;
 
-void shared_setup(const PinData& pd) {
-  static_assert(
-      PinData::matrix_size <= 64,
-      "Pervasive assumptions that the switch matrix fits in 64 bits.");
-
-  analogReference(AR_INTERNAL_3_0);
-  analogReadResolution(12);
-  delay(1);
-
-  // For my wiring, the columns are output, and the rows are input...
-  for (auto pin : pd.cols) {
-    pinMode(pin, OUTPUT);
-    digitalWrite(pin, HIGH);
-  }
-  for (auto pin : pd.rows) {
-    pinMode(pin, INPUT_PULLUP);
-  }
-  pinMode(pd.led, OUTPUT);
-
-  analogWrite(pd.led, 0);
+void shared_setup(const BoardIO& pd) {
+  pd.Configure();
   DBG(Serial.begin(115200));
-  memset(&last_reported_time[0], 0, sizeof(uint32_t) * PinData::matrix_size);
+  memset(&last_reported_time[0], 0, sizeof(uint32_t) * BoardIO::matrix_size);
 }
 
 uint8_t getBatteryPercent() {
@@ -79,7 +61,7 @@ uint8_t readBattery(uint32_t now, uint8_t prev) {
 
 hw::hw(uint8_t bl) : switches(0), battery_level(bl) {}
 
-hw::hw(uint32_t now, const hw& prev, const PinData& pd)
+hw::hw(uint32_t now, const hw& prev, const BoardIO& pd)
     : switches(prev.switches),
       battery_level(readBattery(now, prev.battery_level)) {
   readSwitches(pd, now);
@@ -120,7 +102,7 @@ uint64_t debounce(uint64_t cur_switches, uint32_t now) {
   return cur_switches;
 }
 
-void hw::readSwitches(const PinData& pd, uint32_t now) {
+void hw::readSwitches(const BoardIO& pd, uint32_t now) {
   uint64_t new_switches = pd.Read();
   scans_since_last_time++;
   // Okay, we have the current state of switches: debounce them
@@ -176,9 +158,9 @@ void hw::dump() const {
   Serial.print(static_cast<unsigned int>(switches >> 32), 16);
   Serial.print("|");
   Serial.println(static_cast<unsigned int>(switches), 16);
-  for (int64_t r = 0; r < PinData::numrows; r++) {
-    for (int64_t c = PinData::numcols - 1; c >= 0; c--) {
-      uint64_t mask = 1ULL << (r * PinData::numcols + c);
+  for (int64_t r = 0; r < BoardIO::numrows; r++) {
+    for (int64_t c = BoardIO::numcols - 1; c >= 0; c--) {
+      uint64_t mask = 1ULL << (r * BoardIO::numcols + c);
       if (switches & mask) {
         Serial.print("X ");
       } else {

@@ -1,11 +1,13 @@
 #include <bluefruit.h>
 
+#include "boardio.h"
 #include "dbgcfg.h"
 #include "globals.h"
 #include "hardware.h"
 #include "keymap.h"
 #include "keystate.h"
 #include "led_states.h"
+#include "right-entry-points.h"
 #include "status_dump.h"
 
 // I'm going to update this to keep track of additional state.
@@ -23,6 +25,11 @@
 // #3: Cancellation
 // #4: Key-state back & forth (caps as a real cmd/ctrl, instead of a layer
 // shift)
+
+// These numbers correspond to the *port pin* numbers in the nRF52 documentation
+// not the physical pin numbers...
+constexpr BoardIO RightBoard = {
+    {29, 16, 15, 7, 27, 11, 30}, {13, 4, 2, 3, 5, 12}, 28};
 
 state::hw leftSide{};
 state::hw rightSide{};
@@ -167,7 +174,7 @@ void loop() {
   uint32_t now = millis();
 
   // Get the hardware state for the two sides...
-  state::hw downRight{now, rightSide, RightPins};
+  state::hw downRight{now, rightSide, RightBoard};
   state::hw downLeft{clientUart, leftSide};
 
   // Update the combined battery level
@@ -205,10 +212,9 @@ void loop() {
   if (curState) {
     // We're in some random LED display state. Do something...
     if (now - curState->time < stateTime) {
-      analogWrite(RightPins.led,
-                  curState->get_led_value(downRight, now - stateTime));
+      RightBoard.setLED(curState->get_led_value(downRight, now - stateTime));
     } else {
-      analogWrite(RightPins.led, 0);
+      RightBoard.setLED(0);
       curState = nullptr;
     }
   }
@@ -220,7 +226,8 @@ void loop() {
       sc = getNextScanCode(deltaLeft, afterLeft, pressed);
     } else {
       // Add offset to the right scan code...
-      sc = getNextScanCode(deltaRight, afterRight, pressed) + PinData::matrix_size;
+      sc = getNextScanCode(deltaRight, afterRight, pressed) +
+           BoardIO::matrix_size;
     }
     DBG2(dumpScanCode(sc, pressed));
 
@@ -279,7 +286,7 @@ void loop() {
               // Holding
               mods |= (state.action >> 16) & 0xff;
             } else {
-              // Tapping
+              // Tapsg
               auto key = state.action & 0xff;
               if (key != 0 && repsize < 6) {
                 report[repsize++] = key;
@@ -362,4 +369,111 @@ void core_disconnect_callback(uint16_t handle, uint8_t reason) {
   DBG(dumpHex(handle, "Core Disconnected: "));
   DBG(dumpHex(reason, "Reason: 0x"));
   core_handle = 0xFFFF;
+}
+
+// In Arduino world the 'setup' function is called to initialize the device.
+// The 'loop' function is called over & over again, after setup completes.
+void setup() {
+  state::shared_setup(RightBoard);
+  resetKeyMatrix();
+
+  // Central and peripheral
+  Bluefruit.begin(true, true);
+  // Bluefruit.clearBonds();
+  Bluefruit.autoConnLed(true);
+
+  battery.begin();
+
+  // I'm assuming that by dropping this power down, I'll save some battery life.
+  // I should experiment to see how low I can get it and still communicate with
+  // both my Mac and my PC reliably. They're each within a meter of the
+  // keyboard... Acceptable values: -40, -30, -20, -16, -12, -8, -4, 0, 4
+  Bluefruit.setTxPower(4);
+  Bluefruit.setName(BT_NAME);
+
+  Bluefruit.Central.setConnectCallback(cent_connect_callback);
+  Bluefruit.Central.setDisconnectCallback(cent_disconnect_callback);
+
+  dis.setManufacturer(MANUFACTURER);
+  dis.setModel(MODEL);
+  dis.setHardwareRev(HW_REV);
+  dis.setSoftwareRev(__DATE__);
+  dis.begin();
+
+  clientUart.begin();
+  Bluefruit.setConnectCallback(core_connect_callback);
+  Bluefruit.setDisconnectCallback(core_disconnect_callback);
+  // clientUart.setRxCallback(cent_bleuart_rx_callback);
+
+  /* Start Central Scanning
+   * - Enable auto scan if disconnected
+   * - Interval = 100 ms, window = 80 ms
+   * - Filter only accept bleuart service
+   * - Don't use active scan
+   * - Start(timeout) with timeout = 0 will scan forever (until connected)
+   */
+  Bluefruit.Scanner.setRxCallback(scan_callback);
+  Bluefruit.Scanner.restartOnDisconnect(true);
+  Bluefruit.Scanner.setInterval(160, 80); // in unit of 0.625 ms
+  Bluefruit.Scanner.filterUuid(BLEUART_UUID_SERVICE);
+  Bluefruit.Scanner.useActiveScan(false);
+  // I should probably stop advertising after a while if that's possible. I have
+  // switches now, so if I need it to advertise, I can just punch the power.
+  Bluefruit.Scanner.start(0); // 0 = Don't stop scanning after n seconds
+
+  hid.begin();
+  // delay(5000);
+  // Bluefruit.printInfo();
+
+  startAdv();
+}
+
+void startAdv(void) {
+  Bluefruit.Advertising.addFlags(BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE);
+  Bluefruit.Advertising.addTxPower();
+  Bluefruit.Advertising.addAppearance(BLE_APPEARANCE_HID_KEYBOARD);
+  Bluefruit.Advertising.addService(hid);
+
+  Bluefruit.ScanResponse.addService(battery); // This doesn't seem to work :(
+
+  Bluefruit.Advertising.addName();
+  Bluefruit.Advertising.restartOnDisconnect(true);
+  Bluefruit.Advertising.setInterval(32, 244); // in unit of 0.625 ms
+  Bluefruit.Advertising.setFastTimeout(30); // number of seconds in fast mode
+  Bluefruit.Advertising.start(0); // 0 = Don't stop advertising after n seconds
+}
+
+void cent_connect_callback(uint16_t conn_handle) {
+  // TODO: Maybe make this more secure? I haven't looked into how secure this
+  // is in the documentation :/
+  char peer_name[32] = {0};
+  Bluefruit.Gap.getPeerName(conn_handle, peer_name, sizeof(peer_name));
+  DBG(Serial.print("[Cent] Connected to "));
+  DBG(Serial.println(peer_name));
+  DBG(Bluefruit.printInfo());
+  // I ought to at least make sure the peer_name is LHS_NAME, right?
+  if (!strcmp(LHS_NAME, peer_name) && clientUart.discover(conn_handle)) {
+    // Enable TXD's notify
+    clientUart.enableTXD();
+  } else {
+    DBG(Serial.println("Not connecting to the other side..."));
+    Bluefruit.Central.disconnect(conn_handle);
+  }
+
+  resetKeyMatrix();
+}
+
+void cent_disconnect_callback(uint16_t conn_handle, uint8_t reason) {
+  DBG(dumpVal(conn_handle, "Connection Handle Disconnected: "));
+  DBG(dumpVal(reason, " Reason #"));
+  DBG(Serial.println("[Cent] Disconnected"));
+  resetKeyMatrix();
+}
+
+void scan_callback(ble_gap_evt_adv_report_t* report) {
+  // Check if advertising contain BleUart service
+  if (Bluefruit.Scanner.checkReportForService(report, clientUart)) {
+    // Connect to device with bleuart service in advertising
+    Bluefruit.Central.connect(report);
+  }
 }

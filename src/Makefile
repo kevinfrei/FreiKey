@@ -63,9 +63,10 @@ CLANG=-std=gnu11 -DSOFTDEVICE_PRESENT
 SLANG=-x assembler-with-cpp
 OPT=-Os
 
-SHARED_SRC = dbgcfg.cpp hardware.cpp led_states.cpp pindata.cpp
-RIGHT_SRC = status_dump.cpp right-entry-points.cpp globals.cpp
-USER_SRC = ${SHARED_SRC} ${RIGHT_SRC} left-slave.cpp right-master.cpp
+SHARED_SRC = dbgcfg.cpp hardware.cpp led_states.cpp boardio.cpp
+RIGHT_SRC = status_dump.cpp globals.cpp right-master.cpp
+LEFT_SRC = left-slave.cpp
+USER_SRC = ${SHARED_SRC} ${RIGHT_SRC} ${LEFT_SRC}
 
 INCLUDES=-Iinclude \
 	"-I${GITROOT}/cores/nRF5/SDK/components/toolchain/"\
@@ -259,6 +260,7 @@ CORE_OBJS = \
 ALL_LIBS = ${OUT}/core.a ${OUT}/nffs.a ${OUT}/bflib.a
 SHARED_OBJS = $(addprefix ${OUT}/, $(patsubst %.cpp, %.cpp.o, ${SHARED_SRC}))
 RIGHT_OBJS = $(addprefix ${OUT}/, $(patsubst %.cpp, %.cpp.o, ${RIGHT_SRC}))
+LEFT_OBJS = $(addprefix ${OUT}/, $(patsubst %.cpp, %.cpp.o, ${LEFT_SRC}))
 USER_OBJS =  $(addprefix ${OUT}/, $(patsubst %.cpp, %.cpp.o, ${USER_SRC}))
 
 ELF_FLAGS = ${OPT} ${TARGET} -save-temps \
@@ -303,7 +305,7 @@ ${OUT}/left-slave.elf : ${ALL_LIBS}
 
 ${OUT}/right-master.elf : ${ALL_LIBS}
 
-${OUT}/left-slave.elf : ${OUT}/left-slave.cpp.o ${SHARED_OBJS}
+${OUT}/left-slave.elf : ${OUT}/left-slave.cpp.o ${SHARED_OBJS} ${LEFT_OBJS}
 	${CC} ${ELF_FLAGS} "-Wl,-Map,$@.map" -o $@ $^ \
 	-Wl,--start-group -lm ${ALL_LIBS} -Wl,--end-group
 
