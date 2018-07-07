@@ -4,13 +4,13 @@
 
 #if defined(DEBUG) || defined(LOGGING)
 
-void dumpVal(unsigned long v, const char* header) {
+void dumpVal(uint32_t v, const char* header) {
   if (header)
     Serial.print(header);
   Serial.println(v);
 }
 
-void dumpHex(unsigned long v, const char* header) {
+void dumpHex(uint32_t v, const char* header) {
   if (header)
     Serial.print(header);
   Serial.println(v, HEX);
@@ -29,7 +29,7 @@ void dumpHex(bool v, const char *header) {
 }
 
 void dumpHex(uint64_t v, const char *header) {
-  if (header) 
+  if (header)
     Serial.print(header);
   Serial.print(static_cast<unsigned long>(v >> 32), HEX);
   Serial.print("|");

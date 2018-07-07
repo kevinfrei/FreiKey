@@ -36,10 +36,32 @@
         "${workspaceRoot}/../../Adafruit_nRF52_Arduino/libraries/Bluefruit52Lib/src",
         "${workspaceRoot}/../../Adafruit_nRF52_Arduino/libraries/nffs/src"
       ],
-      "defines": ["DEBUG", "LOGGING", "STATUS_DUMP", "__VSCODE_ONLY_"],
+      "defines": [
+        "DEBUG",
+        "LOGGING",
+        "STATUS_DUMP",
+        "F_CPU=64000000",
+        "ARDUINO=10805",
+        "ARDUINO_NRF52_FEATHER",
+        "ARDUINO_ARCH_NRF52",
+        "ARDUINO_BSP_VERSION=\"0.8.3\"",
+        "ARDUINO_FEATHER52",
+        "ARDUINO_NRF52_ADAFRUIT",
+        "NRF5",
+        "NRF52",
+        "NRF52832_XXAA",
+        "USE_LFXO",
+        "S132",
+        "SD_VER=510",
+        "CFG_DEBUG=0",
+        "__VSCODE_ONLY_"
+      ],
       "intelliSenseMode": "clang-x64",
       "browse": {
-        "path": ["${workspaceRoot}"],
+        "path": [
+          "${workspaceRoot}",
+          "${workspaceRoot}/../../Adafruit_nRF52_Arduino"
+        ],
         "limitSymbolsToIncludedHeaders": true,
         "databaseFilename": ""
       },
@@ -94,7 +116,26 @@
         "${workspaceRoot}/../../Adafruit_nRF52_Arduino/libraries/Bluefruit52Lib/src",
         "${workspaceRoot}/../../Adafruit_nRF52_Arduino/libraries/nffs/src"
       ],
-      "defines": ["DEBUG", "STATUS_DUMP", "__VSCODE_ONLY_"],
+      "defines": [
+        "DEBUG",
+        "LOGGING",
+        "STATUS_DUMP",
+        "F_CPU=64000000",
+        "ARDUINO=10805",
+        "ARDUINO_NRF52_FEATHER",
+        "ARDUINO_ARCH_NRF52",
+        "ARDUINO_BSP_VERSION=\"0.8.3\"",
+        "ARDUINO_FEATHER52",
+        "ARDUINO_NRF52_ADAFRUIT",
+        "NRF5",
+        "NRF52",
+        "NRF52832_XXAA",
+        "USE_LFXO",
+        "S132",
+        "SD_VER=510",
+        "CFG_DEBUG=0",
+        "__VSCODE_ONLY_"
+      ],
       "intelliSenseMode": "clang-x64",
       "browse": {
         "path": ["${workspaceRoot}"],
