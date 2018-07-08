@@ -14,12 +14,6 @@ constexpr char* BT_NAME = "FreiKeys";
 constexpr char* HW_REV = "0001";
 constexpr char* LHS_NAME = "FreiKeys-Slave";
 
-// Find last bit set in a long (BSD function, not available in Arduino)
-inline uint8_t flsl(uint64_t val) {
-  // GCC builtin function seems to work on Arduino :)
-  return static_cast<uint8_t>(63 - __builtin_clzll(val));
-}
-
 namespace state {
 
 void shared_setup(const BoardIO& pd);

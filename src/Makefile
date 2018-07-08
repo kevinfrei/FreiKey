@@ -63,7 +63,7 @@ CLANG=-std=gnu11 -DSOFTDEVICE_PRESENT
 SLANG=-x assembler-with-cpp
 OPT=-Os
 
-SHARED_SRC = dbgcfg.cpp hardware.cpp led_states.cpp boardio.cpp
+SHARED_SRC = dbgcfg.cpp hardware.cpp led_states.cpp boardio.cpp debounce.cpp
 RIGHT_SRC = status_dump.cpp globals.cpp right-master.cpp
 LEFT_SRC = left-slave.cpp
 USER_SRC = ${SHARED_SRC} ${RIGHT_SRC} ${LEFT_SRC}

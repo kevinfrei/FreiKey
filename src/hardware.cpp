@@ -1,26 +1,20 @@
 #include "hardware.h"
 #include "boardio.h"
+#include "debounce.h"
 
 namespace state {
 
 // Some globals used by each half
 // The last time we reported the battery
 uint32_t last_bat_time = 0;
-uint32_t scans_since_last_time = 0;
 
-// The last set of switches we reported
-uint64_t last_reported_switches = 0;
-// This is just the set of report times for switches
-uint32_t last_reported_time[BoardIO::matrix_size];
-// This is the # of msec to delay after reporting a change before reporting
-// another one. Rumor has it that Cherry claims a debounce period of 5ms, but
-// I still sometimes see a bounce or two, so I've increased it a bit.
-constexpr uint8_t debounce_delay = 12;
+#if defined(DEBUG)
+uint32_t scans_since_last_time = 0;
+#endif
 
 void shared_setup(const BoardIO& pd) {
   pd.Configure();
   DBG(Serial.begin(115200));
-  memset(&last_reported_time[0], 0, sizeof(uint32_t) * BoardIO::matrix_size);
 }
 
 uint8_t readBattery(uint32_t now, uint8_t prev) {
@@ -29,10 +23,13 @@ uint8_t readBattery(uint32_t now, uint8_t prev) {
     return prev;
   }
   uint8_t bat_percentage = BoardIO::getBatteryPercent();
-  last_bat_time = now;
-  DBG(dumpVal(bat_percentage, "Battery level: "));
-  DBG(dumpVal(scans_since_last_time, "# of scans in the past 30 seconds:"));
+#if defined(DEBUG)
+  dumpVal(bat_percentage, "Battery level: ");
+  dumpVal(scans_since_last_time / ((now - last_bat_time) / 1000),
+          "Scans/second: ~");
   scans_since_last_time = 0;
+#endif
+  last_bat_time = now;
   return bat_percentage;
 }
 
@@ -53,40 +50,12 @@ hw::hw(BLEClientUart& clientUart, const hw& prev) {
 
 hw::hw(const hw& c) : switches(c.switches), battery_level(c.battery_level) {}
 
-uint64_t debounce(uint64_t cur_switches, uint32_t now) {
-  // If we've read the same thing we last reported, there's nothing to do
-  if (last_reported_switches == cur_switches)
-    return cur_switches;
-  // This gets us a set of bits that are different between last report &
-  // the current read
-  uint64_t change = last_reported_switches ^ cur_switches;
-  while (change) {
-    uint8_t bit_num = flsl(change);
-    uint64_t mask = ((uint64_t)1) << bit_num;
-    change ^= mask;
-    // For each change, check if we're in a debounce period for that switch
-    if (now - last_reported_time[bit_num] < debounce_delay) {
-      // Let's clear the change from cur_switches
-      // If it's on, this will turn it off, if it's off, this will turn it on
-      cur_switches ^= mask;
-      DBG(dumpVal(bit_num, "Bounce ignored "));
-    } else {
-      // We're not in the debounce period: leave the change intact, and start
-      // the timer
-      last_reported_time[bit_num] = now;
-    }
-  }
-  return cur_switches;
-}
-
 void hw::readSwitches(const BoardIO& pd, uint32_t now) {
-  uint64_t new_switches = pd.Read();
+#if defined(DEBUG)
   scans_since_last_time++;
-  // Okay, we have the current state of switches: debounce them
-  uint64_t switches_to_report = debounce(new_switches, now);
-  // Save off the things we're reporting
-  last_reported_switches = switches_to_report;
-  this->switches = switches_to_report;
+#endif
+  // Read & debounce the current key matrix
+  this->switches = debounce(pd.Read(), now);
 }
 
 // Send the relevant data over the wire

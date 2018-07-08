@@ -3,6 +3,7 @@
 #include "dbgcfg.h"
 
 #if defined(DEBUG) || defined(LOGGING)
+// I want to have categories for the log, here.
 
 void dumpVal(uint32_t v, const char* header) {
   if (header)

@@ -4,6 +4,7 @@
 #include "dbgcfg.h"
 #include "globals.h"
 #include "hardware.h"
+#include "helpers.h"
 #include "keymap.h"
 #include "keystate.h"
 #include "led_states.h"
