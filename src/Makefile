@@ -295,6 +295,9 @@ left: ${OUT}/left-slave.zip
 
 right: ${OUT}/right-master.zip
 
+# Make us rebuild my own source if I change the makefile
+$(USER_OBJS) : Makefile
+
 ${OUT}/%.zip : ${OUT}/%.hex
 	${NRFUTIL} dfu genpkg --dev-type 0x0052 --sd-req 0x00A5 --application $< $@
 
