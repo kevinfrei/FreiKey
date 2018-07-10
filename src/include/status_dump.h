@@ -1,7 +1,7 @@
 #if !defined(STATUS_DUMP_H)
 #define STATUS_DUMP_H
 
-#if STATUS_DUMP
+#if defined(STATUS_DUMP)
 #include "hardware.h"
 
 // Types the "str" string (with lots of limitations)

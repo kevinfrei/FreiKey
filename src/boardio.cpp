@@ -1,7 +1,7 @@
 #include <bluefruit.h>
 
-#include "dbgcfg.h"
 #include "boardio.h"
+#include "dbgcfg.h"
 
 void BoardIO::Configure() const {
   static_assert(
@@ -51,6 +51,7 @@ constexpr uint8_t VBAT_PIN = 31;
 constexpr uint32_t VBAT_NUM = 3000;
 constexpr uint32_t VBAT_DEN = 4096;
 
+// This stuff shamelessly stolen from the AdaFruit example
 uint8_t BoardIO::getBatteryPercent() {
   uint32_t bat = analogRead(VBAT_PIN) * VBAT_NUM / VBAT_DEN;
   if (bat >= 3000) {

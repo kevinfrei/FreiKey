@@ -4,7 +4,7 @@
 #include "keyhelpers.h"
 #include "boardio.h"
 
-#if STATUS_DUMP
+#if defined(STATUS_DUMP)
 // For the status dumper thingamajig
 const char* layer_names[] = {
     "Base/Mac", "Win", "Fn", "MacCaps", "WinCaps", "WinCtrl"};
