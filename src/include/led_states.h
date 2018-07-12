@@ -3,13 +3,15 @@
 
 #include "hardware.h"
 
-struct led_state {
+namespace state {
+
+struct led {
   uint64_t left_state;
   uint64_t right_state;
-  uint32_t (*get_led_value)(const state::hw &switches, uint32_t time_offset);
+  uint32_t (*get_led_value)(const state::hw& switches, uint32_t time_offset);
   uint32_t time;
+  static const led* get(const state::hw& switches, uint8_t layer = 0);
 };
 
-const led_state *getState(const state::hw &switches, uint8_t layer = 0);
-
+} // namespace state
 #endif

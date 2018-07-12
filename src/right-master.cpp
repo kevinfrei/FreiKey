@@ -168,17 +168,11 @@ void layer_switch(layer_t layer) {
   DBG(dumpLayers());
 }
 
-const led_state* curState = nullptr;
+const state::led* curState = nullptr;
 uint32_t stateTime = 0;
 
-void loop() {
-  uint32_t now = millis();
-
-  // Get the hardware state for the two sides...
-  state::hw downRight{now, rightSide, RightBoard};
-  state::hw downLeft{clientUart, leftSide};
-
-  // Update the combined battery level
+// Check to see if we should update the battery level and if so, do so
+void updateBatteryLevel(const state::hw& downLeft, const state::hw& downRight) {
   if (downRight.battery_level != rightSide.battery_level ||
       downLeft.battery_level != leftSide.battery_level) {
     // We only get the battery level from the left side once you hit a key, so
@@ -194,6 +188,17 @@ void loop() {
     rightSide.battery_level = downRight.battery_level;
     leftSide.battery_level = downLeft.battery_level;
   }
+}
+
+void loop() {
+  uint32_t now = millis();
+
+  // Get the hardware state for the two sides...
+  state::hw downRight{now, rightSide, RightBoard};
+  state::hw downLeft{clientUart, leftSide};
+
+  // Update the combined battery level
+  updateBatteryLevel(downLeft, downRight);
 
   // Get the before & after of each side into a 64 bit value
   uint64_t beforeLeft = leftSide.switches, afterLeft = downLeft.switches;
@@ -204,7 +209,7 @@ void loop() {
   if (deltaRight && !curState) {
     // if we're not already in a state, check to see if we're transitioning
     // into one
-    curState = getState(downRight, layer_pos + 1);
+    curState = state::led::get(downRight, layer_pos + 1);
     if (curState) {
       stateTime = now;
     }
@@ -449,15 +454,19 @@ void cent_connect_callback(uint16_t conn_handle) {
   // is in the documentation :/
   char peer_name[32] = {0};
   Bluefruit.Gap.getPeerName(conn_handle, peer_name, sizeof(peer_name));
-  DBG(Serial.print("[Cent] Connected to "));
-  DBG(Serial.println(peer_name));
-  DBG(Bluefruit.printInfo());
   // I ought to at least make sure the peer_name is LHS_NAME, right?
   if (!strcmp(LHS_NAME, peer_name) && clientUart.discover(conn_handle)) {
+    DBG(Serial.print("[Cent] Connected to "));
+    DBG(Serial.println(peer_name));
+    DBG(Bluefruit.printInfo());
     // Enable TXD's notify
     clientUart.enableTXD();
   } else {
-    DBG(Serial.println("Not connecting to the other side..."));
+    DBG(Serial.println("[Cent] Not connecting to the other side: wrong name"));
+    DBG(Serial.print("Was expecting: "));
+    DBG(Serial.println(LHS_NAME));
+    DBG(Serial.print("Actual name: "));
+    DBG(Serial.println(peer_name));
     Bluefruit.Central.disconnect(conn_handle);
   }
 

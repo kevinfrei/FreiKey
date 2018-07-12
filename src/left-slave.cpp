@@ -25,7 +25,7 @@ void setup() {
   // was set at 0. If you spread your keyboards apart greater distance, you may
   // want to try higher power. Acceptable values are -40, -30, -20, -16, -12,
   // -8, -4, 0, 4
-  Bluefruit.setTxPower(-20);
+  Bluefruit.setTxPower(0);
   Bluefruit.setName(LHS_NAME);
 
   bledis.setManufacturer(MANUFACTURER);
@@ -48,7 +48,7 @@ void setup() {
   Bluefruit.Advertising.start(0); // 0 = Don't stop advertising after n seconds
 }
 
-const led_state* curState = nullptr;
+const state::led* curState = nullptr;
 uint32_t stateTime = 0;
 
 // TODO: Add bidirectional communication, so the master can ask for info or set
@@ -64,7 +64,7 @@ void loop() {
     if (!curState) {
       // if we're not already in a state, check to see if we're transitioning
       // into one
-      curState = getState(down);
+      curState = state::led::get(down);
       if (curState) {
         stateTime = time;
       }

@@ -98,12 +98,8 @@ bool hw::operator!=(const hw& o) const {
 
 #if defined(DEBUG)
 void hw::dump() const {
-  Serial.print("Battery Level:");
-  Serial.println(battery_level);
-  Serial.print("Integer value:");
-  Serial.print(static_cast<unsigned int>(switches >> 32), 16);
-  Serial.print("|");
-  Serial.println(static_cast<unsigned int>(switches), 16);
+  dumpVal(battery_level, "Battery Level:");
+  dumpHex(switches, "Integer value: ");
   for (int64_t r = 0; r < BoardIO::numrows; r++) {
     for (int64_t c = BoardIO::numcols - 1; c >= 0; c--) {
       uint64_t mask = 1ULL << (r * BoardIO::numcols + c);
