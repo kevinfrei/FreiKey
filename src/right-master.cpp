@@ -357,26 +357,6 @@ void loop() {
   waitForEvent(); // Request CPU enter low-power mode until an event occurs
 }
 
-void core_connect_callback(uint16_t handle) {
-  DBG(dumpHex(handle, "Core Connected: "));
-  core_handle = handle;
-  char buf[501];
-  Bluefruit.Gap.getPeerName(handle, buf, 500);
-  DBG(Serial.println("Peer Name:"));
-  DBG(Serial.println(buf));
-  if (!strstr(buf, "mac")) {
-    // If we're not on a mac, set the keyboard in Windows mode
-    // This is *incredibly* low-tech, but it works for my purposes :/
-    layer_push(LAYER_WIN_BASE);
-  }
-}
-
-void core_disconnect_callback(uint16_t handle, uint8_t reason) {
-  DBG(dumpHex(handle, "Core Disconnected: "));
-  DBG(dumpHex(reason, "Reason: 0x"));
-  core_handle = 0xFFFF;
-}
-
 // In Arduino world the 'setup' function is called to initialize the device.
 // The 'loop' function is called over & over again, after setup completes.
 void setup() {
@@ -397,8 +377,8 @@ void setup() {
   Bluefruit.setTxPower(4);
   Bluefruit.setName(BT_NAME);
 
-  Bluefruit.Central.setConnectCallback(cent_connect_callback);
-  Bluefruit.Central.setDisconnectCallback(cent_disconnect_callback);
+  Bluefruit.Central.setConnectCallback(callback::cent_connect);
+  Bluefruit.Central.setDisconnectCallback(callback::cent_disconnect);
 
   dis.setManufacturer(MANUFACTURER);
   dis.setModel(MODEL);
@@ -407,8 +387,8 @@ void setup() {
   dis.begin();
 
   clientUart.begin();
-  Bluefruit.setConnectCallback(core_connect_callback);
-  Bluefruit.setDisconnectCallback(core_disconnect_callback);
+  Bluefruit.setConnectCallback(callback::core_connect);
+  Bluefruit.setDisconnectCallback(callback::core_disconnect);
   // clientUart.setRxCallback(cent_bleuart_rx_callback);
 
   /* Start Central Scanning
@@ -418,7 +398,7 @@ void setup() {
    * - Don't use active scan
    * - Start(timeout) with timeout = 0 will scan forever (until connected)
    */
-  Bluefruit.Scanner.setRxCallback(scan_callback);
+  Bluefruit.Scanner.setRxCallback(callback::scan);
   Bluefruit.Scanner.restartOnDisconnect(true);
   Bluefruit.Scanner.setInterval(160, 80); // in unit of 0.625 ms
   Bluefruit.Scanner.filterUuid(BLEUART_UUID_SERVICE);
@@ -431,10 +411,7 @@ void setup() {
   // delay(5000);
   // Bluefruit.printInfo();
 
-  startAdv();
-}
-
-void startAdv(void) {
+  // This gets Advertising going...
   Bluefruit.Advertising.addFlags(BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE);
   Bluefruit.Advertising.addTxPower();
   Bluefruit.Advertising.addAppearance(BLE_APPEARANCE_HID_KEYBOARD);
@@ -449,7 +426,29 @@ void startAdv(void) {
   Bluefruit.Advertising.start(0); // 0 = Don't stop advertising after n seconds
 }
 
-void cent_connect_callback(uint16_t conn_handle) {
+namespace callback {
+
+void core_connect(uint16_t handle) {
+  DBG(dumpHex(handle, "Core Connected: "));
+  core_handle = handle;
+  char buf[501];
+  Bluefruit.Gap.getPeerName(handle, buf, 500);
+  DBG(Serial.println("Peer Name:"));
+  DBG(Serial.println(buf));
+  if (!strstr(buf, "mac")) {
+    // If we're not on a mac, set the keyboard in Windows mode
+    // This is *incredibly* low-tech, but it works for my purposes :/
+    layer_push(LAYER_WIN_BASE);
+  }
+}
+
+void core_disconnect(uint16_t handle, uint8_t reason) {
+  DBG(dumpHex(handle, "Core Disconnected: "));
+  DBG(dumpHex(reason, "Reason: 0x"));
+  core_handle = 0xFFFF;
+}
+
+void cent_connect(uint16_t conn_handle) {
   // TODO: Maybe make this more secure? I haven't looked into how secure this
   // is in the documentation :/
   char peer_name[32] = {0};
@@ -473,17 +472,19 @@ void cent_connect_callback(uint16_t conn_handle) {
   resetKeyMatrix();
 }
 
-void cent_disconnect_callback(uint16_t conn_handle, uint8_t reason) {
+void cent_disconnect(uint16_t conn_handle, uint8_t reason) {
   DBG(dumpVal(conn_handle, "Connection Handle Disconnected: "));
   DBG(dumpVal(reason, " Reason #"));
   DBG(Serial.println("[Cent] Disconnected"));
   resetKeyMatrix();
 }
 
-void scan_callback(ble_gap_evt_adv_report_t* report) {
+void scan(ble_gap_evt_adv_report_t* report) {
   // Check if advertising contain BleUart service
   if (Bluefruit.Scanner.checkReportForService(report, clientUart)) {
     // Connect to device with bleuart service in advertising
     Bluefruit.Central.connect(report);
   }
 }
+
+} // namespace callback

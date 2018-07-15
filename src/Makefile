@@ -5,7 +5,7 @@
 OUT=out
 
 # AdaFruit library installation location/version malarkey
-VER=0.8.3
+VER=0.8.4
 ifeq ($(OS),Windows_NT)
 	uname:=Windows
 else
@@ -13,6 +13,8 @@ else
 endif
 
 GITROOT=../../Adafruit_nRF52_Arduino
+SSD1306_ROOT=../../Adafruit_SSD1306
+GFX_ROOT=../../Adafruit-GFX-Library
 ifeq ($(uname), Windows)
 ADAFRUIT=${HOME}/AppData/Local/Arduino15/packages/adafruit
 RPORT=COM6
@@ -66,7 +68,8 @@ OPT=-Os
 SHARED_SRC = dbgcfg.cpp hardware.cpp led_states.cpp boardio.cpp debounce.cpp
 RIGHT_SRC = status_dump.cpp globals.cpp right-master.cpp
 LEFT_SRC = left-slave.cpp
-USER_SRC = ${SHARED_SRC} ${RIGHT_SRC} ${LEFT_SRC}
+DISP_SRC = display.cpp
+USER_SRC = ${SHARED_SRC} ${RIGHT_SRC} ${LEFT_SRC} ${DISP_SRC}
 
 INCLUDES=-Iinclude \
 	"-I${GITROOT}/cores/nRF5/SDK/components/toolchain/"\
@@ -95,7 +98,11 @@ INCLUDES=-Iinclude \
 	"-I${GITROOT}/cores/nRF5"\
 	"-I${GITROOT}/variants/feather52"\
 	"-I${GITROOT}/libraries/Bluefruit52Lib/src"\
-	"-I${GITROOT}/libraries/nffs/src"
+	"-I${GITROOT}/libraries/nffs/src"\
+	"-I${GITROOT}/libraries/SPI"\
+	"-I${GITROOT}/libraries/Wire"\
+	"-I${GFX_ROOT}"\
+	"-I${SSD1306_ROOT}"
 
 CPPFLAGS=${TARGET} ${FLAGS} ${CODEGEN} ${CPPLANG} ${DEFINES} ${OPT} ${INCLUDES}
 CFLAGS=${TARGET} ${FLAGS} ${CODEGEN} ${CLANG} ${DEFINES} ${OPT} ${INCLUDES}
@@ -257,10 +264,26 @@ CORE_OBJS = \
 			$(patsubst %.cpp, %.cpp.o, \
 				$(patsubst %.S, %.S.o, $(notdir ${CORE_SRCS})))))
 
+GFX_SRCS = \
+	${SSD1306_ROOT}/Adafruit_SSD1306.cpp \
+	${GFX_ROOT}/Adafruit_GFX.cpp \
+	${GFX_ROOT}/Adafruit_SPITFT.cpp
+
+GFX_OBJS = \
+	$(addprefix ${OUT}/, $(patsubst %.cpp, %.cpp.o, $(notdir ${GFX_SRCS})))
+
+SER_SRCS = \
+	${GITROOT}/libraries/SPI/SPI.cpp\
+	${GITROOT}/libraries/Wire/Wire_nRF52.cpp
+
+SER_OBJS = \
+	$(addprefix ${OUT}/, $(patsubst %.cpp, %.cpp.o, $(notdir ${SER_SRCS})))
+
 ALL_LIBS = ${OUT}/core.a ${OUT}/nffs.a ${OUT}/bflib.a
 SHARED_OBJS = $(addprefix ${OUT}/, $(patsubst %.cpp, %.cpp.o, ${SHARED_SRC}))
 RIGHT_OBJS = $(addprefix ${OUT}/, $(patsubst %.cpp, %.cpp.o, ${RIGHT_SRC}))
 LEFT_OBJS = $(addprefix ${OUT}/, $(patsubst %.cpp, %.cpp.o, ${LEFT_SRC}))
+DISP_OBJS = $(addprefix ${OUT}/, $(patsubst %.cpp, %.cpp.o, ${DISP_SRC}))
 USER_OBJS =  $(addprefix ${OUT}/, $(patsubst %.cpp, %.cpp.o, ${USER_SRC}))
 
 ELF_FLAGS = ${OPT} ${TARGET} -save-temps \
@@ -277,11 +300,11 @@ ELF_FLAGS = ${OPT} ${TARGET} -save-temps \
 --specs=nano.specs \
 --specs=nosys.specs
 
-.PHONY: clean allclean left right flashl flashr
+.PHONY: clean allclean left right flashl flashr display flashd
 
-all: ${OUT} left right
+all: ${OUT} left right display
 
-DEPS = $(CORE_OBJS:.o=.d) $(NFFS_OBJS:.o=.d) $(BFLIB_OBJS:.o=.d) $(USER_OBJS:.o=.d)
+DEPS = $(CORE_OBJS:.o=.d) $(NFFS_OBJS:.o=.d) $(BFLIB_OBJS:.o=.d) $(USER_OBJS:.o=.d) $(GFX_OBJS:.o=.d) $(SER_OBJS:.o=.d)
 
 -include ${DEPS}
 
@@ -291,9 +314,14 @@ flashl: ${OUT}/left-slave.zip
 flashr: ${OUT}/right-master.zip
 	${NRFUTIL} --verbose dfu serial -pkg $< -p ${RPORT} -b 115200
 
+flashd: ${OUT}/display.zip
+	${NRFUTIL} --verbose dfu serial -pkg $< -p ${RPORT} -b 115200
+
 left: ${OUT}/left-slave.zip
 
 right: ${OUT}/right-master.zip
+
+display: ${OUT}/display.zip
 
 # Make us rebuild my own source if I change the makefile
 $(USER_OBJS) : Makefile
@@ -308,11 +336,17 @@ ${OUT}/left-slave.elf : ${ALL_LIBS}
 
 ${OUT}/right-master.elf : ${ALL_LIBS}
 
-${OUT}/left-slave.elf : ${OUT}/left-slave.cpp.o ${SHARED_OBJS} ${LEFT_OBJS}
+${OUT}/display.elf: ${ALL_LIBS}
+
+${OUT}/left-slave.elf : ${LEFT_OBJS} ${SHARED_OBJS}
 	${CC} ${ELF_FLAGS} "-Wl,-Map,$@.map" -o $@ $^ \
 	-Wl,--start-group -lm ${ALL_LIBS} -Wl,--end-group
 
-${OUT}/right-master.elf : ${OUT}/right-master.cpp.o ${SHARED_OBJS} ${RIGHT_OBJS}
+${OUT}/right-master.elf : ${RIGHT_OBJS} ${SHARED_OBJS}
+	${CC} ${ELF_FLAGS} "-Wl,-Map,$@.map" -o $@ $^ \
+	-Wl,--start-group -lm ${ALL_LIBS} -Wl,--end-group
+
+${OUT}/display.elf : ${DISP_OBJS} ${GFX_OBJS} ${SER_OBJS}
 	${CC} ${ELF_FLAGS} "-Wl,-Map,$@.map" -o $@ $^ \
 	-Wl,--start-group -lm ${ALL_LIBS} -Wl,--end-group
 
@@ -425,3 +459,15 @@ ${OUT}/%.cpp.o: ${BFLIB_DIRUTILITY}/%.cpp
 
 ${OUT}/%.c.o: ${BFLIB_DIRUTILITY}/%.c
 	${CC} -c ${CFLAGS} -o $@ $<
+
+${OUT}/%.cpp.o: ${GFX_ROOT}/%.cpp
+	${CPP} -c ${CPPFLAGS} -o $@ $<
+
+${OUT}/%.cpp.o: ${SSD1306_ROOT}/%.cpp
+	${CPP} -c ${CPPFLAGS} -o $@ $<
+
+${OUT}/%.cpp.o: ${GITROOT}/libraries/SPI/%.cpp
+	${CPP} -c ${CPPFLAGS} -o $@ $<
+
+${OUT}/%.cpp.o: ${GITROOT}/libraries/Wire/%.cpp
+	${CPP} -c ${CPPFLAGS} -o $@ $<
