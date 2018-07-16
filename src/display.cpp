@@ -8,8 +8,9 @@
 #if (SSD1306_LCDHEIGHT != 32)
 #error("Height incorrect, please fix Adafruit_SSD1306.h!");
 #endif
-uint32_t lastMillis = 0, maxMillis = 0, minMillis = 9999999999;
-uint64_t totalMillis = 0, countMillis = 0;
+
+// uint32_t lastMillis = 0, maxMillis = 0, minMillis = 9999999999;
+// uint64_t totalMillis = 0, countMillis = 0;
 Adafruit_SSD1306 display = Adafruit_SSD1306();
 
 void setup() {
@@ -53,6 +54,12 @@ namespace uart {
       res.hostName[31] = 0;
       return res;
     }*/
+uint8_t encodeBatteryValue(uint8_t chargeRemaining,
+                           bool isCharging,
+                           bool isPresent) {
+  return isPresent ? 0xFF : (chargeRemaining + (isCharging ? 100 : 0));
+}
+
 void drawBattery(uint8_t rate, uint8_t x, uint8_t y) {
   bool charge = (rate > 100);
   rate = rate - (charge ? 100 : 0);
@@ -77,6 +84,7 @@ void drawBattery(uint8_t rate, uint8_t x, uint8_t y) {
     display.print("???");
   }
 }
+
 void drawWin(uint8_t x, uint8_t y) {
   display.fillRect(x, y + 3, 5, 15, WHITE);
   display.fillRect(x + 5, y + 2, 5, 17, WHITE);
@@ -84,6 +92,7 @@ void drawWin(uint8_t x, uint8_t y) {
   display.fillRect(x + 16, y, 5, 21, WHITE);
   display.drawFastHLine(x, y + 10, 21, BLACK);
 }
+
 uint8_t apple[] = {
     0x00, 0x10, // ---- ---- ---X ----
     0x00, 0x30, // ---- ---- --XX ----
@@ -175,18 +184,19 @@ struct layer {
     }
   }
 };
+
 layer layers[] = {layer(&apple[0], 16, 21, 1),
                   layer(drawWin),
                   layer(&linux[0], 21, 21),
                   layer(&func[0], 16, 21)};
 
-void drawBaseLayer(uint8_t lyr, uint8_t x, uint8_t y) {
+void drawLayer(uint8_t lyr, uint8_t x, uint8_t y) {
   layers[lyr].draw(x, y);
 }
 
 void status::display() {
-  drawBattery(leftState ? 0xFF : leftBattery + (leftCharging * 100), 0, 7);
-  drawBattery(rightBattery + (rightCharging * 100), 96, 7);
+  drawBattery(leftBattery, 0, 7);
+  drawBattery(rightBattery, 96, 7);
 }
 } // namespace uart
 
@@ -215,8 +225,8 @@ void loop() {
   */
   }
   uart::drawBattery(count, 0, 2);
-  uart::drawBaseLayer((6&(count / 25)) >> 1, 37, 0);
-  uart::drawBaseLayer(3&(count / 40 + 57), 66, 0);
+  uart::drawLayer((6 & (count / 25)) >> 1, 37, 0);
+  uart::drawLayer(3 & (count / 40 + 57), 66, 0);
   uart::drawBattery(count * 4, 96, 2);
   count++;
   display.display();

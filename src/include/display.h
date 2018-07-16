@@ -12,41 +12,45 @@
 //  and a 32 bit value
 
 namespace uart {
-enum class header : uint8_t {
-  status = 1, string, hex, uns, sign
-};
 
+uint8_t encodeBatteryValue(uint8_t chargeRemaining,
+                           bool isCharging,
+                           bool isPresent);
+
+enum class header : uint8_t { status = 1, string, value };
+
+template <typename T, header V>
 struct data {
   header hdr;
   uint8_t numSeconds;
-  data(header h, uint8_t time = 10);
+  data(uint8_t time = 10) : hdr(V), numSeconds(time) {}
   void send(); // This should send the data
 };
 
-struct status : public data {
+struct status : public data<status, header::status> {
+  uint8_t layerStack[8];
+  uint8_t hostName[38];
   uint8_t leftBattery;
   uint8_t rightBattery;
-  uint8_t leftCharging;
-  uint8_t rightCharging;
-  uint8_t leftState;
-  uint8_t baseLayer;
-  uint8_t layerStack[8];
-  uint8_t hostName[32];
-  static status create(const char *host, uint8_t lbat, uint8_t rbat,
-    bool lchg, bool rchg, bool lstt, uint8_t base, uint8_t time = 10);
+  static status create(const char* host,
+                       uint8_t lbat,
+                       uint8_t rbat,
+                       uint8_t time = 10);
   void display();
 };
 
-struct string : public data{
+struct string : public data<string, header::string> {
   char data[46];
-  static string create(const char *str, uint8_t time = 10);
+  static string create(const char* str, uint8_t time = 10);
 };
 
-struct value: public data{
+struct value : public data<value, header::value> {
   char data[42];
   uint32_t val;
-  static value create(const char *str, uint32_t val, header type = header::uns, uint8_t time = 10);
+  static value create(const char* str,
+                      uint32_t val,
+                      uint8_t time = 10);
 };
 
-}
+} // namespace uart
 #endif
