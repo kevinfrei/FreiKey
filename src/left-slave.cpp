@@ -53,33 +53,44 @@ uint32_t stateTime = 0;
 uint32_t lastPressTime = 0;
 bool sleeping = false;
 
+bool checkForSleeping(bool sleeping,
+                      const state::hw& down,
+                      uint32_t time,
+                      uint32_t& lastPressTime) {
+  // First, handle sleeping states
+  if (down.switches) {
+    // We detected a keypress!
+    lastPressTime = time;
+    return false;
+  } else if (!sleeping && (time - lastPressTime > 300000)) {
+    // 5 minutes before we sleep
+    // Do other stuff to get into low power mode, here!
+    return true;
+  }
+  return sleeping;
+}
+
 // TODO: Add bidirectional communication, so the master can ask for info or set
 // an LED state somehow
 void loop() {
   uint32_t time = millis();
   state::hw down{time, lastRead, LeftBoard};
 
-  // First, handle sleeping states
-  if (down.switches) {
-    // We detected a keypress!
-    if (sleeping) {
-      LeftBoard.setLED(0);
-    }
-    sleeping = false;
-    lastPressTime = time;
-  } else if (sleeping) {
-    // Shift to key scans every quarter of a second.
-    // I'm assuming this saves power
+  bool oldSleeping = sleeping;
+  sleeping = isSleeping(sleeping, down, time, lastPressTime);
+  if (sleeping) {
+    // This should make the LED 'breathe' a bit
+    uint8_t brightness = (time >> 9) & 0x1F;
+    if (brightness > 0x10)
+      brightness = 0x20 - brightness;
+    LeftBoard.setLED(brightness);
+    // I'm assuming this saves power. If it doesn't, there's no point...
     delay(250);
     waitForEvent();
     return;
-  } else if (time - lastPressTime > 300000) {
-    // 5 minutes before we sleep
-    sleeping = true;
-    LeftBoard.setLED(5);
-    // Do other stuff to get into low power mode, here!
-    waitForEvent();
-    return;
+  }
+  if (oldSleeping) {
+    LeftBoard.setLED(0);
   }
 
   if (down != lastRead) {
