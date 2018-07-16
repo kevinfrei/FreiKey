@@ -50,12 +50,37 @@ void setup() {
 
 const state::led* curState = nullptr;
 uint32_t stateTime = 0;
+uint32_t lastPressTime = 0;
+bool sleeping = false;
 
 // TODO: Add bidirectional communication, so the master can ask for info or set
 // an LED state somehow
 void loop() {
   uint32_t time = millis();
   state::hw down{time, lastRead, LeftBoard};
+
+  // First, handle sleeping states
+  if (down.switches) {
+    // We detected a keypress!
+    if (sleeping) {
+      LeftBoard.setLED(0);
+    }
+    sleeping = false;
+    lastPressTime = time;
+  } else if (sleeping) {
+    // Shift to key scans every quarter of a second.
+    // I'm assuming this saves power
+    delay(250);
+    waitForEvent();
+    return;
+  } else if (time - lastPressTime > 300000) {
+    // 5 minutes before we sleep
+    sleeping = true;
+    LeftBoard.setLED(5);
+    // Do other stuff to get into low power mode, here!
+    waitForEvent();
+    return;
+  }
 
   if (down != lastRead) {
     lastRead = down;
