@@ -14,6 +14,7 @@ void core_connect(uint16_t handle) {
   DBG(Serial.println("Peer Name:"));
   DBG(Serial.println(buf));
   core_handle = handle;
+  sleepState.EndForcedSleepMode();
 #if 0 // The Bluetooth stuff isn't working for PC just yet...
   if (!strstr(buf, "mac")) {
     // If we're not on a mac, set the keyboard in Windows mode
@@ -23,12 +24,15 @@ void core_connect(uint16_t handle) {
 #endif
 }
 
+// Called when the host computer disconnects
 void core_disconnect(uint16_t handle, uint8_t reason) {
   DBG(dumpHex(handle, "Core Disconnected: "));
   DBG(dumpHex(reason, "Reason: 0x"));
   core_handle = 0xFFFF;
+  sleepState.BeginForcedSleepMode();
 }
 
+// Called with we find a UART host to connect with
 void cent_connect(uint16_t conn_handle) {
   // TODO: Maybe make this more secure? I haven't looked into how secure this
   // is in the documentation :/
@@ -53,6 +57,7 @@ void cent_connect(uint16_t conn_handle) {
   resetTheWorld();
 }
 
+// Called with a UART host disconnects
 void cent_disconnect(uint16_t conn_handle, uint8_t reason) {
   DBG(dumpVal(conn_handle, "Connection Handle Disconnected: "));
   DBG(dumpVal(reason, " Reason #"));
@@ -60,6 +65,7 @@ void cent_disconnect(uint16_t conn_handle, uint8_t reason) {
   resetTheWorld();
 }
 
+// Called when the system detects someone looking for a client
 void scan(ble_gap_evt_adv_report_t* report) {
   // Check if advertising contain BleUart service
   if (Bluefruit.Scanner.checkReportForService(report, clientUart)) {
