@@ -22,7 +22,7 @@ LPORT=COM3
 NRFUTIL=${GITROOT}/tools/nrfutil-0.5.2/binaries/win32/nrfutil
 RMFILES=del /q
 RMDIR=rmdir /s /q
-/=$(strip \)
+DIV=$(strip \ )
 else
 ADAFRUIT=${HOME}/Library/Arduino15/packages/adafruit
 LPORT=/dev/cu.SLAB_USBtoUART
@@ -30,7 +30,7 @@ RPORT=/dev/cu.SLAB_USBtoUART
 NRFUTIL=/usr/local/bin/nrfutil
 RMFILES=rm
 RMDIR=rm -rf
-/=/
+DIV=/
 endif
 TOOLS=${ADAFRUIT}/tools/gcc-arm-none-eabi/5_2-2015q4
 
@@ -69,7 +69,7 @@ SHARED_SRC = dbgcfg.cpp hardware.cpp led_states.cpp boardio.cpp debounce.cpp \
 	sleepstate.cpp
 RIGHT_SRC = status_dump.cpp globals.cpp right-master.cpp
 LEFT_SRC = left-slave.cpp
-DISP_SRC = display.cpp
+DISP_SRC = display.cpp disp_uart.cpp
 USER_SRC = ${SHARED_SRC} ${RIGHT_SRC} ${LEFT_SRC} ${DISP_SRC}
 
 INCLUDES=-Iinclude \
@@ -352,15 +352,15 @@ ${OUT}/display.elf : ${DISP_OBJS} ${GFX_OBJS} ${SER_OBJS}
 	-Wl,--start-group -lm ${ALL_LIBS} -Wl,--end-group
 
 ${OUT}/core.a: ${CORE_OBJS}
-	-${RMFILES} $(subst /,$/,$@)
+	-${RMFILES} $(subst /,${DIV},$@)
 	${AR} rcs $@ ${CORE_OBJS}
 
 ${OUT}/nffs.a: ${NFFS_OBJS}
-	-${RMFILES} $(subst /,$/,$@)
+	-${RMFILES} $(subst /,${DIV},$@)
 	${AR} rcs $@ ${NFFS_OBJS}
 
 ${OUT}/bflib.a: ${BFLIB_OBJS}
-	-${RMFILES} $(subst /,$/,$@)
+	-${RMFILES} $(subst /,${DIV},$@)
 	${AR} rcs $@ ${BFLIB_OBJS}
 
 ${OUT}:
@@ -370,7 +370,7 @@ allclean:
 	@-${RMDIR} ${OUT}
 
 clean:
-	@-${RMFILES} $(subst /,$/,${USER_OBJS} ${OUT}$*.elf ${OUT}/*.zip ${OUT}/*.hex ${OUT}$/*.map)
+	@-${RMFILES} $(subst /,${DIV},${USER_OBJS} ${OUT}$*.elf ${OUT}/*.zip ${OUT}/*.hex ${OUT}${DIV}*.map)
 
 # And now all the custom subdir rules :/
 

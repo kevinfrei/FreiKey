@@ -1,5 +1,9 @@
-#if !defined(DISPLAY_H)
-#define DISPLAY_H
+#if !defined(DISP_UART_H)
+#define DISP_UART_H
+
+#include <bluefruit.h>
+
+#include "disp_globals.h"
 
 // The keyboard can send three messages, each of which also includes a
 // length of time (in seconds) to display the message
@@ -11,7 +15,7 @@
 // Prefixed number: a string (41 bytes max), a format (hex, uns, signed)
 //  and a 32 bit value
 
-namespace uart {
+namespace disp_uart {
 
 uint8_t encodeBatteryValue(uint8_t chargeRemaining,
                            bool isCharging,
@@ -47,10 +51,8 @@ struct string : public data<string, header::string> {
 struct value : public data<value, header::value> {
   char data[42];
   uint32_t val;
-  static value create(const char* str,
-                      uint32_t val,
-                      uint8_t time = 10);
+  static value create(const char* str, uint32_t val, uint8_t time = 10);
 };
 
-} // namespace uart
+} // namespace disp_uart
 #endif
