@@ -4,6 +4,7 @@
 #include "dbgcfg.h"
 #include "hardware.h"
 #include "led_states.h"
+#include "sleepstate.h"
 
 BLEDis bledis;
 BLEUart bleuart;
@@ -50,46 +51,16 @@ void setup() {
 
 const state::led* curState = nullptr;
 uint32_t stateTime = 0;
-struct SleepState {
-  uint32_t lastPressTime;
-  bool sleeping;
-  // This
-  bool CheckForSleeping(const state::hw& down,
-                        uint32_t time,
-                        const BoardIO& board) {
-    // First, handle sleeping states
-    if (down.switches) {
-      // We detected a keypress!
-      if (sleeping) {
-        // Turn off the LED if we were sleeping
-        board.setLED(0);
-      }
-      sleeping = false;
-      lastPressTime = time;
-    } else if (!sleeping && (time - lastPressTime > 300000)) {
-      // 5 minutes before we sleep
-      // Do other stuff to get into low power mode, here!
-      sleeping = true;
-    }
-    if (sleeping) {
-      // This should make the LED 'breathe' a bit
-      uint8_t brightness = (time >> 9) & 0x1F;
-      if (brightness > 0x10)
-        brightness = 0x20 - brightness;
-      board.setLED(brightness);
-    }
-    return sleeping;
-  }
-};
+
 SleepState sleepState = {0, false};
 
 // TODO: Add bidirectional communication, so the master can ask for info or set
 // an LED state somehow
 void loop() {
-  uint32_t time = millis();
-  state::hw down{time, lastRead, LeftBoard};
+  uint32_t now = millis();
+  state::hw down{now, lastRead, LeftBoard};
 
-  if (sleepState.CheckForSleeping(down, time, LeftBoard)) {
+  if (sleepState.CheckForSleeping(down.switches, now, LeftBoard)) {
     // I'm assuming this saves power. If it doesn't, there's no point...
     delay(250);
     waitForEvent();
@@ -105,14 +76,14 @@ void loop() {
       // into one
       curState = state::led::get(down);
       if (curState) {
-        stateTime = time;
+        stateTime = now;
       }
     }
   }
   if (curState) {
     // We're in "Check if battery is getting kinda low" mode
-    if (time - curState->time < stateTime) {
-      LeftBoard.setLED(curState->get_led_value(down, time - stateTime));
+    if (now - curState->time < stateTime) {
+      LeftBoard.setLED(curState->get_led_value(down, now - stateTime));
     } else {
       LeftBoard.setLED(0);
       curState = nullptr;

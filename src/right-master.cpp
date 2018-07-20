@@ -9,6 +9,7 @@
 #include "keystate.h"
 #include "led_states.h"
 #include "right-entry-points.h"
+#include "sleepstate.h"
 #include "status_dump.h"
 
 // I'm going to update this to keep track of additional state.
@@ -190,12 +191,22 @@ void updateBatteryLevel(const state::hw& downLeft, const state::hw& downRight) {
   }
 }
 
+SleepState sleepState = {0, false};
+
 void loop() {
   uint32_t now = millis();
 
   // Get the hardware state for the two sides...
   state::hw downRight{now, rightSide, RightBoard};
   state::hw downLeft{clientUart, leftSide};
+
+  if (sleepState.CheckForSleeping(
+          downRight.switches | downLeft.switches, now, RightBoard)) {
+    // I'm assuming this saves power. If it doesn't, there's no point...
+    delay(250);
+    waitForEvent();
+    return;
+  }
 
   // Update the combined battery level
   updateBatteryLevel(downLeft, downRight);
