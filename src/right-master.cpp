@@ -42,8 +42,6 @@ constexpr uint64_t status_clear_bonds_right = 0x1000000021ULL;
 
 // Declarations
 
-uint16_t core_handle = 0xFFFF;
-
 keystate keyStates[16];
 constexpr layer_t layer_max = 7;
 layer_t layer_stack[layer_max + 1];
@@ -51,7 +49,7 @@ layer_t layer_pos = 0;
 
 // This is called when the LHS connects, disconnects, and when the system is
 // initialized.  The idea is that it should just wipe everything clean.
-void resetKeyMatrix() {
+void resetTheWorld() {
   layer_pos = 0;
   layer_stack[0] = 0;
   memset(&leftSide, 0, sizeof(leftSide));
@@ -379,7 +377,7 @@ void loop() {
 // The 'loop' function is called over & over again, after setup completes.
 void setup() {
   state::shared_setup(RightBoard);
-  resetKeyMatrix();
+  resetTheWorld();
 
   // Central and peripheral
   Bluefruit.begin(true, true);
@@ -443,66 +441,3 @@ void setup() {
   Bluefruit.Advertising.setFastTimeout(30); // number of seconds in fast mode
   Bluefruit.Advertising.start(0); // 0 = Don't stop advertising after n seconds
 }
-
-namespace callback {
-
-void core_connect(uint16_t handle) {
-  DBG(dumpHex(handle, "Core Connected: "));
-  core_handle = handle;
-  char buf[501];
-  Bluefruit.Gap.getPeerName(handle, buf, 500);
-  DBG(Serial.println("Peer Name:"));
-  DBG(Serial.println(buf));
-  if (!strstr(buf, "mac")) {
-    // If we're not on a mac, set the keyboard in Windows mode
-    // This is *incredibly* low-tech, but it works for my purposes :/
-    layer_push(LAYER_WIN_BASE);
-  }
-}
-
-void core_disconnect(uint16_t handle, uint8_t reason) {
-  DBG(dumpHex(handle, "Core Disconnected: "));
-  DBG(dumpHex(reason, "Reason: 0x"));
-  core_handle = 0xFFFF;
-}
-
-void cent_connect(uint16_t conn_handle) {
-  // TODO: Maybe make this more secure? I haven't looked into how secure this
-  // is in the documentation :/
-  char peer_name[32] = {0};
-  Bluefruit.Gap.getPeerName(conn_handle, peer_name, sizeof(peer_name));
-  // I ought to at least make sure the peer_name is LHS_NAME, right?
-  if (!strcmp(LHS_NAME, peer_name) && clientUart.discover(conn_handle)) {
-    DBG(Serial.print("[Cent] Connected to "));
-    DBG(Serial.println(peer_name));
-    DBG(Bluefruit.printInfo());
-    // Enable TXD's notify
-    clientUart.enableTXD();
-  } else {
-    DBG(Serial.println("[Cent] Not connecting to the other side: wrong name"));
-    DBG(Serial.print("Was expecting: "));
-    DBG(Serial.println(LHS_NAME));
-    DBG(Serial.print("Actual name: "));
-    DBG(Serial.println(peer_name));
-    Bluefruit.Central.disconnect(conn_handle);
-  }
-
-  resetKeyMatrix();
-}
-
-void cent_disconnect(uint16_t conn_handle, uint8_t reason) {
-  DBG(dumpVal(conn_handle, "Connection Handle Disconnected: "));
-  DBG(dumpVal(reason, " Reason #"));
-  DBG(Serial.println("[Cent] Disconnected"));
-  resetKeyMatrix();
-}
-
-void scan(ble_gap_evt_adv_report_t* report) {
-  // Check if advertising contain BleUart service
-  if (Bluefruit.Scanner.checkReportForService(report, clientUart)) {
-    // Connect to device with bleuart service in advertising
-    Bluefruit.Central.connect(report);
-  }
-}
-
-} // namespace callback

@@ -2,6 +2,7 @@
 
 #include <bluefruit.h>
 
+#include "globals.h"
 #include "hardware.h"
 #include "keyhelpers.h"
 #include "status_dump.h"
@@ -13,7 +14,6 @@ extern BLEHidAdafruit hid;
 extern layer_t* layer_stack;
 extern layer_t layer_pos;
 extern const char* layer_names[];
-extern uint16_t core_handle;
 
 // If you hold this configuration down, it types out status
 // Lowest out, and the key directly above it

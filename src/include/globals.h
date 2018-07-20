@@ -13,4 +13,6 @@ extern BLEBas battery;
 extern state::hw leftSide;
 extern state::hw rightSide;
 
+extern uint16_t core_handle;
+
 #endif

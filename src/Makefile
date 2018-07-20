@@ -69,7 +69,7 @@ OPT=-Os
 
 SHARED_SRC = dbgcfg.cpp hardware.cpp led_states.cpp boardio.cpp debounce.cpp \
 	sleepstate.cpp
-RIGHT_SRC = status_dump.cpp globals.cpp right-master.cpp
+RIGHT_SRC = status_dump.cpp globals.cpp right-master.cpp callbacks.cpp
 LEFT_SRC = left-slave.cpp
 DISP_SRC = display.cpp disp_uart.cpp
 USER_SRC = ${SHARED_SRC} ${RIGHT_SRC} ${LEFT_SRC} ${DISP_SRC}

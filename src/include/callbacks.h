@@ -1,6 +1,8 @@
 #if !defined(CALLBACKS_H)
 #define CALLBACKS_H
 
+#include <ble_gap.h>
+
 #include "dbgcfg.h"
 
 namespace callback {
