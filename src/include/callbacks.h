@@ -1,5 +1,5 @@
-#if !defined(RIGHT_ENTRY_POINTS_H)
-#define RIGHT_ENTRY_POINTS_H
+#if !defined(CALLBACKS_H)
+#define CALLBACKS_H
 
 #include "dbgcfg.h"
 

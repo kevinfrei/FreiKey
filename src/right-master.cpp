@@ -1,6 +1,7 @@
 #include <bluefruit.h>
 
 #include "boardio.h"
+#include "callbacks.h"
 #include "dbgcfg.h"
 #include "globals.h"
 #include "hardware.h"
@@ -8,7 +9,6 @@
 #include "keymap.h"
 #include "keystate.h"
 #include "led_states.h"
-#include "right-entry-points.h"
 #include "sleepstate.h"
 #include "status_dump.h"
 
@@ -200,8 +200,9 @@ void loop() {
   state::hw downRight{now, rightSide, RightBoard};
   state::hw downLeft{clientUart, leftSide};
 
-  if (sleepState.CheckForSleeping(
-          downRight.switches | downLeft.switches, now, RightBoard)) {
+  // For sleeping, look at both sides of the keyboard
+  uint64_t down = downRight.switches | downLeft.switches;
+  if (sleepState.CheckForSleeping(down, now, RightBoard)) {
     // I'm assuming this saves power. If it doesn't, there's no point...
     delay(250);
     waitForEvent();
@@ -214,6 +215,12 @@ void loop() {
   // Get the before & after of each side into a 64 bit value
   uint64_t beforeLeft = leftSide.switches, afterLeft = downLeft.switches;
   uint64_t beforeRight = rightSide.switches, afterRight = downRight.switches;
+
+  // Pseudo-code for what I'm looking to clean up:
+#if 0
+  GetScanCodesForSwitchStates(&scanCodes, beforeLeft, afterLeft, beforeRight, afterRight);
+  PerformActionsForScanCodes(scanCodes);
+#endif
   uint64_t deltaLeft = beforeLeft ^ afterLeft;
   uint64_t deltaRight = beforeRight ^ afterRight;
   bool keysChanged = deltaLeft || deltaRight;
