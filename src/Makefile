@@ -301,7 +301,7 @@ ELF_FLAGS = ${OPT} ${TARGET} -save-temps \
 --specs=nano.specs \
 --specs=nosys.specs
 
-.PHONY: clean allclean left right flashl flashr display flashd
+.PHONY: clean allclean depclean left right flashl flashr display flashd
 
 all: ${OUT} left right display
 
@@ -372,6 +372,8 @@ allclean:
 clean:
 	@-${RMFILES} $(subst /,${DIV},${USER_OBJS} ${OUT}$*.elf ${OUT}/*.zip ${OUT}/*.hex ${OUT}${DIV}*.map)
 
+depclean:
+	@-${RMFILES} ${DEPS}
 # And now all the custom subdir rules :/
 
 ${OUT}/%.S.o : ${CORE_DIR}/%.S
