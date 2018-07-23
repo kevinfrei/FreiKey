@@ -1,7 +1,7 @@
 #if !defined(DBGCFG_H)
 #define DBGCFG_H
 
-#include <stdint.h>
+#include <cstdint>
 
 // This is just a couple of dumpers that show stuff on the AdaFruit serial port,
 // and a couple of macros to do stuff when the system is build with DEBUG=1 (or

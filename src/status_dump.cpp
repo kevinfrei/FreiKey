@@ -1,6 +1,7 @@
 #if defined(STATUS_DUMP)
 
-#include <bluefruit.h>
+#include "mybluefruit.h"
+#include <algorithm>
 
 #include "globals.h"
 #include "hardware.h"
@@ -41,7 +42,7 @@ void type_number(uint32_t val) {
   } while (val && curPos);
   type_string(&buffer[curPos]);
 }
-
+const layer_t maxLayers = 5;
 bool status_dump_check(const state::hw& rightSide, const state::hw& leftSide) {
   bool justRight = rightSide.switches == just_right_stat;
   bool leftCheck = leftSide.switches == status_keys_left;
@@ -57,8 +58,8 @@ bool status_dump_check(const state::hw& rightSide, const state::hw& leftSide) {
     type_string("Rbat: ");
     type_number(rightSide.battery_level);
     type_string("% Layer: ");
-    for (uint8_t i = 0; i <= min(layer_pos, 5); i++) {
-      uint8_t layerLoc = min(layer_stack[i], 5);
+    for (uint8_t i = 0; i <= std::min(layer_pos, maxLayers); i++) {
+      uint8_t layerLoc = std::min(layer_stack[i], maxLayers);
       type_string(layer_names[layerLoc]);
       type_string(" (");
       type_number(i);

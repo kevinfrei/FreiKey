@@ -1,7 +1,7 @@
 #if !defined(BOARDIO_H)
 #define BOARDIO_H
 
-#include <bluefruit.h>
+#include "mybluefruit.h"
 
 class BoardIO {
  public:
