@@ -1,7 +1,7 @@
 #if !defined(GLOBALS_H)
 #define GLOBALS_H
 
-#include <bluefruit.h>
+#include "mybluefruit.h"
 
 #include "sleepstate.h"
 #include "hardware.h"
