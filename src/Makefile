@@ -12,14 +12,14 @@ else
 	uname:=$(shell uname -s)
 endif
 
-GITROOT=../../Adafruit_nRF52_Arduino
+AFROOT=../../Adafruit_nRF52_Arduino
 SSD1306_ROOT=../../Adafruit_SSD1306
 GFX_ROOT=../../Adafruit-GFX-Library
 ifeq ($(uname), Windows)
 ADAFRUIT=${HOME}/AppData/Local/Arduino15/packages/adafruit
 RPORT=COM6
 LPORT=COM3
-NRFUTIL=${GITROOT}/tools/nrfutil-0.5.2/binaries/win32/nrfutil
+NRFUTIL=${AFROOT}/tools/nrfutil-0.5.2/binaries/win32/nrfutil
 RMFILES=del /q
 RMDIR=rmdir /s /q
 DIV=$(strip \ )
@@ -73,35 +73,35 @@ DISP_SRC = display.cpp disp_uart.cpp
 USER_SRC = ${SHARED_SRC} ${RIGHT_SRC} ${LEFT_SRC} ${DISP_SRC}
 
 INCLUDES=-Iinclude \
-	"-I${GITROOT}/cores/nRF5/SDK/components/toolchain/"\
-	"-I${GITROOT}/cores/nRF5/SDK/components/toolchain/cmsis/include"\
-	"-I${GITROOT}/cores/nRF5/SDK/components/toolchain/gcc/"\
-	"-I${GITROOT}/cores/nRF5/SDK/components/device/"\
-	"-I${GITROOT}/cores/nRF5/SDK/components/drivers_nrf/delay/"\
-	"-I${GITROOT}/cores/nRF5/SDK/components/drivers_nrf/hal/"\
-	"-I${GITROOT}/cores/nRF5/SDK/components/libraries/util/"\
-	"-I${GITROOT}/cores/nRF5/softdevice/s132/5.1.0/headers/"\
-	"-I${GITROOT}/cores/nRF5/freertos/source/include"\
-	"-I${GITROOT}/cores/nRF5/freertos/config"\
-	"-I${GITROOT}/cores/nRF5/freertos/portable/GCC/nrf52"\
-	"-I${GITROOT}/cores/nRF5/freertos/portable/CMSIS/nrf52"\
-	"-I${GITROOT}/cores/nRF5/sysview/SEGGER"\
-	"-I${GITROOT}/cores/nRF5/sysview/Config"\
-	"-I${GITROOT}/libraries/nffs/src/fs/nffs/include"\
-	"-I${GITROOT}/libraries/nffs/src/fs/fs/include"\
-	"-I${GITROOT}/libraries/nffs/src/fs/disk/include"\
-	"-I${GITROOT}/libraries/nffs/src/util/crc/include"\
-	"-I${GITROOT}/libraries/nffs/src/kernel/os/include"\
-	"-I${GITROOT}/libraries/nffs/src/kernel/os/include/os/arch/cortex_m4"\
-	"-I${GITROOT}/libraries/nffs/src/hw/hal/include"\
-	"-I${GITROOT}/libraries/nffs/src/sys/flash_map/include"\
-	"-I${GITROOT}/libraries/nffs/src/sys/defs/include"\
-	"-I${GITROOT}/cores/nRF5"\
-	"-I${GITROOT}/variants/feather52"\
-	"-I${GITROOT}/libraries/Bluefruit52Lib/src"\
-	"-I${GITROOT}/libraries/nffs/src"\
-	"-I${GITROOT}/libraries/SPI"\
-	"-I${GITROOT}/libraries/Wire"\
+	"-I${AFROOT}/cores/nRF5/SDK/components/toolchain/"\
+	"-I${AFROOT}/cores/nRF5/SDK/components/toolchain/cmsis/include"\
+	"-I${AFROOT}/cores/nRF5/SDK/components/toolchain/gcc/"\
+	"-I${AFROOT}/cores/nRF5/SDK/components/device/"\
+	"-I${AFROOT}/cores/nRF5/SDK/components/drivers_nrf/delay/"\
+	"-I${AFROOT}/cores/nRF5/SDK/components/drivers_nrf/hal/"\
+	"-I${AFROOT}/cores/nRF5/SDK/components/libraries/util/"\
+	"-I${AFROOT}/cores/nRF5/softdevice/s132/5.1.0/headers/"\
+	"-I${AFROOT}/cores/nRF5/freertos/source/include"\
+	"-I${AFROOT}/cores/nRF5/freertos/config"\
+	"-I${AFROOT}/cores/nRF5/freertos/portable/GCC/nrf52"\
+	"-I${AFROOT}/cores/nRF5/freertos/portable/CMSIS/nrf52"\
+	"-I${AFROOT}/cores/nRF5/sysview/SEGGER"\
+	"-I${AFROOT}/cores/nRF5/sysview/Config"\
+	"-I${AFROOT}/libraries/nffs/src/fs/nffs/include"\
+	"-I${AFROOT}/libraries/nffs/src/fs/fs/include"\
+	"-I${AFROOT}/libraries/nffs/src/fs/disk/include"\
+	"-I${AFROOT}/libraries/nffs/src/util/crc/include"\
+	"-I${AFROOT}/libraries/nffs/src/kernel/os/include"\
+	"-I${AFROOT}/libraries/nffs/src/kernel/os/include/os/arch/cortex_m4"\
+	"-I${AFROOT}/libraries/nffs/src/hw/hal/include"\
+	"-I${AFROOT}/libraries/nffs/src/sys/flash_map/include"\
+	"-I${AFROOT}/libraries/nffs/src/sys/defs/include"\
+	"-I${AFROOT}/cores/nRF5"\
+	"-I${AFROOT}/variants/feather52"\
+	"-I${AFROOT}/libraries/Bluefruit52Lib/src"\
+	"-I${AFROOT}/libraries/nffs/src"\
+	"-I${AFROOT}/libraries/SPI"\
+	"-I${AFROOT}/libraries/Wire"\
 	"-I${GFX_ROOT}"\
 	"-I${SSD1306_ROOT}"
 
@@ -110,36 +110,36 @@ CFLAGS=${TARGET} ${FLAGS} ${CODEGEN} ${CLANG} ${DEFINES} ${OPT} ${INCLUDES}
 SFLAGS=${TARGET} ${FLAGS} ${CODEGEN} ${SLANG} ${DEFINES} ${OPT} ${INCLUDES}
 
 BFLIB_SRCS =\
-	${GITROOT}/libraries/Bluefruit52Lib/src/BLEAdvertising.cpp\
-	${GITROOT}/libraries/Bluefruit52Lib/src/BLECentral.cpp\
-	${GITROOT}/libraries/Bluefruit52Lib/src/BLECharacteristic.cpp\
-	${GITROOT}/libraries/Bluefruit52Lib/src/BLEClientCharacteristic.cpp\
-	${GITROOT}/libraries/Bluefruit52Lib/src/BLEClientService.cpp\
-	${GITROOT}/libraries/Bluefruit52Lib/src/BLEDiscovery.cpp\
-	${GITROOT}/libraries/Bluefruit52Lib/src/BLEGap.cpp\
-	${GITROOT}/libraries/Bluefruit52Lib/src/BLEGatt.cpp\
-	${GITROOT}/libraries/Bluefruit52Lib/src/BLEScanner.cpp\
-	${GITROOT}/libraries/Bluefruit52Lib/src/BLEService.cpp\
-	${GITROOT}/libraries/Bluefruit52Lib/src/BLEUuid.cpp\
-	${GITROOT}/libraries/Bluefruit52Lib/src/bluefruit.cpp\
-	${GITROOT}/libraries/Bluefruit52Lib/src/clients/BLEAncs.cpp\
-	${GITROOT}/libraries/Bluefruit52Lib/src/clients/BLEClientCts.cpp\
-	${GITROOT}/libraries/Bluefruit52Lib/src/clients/BLEClientDis.cpp\
-	${GITROOT}/libraries/Bluefruit52Lib/src/clients/BLEClientUart.cpp\
-	${GITROOT}/libraries/Bluefruit52Lib/src/services/BLEBas.cpp\
-	${GITROOT}/libraries/Bluefruit52Lib/src/services/BLEBeacon.cpp\
-	${GITROOT}/libraries/Bluefruit52Lib/src/services/BLEDfu.cpp\
-	${GITROOT}/libraries/Bluefruit52Lib/src/services/BLEDis.cpp\
-	${GITROOT}/libraries/Bluefruit52Lib/src/services/BLEHidAdafruit.cpp\
-	${GITROOT}/libraries/Bluefruit52Lib/src/services/BLEHidGeneric.cpp\
-	${GITROOT}/libraries/Bluefruit52Lib/src/services/BLEMidi.cpp\
-	${GITROOT}/libraries/Bluefruit52Lib/src/services/BLEUart.cpp\
-	${GITROOT}/libraries/Bluefruit52Lib/src/services/bonding.cpp\
-	${GITROOT}/libraries/Bluefruit52Lib/src/services/EddyStone.cpp\
-	${GITROOT}/libraries/Bluefruit52Lib/src/utility/bootloader_util.c\
-	${GITROOT}/libraries/Bluefruit52Lib/src/utility/AdaMsg.cpp
+	${AFROOT}/libraries/Bluefruit52Lib/src/BLEAdvertising.cpp\
+	${AFROOT}/libraries/Bluefruit52Lib/src/BLECentral.cpp\
+	${AFROOT}/libraries/Bluefruit52Lib/src/BLECharacteristic.cpp\
+	${AFROOT}/libraries/Bluefruit52Lib/src/BLEClientCharacteristic.cpp\
+	${AFROOT}/libraries/Bluefruit52Lib/src/BLEClientService.cpp\
+	${AFROOT}/libraries/Bluefruit52Lib/src/BLEDiscovery.cpp\
+	${AFROOT}/libraries/Bluefruit52Lib/src/BLEGap.cpp\
+	${AFROOT}/libraries/Bluefruit52Lib/src/BLEGatt.cpp\
+	${AFROOT}/libraries/Bluefruit52Lib/src/BLEScanner.cpp\
+	${AFROOT}/libraries/Bluefruit52Lib/src/BLEService.cpp\
+	${AFROOT}/libraries/Bluefruit52Lib/src/BLEUuid.cpp\
+	${AFROOT}/libraries/Bluefruit52Lib/src/bluefruit.cpp\
+	${AFROOT}/libraries/Bluefruit52Lib/src/clients/BLEAncs.cpp\
+	${AFROOT}/libraries/Bluefruit52Lib/src/clients/BLEClientCts.cpp\
+	${AFROOT}/libraries/Bluefruit52Lib/src/clients/BLEClientDis.cpp\
+	${AFROOT}/libraries/Bluefruit52Lib/src/clients/BLEClientUart.cpp\
+	${AFROOT}/libraries/Bluefruit52Lib/src/services/BLEBas.cpp\
+	${AFROOT}/libraries/Bluefruit52Lib/src/services/BLEBeacon.cpp\
+	${AFROOT}/libraries/Bluefruit52Lib/src/services/BLEDfu.cpp\
+	${AFROOT}/libraries/Bluefruit52Lib/src/services/BLEDis.cpp\
+	${AFROOT}/libraries/Bluefruit52Lib/src/services/BLEHidAdafruit.cpp\
+	${AFROOT}/libraries/Bluefruit52Lib/src/services/BLEHidGeneric.cpp\
+	${AFROOT}/libraries/Bluefruit52Lib/src/services/BLEMidi.cpp\
+	${AFROOT}/libraries/Bluefruit52Lib/src/services/BLEUart.cpp\
+	${AFROOT}/libraries/Bluefruit52Lib/src/services/bonding.cpp\
+	${AFROOT}/libraries/Bluefruit52Lib/src/services/EddyStone.cpp\
+	${AFROOT}/libraries/Bluefruit52Lib/src/utility/bootloader_util.c\
+	${AFROOT}/libraries/Bluefruit52Lib/src/utility/AdaMsg.cpp
 
-BFLIB_DIR = ${GITROOT}/libraries/Bluefruit52Lib/src
+BFLIB_DIR = ${AFROOT}/libraries/Bluefruit52Lib/src
 BFLIB_DIRCLIENTS = ${BFLIB_DIR}/clients
 BFLIB_DIRSERVICES = ${BFLIB_DIR}/services
 BFLIB_DIRUTILITY = ${BFLIB_DIR}/utility
@@ -149,41 +149,41 @@ BFLIB_OBJS = \
 		$(patsubst %.c, %.c.o, $(patsubst %.cpp, %.cpp.o, $(notdir ${BFLIB_SRCS}))))
 
 NFFS_SRCS =\
-	${GITROOT}/libraries/nffs/src/Nffs.cpp\
-	${GITROOT}/libraries/nffs/src/NffsDir.cpp\
-	${GITROOT}/libraries/nffs/src/NffsDirEntry.cpp\
-	${GITROOT}/libraries/nffs/src/NffsFile.cpp\
-	${GITROOT}/libraries/nffs/src/fs/disk/src/disk.c\
-	${GITROOT}/libraries/nffs/src/fs/fs/src/fs_cli.c\
-	${GITROOT}/libraries/nffs/src/fs/fs/src/fs_dirent.c\
-	${GITROOT}/libraries/nffs/src/fs/fs/src/fs_file.c\
-	${GITROOT}/libraries/nffs/src/fs/fs/src/fs_mkdir.c\
-	${GITROOT}/libraries/nffs/src/fs/fs/src/fs_mount.c\
-	${GITROOT}/libraries/nffs/src/fs/fs/src/fsutil.c\
-	${GITROOT}/libraries/nffs/src/fs/nffs/src/nffs.c\
-	${GITROOT}/libraries/nffs/src/fs/nffs/src/nffs_area.c\
-	${GITROOT}/libraries/nffs/src/fs/nffs/src/nffs_block.c\
-	${GITROOT}/libraries/nffs/src/fs/nffs/src/nffs_cache.c\
-	${GITROOT}/libraries/nffs/src/fs/nffs/src/nffs_config.c\
-	${GITROOT}/libraries/nffs/src/fs/nffs/src/nffs_crc.c\
-	${GITROOT}/libraries/nffs/src/fs/nffs/src/nffs_dir.c\
-	${GITROOT}/libraries/nffs/src/fs/nffs/src/nffs_file.c\
-	${GITROOT}/libraries/nffs/src/fs/nffs/src/nffs_flash.c\
-	${GITROOT}/libraries/nffs/src/fs/nffs/src/nffs_format.c\
-	${GITROOT}/libraries/nffs/src/fs/nffs/src/nffs_gc.c\
-	${GITROOT}/libraries/nffs/src/fs/nffs/src/nffs_hash.c\
-	${GITROOT}/libraries/nffs/src/fs/nffs/src/nffs_inode.c\
-	${GITROOT}/libraries/nffs/src/fs/nffs/src/nffs_misc.c\
-	${GITROOT}/libraries/nffs/src/fs/nffs/src/nffs_path.c\
-	${GITROOT}/libraries/nffs/src/fs/nffs/src/nffs_restore.c\
-	${GITROOT}/libraries/nffs/src/fs/nffs/src/nffs_write.c\
-	${GITROOT}/libraries/nffs/src/hw/hal/src/hal_flash.c\
-	${GITROOT}/libraries/nffs/src/kernel/os/src/os_mempool.c\
-	${GITROOT}/libraries/nffs/src/sys/flash_map/src/flash_map.c\
-	${GITROOT}/libraries/nffs/src/util/crc/src/crc16.c\
-	${GITROOT}/libraries/nffs/src/util/crc/src/crc8.c
+	${AFROOT}/libraries/nffs/src/Nffs.cpp\
+	${AFROOT}/libraries/nffs/src/NffsDir.cpp\
+	${AFROOT}/libraries/nffs/src/NffsDirEntry.cpp\
+	${AFROOT}/libraries/nffs/src/NffsFile.cpp\
+	${AFROOT}/libraries/nffs/src/fs/disk/src/disk.c\
+	${AFROOT}/libraries/nffs/src/fs/fs/src/fs_cli.c\
+	${AFROOT}/libraries/nffs/src/fs/fs/src/fs_dirent.c\
+	${AFROOT}/libraries/nffs/src/fs/fs/src/fs_file.c\
+	${AFROOT}/libraries/nffs/src/fs/fs/src/fs_mkdir.c\
+	${AFROOT}/libraries/nffs/src/fs/fs/src/fs_mount.c\
+	${AFROOT}/libraries/nffs/src/fs/fs/src/fsutil.c\
+	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs.c\
+	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs_area.c\
+	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs_block.c\
+	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs_cache.c\
+	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs_config.c\
+	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs_crc.c\
+	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs_dir.c\
+	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs_file.c\
+	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs_flash.c\
+	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs_format.c\
+	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs_gc.c\
+	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs_hash.c\
+	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs_inode.c\
+	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs_misc.c\
+	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs_path.c\
+	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs_restore.c\
+	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs_write.c\
+	${AFROOT}/libraries/nffs/src/hw/hal/src/hal_flash.c\
+	${AFROOT}/libraries/nffs/src/kernel/os/src/os_mempool.c\
+	${AFROOT}/libraries/nffs/src/sys/flash_map/src/flash_map.c\
+	${AFROOT}/libraries/nffs/src/util/crc/src/crc16.c\
+	${AFROOT}/libraries/nffs/src/util/crc/src/crc8.c
 
-NFFS_DIR = ${GITROOT}/libraries/nffs/src
+NFFS_DIR = ${AFROOT}/libraries/nffs/src
 NFFS_DIR_DISK = ${NFFS_DIR}/fs/disk/src
 NFFS_DIR_FS = ${NFFS_DIR}/fs/fs/src
 NFFS_DIR_NFFS = ${NFFS_DIR}/fs/nffs/src
@@ -196,58 +196,58 @@ NFFS_OBJS = $(addprefix ${OUT}/, \
 	$(patsubst %.c, %.c.o, $(patsubst %.cpp, %.cpp.o, $(notdir ${NFFS_SRCS}))))
 
 CORE_SRCS = \
-	${GITROOT}/variants/feather52/variant.cpp\
-	${GITROOT}/cores/nRF5/gcc_startup_nrf52.S\
-	${GITROOT}/cores/nRF5/pulse_asm.S\
-	${GITROOT}/cores/nRF5/WInterrupts.c\
-	${GITROOT}/cores/nRF5/delay.c\
-	${GITROOT}/cores/nRF5/hooks.c\
-	${GITROOT}/cores/nRF5/itoa.c\
-	${GITROOT}/cores/nRF5/nrf52_flash.c\
-	${GITROOT}/cores/nRF5/pulse.c\
-	${GITROOT}/cores/nRF5/syscall_newlib.c\
-	${GITROOT}/cores/nRF5/wiring.c\
-	${GITROOT}/cores/nRF5/wiring_analog_nRF52.c\
-	${GITROOT}/cores/nRF5/wiring_digital.c\
-	${GITROOT}/cores/nRF5/wiring_private.c\
-	${GITROOT}/cores/nRF5/wiring_shift.c\
-	${GITROOT}/cores/nRF5/SDK/components/libraries/util/app_util_platform.c\
-	${GITROOT}/cores/nRF5/SDK/components/toolchain/system_nrf52.c\
-	${GITROOT}/cores/nRF5/avr/dtostrf.c\
-	${GITROOT}/cores/nRF5/freertos/portable/CMSIS/nrf52/port_cmsis.c\
-	${GITROOT}/cores/nRF5/freertos/portable/CMSIS/nrf52/port_cmsis_systick.c\
-	${GITROOT}/cores/nRF5/freertos/portable/GCC/nrf52/port.c\
-	${GITROOT}/cores/nRF5/freertos/source/croutine.c\
-	${GITROOT}/cores/nRF5/freertos/source/event_groups.c\
-	${GITROOT}/cores/nRF5/freertos/source/list.c\
-	${GITROOT}/cores/nRF5/freertos/source/queue.c\
-	${GITROOT}/cores/nRF5/freertos/source/tasks.c\
-	${GITROOT}/cores/nRF5/freertos/source/timers.c\
-	${GITROOT}/cores/nRF5/freertos/source/portable/MemMang/heap_3.c\
-	${GITROOT}/cores/nRF5/sysview/SEGGER_SYSVIEW_Config_FreeRTOS.c\
-	${GITROOT}/cores/nRF5/sysview/SEGGER_SYSVIEW_FreeRTOS.c\
-	${GITROOT}/cores/nRF5/sysview/SEGGER/SEGGER_RTT.c\
-	${GITROOT}/cores/nRF5/sysview/SEGGER/SEGGER_SYSVIEW.c\
-	${GITROOT}/cores/nRF5/utility/AdaCallback.c\
-	${GITROOT}/cores/nRF5/utility/utilities.c\
-	${GITROOT}/cores/nRF5/HardwarePWM.cpp\
-	${GITROOT}/cores/nRF5/IPAddress.cpp\
-	${GITROOT}/cores/nRF5/Print.cpp\
-	${GITROOT}/cores/nRF5/RingBuffer.cpp\
-	${GITROOT}/cores/nRF5/Stream.cpp\
-	${GITROOT}/cores/nRF5/Uart.cpp\
-	${GITROOT}/cores/nRF5/WMath.cpp\
-	${GITROOT}/cores/nRF5/WString.cpp\
-	${GITROOT}/cores/nRF5/abi.cpp\
-	${GITROOT}/cores/nRF5/debug.cpp\
-	${GITROOT}/cores/nRF5/main.cpp\
-	${GITROOT}/cores/nRF5/new.cpp\
-	${GITROOT}/cores/nRF5/rtos.cpp\
-	${GITROOT}/cores/nRF5/wiring_analog.cpp\
-	${GITROOT}/cores/nRF5/utility/adafruit_fifo.cpp
+	${AFROOT}/variants/feather52/variant.cpp\
+	${AFROOT}/cores/nRF5/gcc_startup_nrf52.S\
+	${AFROOT}/cores/nRF5/pulse_asm.S\
+	${AFROOT}/cores/nRF5/WInterrupts.c\
+	${AFROOT}/cores/nRF5/delay.c\
+	${AFROOT}/cores/nRF5/hooks.c\
+	${AFROOT}/cores/nRF5/itoa.c\
+	${AFROOT}/cores/nRF5/nrf52_flash.c\
+	${AFROOT}/cores/nRF5/pulse.c\
+	${AFROOT}/cores/nRF5/syscall_newlib.c\
+	${AFROOT}/cores/nRF5/wiring.c\
+	${AFROOT}/cores/nRF5/wiring_analog_nRF52.c\
+	${AFROOT}/cores/nRF5/wiring_digital.c\
+	${AFROOT}/cores/nRF5/wiring_private.c\
+	${AFROOT}/cores/nRF5/wiring_shift.c\
+	${AFROOT}/cores/nRF5/SDK/components/libraries/util/app_util_platform.c\
+	${AFROOT}/cores/nRF5/SDK/components/toolchain/system_nrf52.c\
+	${AFROOT}/cores/nRF5/avr/dtostrf.c\
+	${AFROOT}/cores/nRF5/freertos/portable/CMSIS/nrf52/port_cmsis.c\
+	${AFROOT}/cores/nRF5/freertos/portable/CMSIS/nrf52/port_cmsis_systick.c\
+	${AFROOT}/cores/nRF5/freertos/portable/GCC/nrf52/port.c\
+	${AFROOT}/cores/nRF5/freertos/source/croutine.c\
+	${AFROOT}/cores/nRF5/freertos/source/event_groups.c\
+	${AFROOT}/cores/nRF5/freertos/source/list.c\
+	${AFROOT}/cores/nRF5/freertos/source/queue.c\
+	${AFROOT}/cores/nRF5/freertos/source/tasks.c\
+	${AFROOT}/cores/nRF5/freertos/source/timers.c\
+	${AFROOT}/cores/nRF5/freertos/source/portable/MemMang/heap_3.c\
+	${AFROOT}/cores/nRF5/sysview/SEGGER_SYSVIEW_Config_FreeRTOS.c\
+	${AFROOT}/cores/nRF5/sysview/SEGGER_SYSVIEW_FreeRTOS.c\
+	${AFROOT}/cores/nRF5/sysview/SEGGER/SEGGER_RTT.c\
+	${AFROOT}/cores/nRF5/sysview/SEGGER/SEGGER_SYSVIEW.c\
+	${AFROOT}/cores/nRF5/utility/AdaCallback.c\
+	${AFROOT}/cores/nRF5/utility/utilities.c\
+	${AFROOT}/cores/nRF5/HardwarePWM.cpp\
+	${AFROOT}/cores/nRF5/IPAddress.cpp\
+	${AFROOT}/cores/nRF5/Print.cpp\
+	${AFROOT}/cores/nRF5/RingBuffer.cpp\
+	${AFROOT}/cores/nRF5/Stream.cpp\
+	${AFROOT}/cores/nRF5/Uart.cpp\
+	${AFROOT}/cores/nRF5/WMath.cpp\
+	${AFROOT}/cores/nRF5/WString.cpp\
+	${AFROOT}/cores/nRF5/abi.cpp\
+	${AFROOT}/cores/nRF5/debug.cpp\
+	${AFROOT}/cores/nRF5/main.cpp\
+	${AFROOT}/cores/nRF5/new.cpp\
+	${AFROOT}/cores/nRF5/rtos.cpp\
+	${AFROOT}/cores/nRF5/wiring_analog.cpp\
+	${AFROOT}/cores/nRF5/utility/adafruit_fifo.cpp
 
-CORE_DIR = ${GITROOT}/cores/nRF5
-CORE_DIR_VAR = ${GITROOT}/variants/feather52
+CORE_DIR = ${AFROOT}/cores/nRF5
+CORE_DIR_VAR = ${AFROOT}/variants/feather52
 CORE_DIR_UTIL = ${CORE_DIR}/utility
 CORE_DIR_SDKUTIL = ${CORE_DIR}/SDK/components/libraries/util
 CORE_DIR_TOOLCHAIN = ${CORE_DIR}/SDK/components/toolchain
@@ -274,8 +274,8 @@ GFX_OBJS = \
 	$(addprefix ${OUT}/, $(patsubst %.cpp, %.cpp.o, $(notdir ${GFX_SRCS})))
 
 SER_SRCS = \
-	${GITROOT}/libraries/SPI/SPI.cpp\
-	${GITROOT}/libraries/Wire/Wire_nRF52.cpp
+	${AFROOT}/libraries/SPI/SPI.cpp\
+	${AFROOT}/libraries/Wire/Wire_nRF52.cpp
 
 SER_OBJS = \
 	$(addprefix ${OUT}/, $(patsubst %.cpp, %.cpp.o, $(notdir ${SER_SRCS})))
@@ -288,7 +288,7 @@ DISP_OBJS = $(addprefix ${OUT}/, $(patsubst %.cpp, %.cpp.o, ${DISP_SRC}))
 USER_OBJS =  $(addprefix ${OUT}/, $(patsubst %.cpp, %.cpp.o, ${USER_SRC}))
 
 ELF_FLAGS = ${OPT} ${TARGET} -save-temps \
--L${GITROOT}/cores/nRF5/linker \
+-L${AFROOT}/cores/nRF5/linker \
 -L${OUT} \
 "-Tbluefruit52_s132_5.1.0.ld" \
 -u _printf_float \
@@ -469,8 +469,8 @@ ${OUT}/%.cpp.o: ${GFX_ROOT}/%.cpp
 ${OUT}/%.cpp.o: ${SSD1306_ROOT}/%.cpp
 	${CPP} -c ${CPPFLAGS} -o $@ $<
 
-${OUT}/%.cpp.o: ${GITROOT}/libraries/SPI/%.cpp
+${OUT}/%.cpp.o: ${AFROOT}/libraries/SPI/%.cpp
 	${CPP} -c ${CPPFLAGS} -o $@ $<
 
-${OUT}/%.cpp.o: ${GITROOT}/libraries/Wire/%.cpp
+${OUT}/%.cpp.o: ${AFROOT}/libraries/Wire/%.cpp
 	${CPP} -c ${CPPFLAGS} -o $@ $<
