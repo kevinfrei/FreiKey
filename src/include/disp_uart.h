@@ -20,7 +20,8 @@ namespace disp_uart {
 uint8_t encodeBatteryValue(uint8_t chargeRemaining,
                            bool isCharging,
                            bool isPresent);
-
+void drawBattery(uint8_t rate, uint8_t x, uint8_t y);
+void drawLayer(uint8_t lyr, uint8_t x, uint8_t y);
 enum class header : uint8_t { status = 1, string, value };
 
 template <typename T, header V>

@@ -19,6 +19,7 @@ ifeq ($(uname), Windows)
 ADAFRUIT=${HOME}/AppData/Local/Arduino15/packages/adafruit
 RPORT=COM6
 LPORT=COM3
+DPORT=COM9
 NRFUTIL=${AFROOT}/tools/nrfutil-0.5.2/binaries/win32/nrfutil
 RMFILES=del /q
 RMDIR=rmdir /s /q
@@ -27,6 +28,7 @@ else
 ADAFRUIT=${HOME}/Library/Arduino15/packages/adafruit
 LPORT=/dev/cu.SLAB_USBtoUART
 RPORT=/dev/cu.SLAB_USBtoUART
+DPORT=/dev/cu.SLAB_USBtoUART
 NRFUTIL=/usr/local/bin/nrfutil
 RMFILES=rm
 RMDIR=rm -rf
@@ -316,7 +318,7 @@ flashr: ${OUT}/right-master.zip
 	${NRFUTIL} --verbose dfu serial -pkg $< -p ${RPORT} -b 115200
 
 flashd: ${OUT}/display.zip
-	${NRFUTIL} --verbose dfu serial -pkg $< -p ${RPORT} -b 115200
+	${NRFUTIL} --verbose dfu serial -pkg $< -p ${DPORT} -b 115200
 
 left: ${OUT}/left-slave.zip
 
