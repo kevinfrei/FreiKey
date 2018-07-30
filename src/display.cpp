@@ -29,7 +29,6 @@ void setup() {
 
   // Clear the buffer.
   display.clearDisplay();
-  display.fillRect(0,0,128,32,WHITE);
   display.display(); // actually display all of the above
 }
 
@@ -60,8 +59,8 @@ void loop() {
   */
   }
   disp_uart::drawBattery(count, 0, 2);
-  disp_uart::drawLayer((6 & (count / 25)) >> 1, 37, 0);
-  disp_uart::drawLayer(3 & (count / 40 + 57), 66, 0);
+  disp_uart::drawLayer((count / 50) % 5, 37, 0);
+  disp_uart::drawLayer((count / 40 + 57) % 5, 66, 0);
   disp_uart::drawBattery(count * 4, 96, 2);
   count++;
   display.display();
