@@ -32,12 +32,6 @@ void setup() {
   display.display(); // actually display all of the above
 }
 
-void showValue(uint32_t val, uint16_t y) {
-  for (uint16_t x = 0; x < 32; x++) {
-    display.drawPixel(x, y, (val & (1 << x)) ? WHITE : BLACK);
-  }
-}
-
 // Design:
 uint8_t count = 0;
 uint32_t lastFrameRender = 0;

@@ -13,6 +13,7 @@ bool SleepState::CheckForSleeping(uint64_t switches,
       if (sleeping) {
         // Turn off the LED if we were sleeping
         board.setLED(0);
+        DBG(dumpVal(lastPressTime, "Exiting sleep from "));
       }
       sleeping = false;
       lastPressTime = time;
@@ -20,6 +21,7 @@ bool SleepState::CheckForSleeping(uint64_t switches,
       // 5 minutes before we sleep
       // Do other stuff to get into low power mode, here!
       sleeping = true;
+      DBG(dumpVal(time, "Entering sleep from "));
     }
   }
   if (sleeping || forced) {
@@ -33,9 +35,12 @@ bool SleepState::CheckForSleeping(uint64_t switches,
 }
 
 void SleepState::BeginForcedSleepMode() {
+  DBG(dumpVal(lastPressTime, "Forced sleep at "));
   forced = true;
 }
 
 void SleepState::EndForcedSleepMode() {
+  DBG(dumpVal(lastPressTime, "Forced sleep stopped at "));
   forced = false;
+  sleeping = true;
 }
