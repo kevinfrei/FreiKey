@@ -29,7 +29,6 @@ void setup() {
 
   // Clear the buffer.
   display.clearDisplay();
-  display.fillRect(0,0,128,32,WHITE);
   display.display(); // actually display all of the above
 }
 
