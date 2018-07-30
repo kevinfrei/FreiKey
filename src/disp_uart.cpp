@@ -58,7 +58,7 @@ void drawWin(uint8_t x, uint8_t y) {
   display.drawFastHLine(x, y + 10, 21, BLACK);
 }
 
-uint8_t apple[] = {
+constexpr uint8_t apple[] = {
     0x00, 0x10, // ---- ---- ---X ----
     0x00, 0x30, // ---- ---- --XX ----
     0x00, 0x70, // ---- ---- -XXX ----
@@ -82,7 +82,7 @@ uint8_t apple[] = {
     0x0E, 0x38 //  ---- XXX- --XX X---
 };
 
-uint8_t linux[] = {
+constexpr uint8_t linux[] = {
     0x00, 0x00, 0xE0, // ---- ---- ---- ---- XXX- -|||
     0x00, 0x01, 0xF0, // ---- ---- ---- ---X XXXX -|||
     0x00, 0x1D, 0xF0, // ---- ---- ---X XX-X XXXX -|||
@@ -106,7 +106,7 @@ uint8_t linux[] = {
     0x00, 0x00, 0xE0 //  ---- ---- ---- ---- XXX- -|||
 };
 
-uint8_t func[] = {
+constexpr uint8_t func[] = {
     0x0C, 0x00, // ---- XX-- ---- ----
     0x1C, 0x00, // ---X XX-- ---- ----
     0x38, 0x00, // --XX X--- ---- ----
@@ -130,16 +130,33 @@ uint8_t func[] = {
     0x31, 0x83, // --XX ---X X--- --XX
 };
 
+constexpr uint8_t blueicon[] = {
+    0x06, 0x00, // ---- -xx- ---
+    0x07, 0x00, // ---- -xxx ---
+    0x07, 0x80, // ---- -xxx x--
+    0x06, 0xC0, // ---- -xx- xx-
+    0xC6, 0x60, // -xx- -xx- -xx
+    0x36, 0xC0, // --xx -xx- xx-
+    0x1F, 0x80, // ---x xxxx x--
+    0x0F, 0x00, // ---- xxxx ---
+    0x1F, 0x80, // ---x xxxx x--
+    0x36, 0xC0, // --xx -xx- xx-
+    0xC6, 0x60, // -xx- -xx- -xx
+    0x06, 0xC0, // ---- -xx- xx-
+    0x07, 0x80, // ---- -xxx x--
+    0x07, 0x00, // ---- -xxx ---
+    0x06, 0x00  // ---- -xx- ---
+};
 struct layer {
   union {
     void (*render)(uint8_t x, uint8_t y);
-    uint8_t* buffer;
+    const uint8_t* buffer;
   };
   uint8_t w, h, xo, yo;
 
   layer(void (*r)(uint8_t x, uint8_t o))
       : render(r), w(0), h(0), xo(0), yo(0) {}
-  layer(uint8_t* buf, uint8_t w, uint8_t h, uint8_t xo = 0, uint8_t yo = 0)
+  layer(const uint8_t* buf, uint8_t w, uint8_t h, uint8_t xo = 0, uint8_t yo = 0)
       : buffer(buf), w(w), h(h), xo(xo), yo(yo) {}
   void draw(uint8_t x, uint8_t y) {
     if (w) {
@@ -153,7 +170,8 @@ struct layer {
 layer layers[] = {layer(&apple[0], 16, 21, 1),
                   layer(drawWin),
                   layer(&linux[0], 21, 21),
-                  layer(&func[0], 16, 21)};
+                  layer(&func[0], 16, 21),
+                  layer(&blueicon[0], 11, 15)};
 
 void drawLayer(uint8_t lyr, uint8_t x, uint8_t y) {
   layers[lyr].draw(x, y);
