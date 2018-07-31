@@ -16,7 +16,8 @@ constexpr BoardIO LeftBoard = {
     {15, 2, 16, 7, 30, 27, 11}, {5, 12, 13, 28, 4, 3}, 29};
 
 void setup() {
-  state::shared_setup(LeftBoard);
+  DBG(Serial.begin(115200));
+  LeftBoard.Configure();
   Bluefruit.begin();
   // Turn off the Bluetooth LED
   Bluefruit.autoConnLed(false);

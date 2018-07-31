@@ -377,7 +377,8 @@ void loop() {
 // In Arduino world the 'setup' function is called to initialize the device.
 // The 'loop' function is called over & over again, after setup completes.
 void setup() {
-  state::shared_setup(RightBoard);
+  DBG(Serial.begin(115200));
+  RightBoard.Configure();
   resetTheWorld();
 
   // Central and peripheral

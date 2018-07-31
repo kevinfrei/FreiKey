@@ -16,8 +16,6 @@ constexpr char* LHS_NAME = "FreiKeys-Slave";
 
 namespace state {
 
-void shared_setup(const BoardIO& pd);
-
 // This struct is to encapsulate the complete hardware state, including both
 // which switches are down, as well as the current battery level.
 struct hw {

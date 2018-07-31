@@ -12,11 +12,6 @@ uint32_t last_bat_time = 0;
 uint32_t scans_since_last_time = 0;
 #endif
 
-void shared_setup(const BoardIO& pd) {
-  pd.Configure();
-  DBG(Serial.begin(115200));
-}
-
 uint8_t readBattery(uint32_t now, uint8_t prev) {
   if (prev && now - last_bat_time <= 30000) {
     // There's a lot of variance in the reading, so no need to over-report it.
