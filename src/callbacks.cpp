@@ -75,3 +75,5 @@ void scan(ble_gap_evt_adv_report_t* report) {
 }
 
 } // namespace callback
+
+void rtos_idle_callback(void) {}
