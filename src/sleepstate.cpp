@@ -25,10 +25,8 @@ bool SleepState::CheckForSleeping(uint64_t switches,
     }
   }
   if (sleeping || forced) {
-    // This should make the LED 'breathe' a bit
-    uint8_t brightness = (time >> 9) & 7;
-    if (brightness > 3)
-      brightness = 7 - brightness;
+    // Blink the LED a little bit
+    uint8_t brightness = !((time >> 9) & 3);
     board.setLED(brightness);
   }
   return sleeping;
