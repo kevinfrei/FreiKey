@@ -12,6 +12,10 @@
         "string": "cpp",
         "string_view": "cpp",
         "vector": "cpp",
-        "chrono": "cpp"
+        "chrono": "cpp",
+        "locale": "cpp",
+        "system_error": "cpp",
+        "queue": "cpp",
+        "__locale": "cpp"
     }
 }
