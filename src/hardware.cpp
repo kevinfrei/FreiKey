@@ -76,6 +76,7 @@ bool hw::operator!=(const hw& o) const {
 void hw::dump() const {
   dumpVal(battery_level, "Battery Level:");
   dumpHex(switches, "Integer value: ");
+  Serial.println("");
   for (int64_t r = 0; r < BoardIO::numrows; r++) {
     for (int64_t c = BoardIO::numcols - 1; c >= 0; c--) {
       uint64_t mask = 1ULL << (r * BoardIO::numcols + c);
