@@ -44,7 +44,9 @@ AR=${TOOLS}/bin/arm-none-eabi-ar
 
 # Flags for compilation
 # First, DEBUG and STATUS_DUMP configuration flags (then everything else)
-DEFINES=-DDEBUG -DSTATUS_DUMP \
+# -DDEBUG
+# -DDEBUG=2
+DEFINES=-DSTATUS_DUMP \
 -DF_CPU=64000000 \
 -DARDUINO=10805 \
 -DARDUINO_NRF52_FEATHER \
