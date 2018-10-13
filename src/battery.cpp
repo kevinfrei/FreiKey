@@ -7,8 +7,9 @@
 // Some globals used by each half
 // The last time we reported the battery
 uint32_t last_bat_time = 0;
-uint8_t last_8_reads[8] = {0};
-int8_t cur_bat_loc = -9;
+constexpr uint8_t num_reads = 8;
+uint8_t last_8_reads[num_reads] = {0};
+int8_t cur_bat_loc = -1 - num_reads;
 
 uint8_t readBattery(uint32_t now, uint8_t prev) {
   if (prev && now - last_bat_time <= 30000) {
@@ -21,15 +22,16 @@ uint8_t readBattery(uint32_t now, uint8_t prev) {
 #endif
   last_bat_time = now;
   cur_bat_loc++;
+  uint8_t bounds = num_reads;
   if (cur_bat_loc < 0) {
-    // Don't average the reads until we have 8 of them.
-    last_8_reads[8 - cur_bat_loc] = bat_percentage;
-    return bat_percentage;
+    bounds = 8 + cur_bat_loc + 1;
+    last_8_reads[bounds - 1] = bat_percentage;
+  } else {
+    cur_bat_loc = cur_bat_loc % bounds;
+    last_8_reads[cur_bat_loc] = bat_percentage;
   }
-  cur_bat_loc &= 7;
-  last_8_reads[cur_bat_loc] = bat_percentage;
   uint32_t total = 0;
-  for (uint8_t i = 0; i < 8; i++)
+  for (uint8_t i = 0; i < bounds; i++)
     total += last_8_reads[i];
-  return total / 8;
+  return total / bounds;
 }
