@@ -190,12 +190,52 @@ void updateBatteryLevel(const state::hw& downLeft, const state::hw& downRight) {
   }
 }
 
+// We need to delay the master by a little bit to prevent mis-timing
+bool dataWaiting = false;
+uint32_t dataTime;
+uint64_t switchData;
+// # of milliseconds to delay the local keyboard before reporting
+// It's kind of surprising how annoying the latency is when I get typing fast...
+constexpr uint32_t DELAY = 8;
+
 void loop() {
   uint32_t now = millis();
 
   // Get the hardware state for the two sides...
   state::hw downRight{now, rightSide, RightBoard};
   state::hw downLeft{clientUart, leftSide};
+
+  // This is the master-side buffering code
+  if (downRight.switches != rightSide.switches) {
+    // There's a change: put it in the delay buffer
+    if (dataWaiting) {
+      if (switchData != downRight.switches) {
+        // We already have a different change buffered, report it early :/
+        std::swap(switchData, downRight.switches);
+        dataTime = now;
+      } else if (now - dataTime > DELAY) {
+        // There's no change from what we're reading, but it's time to report
+        dataWaiting = false;
+      } else {
+        // No changes from the buffered data
+        // Sit on this change (i.e. revert to previous)
+        downRight.switches = rightSide.switches;
+      }
+    } else {
+      // We have no pending change: Just queue up this one
+      dataWaiting = true;
+      dataTime = now;
+      switchData = downRight.switches;
+      downRight.switches = rightSide.switches;
+    }
+  } else {
+    // We've observed the same thing we've already reported
+    if (dataWaiting && now - dataTime > DELAY) {
+      // we have waiting data ready to report
+      std::swap(downRight.switches, switchData);
+      dataWaiting = false;
+    }
+  }
 
   // For sleeping, look at both sides of the keyboard
   uint64_t down = downRight.switches | downLeft.switches;
