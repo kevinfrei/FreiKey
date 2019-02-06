@@ -5,16 +5,28 @@
 OUT=out
 
 # AdaFruit library installation location/version malarkey
-VER=0.8.4
+# Arduino Version
+ARDUINO_VER=10808
+# AdaFruit Software Version
+ADA_DOT_VER=0.9.3
+# "Soft Device" version
+SD_VER=132
+# "Soft Device" subversion
+SDS_DOT_VER=6.1.1
+SDS_VER=611
+LINKER_SCRIPT=nrf52832_s${SD_VER}_v6.ld
+
 ifeq ($(OS),Windows_NT)
 	uname:=Windows
 else
 	uname:=$(shell uname -s)
 endif
 
-AFROOT=../../Adafruit_nRF52_Arduino
-SSD1306_ROOT=../../Adafruit_SSD1306
-GFX_ROOT=../../Adafruit-GFX-Library
+# External dependency locations
+AFROOT=Adafruit
+SSD1306_ROOT=SSD1306
+GFX_ROOT=GFX
+
 ifeq ($(uname), Windows)
 ADAFRUIT=${HOME}/AppData/Local/Arduino15/packages/adafruit
 RPORT=COM6
@@ -29,7 +41,7 @@ ADAFRUIT=${HOME}/Library/Arduino15/packages/adafruit
 LPORT=/dev/cu.SLAB_USBtoUART
 RPORT=/dev/cu.SLAB_USBtoUART
 DPORT=/dev/cu.SLAB_USBtoUART
-NRFUTIL=/usr/local/bin/nrfutil
+NRFUTIL=${AFROOT}/tools/adafruit-nrfutil/macos/adafruit-nrfutil
 RMFILES=rm
 RMDIR=rm -rf
 DIV=/
@@ -48,18 +60,18 @@ AR=${TOOLS}/bin/arm-none-eabi-ar
 # -DDEBUG=2
 DEFINES=-DSTATUS_DUMP \
 -DF_CPU=64000000 \
--DARDUINO=10805 \
+-DARDUINO=${ARDUINO_VER} \
 -DARDUINO_NRF52_FEATHER \
 -DARDUINO_ARCH_NRF52 \
--DARDUINO_BSP_VERSION=\"${VER}\" \
+-DARDUINO_BSP_VERSION=\"${ADA_DOT_VER}\" \
 -DARDUINO_FEATHER52 \
 -DARDUINO_NRF52_ADAFRUIT \
 -DNRF5 \
 -DNRF52 \
 -DNRF52832_XXAA \
--DUSE_LFXO \
--DS132 \
--DSD_VER=510 \
+-DS${SD_VER} \
+-DSD_VER=${SDS_VER} \
+-DADAFRUIT \
 -DCFG_DEBUG=0
 TARGET=-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
 CODEGEN=-nostdlib --param max-inline-insns-single=500 -ffunction-sections -fdata-sections
@@ -69,6 +81,36 @@ CLANG=-std=gnu11 -DSOFTDEVICE_PRESENT
 SLANG=-x assembler-with-cpp
 OPT=-Os
 
+INCLUDES=-Iinclude \
+	"-I${AFROOT}/cores/nRF5/cmsis/include"\
+	"-I${AFROOT}/cores/nRF5/nordic"\
+	"-I${AFROOT}/cores/nRF5/nordic/nrfx"\
+	"-I${AFROOT}/cores/nRF5/nordic/nrfx/hal"\
+	"-I${AFROOT}/cores/nRF5/nordic/nrfx/mdk"\
+	"-I${AFROOT}/cores/nRF5/nordic/nrfx/soc"\
+	"-I${AFROOT}/cores/nRF5/nordic/nrfx/drivers/include"\
+	"-I${AFROOT}/cores/nRF5/nordic/softdevice/s${SD_VER}_nrf52_${SDS_DOT_VER}_API/include"\
+	"-I${AFROOT}/cores/nRF5/freertos/Source/include"\
+	"-I${AFROOT}/cores/nRF5/freertos/config"\
+	"-I${AFROOT}/cores/nRF5/freertos/portable/GCC/nrf52"\
+	"-I${AFROOT}/cores/nRF5/freertos/portable/CMSIS/nrf52"\
+	"-I${AFROOT}/cores/nRF5/sysview/SEGGER"\
+	"-I${AFROOT}/cores/nRF5/sysview/Config"\
+	"-I${AFROOT}/cores/nRF5/usb"\
+	"-I${AFROOT}/cores/nRF5/usb/tinyusb/src"\
+	"-I${AFROOT}/cores/nRF5"\
+	"-I${AFROOT}/variants/feather_nrf52832"\
+	"-I${AFROOT}/libraries/SPI"\
+	"-I${AFROOT}/libraries/Wire"\
+	"-I${AFROOT}/libraries/Bluefruit52Lib/src"\
+  "-I${AFROOT}/libraries/FileSystem/src"\
+	"-I${GFX_ROOT}"\
+	"-I${SSD1306_ROOT}"
+
+CPPFLAGS=${TARGET} ${FLAGS} ${CODEGEN} ${CPPLANG} ${DEFINES} ${OPT} ${INCLUDES}
+CFLAGS=${TARGET} ${FLAGS} ${CODEGEN} ${CLANG} ${DEFINES} ${OPT} ${INCLUDES}
+SFLAGS=${TARGET} ${FLAGS} ${CODEGEN} ${SLANG} ${DEFINES} ${OPT} ${INCLUDES}
+
 SHARED_SRC = dbgcfg.cpp hardware.cpp led_states.cpp boardio.cpp debounce.cpp \
 	sleepstate.cpp battery.cpp
 RIGHT_SRC = status_dump.cpp globals.cpp right-master.cpp callbacks.cpp \
@@ -77,192 +119,110 @@ LEFT_SRC = left-slave.cpp
 DISP_SRC = display.cpp disp_uart.cpp
 USER_SRC = ${SHARED_SRC} ${RIGHT_SRC} ${LEFT_SRC} ${DISP_SRC}
 
-INCLUDES=-Iinclude \
-	"-I${AFROOT}/cores/nRF5/SDK/components/toolchain/"\
-	"-I${AFROOT}/cores/nRF5/SDK/components/toolchain/cmsis/include"\
-	"-I${AFROOT}/cores/nRF5/SDK/components/toolchain/gcc/"\
-	"-I${AFROOT}/cores/nRF5/SDK/components/device/"\
-	"-I${AFROOT}/cores/nRF5/SDK/components/drivers_nrf/delay/"\
-	"-I${AFROOT}/cores/nRF5/SDK/components/drivers_nrf/hal/"\
-	"-I${AFROOT}/cores/nRF5/SDK/components/libraries/util/"\
-	"-I${AFROOT}/cores/nRF5/softdevice/s132/5.1.0/headers/"\
-	"-I${AFROOT}/cores/nRF5/freertos/source/include"\
-	"-I${AFROOT}/cores/nRF5/freertos/config"\
-	"-I${AFROOT}/cores/nRF5/freertos/portable/GCC/nrf52"\
-	"-I${AFROOT}/cores/nRF5/freertos/portable/CMSIS/nrf52"\
-	"-I${AFROOT}/cores/nRF5/sysview/SEGGER"\
-	"-I${AFROOT}/cores/nRF5/sysview/Config"\
-	"-I${AFROOT}/libraries/nffs/src/fs/nffs/include"\
-	"-I${AFROOT}/libraries/nffs/src/fs/fs/include"\
-	"-I${AFROOT}/libraries/nffs/src/fs/disk/include"\
-	"-I${AFROOT}/libraries/nffs/src/util/crc/include"\
-	"-I${AFROOT}/libraries/nffs/src/kernel/os/include"\
-	"-I${AFROOT}/libraries/nffs/src/kernel/os/include/os/arch/cortex_m4"\
-	"-I${AFROOT}/libraries/nffs/src/hw/hal/include"\
-	"-I${AFROOT}/libraries/nffs/src/sys/flash_map/include"\
-	"-I${AFROOT}/libraries/nffs/src/sys/defs/include"\
-	"-I${AFROOT}/cores/nRF5"\
-	"-I${AFROOT}/variants/feather52"\
-	"-I${AFROOT}/libraries/Bluefruit52Lib/src"\
-	"-I${AFROOT}/libraries/nffs/src"\
-	"-I${AFROOT}/libraries/SPI"\
-	"-I${AFROOT}/libraries/Wire"\
-	"-I${GFX_ROOT}"\
-	"-I${SSD1306_ROOT}"
-
-CPPFLAGS=${TARGET} ${FLAGS} ${CODEGEN} ${CPPLANG} ${DEFINES} ${OPT} ${INCLUDES}
-CFLAGS=${TARGET} ${FLAGS} ${CODEGEN} ${CLANG} ${DEFINES} ${OPT} ${INCLUDES}
-SFLAGS=${TARGET} ${FLAGS} ${CODEGEN} ${SLANG} ${DEFINES} ${OPT} ${INCLUDES}
-
-BFLIB_SRCS =\
-	${AFROOT}/libraries/Bluefruit52Lib/src/BLEAdvertising.cpp\
-	${AFROOT}/libraries/Bluefruit52Lib/src/BLECentral.cpp\
-	${AFROOT}/libraries/Bluefruit52Lib/src/BLECharacteristic.cpp\
-	${AFROOT}/libraries/Bluefruit52Lib/src/BLEClientCharacteristic.cpp\
-	${AFROOT}/libraries/Bluefruit52Lib/src/BLEClientService.cpp\
-	${AFROOT}/libraries/Bluefruit52Lib/src/BLEDiscovery.cpp\
-	${AFROOT}/libraries/Bluefruit52Lib/src/BLEGap.cpp\
-	${AFROOT}/libraries/Bluefruit52Lib/src/BLEGatt.cpp\
-	${AFROOT}/libraries/Bluefruit52Lib/src/BLEScanner.cpp\
-	${AFROOT}/libraries/Bluefruit52Lib/src/BLEService.cpp\
-	${AFROOT}/libraries/Bluefruit52Lib/src/BLEUuid.cpp\
-	${AFROOT}/libraries/Bluefruit52Lib/src/bluefruit.cpp\
-	${AFROOT}/libraries/Bluefruit52Lib/src/clients/BLEAncs.cpp\
-	${AFROOT}/libraries/Bluefruit52Lib/src/clients/BLEClientCts.cpp\
-	${AFROOT}/libraries/Bluefruit52Lib/src/clients/BLEClientDis.cpp\
-	${AFROOT}/libraries/Bluefruit52Lib/src/clients/BLEClientUart.cpp\
-	${AFROOT}/libraries/Bluefruit52Lib/src/services/BLEBas.cpp\
-	${AFROOT}/libraries/Bluefruit52Lib/src/services/BLEBeacon.cpp\
-	${AFROOT}/libraries/Bluefruit52Lib/src/services/BLEDfu.cpp\
-	${AFROOT}/libraries/Bluefruit52Lib/src/services/BLEDis.cpp\
-	${AFROOT}/libraries/Bluefruit52Lib/src/services/BLEHidAdafruit.cpp\
-	${AFROOT}/libraries/Bluefruit52Lib/src/services/BLEHidGeneric.cpp\
-	${AFROOT}/libraries/Bluefruit52Lib/src/services/BLEMidi.cpp\
-	${AFROOT}/libraries/Bluefruit52Lib/src/services/BLEUart.cpp\
-	${AFROOT}/libraries/Bluefruit52Lib/src/services/bonding.cpp\
-	${AFROOT}/libraries/Bluefruit52Lib/src/services/EddyStone.cpp\
-	${AFROOT}/libraries/Bluefruit52Lib/src/utility/bootloader_util.c\
-	${AFROOT}/libraries/Bluefruit52Lib/src/utility/AdaMsg.cpp
-
-BFLIB_DIR = ${AFROOT}/libraries/Bluefruit52Lib/src
-BFLIB_DIRCLIENTS = ${BFLIB_DIR}/clients
-BFLIB_DIRSERVICES = ${BFLIB_DIR}/services
-BFLIB_DIRUTILITY = ${BFLIB_DIR}/utility
-
-BFLIB_OBJS = \
-	$(addprefix ${OUT}/, \
-		$(patsubst %.c, %.c.o, $(patsubst %.cpp, %.cpp.o, $(notdir ${BFLIB_SRCS}))))
-
-NFFS_SRCS =\
-	${AFROOT}/libraries/nffs/src/Nffs.cpp\
-	${AFROOT}/libraries/nffs/src/NffsDir.cpp\
-	${AFROOT}/libraries/nffs/src/NffsDirEntry.cpp\
-	${AFROOT}/libraries/nffs/src/NffsFile.cpp\
-	${AFROOT}/libraries/nffs/src/fs/disk/src/disk.c\
-	${AFROOT}/libraries/nffs/src/fs/fs/src/fs_cli.c\
-	${AFROOT}/libraries/nffs/src/fs/fs/src/fs_dirent.c\
-	${AFROOT}/libraries/nffs/src/fs/fs/src/fs_file.c\
-	${AFROOT}/libraries/nffs/src/fs/fs/src/fs_mkdir.c\
-	${AFROOT}/libraries/nffs/src/fs/fs/src/fs_mount.c\
-	${AFROOT}/libraries/nffs/src/fs/fs/src/fsutil.c\
-	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs.c\
-	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs_area.c\
-	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs_block.c\
-	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs_cache.c\
-	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs_config.c\
-	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs_crc.c\
-	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs_dir.c\
-	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs_file.c\
-	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs_flash.c\
-	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs_format.c\
-	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs_gc.c\
-	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs_hash.c\
-	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs_inode.c\
-	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs_misc.c\
-	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs_path.c\
-	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs_restore.c\
-	${AFROOT}/libraries/nffs/src/fs/nffs/src/nffs_write.c\
-	${AFROOT}/libraries/nffs/src/hw/hal/src/hal_flash.c\
-	${AFROOT}/libraries/nffs/src/kernel/os/src/os_mempool.c\
-	${AFROOT}/libraries/nffs/src/sys/flash_map/src/flash_map.c\
-	${AFROOT}/libraries/nffs/src/util/crc/src/crc16.c\
-	${AFROOT}/libraries/nffs/src/util/crc/src/crc8.c
-
-NFFS_DIR = ${AFROOT}/libraries/nffs/src
-NFFS_DIR_DISK = ${NFFS_DIR}/fs/disk/src
-NFFS_DIR_FS = ${NFFS_DIR}/fs/fs/src
-NFFS_DIR_NFFS = ${NFFS_DIR}/fs/nffs/src
-NFFS_DIR_HAL = ${NFFS_DIR}/hw/hal/src
-NFFS_DIR_KRNL = ${NFFS_DIR}/kernel/os/src
-NFFS_DIR_FLASH = ${NFFS_DIR}/sys/flash_map/src
-NFFS_DIR_CRC = ${NFFS_DIR}/util/crc/src
-
-NFFS_OBJS = $(addprefix ${OUT}/, \
-	$(patsubst %.c, %.c.o, $(patsubst %.cpp, %.cpp.o, $(notdir ${NFFS_SRCS}))))
+CORE_DIR = ${AFROOT}/cores/nRF5
+CORE_VPATH=${CORE_DIR}:\
+${CORE_DIR}/avr:\
+${CORE_DIR}/flash:\
+${CORE_DIR}/freertos/Source:\
+${CORE_DIR}/freertos/Source/portable/MemMang:\
+${CORE_DIR}/freertos/portable/CMSIS/nrf52:\
+${CORE_DIR}/freertos/portable/GCC/nrf52:\
+${CORE_DIR}/linker:\
+${CORE_DIR}/nordic/nrfx/drivers/src:\
+${CORE_DIR}/nordic/nrfx/hal:\
+${CORE_DIR}/nordic/nrfx/mdk:\
+${CORE_DIR}/sysview:\
+${CORE_DIR}/sysview/Config:\
+${CORE_DIR}/sysview/SEGGER:\
+${CORE_DIR}/usb:\
+${CORE_DIR}/usb/tinyusb/src:\
+${CORE_DIR}/usb/tinyusb/src/class/cdc:\
+${CORE_DIR}/usb/tinyusb/src/class/custom:\
+${CORE_DIR}/usb/tinyusb/src/class/hid:\
+${CORE_DIR}/usb/tinyusb/src/class/msc:\
+${CORE_DIR}/usb/tinyusb/src/common:\
+${CORE_DIR}/usb/tinyusb/src/device:\
+${CORE_DIR}/usb/tinyusb/src/osal:\
+${CORE_DIR}/usb/tinyusb/src/portable/nordic/nrf5x:\
+${CORE_DIR}/utility:\
+${AFROOT}/variants/feather_nrf52832
 
 CORE_SRCS = \
-	${AFROOT}/variants/feather52/variant.cpp\
-	${AFROOT}/cores/nRF5/gcc_startup_nrf52.S\
-	${AFROOT}/cores/nRF5/pulse_asm.S\
-	${AFROOT}/cores/nRF5/WInterrupts.c\
-	${AFROOT}/cores/nRF5/delay.c\
-	${AFROOT}/cores/nRF5/hooks.c\
-	${AFROOT}/cores/nRF5/itoa.c\
-	${AFROOT}/cores/nRF5/nrf52_flash.c\
-	${AFROOT}/cores/nRF5/pulse.c\
-	${AFROOT}/cores/nRF5/syscall_newlib.c\
-	${AFROOT}/cores/nRF5/wiring.c\
-	${AFROOT}/cores/nRF5/wiring_analog_nRF52.c\
-	${AFROOT}/cores/nRF5/wiring_digital.c\
-	${AFROOT}/cores/nRF5/wiring_private.c\
-	${AFROOT}/cores/nRF5/wiring_shift.c\
-	${AFROOT}/cores/nRF5/SDK/components/libraries/util/app_util_platform.c\
-	${AFROOT}/cores/nRF5/SDK/components/toolchain/system_nrf52.c\
-	${AFROOT}/cores/nRF5/avr/dtostrf.c\
-	${AFROOT}/cores/nRF5/freertos/portable/CMSIS/nrf52/port_cmsis.c\
-	${AFROOT}/cores/nRF5/freertos/portable/CMSIS/nrf52/port_cmsis_systick.c\
-	${AFROOT}/cores/nRF5/freertos/portable/GCC/nrf52/port.c\
-	${AFROOT}/cores/nRF5/freertos/source/croutine.c\
-	${AFROOT}/cores/nRF5/freertos/source/event_groups.c\
-	${AFROOT}/cores/nRF5/freertos/source/list.c\
-	${AFROOT}/cores/nRF5/freertos/source/queue.c\
-	${AFROOT}/cores/nRF5/freertos/source/tasks.c\
-	${AFROOT}/cores/nRF5/freertos/source/timers.c\
-	${AFROOT}/cores/nRF5/freertos/source/portable/MemMang/heap_3.c\
-	${AFROOT}/cores/nRF5/sysview/SEGGER_SYSVIEW_Config_FreeRTOS.c\
-	${AFROOT}/cores/nRF5/sysview/SEGGER_SYSVIEW_FreeRTOS.c\
-	${AFROOT}/cores/nRF5/sysview/SEGGER/SEGGER_RTT.c\
-	${AFROOT}/cores/nRF5/sysview/SEGGER/SEGGER_SYSVIEW.c\
-	${AFROOT}/cores/nRF5/utility/AdaCallback.c\
-	${AFROOT}/cores/nRF5/utility/utilities.c\
-	${AFROOT}/cores/nRF5/HardwarePWM.cpp\
-	${AFROOT}/cores/nRF5/IPAddress.cpp\
-	${AFROOT}/cores/nRF5/Print.cpp\
-	${AFROOT}/cores/nRF5/RingBuffer.cpp\
-	${AFROOT}/cores/nRF5/Stream.cpp\
-	${AFROOT}/cores/nRF5/Uart.cpp\
-	${AFROOT}/cores/nRF5/WMath.cpp\
-	${AFROOT}/cores/nRF5/WString.cpp\
-	${AFROOT}/cores/nRF5/abi.cpp\
-	${AFROOT}/cores/nRF5/debug.cpp\
-	${AFROOT}/cores/nRF5/main.cpp\
-	${AFROOT}/cores/nRF5/new.cpp\
-	${AFROOT}/cores/nRF5/rtos.cpp\
-	${AFROOT}/cores/nRF5/wiring_analog.cpp\
-	${AFROOT}/cores/nRF5/utility/adafruit_fifo.cpp
-
-CORE_DIR = ${AFROOT}/cores/nRF5
-CORE_DIR_VAR = ${AFROOT}/variants/feather52
-CORE_DIR_UTIL = ${CORE_DIR}/utility
-CORE_DIR_SDKUTIL = ${CORE_DIR}/SDK/components/libraries/util
-CORE_DIR_TOOLCHAIN = ${CORE_DIR}/SDK/components/toolchain
-CORE_DIR_AVR = ${CORE_DIR}/avr
-CORE_DIR_RTOS_CMSIS = ${CORE_DIR}/freertos/portable/CMSIS/nrf52
-CORE_DIR_RTOS_GCC = ${CORE_DIR}/freertos/portable/GCC/nrf52
-CORE_DIR_RTOS = ${CORE_DIR}/freertos/source
-CORE_DIR_RTOS_MEM = ${CORE_DIR}/freertos/source/portable/MemMang
-CORE_DIR_SYSVIEW = ${CORE_DIR}/sysview
-CORE_DIR_SV_SEG = ${CORE_DIR}/sysview/SEGGER
+	HardwarePWM.cpp\
+	IPAddress.cpp\
+	Print.cpp\
+	HardwarePWM.cpp \
+	IPAddress.cpp \
+	Print.cpp \
+	RingBuffer.cpp \
+	Stream.cpp \
+	Uart.cpp \
+	WInterrupts.c \
+	WMath.cpp \
+	WString.cpp \
+	abi.cpp \
+	dtostrf.c \
+	delay.c \
+	hooks.c \
+	itoa.c \
+	main.cpp \
+	new.cpp \
+	pulse.c \
+	pulse_asm.S \
+	rtos.cpp \
+	variant.cpp \
+	wiring.c \
+	wiring_analog.cpp \
+	wiring_analog_nRF52.c \
+	wiring_digital.c \
+	wiring_private.c \
+	wiring_shift.c \
+	syscall_newlib.c \
+	flash_cache.c \
+	flash_nrf5x.c \
+	flash_qspi.c \
+	croutine.c \
+	event_groups.c \
+	list.c \
+	queue.c \
+	stream_buffer.c \
+	tasks.c \
+	timers.c \
+	heap_3.c \
+	port_cmsis.c \
+	port_cmsis_systick.c \
+	port.c \
+	gcc_startup_nrf52.S \
+	gcc_startup_nrf52840.S \
+	nrfx_power.c \
+	nrfx_qspi.c \
+	nrf_ecb.c \
+	nrf_nvmc.c \
+	system_nrf52.c \
+	system_nrf52840.c \
+	SEGGER_SYSVIEW_FreeRTOS.c \
+	SEGGER_SYSVIEW_Config_FreeRTOS.c \
+	SEGGER_RTT.c \
+	SEGGER_SYSVIEW.c \
+	USBSerial.cpp \
+	usb.c \
+	usb_desc.c \
+	usb_msc_flash.c \
+	tusb.c \
+	cdc_device.c \
+	custom_device.c \
+	hid_device.c \
+	msc_device.c \
+	tusb_fifo.c \
+	usbd.c \
+	usbd_auto_desc.c \
+	osal.c \
+	dcd_nrf5x.c \
+	hal_nrf5x.c \
+	AdaCallback.c \
+	adafruit_fifo.cpp \
+	debug.cpp \
+	utilities.c
 
 CORE_OBJS = \
 	$(addprefix ${OUT}/, \
@@ -270,22 +230,80 @@ CORE_OBJS = \
 			$(patsubst %.cpp, %.cpp.o, \
 				$(patsubst %.S, %.S.o, $(notdir ${CORE_SRCS})))))
 
+BFLIB_DIR = ${AFROOT}/libraries/Bluefruit52Lib/src
+BF_VPATH=${BFLIB_DIR}:${BFLIB_DIR}/clients:${BFLIB_DIR}/services:${BFLIB_DIR}/utility
+
+BFLIB_SRCS = \
+	BLEAdvertising.cpp \
+	BLECentral.cpp \
+	BLECharacteristic.cpp \
+	BLEClientCharacteristic.cpp \
+	BLEClientService.cpp \
+	BLEDiscovery.cpp \
+	BLEGap.cpp \
+	BLEGatt.cpp \
+	BLEScanner.cpp \
+	BLEService.cpp \
+	BLEUuid.cpp \
+	bluefruit.cpp \
+	BLEAncs.cpp \
+	BLEClientBas.cpp \
+	BLEClientCts.cpp \
+	BLEClientDis.cpp \
+	BLEClientHidAdafruit.cpp \
+	BLEClientUart.cpp \
+	BLEBas.cpp \
+	BLEBeacon.cpp \
+	BLEDfu.cpp \
+	BLEDis.cpp \
+	BLEHidAdafruit.cpp \
+	BLEHidGeneric.cpp \
+	BLEMidi.cpp \
+	BLEUart.cpp \
+	EddyStone.cpp \
+	AdaMsg.cpp \
+	bonding.cpp \
+	bootloader_util.c
+
+BFLIB_OBJS = \
+	$(addprefix ${OUT}/, \
+		$(patsubst %.c, %.c.o, $(patsubst %.cpp, %.cpp.o, $(notdir ${BFLIB_SRCS}))))
+
+FS_DIR = ${AFROOT}/libraries/FileSystem/src
+FS_VPATH=${FS_DIR}:${FS_DIR}/fatfs/source:${FS_DIR}/littlefs
+
+FS_SRCS =\
+	Bluefruit_FileIO.cpp \
+	ExternalFS.cpp \
+	InternalFS.cpp \
+	diskio.c \
+	ff.c \
+	ffsystem.c \
+	ffunicode.c \
+	lfs.c \
+	lfs_util.c
+
+FS_OBJS = $(addprefix ${OUT}/, \
+	$(patsubst %.c, %.c.o, $(patsubst %.cpp, %.cpp.o, $(notdir ${FS_SRCS}))))
+
+GFX_VPATH=${SSD1306_ROOT}:${GFX_ROOT}
 GFX_SRCS = \
-	${SSD1306_ROOT}/Adafruit_SSD1306.cpp \
-	${GFX_ROOT}/Adafruit_GFX.cpp \
-	${GFX_ROOT}/Adafruit_SPITFT.cpp
+	Adafruit_SSD1306.cpp \
+	Adafruit_GFX.cpp \
+	Adafruit_SPITFT.cpp
 
 GFX_OBJS = \
 	$(addprefix ${OUT}/, $(patsubst %.cpp, %.cpp.o, $(notdir ${GFX_SRCS})))
 
-SER_SRCS = \
-	${AFROOT}/libraries/SPI/SPI.cpp\
-	${AFROOT}/libraries/Wire/Wire_nRF52.cpp
+WIRE_VPATH=${AFROOT}/libraries/SPI:${AFROOT}/libraries/Wire
+WIRE_SRCS = \
+	SPI.cpp \
+	Wire_nRF52.cpp
 
-SER_OBJS = \
-	$(addprefix ${OUT}/, $(patsubst %.cpp, %.cpp.o, $(notdir ${SER_SRCS})))
+WIRE_OBJS = \
+	$(addprefix ${OUT}/, $(patsubst %.cpp, %.cpp.o, $(notdir ${WIRE_SRCS})))
 
-ALL_LIBS = ${OUT}/core.a ${OUT}/nffs.a ${OUT}/bflib.a
+ALL_LIBS = ${OUT}/core.a ${OUT}/ada.a
 SHARED_OBJS = $(addprefix ${OUT}/, $(patsubst %.cpp, %.cpp.o, ${SHARED_SRC}))
 RIGHT_OBJS = $(addprefix ${OUT}/, $(patsubst %.cpp, %.cpp.o, ${RIGHT_SRC}))
 LEFT_OBJS = $(addprefix ${OUT}/, $(patsubst %.cpp, %.cpp.o, ${LEFT_SRC}))
@@ -295,7 +313,7 @@ USER_OBJS =  $(addprefix ${OUT}/, $(patsubst %.cpp, %.cpp.o, ${USER_SRC}))
 ELF_FLAGS = ${OPT} ${TARGET} -save-temps \
 -L${AFROOT}/cores/nRF5/linker \
 -L${OUT} \
-"-Tbluefruit52_s132_5.1.0.ld" \
+"-T${LINKER_SCRIPT}" \
 -u _printf_float \
 -Wl,--cref \
 -Wl,--check-sections \
@@ -306,22 +324,26 @@ ELF_FLAGS = ${OPT} ${TARGET} -save-temps \
 --specs=nano.specs \
 --specs=nosys.specs
 
+# Learned about VPATH for finding targets of rules :D
+# Makes all those custom "for this subdir, dump objs' in ${OUT} useless!
+VPATH=${BF_VPATH}:${CORE_VPATH}:${FS_VPATH}:${GFX_VPATH}:${WIRE_VPATH}
+
 .PHONY: clean allclean depclean left right flashl flashr display flashd
 
 all: ${OUT} left right display
 
-DEPS = $(CORE_OBJS:.o=.d) $(NFFS_OBJS:.o=.d) $(BFLIB_OBJS:.o=.d) $(USER_OBJS:.o=.d) $(GFX_OBJS:.o=.d) $(SER_OBJS:.o=.d)
+DEPS = $(CORE_OBJS:.o=.d) $(NFFS_OBJS:.o=.d) $(BFLIB_OBJS:.o=.d) $(USER_OBJS:.o=.d) $(GFX_OBJS:.o=.d) $(WIRE_OBJS:.o=.d)
 
 -include ${DEPS}
 
 flashl: ${OUT}/left-slave.zip
-	${NRFUTIL} --verbose dfu serial -pkg $< -p ${LPORT} -b 115200
+	${NRFUTIL} --verbose dfu serial -pkg $< -p ${LPORT} -b 115200 --singlebank
 
 flashr: ${OUT}/right-master.zip
-	${NRFUTIL} --verbose dfu serial -pkg $< -p ${RPORT} -b 115200
+	${NRFUTIL} --verbose dfu serial -pkg $< -p ${RPORT} -b 115200 --singlebank
 
 flashd: ${OUT}/display.zip
-	${NRFUTIL} --verbose dfu serial -pkg $< -p ${DPORT} -b 115200
+	${NRFUTIL} --verbose dfu serial -pkg $< -p ${DPORT} -b 115200 --singlebank
 
 left: ${OUT}/left-slave.zip
 
@@ -333,10 +355,11 @@ display: ${OUT}/display.zip
 $(USER_OBJS) : Makefile
 
 ${OUT}/%.zip : ${OUT}/%.hex
-	${NRFUTIL} dfu genpkg --dev-type 0x0052 --sd-req 0x00A5 --application $< $@
+	${NRFUTIL} dfu genpkg --dev-type 0x0052 --sd-req 0x00B7 --application $< $@
 
 ${OUT}/%.hex : ${OUT}/%.elf
-	${OBJCOPY} -O ihex $< $@
+	@echo "OCOPY $@"
+	@${OBJCOPY} -O ihex $< $@
 
 ${OUT}/left-slave.elf : ${ALL_LIBS}
 
@@ -345,31 +368,32 @@ ${OUT}/right-master.elf : ${ALL_LIBS}
 ${OUT}/display.elf: ${ALL_LIBS}
 
 ${OUT}/left-slave.elf : ${LEFT_OBJS} ${SHARED_OBJS}
-	${CC} ${ELF_FLAGS} "-Wl,-Map,$@.map" -o $@ $^ \
+	@echo "LINK $@"
+	@${CC} ${ELF_FLAGS} "-Wl,-Map,$@.map" -o $@ $^ \
 	-Wl,--start-group -lm ${ALL_LIBS} -Wl,--end-group
 
 ${OUT}/right-master.elf : ${RIGHT_OBJS} ${SHARED_OBJS}
-	${CC} ${ELF_FLAGS} "-Wl,-Map,$@.map" -o $@ $^ \
+	@echo "LINK $@"
+	@${CC} ${ELF_FLAGS} "-Wl,-Map,$@.map" -o $@ $^ \
 	-Wl,--start-group -lm ${ALL_LIBS} -Wl,--end-group
 
-${OUT}/display.elf : ${DISP_OBJS} ${GFX_OBJS} ${SER_OBJS}
-	${CC} ${ELF_FLAGS} "-Wl,-Map,$@.map" -o $@ $^ \
+${OUT}/display.elf : ${DISP_OBJS} ${GFX_OBJS} ${WIRE_OBJS}
+	@echo "LINK $@"
+	@${CC} ${ELF_FLAGS} "-Wl,-Map,$@.map" -o $@ $^ \
 	-Wl,--start-group -lm ${ALL_LIBS} -Wl,--end-group
 
 ${OUT}/core.a: ${CORE_OBJS}
-	-${RMFILES} $(subst /,${DIV},$@)
-	${AR} rcs $@ ${CORE_OBJS}
+	-@${RMFILES} $(subst /,${DIV},$@)
+	@echo "AR $@"
+	@${AR} rcs $@ $^
 
-${OUT}/nffs.a: ${NFFS_OBJS}
-	-${RMFILES} $(subst /,${DIV},$@)
-	${AR} rcs $@ ${NFFS_OBJS}
-
-${OUT}/bflib.a: ${BFLIB_OBJS}
-	-${RMFILES} $(subst /,${DIV},$@)
-	${AR} rcs $@ ${BFLIB_OBJS}
+${OUT}/ada.a: ${BFLIB_OBJS} ${FS_OBJS} ${WIRE_OBJS} ${GFX_OBJS}
+	-@${RMFILES} $(subst /,${DIV},$@)
+	@echo "AR $@"
+	@${AR} rcs $@ $^
 
 ${OUT}:
-	@-mkdir ${OUT}
+	-@mkdir ${OUT}
 
 allclean:
 	@-${RMDIR} ${OUT}
@@ -379,103 +403,17 @@ clean:
 
 depclean:
 	@-${RMFILES} ${DEPS}
-# And now all the custom subdir rules :/
 
-${OUT}/%.S.o : ${CORE_DIR}/%.S
-	${CC} -c ${SFLAGS} -o $@ $<
+# And now all the custom build rules
 
-${OUT}/%.cpp.o : ${CORE_DIR}/%.cpp
-	${CPP} -c ${CPPFLAGS} -o $@ $<
+${OUT}/%.S.o : %.S
+	@echo "ASM $@"
+	@${CC} -c ${SFLAGS} -o $@ $<
 
-${OUT}/%.c.o : ${CORE_DIR}/%.c
-	${CC} -c ${CFLAGS} -o $@ $<
+${OUT}/%.cpp.o : %.cpp
+	@echo "CPP $@"
+	@${CPP} -c ${CPPFLAGS} -o $@ $<
 
-${OUT}/%.cpp.o : ${CORE_DIR_VAR}/%.cpp
-	${CPP} -c ${CPPFLAGS} -o $@ $<
-
-${OUT}/%.c.o : ${CORE_DIR_UTIL}/%.c
-	${CC} -c ${CFLAGS} -o $@ $<
-
-${OUT}/%.cpp.o : ${CORE_DIR_UTIL}/%.cpp
-	${CPP} -c ${CPPFLAGS} -o $@ $<
-
-${OUT}/%.c.o : ${CORE_DIR_SDKUTIL}/%.c
-	${CC} -c ${CFLAGS} -o $@ $<
-
-${OUT}/%.c.o : ${CORE_DIR_TOOLCHAIN}/%.c
-	${CC} -c ${CFLAGS} -o $@ $<
-
-${OUT}/%.c.o : ${CORE_DIR_AVR}/%.c
-	${CC} -c ${CFLAGS} -o $@ $<
-
-${OUT}/%.c.o : ${CORE_DIR_RTOS_CMSIS}/%.c
-	${CC} -c ${CFLAGS} -o $@ $<
-
-${OUT}/%.c.o : ${CORE_DIR_RTOS_GCC}/%.c
-	${CC} -c ${CFLAGS} -o $@ $<
-
-${OUT}/%.c.o : ${CORE_DIR_RTOS}/%.c
-	${CC} -c ${CFLAGS} -o $@ $<
-
-${OUT}/%.c.o : ${CORE_DIR_RTOS_MEM}/%.c
-	${CC} -c ${CFLAGS} -o $@ $<
-
-${OUT}/%.c.o : ${CORE_DIR_SYSVIEW}/%.c
-	${CC} -c ${CFLAGS} -o $@ $<
-
-${OUT}/%.c.o : ${CORE_DIR_SV_SEG}/%.c
-	${CC} -c ${CFLAGS} -o $@ $<
-
-${OUT}/%.cpp.o: %.cpp
-	${CPP} -c ${CPPFLAGS} -o $@ $<
-
-${OUT}/%.cpp.o: ${NFFS_DIR}/%.cpp
-	${CPP} -c ${CPPFLAGS} -o $@ $<
-
-${OUT}/%.c.o: ${NFFS_DIR_DISK}/%.c
-	${CC} -c ${CFLAGS} -o $@ $<
-
-${OUT}/%.c.o: ${NFFS_DIR_FS}/%.c
-	${CC} -c ${CFLAGS} -o $@ $<
-
-${OUT}/%.c.o: ${NFFS_DIR_NFFS}/%.c
-	${CC} -c ${CFLAGS} -o $@ $<
-
-${OUT}/%.c.o: ${NFFS_DIR_HAL}/%.c
-	${CC} -c ${CFLAGS} -o $@ $<
-
-${OUT}/%.c.o: ${NFFS_DIR_KRNL}/%.c
-	${CC} -c ${CFLAGS} -o $@ $<
-
-${OUT}/%.c.o: ${NFFS_DIR_FLASH}/%.c
-	${CC} -c ${CFLAGS} -o $@ $<
-
-${OUT}/%.c.o: ${NFFS_DIR_CRC}/%.c
-	${CC} -c ${CFLAGS} -o $@ $<
-
-${OUT}/%.cpp.o: ${BFLIB_DIR}/%.cpp
-	${CPP} -c ${CPPFLAGS} -o $@ $<
-
-${OUT}/%.cpp.o: ${BFLIB_DIRSERVICES}/%.cpp
-	${CPP} -c ${CPPFLAGS} -o $@ $<
-
-${OUT}/%.cpp.o: ${BFLIB_DIRCLIENTS}/%.cpp
-	${CPP} -c ${CPPFLAGS} -o $@ $<
-
-${OUT}/%.cpp.o: ${BFLIB_DIRUTILITY}/%.cpp
-	${CPP} -c ${CPPFLAGS} -o $@ $<
-
-${OUT}/%.c.o: ${BFLIB_DIRUTILITY}/%.c
-	${CC} -c ${CFLAGS} -o $@ $<
-
-${OUT}/%.cpp.o: ${GFX_ROOT}/%.cpp
-	${CPP} -c ${CPPFLAGS} -o $@ $<
-
-${OUT}/%.cpp.o: ${SSD1306_ROOT}/%.cpp
-	${CPP} -c ${CPPFLAGS} -o $@ $<
-
-${OUT}/%.cpp.o: ${AFROOT}/libraries/SPI/%.cpp
-	${CPP} -c ${CPPFLAGS} -o $@ $<
-
-${OUT}/%.cpp.o: ${AFROOT}/libraries/Wire/%.cpp
-	${CPP} -c ${CPPFLAGS} -o $@ $<
+${OUT}/%.c.o : %.c
+	@echo "CC $@"
+	@${CC} -c ${CFLAGS} -o $@ $<
