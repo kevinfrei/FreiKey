@@ -17,5 +17,11 @@
         "system_error": "cpp",
         "queue": "cpp",
         "__locale": "cpp"
+    },
+    "workbench.colorCustomizations": {
+        "titleBar.activeBackground": "#153f1d",
+        "titleBar.inactiveBackground": "#153f1d99",
+        "titleBar.activeForeground": "#e7e7e7",
+        "titleBar.inactiveForeground": "#e7e7e799"
     }
 }
