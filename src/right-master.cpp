@@ -445,8 +445,8 @@ void setup() {
   dis.begin();
 
   clientUart.begin();
-  Bluefruit.setConnectCallback(callback::core_connect);
-  Bluefruit.setDisconnectCallback(callback::core_disconnect);
+  Bluefruit.Central.setConnectCallback(callback::core_connect);
+  Bluefruit.Central.setDisconnectCallback(callback::core_disconnect);
   // clientUart.setRxCallback(cent_bleuart_rx_callback);
 
   /* Start Central Scanning

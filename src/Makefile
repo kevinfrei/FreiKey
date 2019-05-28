@@ -8,7 +8,7 @@ OUT=out
 # Arduino Version
 ARDUINO_VER=10808
 # AdaFruit Software Version
-ADA_DOT_VER=0.9.3
+ADA_DOT_VER=0.10.2
 # "Soft Device" version
 SD_VER=132
 # "Soft Device" subversion
@@ -239,9 +239,10 @@ BFLIB_SRCS = \
 	BLECharacteristic.cpp \
 	BLEClientCharacteristic.cpp \
 	BLEClientService.cpp \
+	BLEConnection.cpp \
 	BLEDiscovery.cpp \
-	BLEGap.cpp \
 	BLEGatt.cpp \
+	BLEPeriph.cpp \
 	BLEScanner.cpp \
 	BLEService.cpp \
 	BLEUuid.cpp \

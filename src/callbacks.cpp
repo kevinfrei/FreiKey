@@ -8,11 +8,13 @@ namespace callback {
 
 // This is registered to be called when you connection a computer
 void core_connect(uint16_t handle) {
+#if DBG
   DBG(dumpHex(handle, "Core Connected: "));
-  char buf[501];
-  Bluefruit.Gap.getPeerName(handle, buf, 500);
+  char peer_name[501];
+  Bluefruit.Connection(handle)->getPeerName(peer_name, sizeof(peer_name));
   DBG(Serial.println("Peer Name:"));
-  DBG(Serial.println(buf));
+  DBG(Serial.println(peer_name));
+#endif
   core_handle = handle;
   sleepState.EndForcedSleepMode();
 #if 0 // The Bluetooth stuff isn't working for PC just yet...
@@ -37,7 +39,7 @@ void cent_connect(uint16_t conn_handle) {
   // TODO: Maybe make this more secure? I haven't looked into how secure this
   // is in the documentation :/
   char peer_name[32] = {0};
-  Bluefruit.Gap.getPeerName(conn_handle, peer_name, sizeof(peer_name));
+  Bluefruit.Connection(conn_handle)->getPeerName(peer_name, sizeof(peer_name));
   // I ought to at least make sure the peer_name is LHS_NAME, right?
   if (!strcmp(LHS_NAME, peer_name) && clientUart.discover(conn_handle)) {
     DBG(Serial.print("[Cent] Connected to "));
@@ -51,7 +53,7 @@ void cent_connect(uint16_t conn_handle) {
     DBG(Serial.println(LHS_NAME));
     DBG(Serial.print("Actual name: "));
     DBG(Serial.println(peer_name));
-    Bluefruit.Central.disconnect(conn_handle);
+    Bluefruit.Connection(conn_handle)->disconnect();
   }
 
   resetTheWorld();
