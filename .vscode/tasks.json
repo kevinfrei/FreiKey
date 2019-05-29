@@ -1,0 +1,61 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build",
+      "type": "shell",
+      "command": "cd src ; make -j",
+      "problemMatcher": "$gcc",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Clean",
+      "type": "shell",
+      "command": "cd src ; make allclean",
+      "problemMatcher": "$gcc",
+      "group": "build"
+    },
+    {
+      "label": "Flash Betterfly",
+      "type": "shell",
+      "command": "cd src ; make -j -f teensy32.mak flash",
+      "problemMatcher": "$gcc",
+      "group": {
+        "kind": "build"
+      }
+    },
+    {
+      "label": "Set to Teensy",
+      "type": "shell",
+      "command": "cd src ; rm Makefile ; ln -s teensy32.mak Makefile",
+      "problemMatcher": [],
+      "group": "none"
+    },
+    {
+      "label": "Set to Adafruit",
+      "type": "shell",
+      "command": "cd src ; rm Makefile ; ln -s adafruit.mak Makefile",
+      "problemMatcher": [],
+      "group": "none"
+    },
+    {
+      "label": "Flash Adafruit Right",
+      "type": "shell",
+      "command": "cd src ; make -f adafruit.mak flashr",
+      "problemMatcher": "$gcc",
+      "group": "build"
+    },
+    {
+      "label": "Flash Adafruit Left",
+      "type": "shell",
+      "command": "cd src ; make -f adafruit.mak flashl",
+      "problemMatcher": "$gcc",
+      "group": "build"
+    }
+  ]
+}
