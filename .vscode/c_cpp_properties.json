@@ -127,7 +127,8 @@
         "USE_LFXO",
         "S132",
         "SD_VER=510",
-        "CFG_DEBUG=0"
+        "CFG_DEBUG=0",
+        "__VSCODE_ONLY_"
       ],
       "intelliSenseMode": "gcc-x64",
       "browse": {

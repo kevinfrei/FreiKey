@@ -1,4 +1,4 @@
-#include <stdint.h>
+#include <cstdint>
 
 #include "battery.h"
 #include "boardio.h"
