@@ -91,5 +91,3 @@ void hw::dump() const {
 }
 #endif
 } // namespace state
-
-void rtos_idle_callback(void) {}
