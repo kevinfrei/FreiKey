@@ -14,8 +14,10 @@ state::hw lastRead{};
 // not the physical pin numbers...
 constexpr BoardIO LeftBoard = {
     {15, 2, 16, 7, 30, 27, 11}, {5, 12, 13, 28, 4, 3}, 29};
-
+volatile int tmp = 0;
+volatile int *global = &tmp;
 void setup() {
+  if (*global) {
   DBG(Serial.begin(115200));
   LeftBoard.Configure();
   Bluefruit.begin();
@@ -28,7 +30,7 @@ void setup() {
   // want to try higher power. Acceptable values are -40, -30, -20, -16, -12,
   // -8, -4, 0, 4
   Bluefruit.setTxPower(0);
-  Bluefruit.setName(LHS_NAME);
+  Bluefruit.setName(LTCL_NAME);
 
   bledis.setManufacturer(MANUFACTURER);
   bledis.setModel(MODEL);
@@ -48,6 +50,10 @@ void setup() {
   // I should probably stop advertising after a while if that's possible. I have
   // switches now, so if I need it to advertise, I can just punch the power.
   Bluefruit.Advertising.start(0); // 0 = Don't stop advertising after n seconds
+  } else {
+    pinMode(LED_RED, OUTPUT);
+    pinMode(LED_BLUE, OUTPUT);
+  }
 }
 
 const state::led* curState = nullptr;
@@ -58,6 +64,18 @@ SleepState sleepState = {0, false};
 // TODO: Add bidirectional communication, so the master can ask for info or set
 // an LED state somehow
 void loop() {
+  if (!(*global) ) {
+    digitalWrite(LED_RED, HIGH);   // turn the LED on (HIGH is the voltage level)
+    delay(1);               // wait for a second
+    digitalWrite(LED_RED, LOW);
+    delay(50);               // wait for a second
+    digitalWrite(LED_BLUE, HIGH);   // turn the LED on (HIGH is the voltage level)
+    delay(1);               // wait for a second
+    digitalWrite(LED_BLUE, LOW);
+    delay(50);               // wait for a second
+    waitForEvent();
+    return;
+  }
   uint32_t now = millis();
   state::hw down{now, lastRead, LeftBoard};
 

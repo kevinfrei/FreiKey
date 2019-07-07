@@ -12,14 +12,12 @@ state::hw lastRead{};
 
 // These numbers correspond to the *port pin* numbers in the nRF52 documentation
 // not the physical pin numbers...
-constexpr BoardIO RightBoard = {
-    {29, 16, 15, 7, 27, 11, 30}, {13, 4, 2, 3, 5, 12}, 28};
-volatile int tmp = 0;
-volatile int *global = &tmp;
+constexpr BoardIO LeftBoard = {
+    {15, 2, 16, 7, 30, 27, 11}, {5, 12, 13, 28, 4, 3}, 29};
+
 void setup() {
-  if (*global) {
   DBG(Serial.begin(115200));
-  RightBoard.Configure();
+  LeftBoard.Configure();
   Bluefruit.begin();
   // Turn off the Bluetooth LED
   Bluefruit.autoConnLed(false);
@@ -30,7 +28,7 @@ void setup() {
   // want to try higher power. Acceptable values are -40, -30, -20, -16, -12,
   // -8, -4, 0, 4
   Bluefruit.setTxPower(0);
-  Bluefruit.setName(RTCL_NAME);
+  Bluefruit.setName(LHS_NAME);
 
   bledis.setManufacturer(MANUFACTURER);
   bledis.setModel(MODEL);
@@ -50,10 +48,6 @@ void setup() {
   // I should probably stop advertising after a while if that's possible. I have
   // switches now, so if I need it to advertise, I can just punch the power.
   Bluefruit.Advertising.start(0); // 0 = Don't stop advertising after n seconds
-  } else {
-    pinMode(LED_RED, OUTPUT);
-    pinMode(LED_BLUE, OUTPUT);
-  }
 }
 
 const state::led* curState = nullptr;
@@ -64,22 +58,10 @@ SleepState sleepState = {0, false};
 // TODO: Add bidirectional communication, so the master can ask for info or set
 // an LED state somehow
 void loop() {
-  if (!(*global) ) {
-      digitalWrite(LED_RED, HIGH);   // turn the LED on (HIGH is the voltage level)
-      delay(1);               // wait for a second
-      digitalWrite(LED_RED, LOW);
-      delay(250);               // wait for a second
-      digitalWrite(LED_BLUE, HIGH);   // turn the LED on (HIGH is the voltage level)
-      delay(1);               // wait for a second
-      digitalWrite(LED_BLUE, LOW);
-      delay(250);               // wait for a second
-      waitForEvent();
-      return;
-  }
   uint32_t now = millis();
-  state::hw down{now, lastRead, RightBoard};
+  state::hw down{now, lastRead, LeftBoard};
 
-  if (sleepState.CheckForSleeping(down.switches, now, RightBoard)) {
+  if (sleepState.CheckForSleeping(down.switches, now, LeftBoard)) {
     // I'm assuming this saves power. If it doesn't, there's no point...
     delay(250);
     waitForEvent();
@@ -102,9 +84,9 @@ void loop() {
   if (curState) {
     // We're in "Check if battery is getting kinda low" mode
     if (now - curState->time < stateTime) {
-      RightBoard.setLED(curState->get_led_value(down, now - stateTime));
+      LeftBoard.setLED(curState->get_led_value(down, now - stateTime));
     } else {
-      RightBoard.setLED(0);
+      LeftBoard.setLED(0);
       curState = nullptr;
     }
   }

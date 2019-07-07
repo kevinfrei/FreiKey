@@ -198,7 +198,21 @@ uint64_t switchData;
 // It's kind of surprising how annoying the latency is when I get typing fast...
 constexpr uint32_t DELAY = 8;
 
+volatile int tmp = 0;
+volatile int *global = &tmp;
 void loop() {
+  if (!(*global)) {
+    digitalWrite(LED_RED, HIGH);   // turn the LED on (HIGH is the voltage level)
+    delay(1);               // wait for a second
+    digitalWrite(LED_RED, LOW);
+    delay(50);               // wait for a second
+    digitalWrite(LED_BLUE, HIGH);   // turn the LED on (HIGH is the voltage level)
+    delay(1);               // wait for a second
+    digitalWrite(LED_BLUE, LOW);
+    delay(50);               // wait for a second
+    waitForEvent();
+    return;
+  }
   uint32_t now = millis();
 
   // Get the hardware state for the two sides...
@@ -417,6 +431,11 @@ void loop() {
 // In Arduino world the 'setup' function is called to initialize the device.
 // The 'loop' function is called over & over again, after setup completes.
 void setup() {
+  if (!(*global)) {
+    pinMode(LED_RED, OUTPUT);
+    pinMode(LED_BLUE, OUTPUT);
+    return;
+  }
   DBG(Serial.begin(115200));
   RightBoard.Configure();
   resetTheWorld();

@@ -13,6 +13,8 @@ constexpr char* MODEL = "FreiKeyboard";
 constexpr char* BT_NAME = "FreiKeys";
 constexpr char* HW_REV = "0001";
 constexpr char* LHS_NAME = "FreiKeys-Slave";
+constexpr char* LTCL_NAME = "FreiKeys-LClient";
+constexpr char* RTCL_NAME = "FreiKeys-RClient";
 
 namespace state {
 

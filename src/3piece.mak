@@ -387,6 +387,7 @@ COMMON_ELF_FLAGS = \
 M_ELF_FLAGS= ${OPT} ${TARGET} -save-temps \
 	-L${M_OUT} \
 	-L${AFROOT}/cores/nRF5/linker "-T${M_LINKER_SCRIPT}" \
+	${COMMON_ELF_FLAGS}
 
 C_ELF_FLAGS= ${OPT} ${TARGET} -save-temps \
 	-L${C_OUT} \
@@ -413,7 +414,7 @@ flashr: ${C_OUT}/r-client.zip
 	${NRFUTIL} --verbose dfu serial -pkg $< -p ${RPORT} -b 115200 --singlebank
 
 flashm: ${M_OUT}/usb-master.zip
-	${NRFUTIL} --verbose dfu serial -pkg $< -p ${MPORT} -b 115200 --singlebank
+	${NRFUTIL} --verbose dfu serial -pkg $< -p ${MPORT} -b 115200 --singlebank --touch 1200
 
 left: ${C_OUT}/l-client.zip
 
@@ -428,7 +429,7 @@ ${C_OUT}/%.zip : ${C_OUT}/%.hex
 	${NRFUTIL} dfu genpkg --dev-type 0x0052 --sd-req 0x00B7 --application $< $@
 
 ${M_OUT}/%.zip : ${M_OUT}/%.hex
-	${NRFUTIL} dfu genpkg --dev-type 0x0052 --sd-req 0x00B7 --application $< $@
+	${NRFUTIL} dfu genpkg --dev-type 0x0052 --sd-req 0x00B6 --application $< $@
 
 ${C_OUT}/%.hex : ${C_OUT}/%.elf
 	@echo "OCOPY $@"
@@ -445,17 +446,17 @@ ${C_OUT}/r-client.elf : ${C_LIBS}
 ${M_OUT}/usb-master.elf: ${M_LIBS}
 
 ${C_OUT}/l-client.elf : ${L_OBJS} ${C_SHARED_OBJS}
-	@echo "LINK $@"
+	@echo "LINK $@ ($<)"
 	@${CC} ${C_ELF_FLAGS} "-Wl,-Map,$@.map" -o $@ $^ \
 	-Wl,--start-group -lm ${C_LIBS} -Wl,--end-group
 
 ${C_OUT}/r-client.elf : ${R_OBJS} ${C_SHARED_OBJS}
-	@echo "LINK $@"
+	@echo "LINK $@ ($<)"
 	@${CC} ${C_ELF_FLAGS} "-Wl,-Map,$@.map" -o $@ $^ \
 	-Wl,--start-group -lm ${C_LIBS} -Wl,--end-group
 
 ${M_OUT}/usb-master.elf : ${M_OBJS} ${M_SHARED_OBJS} ${M_GFX_OBJS} ${M_WIRE_OBJS}
-	@echo "LINK $@"
+	@echo "LINK $@ ($<)"
 	@${CC} ${M_ELF_FLAGS} "-Wl,-Map,$@.map" -o $@ $^ \
 	-Wl,--start-group -lm ${M_LIBS} -Wl,--end-group
 
@@ -502,33 +503,35 @@ depclean:
 # And now all the custom build rules
 
 ${C_OUT}/%.S.o : %.S
-	@echo "ASM $@"
+	@echo "ASM -c $< -o $@"
 	@${CC} -c ${C_SFLAGS} -o $@ $<
 
 ${M_OUT}/%.S.o : %.S
-	@echo "ASM $@"
+	@echo "ASM -c $< -o $@"
 	@${CC} -c ${M_SFLAGS} -o $@ $<
 
 ${C_OUT}/%.cpp.o : %.cpp
-	@echo "CPP $@ from $< ${C_CPPFLAGS}"
+	@echo "CPP -c $< -o $@"
 	@${CPP} -c ${C_CPPFLAGS} -o $@ $<
 
 ${M_OUT}/%.cpp.o : %.cpp
-	@echo "CPP -c ${M_CPPFLAGS} -o $@ $<"
+	@echo "CPP -c $< -o $@"
 	@${CPP} -c ${M_CPPFLAGS} -o $@ $<
 
 ${C_OUT}/%.c.o : %.c
-	@echo "CC $@"
+	@echo "C -c $< -o $@"
 	@${CC} -c ${C_CFLAGS} -o $@ $<
 
 ${M_OUT}/%.c.o : %.c
-	@echo "CC $@"
+	@echo "C -c $< -o $@"
 	@${CC} -c ${M_CFLAGS} -o $@ $<
 
+# Non-unique file names: ARG!
+
 ${C_OUT}/variant.cpp.o: ${AFROOT}/variants/feather_nrf52832/variant.cpp
-	@echo "CPP $@"
+	@echo "CPP -c $< -o $@"
 	@${CPP} -c ${C_CPPFLAGS} -o $@ $<
 
 ${M_OUT}/variant.cpp.o: ${AFROOT}/variants/feather_nrf52840_express/variant.cpp
-	@echo "CPP $@"
+	@echo "CPP -c $< -o $@"
 	@${CPP} -c ${M_CPPFLAGS} -o $@ $<
