@@ -102,7 +102,7 @@ action_t resolveActionForScanCodeOnActiveLayer(uint8_t scanCode) {
 // Given a delta mask, get the scan code, update the delta mask and set pressed
 // while we're at it.
 scancode_t getNextScanCode(uint64_t& delta, uint64_t curState, bool& pressed) {
-  scancode_t sc = flsl(delta);
+  scancode_t sc = flsl(delta) - 1;
   uint64_t mask = ((uint64_t)1) << sc;
   pressed = curState & mask;
   delta ^= mask;

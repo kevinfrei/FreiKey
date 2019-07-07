@@ -20,7 +20,9 @@ uint64_t debounce(uint64_t cur_switches, uint32_t now) {
   // the current read
   uint64_t change = last_reported_switches ^ cur_switches;
   while (change) {
-    uint8_t bit_num = flsl(change);
+    uint8_t bit_num = flsl(change) - 1;
+    if (bit_num > 63)
+      break;
     uint64_t mask = ((uint64_t)1) << bit_num;
     change ^= mask;
     // For each change, check if we're in a debounce period for that switch

@@ -28,7 +28,7 @@ SSD1306_ROOT=SSD1306
 GFX_ROOT=GFX
 
 ifeq ($(uname), Windows)
-ADAFRUIT=${HOME}/AppData/Local/Arduino15/packages/adafruit
+TOOLSROOT=${HOME}/AppData/Local/Arduino15/packages/arduino
 RPORT=COM6
 LPORT=COM3
 DPORT=COM9
@@ -37,7 +37,7 @@ RMFILES=del /q
 RMDIR=rmdir /s /q
 DIV=$(strip \ )
 else
-ADAFRUIT=${HOME}/Library/Arduino15/packages/adafruit
+TOOLSROOT=${HOME}/Library/Arduino15/packages/arduino
 LPORT=/dev/cu.SLAB_USBtoUART
 RPORT=/dev/cu.SLAB_USBtoUART
 DPORT=/dev/cu.SLAB_USBtoUART
@@ -46,7 +46,7 @@ RMFILES=rm
 RMDIR=rm -rf
 DIV=/
 endif
-TOOLS=${ADAFRUIT}/tools/gcc-arm-none-eabi/5_2-2015q4
+TOOLS=${TOOLSROOT}/tools/arm-none-eabi-gcc/7-2017q4
 
 # Tools (probably don't need to change these at all)
 CC=${TOOLS}/bin/arm-none-eabi-gcc
@@ -58,7 +58,7 @@ AR=${TOOLS}/bin/arm-none-eabi-ar
 # First, DEBUG and STATUS_DUMP configuration flags (then everything else)
 # -DDEBUG
 # -DDEBUG=2
-DEFINES=-DSTATUS_DUMP \
+DEFINES=-DSTATUS_DUMP -DDEBUG=2 \
 -DF_CPU=64000000 \
 -DARDUINO=${ARDUINO_VER} \
 -DARDUINO_NRF52_FEATHER \
@@ -96,14 +96,15 @@ INCLUDES=-Iinclude \
 	"-I${AFROOT}/cores/nRF5/freertos/portable/CMSIS/nrf52"\
 	"-I${AFROOT}/cores/nRF5/sysview/SEGGER"\
 	"-I${AFROOT}/cores/nRF5/sysview/Config"\
-	"-I${AFROOT}/cores/nRF5/usb"\
-	"-I${AFROOT}/cores/nRF5/usb/tinyusb/src"\
+	"-I${AFROOT}/cores/nRF5/Adafruit_TinyUSB_Core"\
+	"-I${AFROOT}/cores/nRF5/Adafruit_TinyUSB_Core/tinyusb/src"\
 	"-I${AFROOT}/cores/nRF5"\
 	"-I${AFROOT}/variants/feather_nrf52832"\
 	"-I${AFROOT}/libraries/SPI"\
 	"-I${AFROOT}/libraries/Wire"\
 	"-I${AFROOT}/libraries/Bluefruit52Lib/src"\
-  "-I${AFROOT}/libraries/FileSystem/src"\
+	"-I${AFROOT}/libraries/Adafruit_LittleFS/src"\
+	"-I${AFROOT}/libraries/InternalFileSytem/src"\
 	"-I${GFX_ROOT}"\
 	"-I${SSD1306_ROOT}"
 
@@ -121,36 +122,47 @@ USER_SRC = ${SHARED_SRC} ${RIGHT_SRC} ${LEFT_SRC} ${DISP_SRC}
 
 CORE_DIR = ${AFROOT}/cores/nRF5
 CORE_VPATH=${CORE_DIR}:\
-${CORE_DIR}/avr:\
-${CORE_DIR}/flash:\
-${CORE_DIR}/freertos/Source:\
-${CORE_DIR}/freertos/Source/portable/MemMang:\
-${CORE_DIR}/freertos/portable/CMSIS/nrf52:\
-${CORE_DIR}/freertos/portable/GCC/nrf52:\
-${CORE_DIR}/linker:\
-${CORE_DIR}/nordic/nrfx/drivers/src:\
-${CORE_DIR}/nordic/nrfx/hal:\
-${CORE_DIR}/nordic/nrfx/mdk:\
-${CORE_DIR}/sysview:\
-${CORE_DIR}/sysview/Config:\
-${CORE_DIR}/sysview/SEGGER:\
-${CORE_DIR}/usb:\
-${CORE_DIR}/usb/tinyusb/src:\
-${CORE_DIR}/usb/tinyusb/src/class/cdc:\
-${CORE_DIR}/usb/tinyusb/src/class/custom:\
-${CORE_DIR}/usb/tinyusb/src/class/hid:\
-${CORE_DIR}/usb/tinyusb/src/class/msc:\
-${CORE_DIR}/usb/tinyusb/src/common:\
-${CORE_DIR}/usb/tinyusb/src/device:\
-${CORE_DIR}/usb/tinyusb/src/osal:\
-${CORE_DIR}/usb/tinyusb/src/portable/nordic/nrf5x:\
-${CORE_DIR}/utility:\
-${AFROOT}/variants/feather_nrf52832
+	${CORE_DIR}/Adafruit_TinyUSB_Core:\
+	${CORE_DIR}/Adafruit_TinyUSB_Core/tinyusb/src/class/cdc:\
+	${CORE_DIR}/Adafruit_TinyUSB_Core/tinyusb/src/class/custom:\
+	${CORE_DIR}/Adafruit_TinyUSB_Core/tinyusb/src/class/hid:\
+	${CORE_DIR}/Adafruit_TinyUSB_Core/tinyusb/src/class/midi:\
+	${CORE_DIR}/Adafruit_TinyUSB_Core/tinyusb/src/class/msc:\
+	${CORE_DIR}/Adafruit_TinyUSB_Core/tinyusb/src/common:\
+	${CORE_DIR}/Adafruit_TinyUSB_Core/tinyusb/src/device:\
+	${CORE_DIR}/Adafruit_TinyUSB_Core/tinyusb/src/portable/nordic/nrf5x:\
+	${CORE_DIR}/Adafruit_TinyUSB_Core/tinyusb/src:\
+	${CORE_DIR}/avr:\
+	${CORE_DIR}/freertos/Source:\
+	${CORE_DIR}/freertos/Source/portable/MemMang:\
+	${CORE_DIR}/freertos/Source:\
+	${CORE_DIR}/freertos/portable/CMSIS/nrf52:\
+	${CORE_DIR}/freertos/portable/GCC/nrf52:\
+	${CORE_DIR}/linker:\
+	${CORE_DIR}/nordic/nrfx/drivers/src:\
+	${CORE_DIR}/nordic/nrfx/hal:\
+	${CORE_DIR}/nordic/nrfx/mdk:\
+	${CORE_DIR}/sysview/Config:\
+	${CORE_DIR}/sysview/SEGGER:\
+	${CORE_DIR}/sysview:\
+	${CORE_DIR}/utility:\
+	${AFROOT}/variants/feather_nrf52832
 
 CORE_SRCS = \
-	HardwarePWM.cpp\
-	IPAddress.cpp\
-	Print.cpp\
+	Adafruit_TinyUSB_Core.cpp \
+	Adafruit_USBD_CDC.cpp \
+	Adafruit_USBD_Device.cpp \
+	cdc_device.c \
+	custom_device.c \
+	hid_device.c \
+	midi_device.c \
+	msc_device.c \
+	tusb_fifo.c \
+	usbd.c \
+	usbd_control.c \
+	dcd_nrf5x.c \
+	hal_nrf5x.c \
+	tusb.c \
 	HardwarePWM.cpp \
 	IPAddress.cpp \
 	Print.cpp \
@@ -163,66 +175,48 @@ CORE_SRCS = \
 	abi.cpp \
 	dtostrf.c \
 	delay.c \
-	hooks.c \
-	itoa.c \
-	main.cpp \
-	new.cpp \
-	pulse.c \
-	pulse_asm.S \
-	rtos.cpp \
-	variant.cpp \
-	wiring.c \
-	wiring_analog.cpp \
-	wiring_analog_nRF52.c \
-	wiring_digital.c \
-	wiring_private.c \
-	wiring_shift.c \
-	syscall_newlib.c \
-	flash_cache.c \
-	flash_nrf5x.c \
-	flash_qspi.c \
 	croutine.c \
 	event_groups.c \
 	list.c \
+	heap_3.c \
 	queue.c \
 	stream_buffer.c \
 	tasks.c \
 	timers.c \
-	heap_3.c \
 	port_cmsis.c \
 	port_cmsis_systick.c \
 	port.c \
+	hooks.c \
+	itoa.c \
 	gcc_startup_nrf52.S \
 	gcc_startup_nrf52840.S \
+	main.cpp \
+	new.cpp \
 	nrfx_power.c \
 	nrfx_qspi.c \
 	nrf_ecb.c \
 	nrf_nvmc.c \
 	system_nrf52.c \
 	system_nrf52840.c \
-	SEGGER_SYSVIEW_FreeRTOS.c \
+	pulse.c \
+	pulse_asm.S \
+	rtos.cpp \
+	syscall_newlib.c \
 	SEGGER_SYSVIEW_Config_FreeRTOS.c \
 	SEGGER_RTT.c \
 	SEGGER_SYSVIEW.c \
-	USBSerial.cpp \
-	usb.c \
-	usb_desc.c \
-	usb_msc_flash.c \
-	tusb.c \
-	cdc_device.c \
-	custom_device.c \
-	hid_device.c \
-	msc_device.c \
-	tusb_fifo.c \
-	usbd.c \
-	usbd_auto_desc.c \
-	osal.c \
-	dcd_nrf5x.c \
-	hal_nrf5x.c \
+	SEGGER_SYSVIEW_FreeRTOS.c \
 	AdaCallback.c \
 	adafruit_fifo.cpp \
 	debug.cpp \
-	utilities.c
+	utilities.c \
+	wiring.c \
+	wiring_analog.cpp \
+	wiring_analog_nRF52.c \
+	wiring_digital.c \
+	wiring_private.c \
+	wiring_shift.c \
+	variant.cpp
 
 CORE_OBJS = \
 	$(addprefix ${OUT}/, \
@@ -270,17 +264,16 @@ BFLIB_OBJS = \
 	$(addprefix ${OUT}/, \
 		$(patsubst %.c, %.c.o, $(patsubst %.cpp, %.cpp.o, $(notdir ${BFLIB_SRCS}))))
 
-FS_DIR = ${AFROOT}/libraries/FileSystem/src
-FS_VPATH=${FS_DIR}:${FS_DIR}/fatfs/source:${FS_DIR}/littlefs
+IFS_DIR = ${AFROOT}/libraries/InternalFileSytem/src
+LFS_DIR = ${AFROOT}/libraries/Adafruit_LittleFS/src
+FS_VPATH=${IFS_DIR}:${IFS_DIR}/flash:${LFS_DIR}:${LFS_DIR}/littlefs
 
-FS_SRCS =\
-	Bluefruit_FileIO.cpp \
-	ExternalFS.cpp \
-	InternalFS.cpp \
-	diskio.c \
-	ff.c \
-	ffsystem.c \
-	ffunicode.c \
+FS_SRCS = \
+	InternalFileSystem.cpp \
+	flash_cache.c \
+	flash_nrf5x.c \
+	Adafruit_LittleFS.cpp \
+	Adafruit_LittleFS_File.cpp \
 	lfs.c \
 	lfs_util.c
 
