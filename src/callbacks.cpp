@@ -6,6 +6,7 @@
 
 namespace callback {
 
+#if !defined(USB_MASTER)
 // This is registered to be called when you connection a computer
 void core_connect(uint16_t handle) {
 #if DBG
@@ -33,9 +34,19 @@ void core_disconnect(uint16_t handle, uint8_t reason) {
   core_handle = 0xFFFF;
   sleepState.BeginForcedSleepMode();
 }
+#endif
 
-// Called with we find a UART host to connect with
+// Called when the system detects someone looking for a client
+void scan(ble_gap_evt_adv_report_t* report) {
+  // Connect to device with bleuart service in advertising
+  Bluefruit.Central.connect(report);
+}
+
+// Called when we find a UART host to connect with
 void cent_connect(uint16_t conn_handle) {
+#if defined(USB_MASTER)
+  // TODO: Figure out if this is the left or right uart
+#else
   // TODO: Maybe make this more secure? I haven't looked into how secure this
   // is in the documentation :/
   char peer_name[32] = {0};
@@ -55,27 +66,40 @@ void cent_connect(uint16_t conn_handle) {
     DBG(Serial.println(peer_name));
     Bluefruit.Connection(conn_handle)->disconnect();
   }
-
+#endif
   resetTheWorld();
 }
 
 // Called with a UART host disconnects
 void cent_disconnect(uint16_t conn_handle, uint8_t reason) {
+#if defined(USB_MASTER)
+  // Disconnect the *correct* side
+#else
   DBG(dumpVal(conn_handle, "Connection Handle Disconnected: "));
   DBG(dumpVal(reason, " Reason #"));
   DBG(Serial.println("[Cent] Disconnected"));
+#endif
   resetTheWorld();
 }
 
-// Called when the system detects someone looking for a client
-void scan(ble_gap_evt_adv_report_t* report) {
-  // Check if advertising contain BleUart service
-  if (Bluefruit.Scanner.checkReportForService(report, clientUart)) {
-    // Connect to device with bleuart service in advertising
-    Bluefruit.Central.connect(report);
-  }
-}
+#if defined(USB_MASTER)
+// Output report callback for LED indicator such as Caplocks
+void hid_report_callback(uint8_t report_id,
+                         hid_report_type_t report_type,
+                         uint8_t const* buffer,
+                         uint16_t bufsize) {
+  // LED indicator is output report with only 1 byte length
+  if (report_type != HID_REPORT_TYPE_OUTPUT)
+    return;
 
+  // The LED bit map is as follows: (also defined by KEYBOARD_LED_* )
+  // Kana (4) | Compose (3) | ScrollLock (2) | CapsLock (1) | Numlock (0)
+  uint8_t ledIndicator = buffer[0];
+
+  // turn on LED if caplock is set
+  digitalWrite(LED_BUILTIN, ledIndicator & KEYBOARD_LED_CAPSLOCK);
+}
+#endif
 } // namespace callback
 
 void rtos_idle_callback(void) {}

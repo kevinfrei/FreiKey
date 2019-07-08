@@ -72,6 +72,7 @@ DEFINES=-DSTATUS_DUMP -DDEBUG=2 \
 -DS${SD_VER} \
 -DSD_VER=${SDS_VER} \
 -DADAFRUIT \
+-DBLUETOOTH_ONLY \
 -DCFG_DEBUG=0
 TARGET=-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
 CODEGEN=-nostdlib --param max-inline-insns-single=500 -ffunction-sections -fdata-sections

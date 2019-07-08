@@ -36,8 +36,10 @@ struct hw {
   // Generic copy constructor...
   hw(const hw& c);
 
+#if !defined(USB_MASTER)
   // Just reads the switches...
   void readSwitches(const BoardIO& pd, uint32_t now);
+#endif
 
   // Send the relevant data over the wire
   void send(BLEUart& bleuart, const hw& prev) const;

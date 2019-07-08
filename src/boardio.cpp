@@ -4,12 +4,12 @@
 #include "dbgcfg.h"
 
 void BoardIO::Configure() const {
+  analogReference(AR_INTERNAL_3_0);
+  analogReadResolution(12);
+#if !defined(USB_MASTER)
   static_assert(
       BoardIO::matrix_size <= 64,
       "Pervasive assumptions that the switch matrix fits in 64 bits.");
-
-  analogReference(AR_INTERNAL_3_0);
-  analogReadResolution(12);
   delay(1);
 
   // For my wiring, the columns are output, and the rows are input...
@@ -20,11 +20,13 @@ void BoardIO::Configure() const {
   for (auto pin : rows) {
     pinMode(pin, INPUT_PULLUP);
   }
-  pinMode(led, OUTPUT);
+  #endif
 
+  pinMode(led, OUTPUT);
   analogWrite(led, 0);
 }
 
+#if !defined(USB_MASTER)
 uint64_t BoardIO::Read() const {
   uint64_t switches = 0;
   for (uint64_t colNum = 0; colNum < numcols; ++colNum) {
@@ -40,13 +42,14 @@ uint64_t BoardIO::Read() const {
   }
   return switches;
 }
+#endif
 
 void BoardIO::setLED(uint32_t brightness) const {
   analogWrite(led, brightness);
 }
 
-// pin 31 is available for sampling the battery
-constexpr uint8_t VBAT_PIN = 31;
+// pin 31 on the 832, pin 30 on the 840, is available for sampling the battery
+constexpr uint8_t VBAT_PIN = PIN_VBAT;
 
 // 3.0V ADC range and 12-bit ADC resolution = 3000mV/4096
 constexpr uint32_t VBAT_NUM = 3000;

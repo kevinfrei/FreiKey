@@ -1,7 +1,7 @@
 #include "hardware.h"
+#include "battery.h"
 #include "boardio.h"
 #include "debounce.h"
-#include "battery.h"
 
 namespace state {
 
@@ -14,7 +14,9 @@ hw::hw(uint8_t bl) : switches(0), battery_level(bl) {}
 hw::hw(uint32_t now, const hw& prev, const BoardIO& pd)
     : switches(prev.switches),
       battery_level(readBattery(now, prev.battery_level)) {
+#if !defined(USB_MASTER)
   readSwitches(pd, now);
+#endif
 }
 
 hw::hw(BLEClientUart& clientUart, const hw& prev) {
@@ -26,6 +28,7 @@ hw::hw(BLEClientUart& clientUart, const hw& prev) {
 
 hw::hw(const hw& c) : switches(c.switches), battery_level(c.battery_level) {}
 
+#if !defined(USB_MASTER)
 void hw::readSwitches(const BoardIO& pd, uint32_t now) {
 #if defined(DEBUG)
   scans_since_last_time++;
@@ -33,6 +36,7 @@ void hw::readSwitches(const BoardIO& pd, uint32_t now) {
   // Read & debounce the current key matrix
   this->switches = debounce(pd.Read(), now);
 }
+#endif
 
 // Send the relevant data over the wire
 void hw::send(BLEUart& bleuart, const hw& prev) const {
@@ -47,8 +51,8 @@ bool hw::receive(BLEClientUart& clientUart, const hw& prev) {
     int size = clientUart.read(buffer, sizeof(switches) + 1);
     if (size == sizeof(switches) + 1) {
       memcpy(reinterpret_cast<uint8_t*>(this), buffer, sizeof(switches) + 1);
-    } else {
 #if defined(DEBUG)
+    } else {
       // NOTE: This fires occasionally when button mashing on the left, so
       // perhaps I shouldn't have changed this just on a whim. Wez clearly
       // knew what he was doing :)

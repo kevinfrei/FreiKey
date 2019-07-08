@@ -1,5 +1,7 @@
 #include "mybluefruit.h"
 
+#include "Adafruit_TinyUSB.h"
+
 #include "boardio.h"
 #include "callbacks.h"
 #include "dbgcfg.h"
@@ -10,8 +12,6 @@
 #include "keystate.h"
 #include "led_states.h"
 #include "scanner.h"
-#include "sleepstate.h"
-#include "status_dump.h"
 
 // I'm going to update this to keep track of additional state.
 // Each key 'previously' pressed should have a 'time last pressed'
@@ -29,13 +29,9 @@
 // #4: Key-state back & forth (caps as a real cmd/ctrl, instead of a layer
 // shift)
 
-// These numbers correspond to the *port pin* numbers in the nRF52 documentation
-// not the physical pin numbers...
-constexpr BoardIO RightBoard = {
-    {29, 16, 15, 7, 27, 11, 30}, {13, 4, 2, 3, 5, 12}, 28};
-
 state::hw leftSide{};
 state::hw rightSide{};
+BoardIO Dongle{LED_RED};
 
 // The are the top left & right keys, plus the lowest 'outer' key
 constexpr uint64_t status_clear_bonds_left = 0x10000000042ULL;
@@ -57,7 +53,7 @@ void resetTheWorld() {
   memset(&rightSide, 0, sizeof(rightSide));
   memset(keyStates, 0xff, sizeof(keyStates));
 
-  hid.keyRelease();
+  usb_hid.keyboardRelease(0);
 }
 
 // Look for a slot that is either already in use for this scan code, or vacant.
@@ -198,67 +194,87 @@ uint64_t switchData;
 // It's kind of surprising how annoying the latency is when I get typing fast...
 constexpr uint32_t DELAY = 8;
 
-volatile int tmp = 0;
-volatile int *global = &tmp;
+uint8_t const desc_hid_report[] = {
+    TUD_HID_REPORT_DESC_KEYBOARD(),
+};
+
+uint32_t lastTime = 0;
+volatile int tmp = 1;
+volatile int* global = &tmp;
 void loop() {
   if (!(*global)) {
-    digitalWrite(LED_RED, HIGH);   // turn the LED on (HIGH is the voltage level)
-    delay(1);               // wait for a second
-    digitalWrite(LED_RED, LOW);
-    delay(50);               // wait for a second
-    digitalWrite(LED_BLUE, HIGH);   // turn the LED on (HIGH is the voltage level)
-    delay(1);               // wait for a second
-    digitalWrite(LED_BLUE, LOW);
-    delay(50);               // wait for a second
-    waitForEvent();
+    // poll gpio once each 2 ms
+    delay(2);
+
+    //  // Remote wakeup
+    //  if ( tud_suspended() && btn )
+    //  {
+    //    // Wake up host if we are in suspend mode
+    //    // and REMOTE_WAKEUP feature is enabled by host
+    //    tud_remote_wakeup();
+    //  }
+
+    if (!usb_hid.ready())
+      return;
+
+    uint8_t bat = Dongle.getBatteryPercent();
+    DBG(dumpVal(bat, "Battery: "));
+    uint32_t time = millis();
+
+    static bool keyPressedPreviously = false;
+    static int pressCount = 1;
+    bool anyKeyPressed = false;
+
+    uint8_t count = 0;
+    uint8_t keycode[6] = {0};
+
+    // scan normal key and send report
+    /*
+    for (uint8_t i = 0; i < pincount; i++) {
+      */
+    if (time - lastTime > 2000) { // 0 == digitalRead(pins[i])) {
+      // if pin is active (low), add its hid code to key report
+      while (pressCount--) {
+        keycode[count++] = HID_KEY_A + pressCount; // hidcode[i];
+
+        // 6 is max keycode per report
+        if (count == 6) {
+          usb_hid.keyboardReport(0, 0, keycode);
+          delay(2); // delay for report to send out
+
+          // reset report
+          count = 0;
+          memset(keycode, 0, sizeof(keycode));
+        }
+
+        // used later
+        anyKeyPressed = true;
+        keyPressedPreviously = true;
+      }
+      pressCount = (count % 6) + 1;
+      lastTime = time;
+    }
+    //}
+
+    // Send any remaining keys (not accumulated up to 6)
+    if (count) {
+      usb_hid.keyboardReport(0, 0, keycode);
+    }
+
+    // Send All-zero report to indicate there is no keys pressed
+    // Most of the time, it is, though we don't need to send zero report
+    // every loop(), only a key is pressed in previous loop()
+    if (!anyKeyPressed && keyPressedPreviously) {
+      keyPressedPreviously = false;
+      usb_hid.keyboardRelease(0);
+    }
     return;
   }
   uint32_t now = millis();
 
   // Get the hardware state for the two sides...
-  state::hw downRight{now, rightSide, RightBoard};
-  state::hw downLeft{clientUart, leftSide};
-
-  // This is the master-side buffering code
-  if (downRight.switches != rightSide.switches) {
-    // There's a change: put it in the delay buffer
-    if (dataWaiting) {
-      if (switchData != downRight.switches) {
-        // We already have a different change buffered, report it early :/
-        std::swap(switchData, downRight.switches);
-        dataTime = now;
-      } else if (now - dataTime > DELAY) {
-        // There's no change from what we're reading, but it's time to report
-        dataWaiting = false;
-      } else {
-        // No changes from the buffered data
-        // Sit on this change (i.e. revert to previous)
-        downRight.switches = rightSide.switches;
-      }
-    } else {
-      // We have no pending change: Just queue up this one
-      dataWaiting = true;
-      dataTime = now;
-      switchData = downRight.switches;
-      downRight.switches = rightSide.switches;
-    }
-  } else {
-    // We've observed the same thing we've already reported
-    if (dataWaiting && now - dataTime > DELAY) {
-      // we have waiting data ready to report
-      std::swap(downRight.switches, switchData);
-      dataWaiting = false;
-    }
-  }
-
-  // For sleeping, look at both sides of the keyboard
-  uint64_t down = downRight.switches | downLeft.switches;
-  if (sleepState.CheckForSleeping(down, now, RightBoard)) {
-    // I'm assuming this saves power. If it doesn't, there's no point...
-    delay(250);
-    waitForEvent();
-    return;
-  }
+  state::hw downRight{rightUart, rightSide};
+  state::hw downLeft{leftUart, leftSide};
 
   // Update the combined battery level
   updateBatteryLevel(downLeft, downRight);
@@ -267,12 +283,6 @@ void loop() {
   uint64_t beforeLeft = leftSide.switches, afterLeft = downLeft.switches;
   uint64_t beforeRight = rightSide.switches, afterRight = downRight.switches;
 
-  // Pseudo-code for what I'm looking to clean up:
-#if 0
-  std::vector<scancode_t> scanCodes = GetScanCodesForSwitchStates(
-      beforeLeft, afterLeft, beforeRight, afterRight);
-  PerformActionsForScanCodes(scanCodes);
-#endif
   uint64_t deltaLeft = beforeLeft ^ afterLeft;
   uint64_t deltaRight = beforeRight ^ afterRight;
   bool keysChanged = deltaLeft || deltaRight;
@@ -288,9 +298,9 @@ void loop() {
   if (curState) {
     // We're in some random LED display state. Do something...
     if (now - curState->time < stateTime) {
-      RightBoard.setLED(curState->get_led_value(downRight, now - stateTime));
+      Dongle.setLED(curState->get_led_value(downRight, now - stateTime));
     } else {
-      RightBoard.setLED(0);
+      Dongle.setLED(0);
       curState = nullptr;
     }
   }
@@ -341,7 +351,9 @@ void loop() {
     for (auto& state : keyStates) {
       if (state.scanCode == 0xff)
         continue;
-      if ((state.action & kConsumer) == kConsumer) {
+      // TODO:
+      if (false && (state.action & kConsumer) == kConsumer) {
+#if 0
         // For a consumer control button, there are no modifiers, it's
         // just a simple call. So just call it directly:
         if (state.down) {
@@ -355,6 +367,7 @@ void loop() {
           // keyboardReport.
           state.scanCode = 0xff;
         }
+#endif
       } else if (state.down) {
         switch (state.action & kMask) {
           case kTapHold:
@@ -407,22 +420,12 @@ void loop() {
     rightSide = downRight;
     leftSide = downLeft;
 
-#if defined(STATUS_DUMP)
-    // If we do a status dump, don't pass the keys pressed on to the computer...
-    if (!status_dump_check(rightSide, leftSide))
-#endif
-      hid.keyboardReport(mods, report);
+    usb_hid.keyboardReport(0, mods, report);
     DBG2(Serial.println("============================="));
     DBG2(Serial.print("Left side "));
     DBG2(downLeft.dump());
     DBG2(Serial.print("Right side "));
     DBG2(downRight.dump());
-
-    if (rightSide.switches == status_clear_bonds_right &&
-        leftSide.switches == status_clear_bonds_left) {
-      DBG(Serial.println("CLEARING BLUETOOTH BONDS!"));
-      Bluefruit.clearBonds();
-    }
   }
 
   waitForEvent(); // Request CPU enter low-power mode until an event occurs
@@ -431,19 +434,24 @@ void loop() {
 // In Arduino world the 'setup' function is called to initialize the device.
 // The 'loop' function is called over & over again, after setup completes.
 void setup() {
+  DBG(Serial.begin(115200));
+  DBG(while (!Serial) delay(10)); // for nrf52840 with native usb
+
+  Dongle.Configure();
   if (!(*global)) {
-    pinMode(LED_RED, OUTPUT);
-    pinMode(LED_BLUE, OUTPUT);
+    usb_hid.setPollInterval(2);
+    usb_hid.setReportDescriptor(desc_hid_report, sizeof(desc_hid_report));
+    usb_hid.setReportCallback(NULL, callback::hid_report_callback);
+
+    usb_hid.begin();
     return;
   }
-  DBG(Serial.begin(115200));
-  RightBoard.Configure();
   resetTheWorld();
 
   // Central and peripheral
-  Bluefruit.begin(true, true);
+  Bluefruit.begin(0, 2);
   // Bluefruit.clearBonds();
-  Bluefruit.autoConnLed(true);
+  Bluefruit.autoConnLed(false);
 
   battery.begin();
 
@@ -457,16 +465,13 @@ void setup() {
   Bluefruit.Central.setConnectCallback(callback::cent_connect);
   Bluefruit.Central.setDisconnectCallback(callback::cent_disconnect);
 
-  dis.setManufacturer(MANUFACTURER);
-  dis.setModel(MODEL);
-  dis.setHardwareRev(HW_REV);
-  dis.setSoftwareRev(__DATE__);
-  dis.begin();
-
-  clientUart.begin();
+  leftUart.begin();
+  rightUart.begin();
+  /*
+  leftUart.setRxCallback(callback::cent_connect);
+  rightUart.setRxCallback(callback::cent_connect);
   Bluefruit.Central.setConnectCallback(callback::core_connect);
-  Bluefruit.Central.setDisconnectCallback(callback::core_disconnect);
-  // clientUart.setRxCallback(cent_bleuart_rx_callback);
+  Bluefruit.Central.setDisconnectCallback(callback::core_disconnect);*/
 
   /* Start Central Scanning
    * - Enable auto scan if disconnected
@@ -484,10 +489,7 @@ void setup() {
   // switches now, so if I need it to advertise, I can just punch the power.
   Bluefruit.Scanner.start(0); // 0 = Don't stop scanning after n seconds
 
-  hid.begin();
-  // delay(5000);
-  // Bluefruit.printInfo();
-
+#if 0
   // This gets Advertising going...
   Bluefruit.Advertising.addFlags(BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE);
   Bluefruit.Advertising.addTxPower();
@@ -501,4 +503,5 @@ void setup() {
   Bluefruit.Advertising.setInterval(32, 244); // in unit of 0.625 ms
   Bluefruit.Advertising.setFastTimeout(30); // number of seconds in fast mode
   Bluefruit.Advertising.start(0); // 0 = Don't stop advertising after n seconds
+  #endif
 }

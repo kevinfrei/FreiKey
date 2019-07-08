@@ -3,12 +3,22 @@
 
 #include "mybluefruit.h"
 
+#if defined(USB_MASTER)
+#include "Adafruit_TinyUSB.h"
+#endif
+
 #include "sleepstate.h"
 #include "hardware.h"
 
+#if defined(USB_MASTER)
+extern BLEClientUart leftUart;
+extern BLEClientUart rightUart;
+extern Adafruit_USBD_HID usb_hid;
+#elif defined(BLUETOOTH_ONLY)
+extern BLEClientUart clientUart;
 extern BLEDis dis;
 extern BLEHidAdafruit hid;
-extern BLEClientUart clientUart;
+#endif
 extern BLEBas battery;
 
 extern state::hw leftSide;

@@ -35,6 +35,7 @@ endif
 AFROOT=Adafruit
 SSD1306_ROOT=SSD1306
 GFX_ROOT=GFX
+TUSB_ROOT=TinyUSB
 
 ifeq ($(uname), Windows)
 TOOLSROOT=${HOME}/AppData/Local/Arduino15/packages/arduino
@@ -64,14 +65,11 @@ OBJCOPY=${TOOLS}/bin/arm-none-eabi-objcopy
 AR=${TOOLS}/bin/arm-none-eabi-ar
 
 # Flags for compilation
-# First, DEBUG and STATUS_DUMP configuration flags (then everything else)
+# First, DEBUG configuration flas (then everything else)
 # -DDEBUG
 # -DDEBUG=2
-
-#	-DNRF5
-#	-DNRF52
-
-COMMON_DEFINES=-DSTATUS_DUMP \
+COMMON_DEFINES=\
+	-DDEBUG=2 \
 	-DF_CPU=64000000 \
 	-DARDUINO=${ARDUINO_VER} \
 	-DSOFTDEVICE_PRESENT \
@@ -96,12 +94,14 @@ M_DEFINES=${COMMON_DEFINES} \
 	-DUSB_PID=0x8029 \
 	"-DUSB_MANUFACTURER=\"Adafruit LLC\"" \
 	"-DUSB_PRODUCT=\"Feather nRF52840 Express\"" \
-	-DSOFTDEVICE_PRESENT
+	-DSOFTDEVICE_PRESENT \
+	-DUSB_MASTER
 
 C_DEFINES=${COMMON_DEFINES} \
 	-DS${C_SD_VER} \
 	-DNRF52832_XXAA \
-	-DARDUINO_NRF52832_FEATHER
+	-DARDUINO_NRF52832_FEATHER \
+	-DUART_CLIENT
 
 TARGET=-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
 CODEGEN=-nostdlib --param max-inline-insns-single=500 -ffunction-sections -fdata-sections
@@ -146,6 +146,7 @@ M_INCLUDES_2=\
 	"-I${AFROOT}/libraries/Bluefruit52Lib/src" \
   "-I${AFROOT}/libraries/Adafruit_LittleFS/src" \
   "-I${AFROOT}/libraries/InternalFileSytem/src" \
+	"-I${TUSB_ROOT}/src" \
 	"-I${GFX_ROOT}" \
 	"-I${SSD1306_ROOT}"
 
@@ -174,7 +175,7 @@ SHARED_SRC = \
 	battery.cpp
 R_SRC = r-client.cpp
 L_SRC = l-client.cpp
-M_SRC = usb-master.cpp status_dump.cpp globals.cpp callbacks.cpp scanner.cpp
+M_SRC = usb-master.cpp globals.cpp callbacks.cpp scanner.cpp
 
 CORE_DIR = ${AFROOT}/cores/nRF5
 CORE_VPATH=${CORE_DIR}:\
@@ -357,6 +358,15 @@ M_GFX_OBJS = \
 C_GFX_OBJS = \
 	$(addprefix ${C_OUT}/, $(patsubst %.cpp, %.cpp.o, $(notdir ${GFX_SRCS})))
 
+TUSB_VPATH=${TUSB_ROOT}/src
+TUSB_SRCS = \
+	Adafruit_TinyUSB.cpp \
+	Adafruit_USBD_HID.cpp \
+	Adafruit_USBD_MIDI.cpp \
+	Adafruit_USBD_MSC.cpp
+TUSB_OBJS = \
+	$(addprefix ${M_OUT}/, $(patsubst %.cpp, %.cpp.o, $(notdir ${TUSB_SRCS})))
+
 WIRE_VPATH=${AFROOT}/libraries/SPI:${AFROOT}/libraries/Wire
 WIRE_SRCS = SPI.cpp Wire_nRF52.cpp
 M_WIRE_OBJS = \
@@ -396,7 +406,7 @@ C_ELF_FLAGS= ${OPT} ${TARGET} -save-temps \
 
 # Learned about VPATH for finding targets of rules :D
 # Makes all those custom "for this subdir, dump objs' in ${OUT} useless!
-VPATH=${BF_VPATH}:${CORE_VPATH}:${FS_VPATH}:${GFX_VPATH}:${WIRE_VPATH}
+VPATH=${BF_VPATH}:${CORE_VPATH}:${FS_VPATH}:${GFX_VPATH}:${WIRE_VPATH}:${TUSB_VPATH}
 
 .PHONY: clean allclean depclean left right usb-master flashl flashr flashm
 
@@ -475,7 +485,7 @@ ${C_OUT}/c_ada.a: ${C_BFLIB_OBJS} ${C_FS_OBJS}
 	@echo "AR $@"
 	@${AR} rcs $@ $^
 
-${M_OUT}/m_ada.a: ${M_BFLIB_OBJS} ${M_FS_OBJS} ${WIRE_OBJS} ${GFX_OBJS}
+${M_OUT}/m_ada.a: ${M_BFLIB_OBJS} ${M_FS_OBJS} ${WIRE_OBJS} ${GFX_OBJS} ${TUSB_OBJS}
 	-@${RMFILES} $(subst /,${DIV},$@)
 	@echo "AR $@"
 	@${AR} rcs $@ $^
