@@ -11,6 +11,8 @@ BLEClientUart clientUart;
 BLEHidAdafruit hid;
 BLEDis dis;
 #endif
+#if !defined(USB_MASTER)
 BLEBas battery;
+#endif
 uint16_t core_handle = 0xFFFF;
 SleepState sleepState = {0, false, true};

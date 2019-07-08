@@ -169,12 +169,9 @@ SHARED_SRC = \
 	dbgcfg.cpp \
 	hardware.cpp \
 	led_states.cpp \
-	boardio.cpp \
-	debounce.cpp \
-	sleepstate.cpp \
-	battery.cpp
-R_SRC = r-client.cpp
-L_SRC = l-client.cpp
+	boardio.cpp
+R_SRC = r-client.cpp debounce.cpp battery.cpp sleepstate.cpp
+L_SRC = l-client.cpp debounce.cpp battery.cpp sleepstate.cpp
 M_SRC = usb-master.cpp globals.cpp callbacks.cpp scanner.cpp
 
 CORE_DIR = ${AFROOT}/cores/nRF5

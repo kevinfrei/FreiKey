@@ -173,14 +173,7 @@ void updateBatteryLevel(const state::hw& downLeft, const state::hw& downRight) {
       downLeft.battery_level != leftSide.battery_level) {
     // We only get the battery level from the left side once you hit a key, so
     // only report it if we have something to actually report
-    if (downLeft.battery_level) {
-      battery.notify((downRight.battery_level + downLeft.battery_level) / 2);
-      DBG(dumpVal((downRight.battery_level + downLeft.battery_level) / 2,
-                  "battery avg: "));
-    } else {
-      DBG(dumpVal(downRight.battery_level, "right only battery: "));
-      battery.notify(downRight.battery_level);
-    }
+    // TODO: Update something here.
     rightSide.battery_level = downRight.battery_level;
     leftSide.battery_level = downLeft.battery_level;
   }
@@ -351,9 +344,8 @@ void loop() {
     for (auto& state : keyStates) {
       if (state.scanCode == 0xff)
         continue;
-      // TODO:
-      if (false && (state.action & kConsumer) == kConsumer) {
-#if 0
+      if ((state.action & kConsumer) == kConsumer) {
+#if CURRENTLY_UNSUPPORTED_CONSUMER_KEYS
         // For a consumer control button, there are no modifiers, it's
         // just a simple call. So just call it directly:
         if (state.down) {
@@ -438,22 +430,18 @@ void setup() {
   DBG(while (!Serial) delay(10)); // for nrf52840 with native usb
 
   Dongle.Configure();
-  if (!(*global)) {
-    usb_hid.setPollInterval(2);
-    usb_hid.setReportDescriptor(desc_hid_report, sizeof(desc_hid_report));
-    usb_hid.setReportCallback(NULL, callback::hid_report_callback);
 
-    usb_hid.begin();
-    return;
-  }
+  usb_hid.setPollInterval(2);
+  usb_hid.setReportDescriptor(desc_hid_report, sizeof(desc_hid_report));
+  usb_hid.setReportCallback(NULL, callback::hid_report_callback);
+
+  usb_hid.begin();
+
   resetTheWorld();
 
-  // Central and peripheral
+  // No central and 2 peripheral
   Bluefruit.begin(0, 2);
-  // Bluefruit.clearBonds();
-  Bluefruit.autoConnLed(false);
-
-  battery.begin();
+  Bluefruit.autoConnLed(false); // Don't turn on the LED at all
 
   // I'm assuming that by dropping this power down, I'll save some battery life.
   // I should experiment to see how low I can get it and still communicate with
@@ -467,11 +455,6 @@ void setup() {
 
   leftUart.begin();
   rightUart.begin();
-  /*
-  leftUart.setRxCallback(callback::cent_connect);
-  rightUart.setRxCallback(callback::cent_connect);
-  Bluefruit.Central.setConnectCallback(callback::core_connect);
-  Bluefruit.Central.setDisconnectCallback(callback::core_disconnect);*/
 
   /* Start Central Scanning
    * - Enable auto scan if disconnected
@@ -488,20 +471,4 @@ void setup() {
   // I should probably stop advertising after a while if that's possible. I have
   // switches now, so if I need it to advertise, I can just punch the power.
   Bluefruit.Scanner.start(0); // 0 = Don't stop scanning after n seconds
-
-#if 0
-  // This gets Advertising going...
-  Bluefruit.Advertising.addFlags(BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE);
-  Bluefruit.Advertising.addTxPower();
-  Bluefruit.Advertising.addAppearance(BLE_APPEARANCE_HID_KEYBOARD);
-  Bluefruit.Advertising.addService(hid);
-
-  Bluefruit.ScanResponse.addService(battery); // This doesn't seem to work :(
-
-  Bluefruit.Advertising.addName();
-  Bluefruit.Advertising.restartOnDisconnect(true);
-  Bluefruit.Advertising.setInterval(32, 244); // in unit of 0.625 ms
-  Bluefruit.Advertising.setFastTimeout(30); // number of seconds in fast mode
-  Bluefruit.Advertising.start(0); // 0 = Don't stop advertising after n seconds
-  #endif
 }

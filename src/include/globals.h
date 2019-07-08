@@ -19,7 +19,9 @@ extern BLEClientUart clientUart;
 extern BLEDis dis;
 extern BLEHidAdafruit hid;
 #endif
+#if !defined(USB_MASTER)
 extern BLEBas battery;
+#endif
 
 extern state::hw leftSide;
 extern state::hw rightSide;
