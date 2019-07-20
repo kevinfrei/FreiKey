@@ -50,7 +50,7 @@ else
 TOOLSROOT=${HOME}/Library/Arduino15/packages/arduino
 LPORT=/dev/cu.SLAB_USBtoUART
 RPORT=/dev/cu.SLAB_USBtoUART
-MPORT=/dev/cu.usbmodem141201
+MPORT=/dev/cu.usbmodem1411401
 NRFUTIL=${AFROOT}/tools/adafruit-nrfutil/macos/adafruit-nrfutil
 RMFILES=rm
 RMDIR=rm -rf
@@ -90,10 +90,10 @@ M_DEFINES=${COMMON_DEFINES} \
 	-DARDUINO_NRF52840_FEATHER \
 	-DUSBCON \
 	-DUSE_TINYUSB \
-	-DUSB_VID=0x239A \
-	-DUSB_PID=0x8029 \
-	"-DUSB_MANUFACTURER=\"Adafruit LLC\"" \
-	"-DUSB_PRODUCT=\"Feather nRF52840 Express\"" \
+	-DUSB_VID=0x1bad \
+	-DUSB_PID=0xcafe \
+	"-DUSB_MANUFACTURER=\"Kevin Frei\"" \
+	"-DUSB_PRODUCT=\"FreiKey Dongle\"" \
 	-DSOFTDEVICE_PRESENT \
 	-DUSB_MASTER
 
@@ -170,8 +170,9 @@ SHARED_SRC = \
 	hardware.cpp \
 	led_states.cpp \
 	boardio.cpp
-R_SRC = r-client.cpp debounce.cpp battery.cpp sleepstate.cpp
-L_SRC = l-client.cpp debounce.cpp battery.cpp sleepstate.cpp
+CLIENT_SRC = debounce.cpp battery.cpp sleepstate.cpp client.cpp
+R_SRC = r-client.cpp ${CLIENT_SRC}
+L_SRC = l-client.cpp ${CLIENT_SRC}
 M_SRC = usb-master.cpp globals.cpp callbacks.cpp scanner.cpp
 
 CORE_DIR = ${AFROOT}/cores/nRF5

@@ -44,29 +44,39 @@ void scan(ble_gap_evt_adv_report_t* report) {
 
 // Called when we find a UART host to connect with
 void cent_connect(uint16_t conn_handle) {
-#if defined(USB_MASTER)
-  // TODO: Figure out if this is the left or right uart
-#else
   // TODO: Maybe make this more secure? I haven't looked into how secure this
   // is in the documentation :/
   char peer_name[32] = {0};
+  BLEClientUart *remoteUart = nullptr;
   Bluefruit.Connection(conn_handle)->getPeerName(peer_name, sizeof(peer_name));
   // I ought to at least make sure the peer_name is LHS_NAME, right?
+#if defined(USB_MASTER)
+  // TODO: Figure out if this is the left or right uart
+  if (!strcmp(LTCL_NAME, peer_name) && leftUart.discover(conn_handle)) {
+    remoteUart = &leftUart;
+  } else if (!strcmp(RTCL_NAME, peer_name) && rightUart.discover(conn_handle)) {
+    remoteUart = &rightUart;
+  }
+#else
   if (!strcmp(LHS_NAME, peer_name) && clientUart.discover(conn_handle)) {
-    DBG(Serial.print("[Cent] Connected to "));
-    DBG(Serial.println(peer_name));
-    DBG(Bluefruit.printInfo());
-    // Enable TXD's notify
-    clientUart.enableTXD();
-  } else {
+    remoteUart = &clientUart;
+  }
+#endif
+  else {
     DBG(Serial.println("[Cent] Not connecting to the other side: wrong name"));
     DBG(Serial.print("Was expecting: "));
     DBG(Serial.println(LHS_NAME));
     DBG(Serial.print("Actual name: "));
     DBG(Serial.println(peer_name));
     Bluefruit.Connection(conn_handle)->disconnect();
+    return;
   }
-#endif
+
+  DBG(Serial.print("[Cent] Connected to "));
+  DBG(Serial.println(peer_name));
+  DBG(Bluefruit.printInfo());
+  // Enable TXD's notify
+  remoteUart->enableTXD();
   resetTheWorld();
 }
 

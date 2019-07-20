@@ -31,7 +31,7 @@
 
 state::hw leftSide{};
 state::hw rightSide{};
-BoardIO Dongle{LED_RED};
+BoardIO Dongle{LED_BLUE};
 
 // The are the top left & right keys, plus the lowest 'outer' key
 constexpr uint64_t status_clear_bonds_left = 0x10000000042ULL;
@@ -192,12 +192,12 @@ uint8_t const desc_hid_report[] = {
 };
 
 uint32_t lastTime = 0;
-volatile int tmp = 1;
-volatile int* global = &tmp;
+bool justTestIt = true;
 void loop() {
-  if (!(*global)) {
+  if (justTestIt) {
     // poll gpio once each 2 ms
     delay(2);
+    digitalWrite(LED_RED, HIGH);
 
     //  // Remote wakeup
     //  if ( tud_suspended() && btn )
@@ -210,8 +210,6 @@ void loop() {
     if (!usb_hid.ready())
       return;
 
-    uint8_t bat = Dongle.getBatteryPercent();
-    DBG(dumpVal(bat, "Battery: "));
     uint32_t time = millis();
 
     static bool keyPressedPreviously = false;
@@ -225,7 +223,7 @@ void loop() {
     /*
     for (uint8_t i = 0; i < pincount; i++) {
       */
-    if (time - lastTime > 2000) { // 0 == digitalRead(pins[i])) {
+    if (digitalRead(7) == LOW) {
       // if pin is active (low), add its hid code to key report
       while (pressCount--) {
         keycode[count++] = HID_KEY_A + pressCount; // hidcode[i];
@@ -246,7 +244,12 @@ void loop() {
       }
       pressCount = (count % 6) + 1;
       lastTime = time;
+      Dongle.setLED(50);
+      delay(10);
+    } else {
+      Dongle.setLED(0);
     }
+
     //}
 
     // Send any remaining keys (not accumulated up to 6)
@@ -261,6 +264,7 @@ void loop() {
       keyPressedPreviously = false;
       usb_hid.keyboardRelease(0);
     }
+    digitalWrite(LED_RED, LOW);
     return;
   }
   uint32_t now = millis();
@@ -426,8 +430,12 @@ void loop() {
 // In Arduino world the 'setup' function is called to initialize the device.
 // The 'loop' function is called over & over again, after setup completes.
 void setup() {
+#if 0
   DBG(Serial.begin(115200));
   DBG(while (!Serial) delay(10)); // for nrf52840 with native usb
+#endif
+  // This is the user switch :)
+  pinMode(7, INPUT_PULLUP);
 
   Dongle.Configure();
 
@@ -471,4 +479,6 @@ void setup() {
   // I should probably stop advertising after a while if that's possible. I have
   // switches now, so if I need it to advertise, I can just punch the power.
   Bluefruit.Scanner.start(0); // 0 = Don't stop scanning after n seconds
+  pinMode(LED_BLUE, OUTPUT);
+  pinMode(LED_RED, OUTPUT);
 }
