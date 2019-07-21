@@ -7,7 +7,7 @@
 namespace callback {
 
 #if !defined(USB_MASTER)
-// This is registered to be called when you connection a computer
+// This is registered to be called when you connect a computer
 void core_connect(uint16_t handle) {
 #if DBG
   DBG(dumpHex(handle, "Core Connected: "));
@@ -54,8 +54,16 @@ void cent_connect(uint16_t conn_handle) {
   // TODO: Figure out if this is the left or right uart
   if (!strcmp(LTCL_NAME, peer_name) && leftUart.discover(conn_handle)) {
     remoteUart = &leftUart;
+    for (int i = 0; i < 10; i++) {
+      digitalWrite(LED_RED, (i & 1) ? LOW : HIGH);
+      delay(100);
+    }
   } else if (!strcmp(RTCL_NAME, peer_name) && rightUart.discover(conn_handle)) {
     remoteUart = &rightUart;
+    for (int i = 0; i < 4; i++) {
+      digitalWrite(LED_RED, (i & 1) ? LOW : HIGH);
+      delay(250);
+    }
   }
 #else
   if (!strcmp(LHS_NAME, peer_name) && clientUart.discover(conn_handle)) {
@@ -83,7 +91,7 @@ void cent_connect(uint16_t conn_handle) {
 // Called with a UART host disconnects
 void cent_disconnect(uint16_t conn_handle, uint8_t reason) {
 #if defined(USB_MASTER)
-  // Disconnect the *correct* side
+  // TODO: Disconnect the *correct* side
 #else
   DBG(dumpVal(conn_handle, "Connection Handle Disconnected: "));
   DBG(dumpVal(reason, " Reason #"));

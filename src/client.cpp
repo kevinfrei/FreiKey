@@ -4,10 +4,9 @@
 
 void Client::setup(const char* name) {
   DBG(Serial.begin(115200));
-  theBoard.Configure();
   Bluefruit.begin();
-  // Turn off the Bluetooth LED
-  Bluefruit.autoConnLed(false);
+  // Turn on the Bluetooth LED
+  Bluefruit.autoConnLed(true);
   // I had turned this all the way down. Given that my receiver is less than
   // 20 cm away, I didn't know if it would be enough. I bumped it up to 20,
   // because it seemed like I was occasionally seeing weirdness that I wasn't
@@ -26,7 +25,6 @@ void Client::setup(const char* name) {
   // Start Advertising the UART service to talk to the other half...
   Bluefruit.Advertising.addFlags(BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE);
   Bluefruit.Advertising.addTxPower();
-  // Bluefruit.Advertising.addAppearance(BLE_APPEARANCE_HID_KEYBOARD);
   Bluefruit.Advertising.addService(bleuart);
   Bluefruit.ScanResponse.addName();
   Bluefruit.Advertising.restartOnDisconnect(true);
@@ -37,8 +35,7 @@ void Client::setup(const char* name) {
   // power.
   Bluefruit.Advertising.start(0); // 0 = Don't stop advertising after n
                                   // seconds
-  pinMode(LED_RED, OUTPUT);
-  pinMode(LED_BLUE, OUTPUT);
+  theBoard.Configure();
 }
 
 // TODO: Add bidirectional communication, so the master can ask for info or set
@@ -53,7 +50,6 @@ void Client::loop() {
     waitForEvent();
     return;
   }
-
   if (down != lastRead) {
     lastRead = down;
     DBG2(down.dump());
@@ -67,6 +63,7 @@ void Client::loop() {
       }
     }
   }
+
   if (curState) {
     // We're in "Check if battery is getting kinda low" mode
     if (now - curState->time < stateTime) {

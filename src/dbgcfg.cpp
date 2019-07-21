@@ -29,18 +29,13 @@ void dumpHex(bool v, const char* header) {
   dumpHex(static_cast<unsigned long>(v), header);
 }
 
-const char* zeros = "00000000";
 void dumpHex(uint64_t v, const char* header) {
   if (header)
     Serial.print(header);
-  Serial.print(static_cast<unsigned long>(v >> 32), HEX);
-  Serial.print("|");
-  // Zero-pad to the left
-  uint32_t lo = static_cast<unsigned long>(v);
-  Serial.print(&zeros[(flsl(lo) + 3) >> 2]);
-  if (lo) {
-    Serial.println(lo, HEX);
-  }
+  Serial.printf("0x%08x|0x%08x\n",
+                static_cast<uint32_t>(v >> 32),
+                static_cast<uint32_t>(v));
 }
 
 #endif
+

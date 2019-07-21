@@ -14,15 +14,19 @@ void BoardIO::Configure() const {
 
   // For my wiring, the columns are output, and the rows are input...
   for (auto pin : cols) {
+    DBG(dumpVal(pin, "Output Pin "));
     pinMode(pin, OUTPUT);
     digitalWrite(pin, HIGH);
   }
   for (auto pin : rows) {
+    DBG(dumpVal(pin, "Input Pullup "));
     pinMode(pin, INPUT_PULLUP);
   }
-  #endif
+#endif
 
   pinMode(led, OUTPUT);
+  pinMode(LED_RED, OUTPUT);
+  pinMode(LED_BLUE, OUTPUT);
   analogWrite(led, 0);
 }
 
@@ -30,12 +34,11 @@ void BoardIO::Configure() const {
 uint64_t BoardIO::Read() const {
   uint64_t switches = 0;
   for (uint64_t colNum = 0; colNum < numcols; ++colNum) {
-    uint64_t val = 1ULL << colNum;
     digitalWrite(cols[colNum], LOW);
-    delay(1);
+    delay(1); // Seems slow, here
     for (uint64_t rowNum = 0; rowNum < numrows; ++rowNum) {
       if (!digitalRead(rows[rowNum])) {
-        switches |= val << (rowNum * numcols);
+        switches |= 1ULL << (rowNum * numcols + colNum);
       }
     }
     digitalWrite(cols[colNum], HIGH);

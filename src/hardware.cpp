@@ -43,6 +43,7 @@ void hw::send(BLEUart& bleuart, const hw& prev) const {
   bleuart.write((uint8_t*)&switches, sizeof(switches) + 1);
 }
 
+#if !defined(UART_CLIENT)
 // Try to receive any relevant switch data from the wire.
 // Returns true if something was received
 bool hw::receive(BLEClientUart& clientUart, const hw& prev) {
@@ -67,6 +68,8 @@ bool hw::receive(BLEClientUart& clientUart, const hw& prev) {
   }
   return false;
 }
+#endif
+
 
 bool hw::operator==(const hw& o) const {
   return o.battery_level == battery_level && o.switches == switches;

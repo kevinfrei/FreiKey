@@ -50,7 +50,7 @@ else
 TOOLSROOT=${HOME}/Library/Arduino15/packages/arduino
 LPORT=/dev/cu.SLAB_USBtoUART
 RPORT=/dev/cu.SLAB_USBtoUART
-MPORT=/dev/cu.usbmodem1411401
+MPORT=/dev/cu.usbmodem1411301
 NRFUTIL=${AFROOT}/tools/adafruit-nrfutil/macos/adafruit-nrfutil
 RMFILES=rm
 RMDIR=rm -rf

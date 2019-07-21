@@ -19,7 +19,7 @@ class Client {
 
  public:
   Client(const BoardIO& board)
-      : lastRead{}, theBoard(theBoard), stateTime{0}, sleepState{0, false} {}
+      : lastRead{}, theBoard(board), stateTime{0}, sleepState{0, false} {}
   void setup(const char* name);
   void loop();
 };
