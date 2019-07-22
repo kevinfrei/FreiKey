@@ -196,6 +196,7 @@ uint32_t lastTime = 0;
 bool justTestIt = false;
 
 void loop() {
+  callback::updateClientStatus();
   if (!usb_hid.ready())
     return;
   //  // Remote wakeup
@@ -386,7 +387,7 @@ void setup() {
 
   // No central and 2 peripheral
   Bluefruit.begin(0, 2);
-  Bluefruit.autoConnLed(false); // Don't turn on the LED at all
+  Bluefruit.autoConnLed(false);
   // I'm assuming that by dropping this power down, I'll save some battery life.
   // I should experiment to see how low I can get it and still communicate with
   // both my Mac and my PC reliably. They're each within a meter of the
@@ -394,11 +395,13 @@ void setup() {
   Bluefruit.setTxPower(4);
   Bluefruit.setName(BT_NAME);
 
+  leftUart.begin();
+  leftUart.setRxCallback(callback::leftuart_rx_callback);
+  rightUart.begin();
+  rightUart.setRxCallback(callback::rightuart_rx_callback);
+
   Bluefruit.Central.setConnectCallback(callback::cent_connect);
   Bluefruit.Central.setDisconnectCallback(callback::cent_disconnect);
-
-  leftUart.begin();
-  rightUart.begin();
 
   /* Start Central Scanning
    * - Enable auto scan if disconnected

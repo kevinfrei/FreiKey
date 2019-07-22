@@ -42,11 +42,40 @@ void scan(ble_gap_evt_adv_report_t* report) {
   Bluefruit.Central.connect(report);
 }
 
+uint32_t connect_time = 0;
+bool black = true;
 void updateClientStatus() {
-  uint8_t red = (rightHandle == BLE_CONN_HANDLE_INVALID) ? 4 : 0;
-  uint8_t blue = (leftHandle == BLE_CONN_HANDLE_INVALID) ? 5 : 0;
-  neopix.setPixelColor(0, red, 0, blue);
+  uint32_t theDelay = millis() - connect_time;
+  if (theDelay < 10000) {
+    uint32_t red = (rightHandle == BLE_CONN_HANDLE_INVALID) ? 0 : 0xFF;
+    uint8_t blue = (leftHandle == BLE_CONN_HANDLE_INVALID) ? 0 : 0xFF;
+    theDelay = (10000 - theDelay) / 100;
+    theDelay = theDelay * theDelay * theDelay;
+    neopix.setPixelColor(
+        0, red * theDelay / 1000000, 0, blue * theDelay / 1000000);
+    neopix.show();
+    black = false;
+  } else if (!black) {
+    neopix.setPixelColor(0, 0, 0, 0);
+    neopix.show();
+    black = true;
+  }
+}
+
+void leftuart_rx_callback(BLEClientUart& uart_svc) {
+  neopix.setPixelColor(0, 0, 0, 5);
   neopix.show();
+  black = false;
+  delayMicroseconds(25);
+  updateClientStatus();
+}
+
+void rightuart_rx_callback(BLEClientUart& uart_svc) {
+  neopix.setPixelColor(0, 1, 0, 0);
+  neopix.show();
+  black = false;
+  delayMicroseconds(25);
+  updateClientStatus();
 }
 
 // Called when we find a UART host to connect with
@@ -62,10 +91,12 @@ void cent_connect(uint16_t conn_handle) {
   if (!strcmp(LTCL_NAME, peer_name) && leftUart.discover(conn_handle)) {
     remoteUart = &leftUart;
     leftHandle = conn_handle;
+    connect_time = millis();
     updateClientStatus();
   } else if (!strcmp(RTCL_NAME, peer_name) && rightUart.discover(conn_handle)) {
     remoteUart = &rightUart;
     rightHandle = conn_handle;
+    connect_time = millis();
     updateClientStatus();
   }
 #else
@@ -82,8 +113,15 @@ void cent_connect(uint16_t conn_handle) {
 
   DBG(Serial.printf("[Cent] Connected to %s\n", peer_name));
   DBG(Bluefruit.printInfo());
+
   // Enable TXD's notify
   remoteUart->enableTXD();
+#if defined(USB_MASTER)
+  // Just keep scanning
+  // I tried to detect if we've got both sides connected, but that
+  // looks somewhat unreliable :(
+  Bluefruit.Scanner.start(0);
+#endif
   resetTheWorld();
 }
 

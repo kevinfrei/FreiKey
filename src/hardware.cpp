@@ -48,28 +48,23 @@ void hw::send(BLEUart& bleuart, const hw& prev) const {
 // Returns true if something was received
 bool hw::receive(BLEClientUart& clientUart, const hw& prev) {
   if (clientUart.available()) {
-    uint8_t buffer[sizeof(switches) + 1];
-    int size = clientUart.read(buffer, sizeof(switches) + 1);
-    if (size == sizeof(switches) + 1) {
-      memcpy(reinterpret_cast<uint8_t*>(this), buffer, sizeof(switches) + 1);
-#if defined(DEBUG)
-    } else {
-      // NOTE: This fires occasionally when button mashing on the left, so
-      // perhaps I shouldn't have changed this just on a whim. Wez clearly
-      // knew what he was doing :)
-      Serial.print("Incorrect datagram size:");
-      Serial.print(" expected ");
-      Serial.print(static_cast<uint8_t>(sizeof(hw)));
-      Serial.print(" got ");
-      Serial.println(size);
-#endif
-    }
+    uint8_t size = sizeof(switches) + 1;
+    uint8_t buffer[size];
+    uint8_t pos = 0;
+    while (pos < size) {
+      if (clientUart.available()) {
+        buffer[pos++] = clientUart.read();
+      } else {
+        delayMicroseconds(25);
+      }
+    };
+    memcpy(reinterpret_cast<uint8_t*>(this), buffer, size);
     return true;
+  } else {
+    return false;
   }
-  return false;
 }
 #endif
-
 
 bool hw::operator==(const hw& o) const {
   return o.battery_level == battery_level && o.switches == switches;

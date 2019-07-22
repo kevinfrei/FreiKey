@@ -14,6 +14,9 @@ void hid_report_callback(uint8_t report_id,
                          hid_report_type_t report_type,
                          uint8_t const* buffer,
                          uint16_t bufsize);
+void leftuart_rx_callback(BLEClientUart& uart_svc);
+void rightuart_rx_callback(BLEClientUart& uart_svc);
+void updateClientStatus();
 #else
 void core_connect(uint16_t conn_handle);
 void core_disconnect(uint16_t conn_handle, uint8_t reason);

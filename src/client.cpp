@@ -4,7 +4,7 @@
 
 void Client::setup(const char* name) {
   DBG(Serial.begin(115200));
-  Bluefruit.begin();
+  Bluefruit.begin(1, 0);
   // Turn on the Bluetooth LED
   Bluefruit.autoConnLed(true);
   // I had turned this all the way down. Given that my receiver is less than
