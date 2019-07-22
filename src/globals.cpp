@@ -6,6 +6,10 @@
 BLEClientUart leftUart;
 BLEClientUart rightUart;
 Adafruit_USBD_HID usb_hid;
+Adafruit_NeoPixel neopix(1, PIN_NEOPIXEL, NEO_GRB + NEO_KHZ800);
+uint16_t leftHandle = BLE_CONN_HANDLE_INVALID;
+uint16_t rightHandle = BLE_CONN_HANDLE_INVALID;
+
 #elif defined(BLUETOOTH_ONLY)
 BLEClientUart clientUart;
 BLEHidAdafruit hid;

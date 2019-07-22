@@ -36,6 +36,7 @@ AFROOT=Adafruit
 SSD1306_ROOT=SSD1306
 GFX_ROOT=GFX
 TUSB_ROOT=TinyUSB
+NEOPIX_ROOT=NeoPixel
 
 ifeq ($(uname), Windows)
 TOOLSROOT=${HOME}/AppData/Local/Arduino15/packages/arduino
@@ -148,7 +149,8 @@ M_INCLUDES_2=\
   "-I${AFROOT}/libraries/InternalFileSytem/src" \
 	"-I${TUSB_ROOT}/src" \
 	"-I${GFX_ROOT}" \
-	"-I${SSD1306_ROOT}"
+	"-I${SSD1306_ROOT}" \
+	"-I${NEOPIX_ROOT}"
 
 C_INCLUDES_2="-I${AFROOT}/variants/feather_nrf52832"\
 	"-I${AFROOT}/libraries/Bluefruit52Lib/src"\
@@ -346,11 +348,12 @@ M_FS_OBJS = $(addprefix ${M_OUT}/, \
 C_FS_OBJS = $(addprefix ${C_OUT}/, \
 	$(patsubst %.c, %.c.o, $(patsubst %.cpp, %.cpp.o, $(notdir ${FS_SRCS}))))
 
-GFX_VPATH=${SSD1306_ROOT}:${GFX_ROOT}
+GFX_VPATH=${SSD1306_ROOT}:${GFX_ROOT}:${NEOPIX_ROOT}
 GFX_SRCS = \
 	Adafruit_SSD1306.cpp \
 	Adafruit_GFX.cpp \
-	Adafruit_SPITFT.cpp
+	Adafruit_SPITFT.cpp \
+	Adafruit_NeoPixel.cpp
 M_GFX_OBJS = \
 	$(addprefix ${M_OUT}/, $(patsubst %.cpp, %.cpp.o, $(notdir ${GFX_SRCS})))
 C_GFX_OBJS = \

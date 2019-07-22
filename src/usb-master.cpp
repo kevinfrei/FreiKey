@@ -1,5 +1,6 @@
 #include "mybluefruit.h"
 
+#include "Adafruit_NeoPixel.h"
 #include "Adafruit_TinyUSB.h"
 
 #include "boardio.h"
@@ -195,79 +196,16 @@ uint32_t lastTime = 0;
 bool justTestIt = false;
 
 void loop() {
-  if (justTestIt) {
-    // poll gpio once each 2 ms
-    delay(2);
-    digitalWrite(LED_RED, HIGH);
-
-    //  // Remote wakeup
-    //  if ( tud_suspended() && btn )
-    //  {
-    //    // Wake up host if we are in suspend mode
-    //    // and REMOTE_WAKEUP feature is enabled by host
-    //    tud_remote_wakeup();
-    //  }
-
-    if (!usb_hid.ready())
-      return;
-
-    uint32_t time = millis();
-
-    static bool keyPressedPreviously = false;
-    static int pressCount = 1;
-    bool anyKeyPressed = false;
-
-    uint8_t count = 0;
-    uint8_t keycode[6] = {0};
-
-    // scan normal key and send report
-    /*
-    for (uint8_t i = 0; i < pincount; i++) {
-      */
-    if (digitalRead(7) == LOW) {
-      // if pin is active (low), add its hid code to key report
-      while (pressCount--) {
-        keycode[count++] = HID_KEY_A + pressCount; // hidcode[i];
-
-        // 6 is max keycode per report
-        if (count == 6) {
-          usb_hid.keyboardReport(0, 0, keycode);
-          delay(2); // delay for report to send out
-
-          // reset report
-          count = 0;
-          memset(keycode, 0, sizeof(keycode));
-        }
-
-        // used later
-        anyKeyPressed = true;
-        keyPressedPreviously = true;
-      }
-      pressCount = (count % 6) + 1;
-      lastTime = time;
-      Dongle.setLED(50);
-      delay(10);
-    } else {
-      Dongle.setLED(0);
-    }
-
-    //}
-
-    // Send any remaining keys (not accumulated up to 6)
-    if (count) {
-      usb_hid.keyboardReport(0, 0, keycode);
-    }
-
-    // Send All-zero report to indicate there is no keys pressed
-    // Most of the time, it is, though we don't need to send zero report
-    // every loop(), only a key is pressed in previous loop()
-    if (!anyKeyPressed && keyPressedPreviously) {
-      keyPressedPreviously = false;
-      usb_hid.keyboardRelease(0);
-    }
-    digitalWrite(LED_RED, LOW);
+  if (!usb_hid.ready())
     return;
-  }
+  //  // Remote wakeup
+  //  if ( tud_suspended() && btn )
+  //  {
+  //    // Wake up host if we are in suspend mode
+  //    // and REMOTE_WAKEUP feature is enabled by host
+  //    tud_remote_wakeup();
+  //  }
+
   uint32_t now = millis();
 
   // Get the hardware state for the two sides...
@@ -435,8 +373,6 @@ void setup() {
   DBG(Serial.begin(115200));
   DBG(while (!Serial) delay(10)); // for nrf52840 with native usb
 #endif
-  // This is the user switch :)
-  pinMode(7, INPUT_PULLUP);
 
   Dongle.Configure();
 
@@ -451,7 +387,6 @@ void setup() {
   // No central and 2 peripheral
   Bluefruit.begin(0, 2);
   Bluefruit.autoConnLed(false); // Don't turn on the LED at all
-
   // I'm assuming that by dropping this power down, I'll save some battery life.
   // I should experiment to see how low I can get it and still communicate with
   // both my Mac and my PC reliably. They're each within a meter of the

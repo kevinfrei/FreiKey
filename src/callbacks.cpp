@@ -42,28 +42,31 @@ void scan(ble_gap_evt_adv_report_t* report) {
   Bluefruit.Central.connect(report);
 }
 
+void updateClientStatus() {
+  uint8_t red = (rightHandle == BLE_CONN_HANDLE_INVALID) ? 4 : 0;
+  uint8_t blue = (leftHandle == BLE_CONN_HANDLE_INVALID) ? 5 : 0;
+  neopix.setPixelColor(0, red, 0, blue);
+  neopix.show();
+}
+
 // Called when we find a UART host to connect with
 void cent_connect(uint16_t conn_handle) {
   // TODO: Maybe make this more secure? I haven't looked into how secure this
   // is in the documentation :/
   char peer_name[32] = {0};
-  BLEClientUart *remoteUart = nullptr;
+  BLEClientUart* remoteUart = nullptr;
   Bluefruit.Connection(conn_handle)->getPeerName(peer_name, sizeof(peer_name));
   // I ought to at least make sure the peer_name is LHS_NAME, right?
 #if defined(USB_MASTER)
   // TODO: Figure out if this is the left or right uart
   if (!strcmp(LTCL_NAME, peer_name) && leftUart.discover(conn_handle)) {
     remoteUart = &leftUart;
-    for (int i = 0; i < 10; i++) {
-      digitalWrite(LED_RED, (i & 1) ? LOW : HIGH);
-      delay(100);
-    }
+    leftHandle = conn_handle;
+    updateClientStatus();
   } else if (!strcmp(RTCL_NAME, peer_name) && rightUart.discover(conn_handle)) {
     remoteUart = &rightUart;
-    for (int i = 0; i < 4; i++) {
-      digitalWrite(LED_RED, (i & 1) ? LOW : HIGH);
-      delay(250);
-    }
+    rightHandle = conn_handle;
+    updateClientStatus();
   }
 #else
   if (!strcmp(LHS_NAME, peer_name) && clientUart.discover(conn_handle)) {
@@ -71,17 +74,13 @@ void cent_connect(uint16_t conn_handle) {
   }
 #endif
   else {
-    DBG(Serial.println("[Cent] Not connecting to the other side: wrong name"));
-    DBG(Serial.print("Was expecting: "));
-    DBG(Serial.println(LHS_NAME));
-    DBG(Serial.print("Actual name: "));
-    DBG(Serial.println(peer_name));
+    DBG(Serial.println("[Cent] Not connecting to the client: wrong name"));
+    DBG(Serial.printf("Requester name: %s\n", peer_name));
     Bluefruit.Connection(conn_handle)->disconnect();
     return;
   }
 
-  DBG(Serial.print("[Cent] Connected to "));
-  DBG(Serial.println(peer_name));
+  DBG(Serial.printf("[Cent] Connected to %s\n", peer_name));
   DBG(Bluefruit.printInfo());
   // Enable TXD's notify
   remoteUart->enableTXD();
@@ -92,6 +91,12 @@ void cent_connect(uint16_t conn_handle) {
 void cent_disconnect(uint16_t conn_handle, uint8_t reason) {
 #if defined(USB_MASTER)
   // TODO: Disconnect the *correct* side
+  if (conn_handle == leftHandle) {
+    leftHandle = BLE_CONN_HANDLE_INVALID;
+  } else if (conn_handle == rightHandle) {
+    rightHandle = BLE_CONN_HANDLE_INVALID;
+  }
+  updateClientStatus();
 #else
   DBG(dumpVal(conn_handle, "Connection Handle Disconnected: "));
   DBG(dumpVal(reason, " Reason #"));

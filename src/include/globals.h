@@ -5,6 +5,7 @@
 
 #if defined(USB_MASTER)
 #include "Adafruit_TinyUSB.h"
+#include "Adafruit_NeoPixel.h"
 #endif
 
 #include "sleepstate.h"
@@ -14,10 +15,14 @@
 extern BLEClientUart leftUart;
 extern BLEClientUart rightUart;
 extern Adafruit_USBD_HID usb_hid;
+extern Adafruit_NeoPixel neopix;
+extern uint16_t leftHandle, rightHandle;
+
 #elif defined(BLUETOOTH_ONLY)
 extern BLEClientUart clientUart;
 extern BLEDis dis;
 extern BLEHidAdafruit hid;
+
 #endif
 #if !defined(USB_MASTER)
 extern BLEBas battery;

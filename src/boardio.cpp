@@ -2,11 +2,22 @@
 
 #include "boardio.h"
 #include "dbgcfg.h"
+#include "globals.h"
 
 void BoardIO::Configure() const {
   analogReference(AR_INTERNAL_3_0);
   analogReadResolution(12);
-#if !defined(USB_MASTER)
+#if defined(USB_MASTER)
+  // This is the user switch
+  pinMode(7, INPUT_PULLUP);
+  // Blink the RGB light on the board
+  neopix.begin();
+  neopix.setPixelColor(0, 7, 5, 0);
+  neopix.show();
+  delay(125);
+  neopix.setPixelColor(0, 0, 0, 0);
+  neopix.show();
+#else
   static_assert(
       BoardIO::matrix_size <= 64,
       "Pervasive assumptions that the switch matrix fits in 64 bits.");
