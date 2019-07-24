@@ -30,6 +30,12 @@
       "type": "shell",
       "command": "make flashl",
       "problemMatcher": ["$gcc"]
+    },
+    {
+      "label": "Flash Dongle",
+      "type": "shell",
+      "command": "make flashm",
+      "problemMatcher": ["$gcc"]
     }
   ]
 }

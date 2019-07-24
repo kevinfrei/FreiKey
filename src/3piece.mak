@@ -32,11 +32,11 @@ endif
 
 # External dependency locations: These are just symlinks.
 # Maybe git submodules? I do hate those things...
-AFROOT=Adafruit
-SSD1306_ROOT=SSD1306
-GFX_ROOT=GFX
-TUSB_ROOT=TinyUSB
-NEOPIX_ROOT=NeoPixel
+AFROOT=./libs/Adafruit
+SSD1306_ROOT=./libs/SSD1306
+GFX_ROOT=./libs/GFX
+TUSB_ROOT=./libs/TinyUSB
+NEOPIX_ROOT=./libs/NeoPixel
 
 ifeq ($(uname), Windows)
 TOOLSROOT=${HOME}/AppData/Local/Arduino15/packages/arduino
