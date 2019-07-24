@@ -63,6 +63,9 @@ void updateClientStatus() {
 }
 
 void leftuart_rx_callback(BLEClientUart& uart_svc) {
+  // TODO: Make this async
+  // i.e. make it a state, and have the central loop
+  // do the actual work...
   neopix.setPixelColor(0, 0, 0, 5);
   neopix.show();
   black = false;
@@ -71,6 +74,9 @@ void leftuart_rx_callback(BLEClientUart& uart_svc) {
 }
 
 void rightuart_rx_callback(BLEClientUart& uart_svc) {
+  // TODO: Make this async
+  // i.e. make it a state, and have the central loop
+  // do the actual work...
   neopix.setPixelColor(0, 1, 0, 0);
   neopix.show();
   black = false;
