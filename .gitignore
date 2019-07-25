@@ -33,3 +33,6 @@
 
 # Custom
 src/out
+src/Makefile
+src/out_3piece_m
+src/out_3piece_c

@@ -409,7 +409,7 @@ C_ELF_FLAGS= ${OPT} ${TARGET} -save-temps \
 # Makes all those custom "for this subdir, dump objs' in ${OUT} useless!
 VPATH=${BF_VPATH}:${CORE_VPATH}:${FS_VPATH}:${GFX_VPATH}:${WIRE_VPATH}:${TUSB_VPATH}
 
-.PHONY: clean allclean depclean left right usb-master flashl flashr flashm
+.PHONY: clean allclean depclean left right master usb-master flashl flashr flashm
 
 all: ${M_OUT} ${C_OUT} left right usb-master
 
@@ -430,6 +430,8 @@ flashm: ${M_OUT}/usb-master.zip
 left: ${C_OUT}/l-client.zip
 
 right: ${C_OUT}/r-client.zip
+
+master: ${M_OUT}/usb-master.zip
 
 usb-master: ${M_OUT}/usb-master.zip
 

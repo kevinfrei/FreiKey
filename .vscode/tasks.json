@@ -37,23 +37,37 @@
       "group": "none"
     },
     {
-      "label": "Set to Adafruit",
+      "label": "Set to Master/Slave",
       "type": "shell",
-      "command": "cd src ; rm Makefile ; ln -s adafruit.mak Makefile",
+      "command": "cd src ; rm Makefile ; ln -s master-slave.mak Makefile",
       "problemMatcher": [],
       "group": "none"
     },
     {
-      "label": "Flash Adafruit Right",
+      "label": "Set to Dongle",
       "type": "shell",
-      "command": "cd src ; make -f adafruit.mak flashr",
+      "command": "cd src ; rm Makefile ; ln -s 3piece.mak Makefile",
+      "problemMatcher": [],
+      "group": "none"
+    },
+    {
+      "label": "Flash Right",
+      "type": "shell",
+      "command": "cd src ; make flashr",
       "problemMatcher": "$gcc",
       "group": "build"
     },
     {
-      "label": "Flash Adafruit Left",
+      "label": "Flash Left",
       "type": "shell",
-      "command": "cd src ; make -f adafruit.mak flashl",
+      "command": "cd src ; make flashl",
+      "problemMatcher": "$gcc",
+      "group": "build"
+    },
+    {
+      "label": "Flash Dongle",
+      "type": "shell",
+      "command": "cd src ; make flashm",
       "problemMatcher": "$gcc",
       "group": "build"
     }
