@@ -1,0 +1,15 @@
+[submodule "src/libs/Adafruit"]
+	path = src/libs/Adafruit
+	url = https://github.com/adafruit/Adafruit_nRF52_Arduino.git
+[submodule "src/libs/GFX"]
+	path = src/libs/GFX
+	url = https://github.com/adafruit/Adafruit-GFX-Library.git
+[submodule "src/libs/NeoPixel"]
+	path = src/libs/NeoPixel
+	url = https://github.com/adafruit/Adafruit_NeoPixel.git
+[submodule "src/libs/SSD1306"]
+	path = src/libs/SSD1306
+	url = https://github.com/adafruit/Adafruit_SSD1306.git
+[submodule "src/libs/TinyUSB"]
+	path = src/libs/TinyUSB
+	url = https://github.com/adafruit/Adafruit_TinyUSB_Arduino.git

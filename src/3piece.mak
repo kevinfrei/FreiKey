@@ -30,8 +30,11 @@ else
 	uname:=$(shell uname -s)
 endif
 
-# External dependency locations: These are just symlinks.
-# Maybe git submodules? I do hate those things...
+# External dependency locations: These were just symlinks.
+# Now they're git submodules. I do hate those things, but
+# they appear to solve the problem I'm trying to solve relatively well
+# Read up on them here:
+# https://medium.com/@porteneuve/mastering-git-submodules-34c65e940407
 AFROOT=./libs/Adafruit
 SSD1306_ROOT=./libs/SSD1306
 GFX_ROOT=./libs/GFX
