@@ -3,11 +3,9 @@
 #include "callbacks.h"
 #include "dongleio.h"
 #include "globals.h"
-#include "right-master.h"
 
 namespace callback {
 
-#if !defined(USB_MASTER)
 // This is registered to be called when you connect a computer
 void core_connect(uint16_t handle) {
 #if DBG
@@ -35,52 +33,12 @@ void core_disconnect(uint16_t handle, uint8_t reason) {
   core_handle = 0xFFFF;
   sleepState.BeginForcedSleepMode();
 }
-#endif
 
 // Called when the system detects someone looking for a client
 void scan(ble_gap_evt_adv_report_t* report) {
   // Connect to device with bleuart service in advertising
   Bluefruit.Central.connect(report);
 }
-
-#if defined(USB_MASTER)
-uint32_t connect_time = 0;
-bool black = true;
-void updateClientStatus() {
-  uint32_t theDelay = millis() - connect_time;
-  if (theDelay < 10000) {
-    uint32_t red = (rightHandle == BLE_CONN_HANDLE_INVALID) ? 0 : 0xFF;
-    uint8_t blue = (leftHandle == BLE_CONN_HANDLE_INVALID) ? 0 : 0xFF;
-    theDelay = (10000 - theDelay) / 100;
-    theDelay = theDelay * theDelay * theDelay;
-    DongleIO::setRGB(red * theDelay / 1000000, 0, blue * theDelay / 1000000);
-    black = false;
-  } else if (!black) {
-    DongleIO::setRGB(0, 0, 0);
-    black = true;
-  }
-}
-
-void leftuart_rx_callback(BLEClientUart& uart_svc) {
-  // TODO: Make this async
-  // i.e. make it a state, and have the central loop
-  // do the actual work...
-  DongleIO::setRGB(0, 0, 5);
-  black = false;
-  delayMicroseconds(25);
-  updateClientStatus();
-}
-
-void rightuart_rx_callback(BLEClientUart& uart_svc) {
-  // TODO: Make this async
-  // i.e. make it a state, and have the central loop
-  // do the actual work...
-  DongleIO::setRGB(1, 0, 0);
-  black = false;
-  delayMicroseconds(25);
-  updateClientStatus();
-}
-#endif
 
 // Called when we find a UART host to connect with
 void cent_connect(uint16_t conn_handle) {
@@ -90,24 +48,9 @@ void cent_connect(uint16_t conn_handle) {
   BLEClientUart* remoteUart = nullptr;
   Bluefruit.Connection(conn_handle)->getPeerName(peer_name, sizeof(peer_name));
   // I ought to at least make sure the peer_name is LHS_NAME, right?
-#if defined(USB_MASTER)
-  // TODO: Figure out if this is the left or right uart
-  if (!strcmp(LTCL_NAME, peer_name) && leftUart.discover(conn_handle)) {
-    remoteUart = &leftUart;
-    leftHandle = conn_handle;
-    connect_time = millis();
-    updateClientStatus();
-  } else if (!strcmp(RTCL_NAME, peer_name) && rightUart.discover(conn_handle)) {
-    remoteUart = &rightUart;
-    rightHandle = conn_handle;
-    connect_time = millis();
-    updateClientStatus();
-  }
-#else
   if (!strcmp(LHS_NAME, peer_name) && clientUart.discover(conn_handle)) {
     remoteUart = &clientUart;
   }
-#endif
   else {
     DBG(Serial.println("[Cent] Not connecting to the client: wrong name"));
     DBG(Serial.printf("Requester name: %s\n", peer_name));
@@ -120,51 +63,17 @@ void cent_connect(uint16_t conn_handle) {
 
   // Enable TXD's notify
   remoteUart->enableTXD();
-#if defined(USB_MASTER)
-  // Just keep scanning
-  // I tried to detect if we've got both sides connected, but that
-  // looks somewhat unreliable :(
-  Bluefruit.Scanner.start(0);
-#endif
   resetTheWorld();
 }
 
 // Called with a UART host disconnects
 void cent_disconnect(uint16_t conn_handle, uint8_t reason) {
-#if defined(USB_MASTER)
-  // TODO: Disconnect the *correct* side
-  if (conn_handle == leftHandle) {
-    leftHandle = BLE_CONN_HANDLE_INVALID;
-  } else if (conn_handle == rightHandle) {
-    rightHandle = BLE_CONN_HANDLE_INVALID;
-  }
-  updateClientStatus();
-#else
   DBG(dumpVal(conn_handle, "Connection Handle Disconnected: "));
   DBG(dumpVal(reason, " Reason #"));
   DBG(Serial.println("[Cent] Disconnected"));
-#endif
   resetTheWorld();
 }
 
-#if defined(USB_MASTER)
-// Output report callback for LED indicator such as Caplocks
-void hid_report_callback(uint8_t report_id,
-                         hid_report_type_t report_type,
-                         uint8_t const* buffer,
-                         uint16_t bufsize) {
-  // LED indicator is output report with only 1 byte length
-  if (report_type != HID_REPORT_TYPE_OUTPUT)
-    return;
-
-  // The LED bit map is as follows: (also defined by KEYBOARD_LED_* )
-  // Kana (4) | Compose (3) | ScrollLock (2) | CapsLock (1) | Numlock (0)
-  uint8_t ledIndicator = buffer[0];
-
-  // turn on LED if caplock is set
-  digitalWrite(LED_BUILTIN, ledIndicator & KEYBOARD_LED_CAPSLOCK);
-}
-#endif
 } // namespace callback
 
 void rtos_idle_callback(void) {}

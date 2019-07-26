@@ -26,6 +26,8 @@ extern BLEHidAdafruit hid;
 extern BLEBas battery;
 #endif
 
+void resetTheWorld();
+
 extern state::hw leftSide;
 extern state::hw rightSide;
 

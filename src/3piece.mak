@@ -177,7 +177,7 @@ SHARED_SRC = \
 CLIENT_SRC = debounce.cpp battery.cpp sleepstate.cpp client.cpp boardio.cpp
 R_SRC = r-client.cpp ${CLIENT_SRC}
 L_SRC = l-client.cpp ${CLIENT_SRC}
-M_SRC = usb-master.cpp globals.cpp callbacks.cpp scanner.cpp dongleio.cpp
+M_SRC = usb-master.cpp globals.cpp scanner.cpp dongleio.cpp
 
 CORE_DIR = ${AFROOT}/cores/nRF5
 CORE_VPATH=${CORE_DIR}:\

@@ -4,7 +4,6 @@
 #include "Adafruit_TinyUSB.h"
 
 #include "boardio.h"
-#include "callbacks.h"
 #include "dbgcfg.h"
 #include "dongleio.h"
 #include "globals.h"
@@ -34,19 +33,16 @@
 state::hw leftSide{};
 state::hw rightSide{};
 
-// The are the top left & right keys, plus the lowest 'outer' key
-constexpr uint64_t status_clear_bonds_left = 0x10000000042ULL;
-constexpr uint64_t status_clear_bonds_right = 0x1000000021ULL;
-
 // Declarations
 
-keystate keyStates[16];
+keystate keyStates[6];
 constexpr layer_t layer_max = 7;
 layer_t layer_stack[layer_max + 1];
 layer_t layer_pos = 0;
 
-// This is called when the LHS connects, disconnects, and when the system is
-// initialized.  The idea is that it should just wipe everything clean.
+// This is called when a device connects, disconnects, and when the system is
+// initialized.
+// The idea is that it should just wipe everything clean.
 void resetTheWorld() {
   layer_pos = 0;
   layer_stack[0] = 0;
@@ -196,7 +192,7 @@ uint32_t lastTime = 0;
 bool justTestIt = false;
 
 void loop() {
-  callback::updateClientStatus();
+  DongleIO::updateClientStatus();
   if (!usb_hid.ready())
     return;
   //  // Remote wakeup
@@ -369,7 +365,7 @@ void setup() {
 
   usb_hid.setPollInterval(2);
   usb_hid.setReportDescriptor(desc_hid_report, sizeof(desc_hid_report));
-  usb_hid.setReportCallback(NULL, callback::hid_report_callback);
+  usb_hid.setReportCallback(NULL, DongleIO::hid_report_callback);
 
   usb_hid.begin();
 
@@ -383,12 +379,12 @@ void setup() {
   Bluefruit.setName(BT_NAME);
 
   leftUart.begin();
-  leftUart.setRxCallback(callback::leftuart_rx_callback);
+  leftUart.setRxCallback(DongleIO::leftuart_rx_callback);
   rightUart.begin();
-  rightUart.setRxCallback(callback::rightuart_rx_callback);
+  rightUart.setRxCallback(DongleIO::rightuart_rx_callback);
 
-  Bluefruit.Central.setConnectCallback(callback::cent_connect);
-  Bluefruit.Central.setDisconnectCallback(callback::cent_disconnect);
+  Bluefruit.Central.setConnectCallback(DongleIO::cent_connect);
+  Bluefruit.Central.setDisconnectCallback(DongleIO::cent_disconnect);
 
   /* Start Central Scanning
    * - Enable auto scan if disconnected
@@ -397,7 +393,7 @@ void setup() {
    * - Don't use active scan
    * - Start(timeout) with timeout = 0 will scan forever (until connected)
    */
-  Bluefruit.Scanner.setRxCallback(callback::scan);
+  Bluefruit.Scanner.setRxCallback(DongleIO::scan);
   Bluefruit.Scanner.restartOnDisconnect(true);
   Bluefruit.Scanner.setInterval(160, 80); // in unit of 0.625 ms
   Bluefruit.Scanner.filterUuid(BLEUART_UUID_SERVICE);

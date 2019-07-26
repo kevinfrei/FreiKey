@@ -27,8 +27,10 @@ struct hw {
   // This is just a dump constructor
   hw(uint8_t bl = 0);
 
+#if !defined(USB_MASTER)
   // This is for reading the data from the hardware
   hw(uint32_t now, const hw& prev, const BoardIO& pd);
+#endif
 
   // This is for reading the data from the left hand side over the UART
   hw(BLEClientUart& clientUart, const hw& prev);
@@ -39,10 +41,10 @@ struct hw {
 #if !defined(USB_MASTER)
   // Just reads the switches...
   void readSwitches(const BoardIO& pd, uint32_t now);
-#endif
 
   // Send the relevant data over the wire
   void send(BLEUart& bleuart, const hw& prev) const;
+#endif
 
   // Try to receive any relevant switch data from the wire.
   // Returns true if something was received

@@ -11,13 +11,13 @@ uint32_t scans_since_last_time = 0;
 
 hw::hw(uint8_t bl) : switches(0), battery_level(bl) {}
 
+#if !defined(USB_MASTER)
 hw::hw(uint32_t now, const hw& prev, const BoardIO& pd)
     : switches(prev.switches),
       battery_level(readBattery(now, prev.battery_level)) {
-#if !defined(USB_MASTER)
   readSwitches(pd, now);
-#endif
 }
+#endif
 
 hw::hw(BLEClientUart& clientUart, const hw& prev) {
   if (!receive(clientUart, prev))
@@ -36,12 +36,12 @@ void hw::readSwitches(const BoardIO& pd, uint32_t now) {
   // Read & debounce the current key matrix
   this->switches = debounce(pd.Read(), now);
 }
-#endif
 
 // Send the relevant data over the wire
 void hw::send(BLEUart& bleuart, const hw& prev) const {
   bleuart.write((uint8_t*)&switches, sizeof(switches) + 1);
 }
+#endif
 
 #if !defined(UART_CLIENT)
 // Try to receive any relevant switch data from the wire.
