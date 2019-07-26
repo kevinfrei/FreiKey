@@ -24,7 +24,7 @@ struct hw {
   uint64_t switches;
   uint8_t battery_level;
 
-  // This is just a dump constructor
+  // This is just a dumb constructor
   hw(uint8_t bl = 0);
 
 #if !defined(USB_MASTER)
