@@ -1,12 +1,9 @@
 #include "mybluefruit.h"
 
 #include "Adafruit_NeoPixel.h"
-#include "Adafruit_TinyUSB.h"
 
-#include "boardio.h"
 #include "dbgcfg.h"
-#include "dongleio.h"
-#include "globals.h"
+#include "dongle.h"
 #include "hardware.h"
 #include "helpers.h"
 #include "keymap.h"
@@ -49,8 +46,7 @@ void resetTheWorld() {
   memset(&leftSide, 0, sizeof(leftSide));
   memset(&rightSide, 0, sizeof(rightSide));
   memset(keyStates, 0xff, sizeof(keyStates));
-
-  usb_hid.keyboardRelease(0);
+  Dongle::Reset();
 }
 
 // Look for a slot that is either already in use for this scan code, or vacant.
@@ -161,9 +157,6 @@ void layer_switch(layer_t layer) {
   DBG(dumpLayers());
 }
 
-const state::led* curState = nullptr;
-uint32_t stateTime = 0;
-
 // Check to see if we should update the battery level and if so, do so
 void updateBatteryLevel(const state::hw& downLeft, const state::hw& downRight) {
   if (downRight.battery_level != rightSide.battery_level ||
@@ -184,16 +177,12 @@ uint64_t switchData;
 // It's kind of surprising how annoying the latency is when I get typing fast...
 constexpr uint32_t DELAY = 8;
 
-uint8_t const desc_hid_report[] = {
-    TUD_HID_REPORT_DESC_KEYBOARD(),
-};
-
 uint32_t lastTime = 0;
 bool justTestIt = false;
 
 void loop() {
-  DongleIO::updateClientStatus();
-  if (!usb_hid.ready())
+  Dongle::updateClientStatus();
+  if (!Dongle::Ready())
     return;
   //  // Remote wakeup
   //  if ( tud_suspended() && btn )
@@ -206,8 +195,8 @@ void loop() {
   uint32_t now = millis();
 
   // Get the hardware state for the two sides...
-  state::hw downRight{rightUart, rightSide};
-  state::hw downLeft{leftUart, leftSide};
+  state::hw downRight{Dongle::rightUart, rightSide};
+  state::hw downLeft{Dongle::leftUart, leftSide};
 
   // Update the combined battery level
   updateBatteryLevel(downLeft, downRight);
@@ -219,14 +208,6 @@ void loop() {
   uint64_t deltaLeft = beforeLeft ^ afterLeft;
   uint64_t deltaRight = beforeRight ^ afterRight;
   bool keysChanged = deltaLeft || deltaRight;
-  if (deltaRight && !curState) {
-    // if we're not already in a state, check to see if we're transitioning
-    // into one
-    curState = state::led::get(downRight, layer_pos + 1);
-    if (curState) {
-      stateTime = now;
-    }
-  }
 
   while (deltaLeft || deltaRight) {
     scancode_t sc;
@@ -342,7 +323,7 @@ void loop() {
     rightSide = downRight;
     leftSide = downLeft;
 
-    usb_hid.keyboardReport(0, mods, report);
+    Dongle::ReportKeys(mods, report);
     DBG2(Serial.println("============================="));
     DBG2(Serial.print("Left side "));
     DBG2(downLeft.dump());
@@ -361,13 +342,7 @@ void setup() {
   DBG(while (!Serial) delay(10)); // for nrf52840 with native usb
 #endif
 
-  DongleIO::Configure();
-
-  usb_hid.setPollInterval(2);
-  usb_hid.setReportDescriptor(desc_hid_report, sizeof(desc_hid_report));
-  usb_hid.setReportCallback(NULL, DongleIO::hid_report_callback);
-
-  usb_hid.begin();
+  Dongle::Configure();
 
   resetTheWorld();
 
@@ -378,13 +353,10 @@ void setup() {
   Bluefruit.setTxPower(4);
   Bluefruit.setName(BT_NAME);
 
-  leftUart.begin();
-  leftUart.setRxCallback(DongleIO::leftuart_rx_callback);
-  rightUart.begin();
-  rightUart.setRxCallback(DongleIO::rightuart_rx_callback);
+  Dongle::StartListening();
 
-  Bluefruit.Central.setConnectCallback(DongleIO::cent_connect);
-  Bluefruit.Central.setDisconnectCallback(DongleIO::cent_disconnect);
+  Bluefruit.Central.setConnectCallback(Dongle::cent_connect);
+  Bluefruit.Central.setDisconnectCallback(Dongle::cent_disconnect);
 
   /* Start Central Scanning
    * - Enable auto scan if disconnected
@@ -393,7 +365,7 @@ void setup() {
    * - Don't use active scan
    * - Start(timeout) with timeout = 0 will scan forever (until connected)
    */
-  Bluefruit.Scanner.setRxCallback(DongleIO::scan);
+  Bluefruit.Scanner.setRxCallback(Dongle::scan);
   Bluefruit.Scanner.restartOnDisconnect(true);
   Bluefruit.Scanner.setInterval(160, 80); // in unit of 0.625 ms
   Bluefruit.Scanner.filterUuid(BLEUART_UUID_SERVICE);

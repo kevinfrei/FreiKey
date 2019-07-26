@@ -1,23 +1,36 @@
-#if !defined(DONGLEIO_H)
-#define DONGLEIO_H
+#if !defined(DONGLE_H)
+#define DONGLE_H
 
 #include "mybluefruit.h"
 
 #include <array>
 
 #include "Adafruit_NeoPixel.h"
+#include "Adafruit_TinyUSB.h"
 
-class DongleIO {
+class Dongle {
   static uint32_t connect_time;
   static bool black;
   static Adafruit_NeoPixel neopix;
-
+  static Adafruit_USBD_HID usb_hid;
+  static uint16_t leftHandle;
+  static uint16_t rightHandle;
  public:
+  static BLEClientUart leftUart;
+  static BLEClientUart rightUart;
+
   static void Configure();
+  static void StartListening();
+  static void Reset();
+  static bool Ready();
+  static void ReportKeys(uint8_t mods, uint8_t* report);
+
   static void setRGB(uint8_t r, uint8_t g, uint8_t b);
   static void setRed(bool on);
   static void setBlue(bool on);
+
   static void updateClientStatus();
+
   // Callbacks from the Bluefruit runtime
   static void cent_connect(uint16_t conn_handle);
   static void cent_disconnect(uint16_t conn_handle, uint8_t reason);

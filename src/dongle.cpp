@@ -1,12 +1,21 @@
 #include "mybluefruit.h"
 
 #include "dbgcfg.h"
-#include "dongleio.h"
+#include "dongle.h"
 #include "globals.h"
 
-Adafruit_NeoPixel DongleIO::neopix{1, PIN_NEOPIXEL, NEO_GRB + NEO_KHZ800};
+uint8_t const desc_hid_report[] = {
+    TUD_HID_REPORT_DESC_KEYBOARD(),
+};
 
-void DongleIO::Configure() {
+Adafruit_NeoPixel Dongle::neopix{1, PIN_NEOPIXEL, NEO_GRB + NEO_KHZ800};
+BLEClientUart Dongle::leftUart;
+BLEClientUart Dongle::rightUart;
+uint16_t Dongle::leftHandle = BLE_CONN_HANDLE_INVALID;
+uint16_t Dongle::rightHandle = BLE_CONN_HANDLE_INVALID;
+Adafruit_USBD_HID Dongle::usb_hid;
+
+void Dongle::Configure() {
   // This is the user switch
   pinMode(7, INPUT_PULLUP);
   // Blink the RGB light on the board
@@ -16,68 +25,91 @@ void DongleIO::Configure() {
   setRGB(0, 0, 0);
   pinMode(LED_RED, OUTPUT);
   pinMode(LED_BLUE, OUTPUT);
+  // Setup the USB stuff
+  usb_hid.setPollInterval(2);
+  usb_hid.setReportDescriptor(desc_hid_report, sizeof(desc_hid_report));
+  usb_hid.setReportCallback(NULL, Dongle::hid_report_callback);
+  usb_hid.begin();
 }
 
-void DongleIO::setRed(bool on) {
+void Dongle::StartListening() {
+  leftUart.begin();
+  leftUart.setRxCallback(Dongle::leftuart_rx_callback);
+  rightUart.begin();
+  rightUart.setRxCallback(Dongle::rightuart_rx_callback);
+}
+
+bool Dongle::Ready() {
+  return usb_hid.ready();
+}
+
+void Dongle::Reset() {
+  usb_hid.keyboardRelease(0);
+}
+
+void Dongle::ReportKeys(uint8_t mods, uint8_t* report) {
+  usb_hid.keyboardReport(0, mods, report);
+}
+
+void Dongle::setRed(bool on) {
   digitalWrite(LED_RED, on ? HIGH : LOW);
 }
 
-void DongleIO::setBlue(bool on) {
+void Dongle::setBlue(bool on) {
   digitalWrite(LED_BLUE, on ? HIGH : LOW);
 }
 
-void DongleIO::setRGB(uint8_t r, uint8_t g, uint8_t b) {
+void Dongle::setRGB(uint8_t r, uint8_t g, uint8_t b) {
   neopix.setPixelColor(0, r, g, b);
   neopix.show();
 }
 
-
 // Called when the system detects someone looking for a client
-void DongleIO::scan(ble_gap_evt_adv_report_t* report) {
+void Dongle::scan(ble_gap_evt_adv_report_t* report) {
   // Connect to device with bleuart service in advertising
   Bluefruit.Central.connect(report);
 }
 
-uint32_t DongleIO::connect_time = 0;
-bool DongleIO::black = true;
+uint32_t Dongle::connect_time = 0;
+bool Dongle::black = true;
 
-void DongleIO::updateClientStatus() {
+void Dongle::updateClientStatus() {
   uint32_t theDelay = millis() - connect_time;
   if (theDelay < 10000) {
     uint32_t red = (rightHandle == BLE_CONN_HANDLE_INVALID) ? 0 : 0xFF;
     uint8_t blue = (leftHandle == BLE_CONN_HANDLE_INVALID) ? 0 : 0xFF;
     theDelay = (10000 - theDelay) / 100;
     theDelay = theDelay * theDelay * theDelay;
-    DongleIO::setRGB(red * theDelay / 1000000, 0, blue * theDelay / 1000000);
+    Dongle::setRGB(red * theDelay / 1000000, 0, blue * theDelay / 1000000);
     black = false;
   } else if (!black) {
-    DongleIO::setRGB(0, 0, 0);
+    Dongle::setRGB(0, 0, 0);
     black = true;
   }
 }
 
-void DongleIO::leftuart_rx_callback(BLEClientUart& uart_svc) {
+void Dongle::leftuart_rx_callback(BLEClientUart& uart_svc) {
   // TODO: Make this async
   // i.e. make it a state, and have the central loop
   // do the actual work...
-  DongleIO::setRGB(0, 0, 5);
+  Dongle::setRGB(0, 0, 5);
   black = false;
   delayMicroseconds(25);
   updateClientStatus();
 }
 
-void DongleIO::rightuart_rx_callback(BLEClientUart& uart_svc) {
+void Dongle::rightuart_rx_callback(BLEClientUart& uart_svc) {
   // TODO: Make this async
   // i.e. make it a state, and have the central loop
   // do the actual work...
-  DongleIO::setRGB(1, 0, 0);
+  Dongle::setRGB(1, 0, 0);
   black = false;
   delayMicroseconds(25);
   updateClientStatus();
 }
 
 // Called when we find a UART host to connect with
-void DongleIO::cent_connect(uint16_t conn_handle) {
+void Dongle::cent_connect(uint16_t conn_handle) {
   // TODO: Maybe make this more secure? I haven't looked into how secure this
   // is in the documentation :/
   char peer_name[32] = {0};
@@ -95,7 +127,7 @@ void DongleIO::cent_connect(uint16_t conn_handle) {
     rightHandle = conn_handle;
     connect_time = millis();
     updateClientStatus();
-  }  else {
+  } else {
     DBG(Serial.println("[Cent] Not connecting to the client: wrong name"));
     DBG(Serial.printf("Requester name: %s\n", peer_name));
     Bluefruit.Connection(conn_handle)->disconnect();
@@ -115,7 +147,7 @@ void DongleIO::cent_connect(uint16_t conn_handle) {
 }
 
 // Called with a UART host disconnects
-void DongleIO::cent_disconnect(uint16_t conn_handle, uint8_t reason) {
+void Dongle::cent_disconnect(uint16_t conn_handle, uint8_t reason) {
   // TODO: Disconnect the *correct* side
   if (conn_handle == leftHandle) {
     leftHandle = BLE_CONN_HANDLE_INVALID;
@@ -127,10 +159,10 @@ void DongleIO::cent_disconnect(uint16_t conn_handle, uint8_t reason) {
 }
 
 // Output report callback for LED indicator such as Caplocks
-void DongleIO::hid_report_callback(uint8_t report_id,
-                         hid_report_type_t report_type,
-                         uint8_t const* buffer,
-                         uint16_t bufsize) {
+void Dongle::hid_report_callback(uint8_t report_id,
+                                   hid_report_type_t report_type,
+                                   uint8_t const* buffer,
+                                   uint16_t bufsize) {
   // LED indicator is output report with only 1 byte length
   if (report_type != HID_REPORT_TYPE_OUTPUT)
     return;
