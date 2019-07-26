@@ -40,7 +40,7 @@ namespace state {
 uint32_t scans_since_last_time = 0;
 #endif
 
-hw::hw(uint8_t bl) : switches(0), battery_level(bl) {}
+hw::hw(uint8_t bl) : switches{}, battery_level(bl) {}
 
 #if !defined(USB_MASTER)
 hw::hw(uint32_t now, const hw& prev, const BoardIO& pd)
@@ -57,7 +57,7 @@ hw::hw(BLEClientUart& clientUart, const hw& prev) {
            sizeof(hw));
 }
 
-hw::hw(const hw& c) : switches(c.switches), battery_level(c.battery_level) {}
+hw::hw(const hw& c) : switches{c.switches}, battery_level(c.battery_level) {}
 
 #if !defined(USB_MASTER)
 void hw::readSwitches(const BoardIO& pd, uint32_t now) {
@@ -108,12 +108,12 @@ bool hw::operator!=(const hw& o) const {
 #if defined(DEBUG)
 void hw::dump() const {
   dumpVal(battery_level, "Battery Level:");
-  dumpHex(switches, "Integer value: ");
+  switches.dumpHex("Integer value: ");
   Serial.println("");
   for (int64_t r = 0; r < BoardIO::numrows; r++) {
     for (int64_t c = BoardIO::numcols - 1; c >= 0; c--) {
       uint64_t mask = 1ULL << (r * BoardIO::numcols + c);
-      if (switches & mask) {
+      if (switches.get_bit(r * BoardIO::numcols + c)) {
         Serial.print("X ");
       } else {
         Serial.print("- ");

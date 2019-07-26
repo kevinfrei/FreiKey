@@ -3,7 +3,7 @@
 #include "helpers.h"
 
 // The last set of switches we reported
-uint64_t last_reported_switches = 0;
+BoardIO::bits last_reported_switches{};
 // This is just the set of report times for switches
 uint32_t last_reported_time[BoardIO::matrix_size] = {0};
 // This is the # of msec to delay after reporting a change before reporting
@@ -12,24 +12,22 @@ uint32_t last_reported_time[BoardIO::matrix_size] = {0};
 // 25ms translates to a typing speed of about 400 WPM, which seems plenty fast...
 constexpr uint8_t debounce_delay = 25;
 
-uint64_t debounce(uint64_t cur_switches, uint32_t now) {
+BoardIO::bits debounce(BoardIO::bits cur_switches, uint32_t now) {
   // If we've read the same thing we last reported, there's nothing to do
   if (last_reported_switches == cur_switches)
     return cur_switches;
   // This gets us a set of bits that are different between last report &
   // the current read
-  uint64_t change = last_reported_switches ^ cur_switches;
-  while (change) {
-    uint8_t bit_num = get_a_set_bit(change);
+  BoardIO::bits change = last_reported_switches.delta(cur_switches);
+  while (change.any()) {
+    uint8_t bit_num = change.pull_a_bit();
     if (bit_num > 63)
       break;
-    uint64_t mask = ((uint64_t)1) << bit_num;
-    change ^= mask;
     // For each change, check if we're in a debounce period for that switch
     if (now - last_reported_time[bit_num] < debounce_delay) {
       // Let's clear the change from cur_switches
       // If it's on, this will turn it off, if it's off, this will turn it on
-      cur_switches ^= mask;
+      cur_switches.clear_bit(bit_num);
       DBG(dumpVal(bit_num, "Bounce ignored "));
     } else {
       // We're not in the debounce period: leave the change intact, and start

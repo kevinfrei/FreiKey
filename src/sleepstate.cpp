@@ -2,13 +2,13 @@
 #include "boardio.h"
 #include "hardware.h"
 
-bool SleepState::CheckForSleeping(uint64_t switches,
+bool SleepState::CheckForSleeping(BoardIO::bits switches,
                                   uint32_t time,
                                   const BoardIO& board) {
   // If we're in forced sleep mode, don't wake up
   if (!forced) {
     // First, handle sleeping states
-    if (switches) {
+    if (switches.any()) {
       // We detected a keypress!
       if (sleeping) {
         // Turn off the LED if we were sleeping

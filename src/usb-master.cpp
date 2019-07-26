@@ -91,11 +91,9 @@ action_t resolveActionForScanCodeOnActiveLayer(uint8_t scanCode) {
 
 // Given a delta mask, get the scan code, update the delta mask and set pressed
 // while we're at it.
-scancode_t getNextScanCode(uint64_t& delta, uint64_t curState, bool& pressed) {
-  scancode_t sc = get_a_set_bit(delta);
-  uint64_t mask = ((uint64_t)1) << sc;
-  pressed = curState & mask;
-  delta ^= mask;
+scancode_t getNextScanCode(BoardIO::bits &delta, BoardIO::bits curState, bool& pressed) {
+  scancode_t sc = delta.pull_a_bit();
+  pressed = curState.get_bit(sc);
   return sc;
 }
 
@@ -203,17 +201,19 @@ void loop() {
   updateBatteryLevel(downLeft, downRight);
 
   // Get the before & after of each side into a 64 bit value
-  uint64_t beforeLeft = leftSide.switches, afterLeft = downLeft.switches;
-  uint64_t beforeRight = rightSide.switches, afterRight = downRight.switches;
+  BoardIO::bits beforeLeft{leftSide.switches};
+  BoardIO::bits afterLeft{downLeft.switches};
+  BoardIO::bits beforeRight{rightSide.switches};
+  BoardIO::bits afterRight{downRight.switches};
 
-  uint64_t deltaLeft = beforeLeft ^ afterLeft;
-  uint64_t deltaRight = beforeRight ^ afterRight;
-  bool keysChanged = deltaLeft || deltaRight;
+  BoardIO::bits deltaLeft = beforeLeft.delta(afterLeft);
+  BoardIO::bits deltaRight = beforeRight.delta(afterRight);
+  bool keysChanged = deltaLeft.any() || deltaRight.any();
 
-  while (deltaLeft || deltaRight) {
+  while (deltaLeft.any() || deltaRight.any()) {
     scancode_t sc;
     bool pressed;
-    if (deltaLeft) {
+    if (deltaLeft.any()) {
       sc = getNextScanCode(deltaLeft, afterLeft, pressed);
     } else {
       // Add offset to the right scan code...

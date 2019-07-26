@@ -175,7 +175,6 @@ SHARED_SRC = \
 	hardware.cpp
 CLIENT_SRC = \
 	debounce.cpp \
-	battery.cpp \
 	sleepstate.cpp \
 	client.cpp \
 	boardio.cpp \

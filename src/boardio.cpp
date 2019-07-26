@@ -38,14 +38,14 @@ void BoardIO::setBlue(bool on) {
   digitalWrite(LED_BLUE, on ? HIGH : LOW);
 }
 
-uint64_t BoardIO::Read() const {
-  uint64_t switches = 0;
+BoardIO::bits BoardIO::Read() const {
+  BoardIO::bits switches{};
   for (uint64_t colNum = 0; colNum < numcols; ++colNum) {
     digitalWrite(cols[colNum], LOW);
     delay(1); // Seems slow, here
     for (uint64_t rowNum = 0; rowNum < numrows; ++rowNum) {
       if (!digitalRead(rows[rowNum])) {
-        switches |= 1ULL << (rowNum * numcols + colNum);
+        switches.set_bit(rowNum * numcols + colNum);
       }
     }
     digitalWrite(cols[colNum], HIGH);
