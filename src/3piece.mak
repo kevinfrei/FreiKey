@@ -173,12 +173,11 @@ C_SFLAGS=${TARGET} ${FLAGS} ${CODEGEN} ${SLANG} ${C_DEFINES} ${OPT} ${C_INCLUDES
 SHARED_SRC = \
 	dbgcfg.cpp \
 	hardware.cpp \
-	led_states.cpp \
-	boardio.cpp
-CLIENT_SRC = debounce.cpp battery.cpp sleepstate.cpp client.cpp
+	led_states.cpp
+CLIENT_SRC = debounce.cpp battery.cpp sleepstate.cpp client.cpp boardio.cpp
 R_SRC = r-client.cpp ${CLIENT_SRC}
 L_SRC = l-client.cpp ${CLIENT_SRC}
-M_SRC = usb-master.cpp globals.cpp callbacks.cpp scanner.cpp
+M_SRC = usb-master.cpp globals.cpp callbacks.cpp scanner.cpp dongleio.cpp
 
 CORE_DIR = ${AFROOT}/cores/nRF5
 CORE_VPATH=${CORE_DIR}:\

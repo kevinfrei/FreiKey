@@ -6,6 +6,7 @@
 #include "boardio.h"
 #include "callbacks.h"
 #include "dbgcfg.h"
+#include "dongleio.h"
 #include "globals.h"
 #include "hardware.h"
 #include "helpers.h"
@@ -32,7 +33,6 @@
 
 state::hw leftSide{};
 state::hw rightSide{};
-BoardIO Dongle{LED_BLUE};
 
 // The are the top left & right keys, plus the lowest 'outer' key
 constexpr uint64_t status_clear_bonds_left = 0x10000000042ULL;
@@ -232,16 +232,6 @@ void loop() {
     }
   }
 
-  if (curState) {
-    // We're in some random LED display state. Do something...
-    if (now - curState->time < stateTime) {
-      Dongle.setLED(curState->get_led_value(downRight, now - stateTime));
-    } else {
-      Dongle.setLED(0);
-      curState = nullptr;
-    }
-  }
-
   while (deltaLeft || deltaRight) {
     scancode_t sc;
     bool pressed;
@@ -370,12 +360,12 @@ void loop() {
 // In Arduino world the 'setup' function is called to initialize the device.
 // The 'loop' function is called over & over again, after setup completes.
 void setup() {
-#if 0
+#if SERIAL_PORT_AND_HID_KEYBOARD_DONT_SEEM_TO_WORK_AT_THE_SAME_TIME
   DBG(Serial.begin(115200));
   DBG(while (!Serial) delay(10)); // for nrf52840 with native usb
 #endif
 
-  Dongle.Configure();
+  DongleIO::Configure();
 
   usb_hid.setPollInterval(2);
   usb_hid.setReportDescriptor(desc_hid_report, sizeof(desc_hid_report));
@@ -388,10 +378,7 @@ void setup() {
   // No central and 2 peripheral
   Bluefruit.begin(0, 2);
   Bluefruit.autoConnLed(false);
-  // I'm assuming that by dropping this power down, I'll save some battery life.
-  // I should experiment to see how low I can get it and still communicate with
-  // both my Mac and my PC reliably. They're each within a meter of the
-  // keyboard... Acceptable values: -40, -30, -20, -16, -12, -8, -4, 0, 4
+  // Acceptable values: -40, -30, -20, -16, -12, -8, -4, 0, 4
   Bluefruit.setTxPower(4);
   Bluefruit.setName(BT_NAME);
 
@@ -415,9 +402,5 @@ void setup() {
   Bluefruit.Scanner.setInterval(160, 80); // in unit of 0.625 ms
   Bluefruit.Scanner.filterUuid(BLEUART_UUID_SERVICE);
   Bluefruit.Scanner.useActiveScan(false);
-  // I should probably stop advertising after a while if that's possible. I have
-  // switches now, so if I need it to advertise, I can just punch the power.
   Bluefruit.Scanner.start(0); // 0 = Don't stop scanning after n seconds
-  pinMode(LED_BLUE, OUTPUT);
-  pinMode(LED_RED, OUTPUT);
 }

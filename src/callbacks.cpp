@@ -1,6 +1,7 @@
 #include "mybluefruit.h"
 
 #include "callbacks.h"
+#include "dongleio.h"
 #include "globals.h"
 #include "right-master.h"
 
@@ -42,6 +43,7 @@ void scan(ble_gap_evt_adv_report_t* report) {
   Bluefruit.Central.connect(report);
 }
 
+#if defined(USB_MASTER)
 uint32_t connect_time = 0;
 bool black = true;
 void updateClientStatus() {
@@ -51,13 +53,10 @@ void updateClientStatus() {
     uint8_t blue = (leftHandle == BLE_CONN_HANDLE_INVALID) ? 0 : 0xFF;
     theDelay = (10000 - theDelay) / 100;
     theDelay = theDelay * theDelay * theDelay;
-    neopix.setPixelColor(
-        0, red * theDelay / 1000000, 0, blue * theDelay / 1000000);
-    neopix.show();
+    DongleIO::setRGB(red * theDelay / 1000000, 0, blue * theDelay / 1000000);
     black = false;
   } else if (!black) {
-    neopix.setPixelColor(0, 0, 0, 0);
-    neopix.show();
+    DongleIO::setRGB(0, 0, 0);
     black = true;
   }
 }
@@ -66,8 +65,7 @@ void leftuart_rx_callback(BLEClientUart& uart_svc) {
   // TODO: Make this async
   // i.e. make it a state, and have the central loop
   // do the actual work...
-  neopix.setPixelColor(0, 0, 0, 5);
-  neopix.show();
+  DongleIO::setRGB(0, 0, 5);
   black = false;
   delayMicroseconds(25);
   updateClientStatus();
@@ -77,12 +75,12 @@ void rightuart_rx_callback(BLEClientUart& uart_svc) {
   // TODO: Make this async
   // i.e. make it a state, and have the central loop
   // do the actual work...
-  neopix.setPixelColor(0, 1, 0, 0);
-  neopix.show();
+  DongleIO::setRGB(1, 0, 0);
   black = false;
   delayMicroseconds(25);
   updateClientStatus();
 }
+#endif
 
 // Called when we find a UART host to connect with
 void cent_connect(uint16_t conn_handle) {
