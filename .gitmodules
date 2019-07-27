@@ -10,3 +10,6 @@
 [submodule "src/libs/TinyUSB"]
 	path = src/libs/TinyUSB
 	url = https://github.com/adafruit/Adafruit_TinyUSB_Arduino.git
+[submodule "src/libs/Adafruit"]
+	path = src/libs/Adafruit
+	url = git@github.com:kevinfrei/Adafruit_nRF52_Arduino.git
