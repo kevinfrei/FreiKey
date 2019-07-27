@@ -11,7 +11,7 @@ struct bit_array {
   constexpr static uint32_t num_bits = T;
   constexpr static uint32_t num_bytes = (T + 7) / 8;
   std::array<uint8_t, num_bytes> value;
-  bit_array() {}
+  bit_array() : value{0} {}
   bit_array(std::initializer_list<uint8_t> init) : value{0} {
     size_t i = 0;
     for (auto& v : init) {
