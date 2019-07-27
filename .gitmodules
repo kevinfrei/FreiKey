@@ -1,6 +1,3 @@
-[submodule "src/libs/Adafruit"]
-	path = src/libs/Adafruit
-	url = https://github.com/adafruit/Adafruit_nRF52_Arduino.git
 [submodule "src/libs/GFX"]
 	path = src/libs/GFX
 	url = https://github.com/adafruit/Adafruit-GFX-Library.git
