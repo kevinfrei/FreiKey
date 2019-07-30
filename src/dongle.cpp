@@ -4,9 +4,16 @@
 #include "dongle.h"
 #include "globals.h"
 
+
+// Report ID's
+constexpr uint8_t RID_KEYBOARD = 1;
+constexpr uint8_t RID_CONSUMER = 2;
+
+// Composite HID report including both a keyboard and consumer device
+// Necessary to support the consumer keys (volume/play/pause, etc...)
 uint8_t const desc_hid_report[] = {
-    TUD_HID_REPORT_DESC_KEYBOARD(),
-};
+    TUD_HID_REPORT_DESC_KEYBOARD(HID_REPORT_ID(RID_KEYBOARD), ),
+    TUD_HID_REPORT_DESC_CONSUMER(HID_REPORT_ID(RID_CONSUMER), )};
 
 Adafruit_NeoPixel Dongle::neopix{1, PIN_NEOPIXEL, NEO_GRB + NEO_KHZ800};
 BLEClientUart Dongle::leftUart;
@@ -48,7 +55,16 @@ void Dongle::Reset() {
 }
 
 void Dongle::ReportKeys(uint8_t mods, uint8_t* report) {
-  usb_hid.keyboardReport(0, mods, report);
+  usb_hid.keyboardReport(RID_KEYBOARD, mods, report);
+}
+
+void Dongle::ConsumerPress(uint16_t key) {
+  usb_hid.sendReport(RID_CONSUMER, &key, sizeof(key));
+}
+
+void Dongle::ConsumerRelease() {
+  uint16_t zero = 0;
+  usb_hid.sendReport(RID_CONSUMER, &zero, sizeof(zero));
 }
 
 void Dongle::setRed(bool on) {
@@ -160,9 +176,9 @@ void Dongle::cent_disconnect(uint16_t conn_handle, uint8_t reason) {
 
 // Output report callback for LED indicator such as Caplocks
 void Dongle::hid_report_callback(uint8_t report_id,
-                                   hid_report_type_t report_type,
-                                   uint8_t const* buffer,
-                                   uint16_t bufsize) {
+                                 hid_report_type_t report_type,
+                                 uint8_t const* buffer,
+                                 uint16_t bufsize) {
   // LED indicator is output report with only 1 byte length
   if (report_type != HID_REPORT_TYPE_OUTPUT)
     return;

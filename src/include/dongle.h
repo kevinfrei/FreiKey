@@ -24,6 +24,8 @@ class Dongle {
   static void Reset();
   static bool Ready();
   static void ReportKeys(uint8_t mods, uint8_t* report);
+  static void ConsumerPress(uint16_t keycode);
+  static void ConsumerRelease();
 
   static void setRGB(uint8_t r, uint8_t g, uint8_t b);
   static void setRed(bool on);

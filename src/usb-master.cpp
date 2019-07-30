@@ -91,7 +91,9 @@ action_t resolveActionForScanCodeOnActiveLayer(uint8_t scanCode) {
 
 // Given a delta mask, get the scan code, update the delta mask and set pressed
 // while we're at it.
-scancode_t getNextScanCode(BoardIO::bits &delta, BoardIO::bits curState, bool& pressed) {
+scancode_t getNextScanCode(BoardIO::bits& delta,
+                           BoardIO::bits curState,
+                           bool& pressed) {
   scancode_t sc = delta.pull_a_bit();
   pressed = curState.get_bit(sc);
   return sc;
@@ -257,21 +259,25 @@ void loop() {
       if (state.scanCode == 0xff)
         continue;
       if ((state.action & kConsumer) == kConsumer) {
-#if CURRENTLY_UNSUPPORTED_CONSUMER_KEYS
         // For a consumer control button, there are no modifiers, it's
         // just a simple call. So just call it directly:
         if (state.down) {
           DBG2(dumpHex(state.action & 0xff, "Consumer key press: "));
-          hid.consumerKeyPress(state.action & 0xff);
+          // TODO: This can only send 1 byte codes,
+          // but the app-launch buttons are all 2 bytes.
+          // I need to fix state.action to support more...
+          // See all the codes in all their glory here:
+          // https://www.usb.org/sites/default/files/documents/hut1_12v2.pdf
+          // (And if that doesn't work, check here: https://www.usb.org/hid)
+          Dongle::ConsumerPress(state.action & 0xff);
         } else {
           DBG2(dumpHex(state.action & 0xff, "Consumer key release: "));
-          hid.consumerKeyRelease();
+          Dongle::ConsumerRelease();
           // We have to clear this thing out when we're done, because we take
           // action on the key release as well. We don't do this for the normal
           // keyboardReport.
           state.scanCode = 0xff;
         }
-#endif
       } else if (state.down) {
         switch (state.action & kMask) {
           case kTapHold:
