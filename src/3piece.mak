@@ -88,6 +88,8 @@ COMMON_DEFINES=\
 	-DADAFRUIT \
 	-DCFG_DEBUG=0
 
+#  -DTEST_MASTER << That mocks out the two sides and just types 1 keys at a time
+#                   from each side
 M_DEFINES=${COMMON_DEFINES} \
 	-DS${M_SD_VER} \
 	-DNRF52840_XXAA \

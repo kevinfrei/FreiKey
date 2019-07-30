@@ -77,7 +77,59 @@ void hw::send(BLEUart& bleuart, const hw& prev) const {
 #if !defined(UART_CLIENT)
 // Try to receive any relevant switch data from the wire.
 // Returns true if something was received
+#if defined(TEST_MASTER)
+constexpr uint8_t INIT = 0;
+constexpr uint8_t WAIT = 1;
+constexpr uint8_t PRESSED = 2;
+constexpr uint8_t FLIPSIDES = 3;
+hw *turn, *newBit;
+uint32_t lastPress = 0;
+uint8_t bitNum = 0;
+uint8_t state = 0;
+#endif
+
 bool hw::receive(BLEClientUart& clientUart, const hw& prev) {
+#if defined(TEST_MASTER)
+  // This is my little 'fake hitting buttons' to test the dongle by itself
+  uint32_t now = millis();
+  switch (state) {
+    case INIT:
+      lastPress = now;
+      turn = this;
+      newBit = this;
+      state = WAIT;
+      return false;
+    case WAIT:
+      if (now - lastPress < 1000 || turn != this) {
+        return false;
+      }
+      state = PRESSED;
+      lastPress = now;
+      this->switches = BoardIO::bits{};
+      this->switches.set_bit(bitNum);
+      return true;
+    case PRESSED:
+      if (now - lastPress < 15 || turn != this) {
+        return false;
+      }
+      state = FLIPSIDES;
+      lastPress = now;
+      this->switches = BoardIO::bits{};
+      return true;
+    case FLIPSIDES:
+      if (turn == this) {
+        return false;
+      }
+      state = WAIT;
+      turn = this;
+      if (newBit == this) {
+        bitNum = (bitNum + 1) % BoardIO::matrix_size;
+      }
+      return false;
+    default:
+      return false;
+  }
+#else
   if (clientUart.available()) {
     uint8_t size = sizeof(switches) + 1;
     uint8_t buffer[size];
@@ -94,6 +146,7 @@ bool hw::receive(BLEClientUart& clientUart, const hw& prev) {
   } else {
     return false;
   }
+#endif
 }
 #endif
 
