@@ -1,5 +1,4 @@
-#if !defined(STATE_HARDWARE_H)
-#define STATE_HARDWARE_H
+#pragma once
 
 #include "mybluefruit.h"
 
@@ -59,4 +58,4 @@ struct hw {
 #endif
 };
 } // namespace state
-#endif
+

@@ -1,5 +1,4 @@
-#if !defined(KEYMAP_H)
-#define KEYMAP_H
+#pragma once
 
 #include "keyhelpers.h"
 #include "boardio.h"
@@ -136,5 +135,3 @@ const action_t keymap[][BoardIO::matrix_size * 2] = {
      RROW4(DOWN_, CTK(M), CT_CMA, CT_DOT, CT_SLSH, RSHFT | LCTL),
      RROW5(CT_RET, CT_SPC, CT_EQ, CT_UP, ___, ___, ___),
      RROW6(CT_CBRC, ___, CT_LEFT, CT_DN, CT_RIGHT, NXTT_)}};
-
-#endif

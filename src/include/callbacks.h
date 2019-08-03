@@ -1,5 +1,6 @@
-#if !defined(CALLBACKS_H) && !defined(USB_MASTER)
-#define CALLBACKS_H
+#pragma once
+
+#if !defined(USB_MASTER)
 
 #include <ble_gap.h>
 

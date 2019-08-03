@@ -1,5 +1,4 @@
-#if !defined(BOARDIO_H)
-#define BOARDIO_H
+#pragma once
 
 #include "mybluefruit.h"
 
@@ -26,5 +25,3 @@ class BoardIO {
   static void setRed(bool on);
   static void setBlue(bool on);
 };
-
-#endif

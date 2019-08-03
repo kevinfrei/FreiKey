@@ -1,5 +1,4 @@
-#if !defined(GLOBALS_H)
-#define GLOBALS_H
+#pragma once
 
 #if !defined(USB_MASTER)
 #include "mybluefruit.h"
@@ -30,7 +29,5 @@ extern SleepState sleepState;
 void resetTheWorld();
 extern state::hw leftSide;
 extern state::hw rightSide;
-
-#endif
 
 #endif

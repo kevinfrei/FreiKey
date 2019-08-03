@@ -1,5 +1,4 @@
-#if !defined(SLEEPSTATE_H)
-#define SLEEPSTATE_H
+#pragma once
 
 #include "boardio.h"
 #include "hardware.h"
@@ -14,5 +13,3 @@ struct SleepState {
   void BeginForcedSleepMode();
   void EndForcedSleepMode();
 };
-
-#endif

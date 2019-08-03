@@ -1,5 +1,4 @@
-#if !defined(KEYSTATE_H)
-#define KEYSTATE_H
+#pragma once
 
 #include "hardware.h"
 #include "keyhelpers.h"
@@ -65,5 +64,3 @@ struct keystate {
   };
 #endif
 };
-
-#endif

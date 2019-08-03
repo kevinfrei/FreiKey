@@ -1,5 +1,4 @@
-#if !defined(DBGCFG_H)
-#define DBGCFG_H
+#pragma once
 
 #include <cstdint>
 
@@ -30,6 +29,4 @@ void dumpHex(bool b, const char* header = nullptr);
 #if defined(__VSCODE_ONLY_)
 // Stuff to make VSCode IntelliSense happy
 // Don't seem to need this stuff now, which is helpful
-#endif
-
 #endif

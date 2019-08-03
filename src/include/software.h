@@ -1,5 +1,6 @@
-#if !defined(SOFTWARE_H)
-#define SOFTWARE_H
+#pragma once
+
+#include "mybluefruit.h"
 
 namespace state {
   class kb {
@@ -17,5 +18,3 @@ namespace state {
     void resolveChanges(uint64_t beforeLeft, uint64_t afterleft, uint64_t beforeRight, uint64_t afterRight);
   }
 }
-
-#endif

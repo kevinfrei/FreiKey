@@ -1,5 +1,4 @@
-#if !defined(KEYHELPERS_H)
-#define KEYHELPERS_H
+#pragma once
 
 using action_t = uint32_t;
 
@@ -239,5 +238,3 @@ constexpr layer_t kSwitchLayer = 4;
 #define MAC_CAP LYR_SHIFT(LAYER_MAC_CAP)
 #define WIN_CAP LYR_SHIFT(LAYER_WIN_CAP)
 #define WIN_CTL LYR_SHIFT(LAYER_WIN_CTL)
-
-#endif

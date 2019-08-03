@@ -1,5 +1,4 @@
-#if !defined(DISP_UART_H)
-#define DISP_UART_H
+#pragma once
 
 #include "mybluefruit.h"
 
@@ -56,4 +55,3 @@ struct value : public data<value, header::value> {
 };
 
 } // namespace disp_uart
-#endif

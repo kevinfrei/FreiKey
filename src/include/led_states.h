@@ -1,5 +1,4 @@
-#if !defined(LED_STATES_H)
-#define LED_STATES_H
+#pragma once
 
 #include "hardware.h"
 #include "boardio.h"
@@ -15,4 +14,3 @@ struct led {
 };
 
 } // namespace state
-#endif

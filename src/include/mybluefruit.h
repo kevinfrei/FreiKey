@@ -1,8 +1,4 @@
-#if !defined(MYBLUEFRUIT_H)
-#define MYBLUEFRUIT_H
-
+#pragma once
 #include <bluefruit.h>
 #undef min
 #undef max
-
-#endif

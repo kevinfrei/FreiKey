@@ -1,5 +1,4 @@
-#if !defined(DONGLE_H)
-#define DONGLE_H
+#pragma once
 
 #include "mybluefruit.h"
 
@@ -44,5 +43,3 @@ class Dongle {
   static void leftuart_rx_callback(BLEClientUart& uart_svc);
   static void rightuart_rx_callback(BLEClientUart& uart_svc);
 };
-
-#endif

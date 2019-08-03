@@ -1,5 +1,5 @@
-#if !defined(__CLIENT_H)
-#define __CLIENT_H
+#pragma once
+
 #include "mybluefruit.h"
 
 #include "boardio.h"
@@ -23,5 +23,3 @@ class Client {
   void setup(const char* name);
   void loop();
 };
-
-#endif

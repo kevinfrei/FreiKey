@@ -1,5 +1,4 @@
-#if !defined(SCANNER_H)
-#define SCANNER_H
+#pragma once
 
 #include <vector>
 
@@ -11,4 +10,3 @@ std::vector<scancode_t> GetScanCodesForSwitchStates(uint64_t beforeLeft,
                                                     uint64_t afterRight);
 void PerformActionsForScanCodes(const std::vector<scancode_t>& scanCodes);
 
-#endif

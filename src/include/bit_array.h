@@ -1,5 +1,4 @@
-#if !defined(SWITCH_MATRIX_H)
-#define SWITCH_MATRIX_H
+#pragma once
 
 #include <initializer_list>
 
@@ -72,5 +71,3 @@ struct bit_array {
   }
 #endif
 };
-
-#endif
