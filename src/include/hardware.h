@@ -6,6 +6,7 @@
 #include "dbgcfg.h"
 
 using scancode_t = uint8_t;
+constexpr scancode_t not_a_scancode = 0xff;
 
 constexpr char* MANUFACTURER = "FreikyStuff";
 constexpr char* MODEL = "FreiKeyboard";

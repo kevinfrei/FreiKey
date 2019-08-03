@@ -8,7 +8,6 @@
 #include "helpers.h"
 #include "keymap.h"
 #include "keystate.h"
-#include "led_states.h"
 #include "scanner.h"
 
 // I'm going to update this to keep track of additional state.
@@ -44,16 +43,16 @@ layer_t layer_pos = 0;
 void resetTheWorld() {
   layer_pos = 0;
   layer_stack[0] = 0;
-  memset(&leftSide, 0, sizeof(leftSide));
-  memset(&rightSide, 0, sizeof(rightSide));
-  memset(keyStates, 0xff, sizeof(keyStates));
+  leftSide = state::hw{};
+  rightSide = state::hw{};
+  memset(keyStates, not_a_scancode, sizeof(keyStates));
   Dongle::Reset();
 }
 
 // Look for a slot that is either already in use for this scan code, or vacant.
 // If we don't have a vacant slot, return the oldest, but still in use, slot,
 // but only for key-up states, as we're probably through with them anyway.
-struct keystate* findStateSlot(uint8_t scanCode) {
+struct keystate* findStateSlot(scancode_t scanCode) {
   keystate *vacant = nullptr, *reap = nullptr;
   for (auto& s : keyStates) {
     // If we have the same scan code, huzzah!
@@ -62,7 +61,7 @@ struct keystate* findStateSlot(uint8_t scanCode) {
     }
     // If we found a vacancy, potentially use it. We have to keep looking to see
     // if we have the same scan code, though.
-    if (s.scanCode == 0xff) {
+    if (s.scanCode == not_a_scancode) {
       vacant = &s;
     } else if (!s.down) {
       if (!reap) {
@@ -170,19 +169,14 @@ void updateBatteryLevel(const state::hw& downLeft, const state::hw& downRight) {
   }
 }
 
-// We need to delay the master by a little bit to prevent mis-timing
-bool dataWaiting = false;
-uint32_t dataTime;
-uint64_t switchData;
-// # of milliseconds to delay the local keyboard before reporting
-// It's kind of surprising how annoying the latency is when I get typing fast...
-constexpr uint32_t DELAY = 8;
 
 uint32_t lastTime = 0;
 bool justTestIt = false;
 
 void loop() {
-  Dongle::updateClientStatus();
+  uint32_t now = millis();
+
+  Dongle::updateClientStatus(now);
   if (!Dongle::Ready())
     return;
   //  // Remote wakeup
@@ -192,8 +186,6 @@ void loop() {
   //    // and REMOTE_WAKEUP feature is enabled by host
   //    tud_remote_wakeup();
   //  }
-
-  uint32_t now = millis();
 
   // Get the hardware state for the two sides...
   state::hw downRight{Dongle::rightUart, rightSide};
@@ -256,37 +248,34 @@ void loop() {
     uint8_t mods = 0;
 
     for (auto& state : keyStates) {
-      if (state.scanCode == 0xff)
+      if (state.scanCode == not_a_scancode)
         continue;
       if ((state.action & kConsumer) == kConsumer) {
         // For a consumer control button, there are no modifiers, it's
         // just a simple call. So just call it directly:
         if (state.down) {
-          DBG2(dumpHex(state.action & 0xff, "Consumer key press: "));
-          // TODO: This can only send 1 byte codes,
-          // but the app-launch buttons are all 2 bytes.
-          // I need to fix state.action to support more...
+          DBG2(dumpHex(state.action & kConsumerMask, "Consumer key press: "));
           // See all the codes in all their glory here:
           // https://www.usb.org/sites/default/files/documents/hut1_12v2.pdf
           // (And if that doesn't work, check here: https://www.usb.org/hid)
-          Dongle::ConsumerPress(state.action & 0xff);
+          Dongle::ConsumerPress(state.action & kConsumerMask);
         } else {
-          DBG2(dumpHex(state.action & 0xff, "Consumer key release: "));
+          DBG2(dumpHex(state.action & kConsumerMask, "Consumer key release: "));
           Dongle::ConsumerRelease();
           // We have to clear this thing out when we're done, because we take
           // action on the key release as well. We don't do this for the normal
           // keyboardReport.
-          state.scanCode = 0xff;
+          state.scanCode = not_a_scancode;
         }
       } else if (state.down) {
-        switch (state.action & kMask) {
+        switch (state.action & kActionMask) {
           case kTapHold:
             if (now - state.lastChange > 200) {
               // Holding
               mods |= (state.action >> 16) & 0xff;
             } else {
-              // Tapsg
-              auto key = state.action & 0xff;
+              // Tapping
+              uint8_t key = state.action & 0xff;
               if (key != 0 && repsize < 6) {
                 report[repsize++] = key;
               }
@@ -294,13 +283,13 @@ void loop() {
             break;
           case kKeyAndMod: {
             mods |= (state.action >> 16) & 0xff;
-            auto key = state.action & 0xff;
+            uint8_t key = state.action & 0xff;
             if (key != 0 && repsize < 6) {
               report[repsize++] = key;
             }
           } break;
           case kKeyPress: {
-            auto key = state.action & 0xff;
+            uint8_t key = state.action & 0xff;
             if (key != 0 && repsize < 6) {
               report[repsize++] = key;
             }
@@ -314,17 +303,6 @@ void loop() {
         }
       }
     }
-#if defined(DEBUG) && DEBUG > 1
-    Serial.print("mods=");
-    Serial.print(mods, HEX);
-    Serial.print(" repsize=");
-    Serial.print(repsize);
-    for (int i = 0; i < repsize; i++) {
-      Serial.print(" ");
-      Serial.print(report[i], HEX);
-    }
-    Serial.println("");
-#endif
 
     // Update the hardware previous state
     rightSide = downRight;
@@ -348,34 +326,7 @@ void setup() {
   DBG(Serial.begin(115200));
   DBG(while (!Serial) delay(10)); // for nrf52840 with native usb
 #endif
-
   Dongle::Configure();
-
   resetTheWorld();
-
-  // No central and 2 peripheral
-  Bluefruit.begin(0, 2);
-  Bluefruit.autoConnLed(false);
-  // Acceptable values: -40, -30, -20, -16, -12, -8, -4, 0, 4
-  Bluefruit.setTxPower(4);
-  Bluefruit.setName(BT_NAME);
-
   Dongle::StartListening();
-
-  Bluefruit.Central.setConnectCallback(Dongle::cent_connect);
-  Bluefruit.Central.setDisconnectCallback(Dongle::cent_disconnect);
-
-  /* Start Central Scanning
-   * - Enable auto scan if disconnected
-   * - Interval = 100 ms, window = 80 ms
-   * - Filter only accept bleuart service
-   * - Don't use active scan
-   * - Start(timeout) with timeout = 0 will scan forever (until connected)
-   */
-  Bluefruit.Scanner.setRxCallback(Dongle::scan);
-  Bluefruit.Scanner.restartOnDisconnect(true);
-  Bluefruit.Scanner.setInterval(160, 80); // in unit of 0.625 ms
-  Bluefruit.Scanner.filterUuid(BLEUART_UUID_SERVICE);
-  Bluefruit.Scanner.useActiveScan(false);
-  Bluefruit.Scanner.start(0); // 0 = Don't stop scanning after n seconds
 }

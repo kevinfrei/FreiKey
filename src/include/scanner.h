@@ -1,12 +1,12 @@
 #pragma once
 
-#include <vector>
+#include <array>
 
+#include "boardio.h"
 #include "hardware.h"
 
-std::vector<scancode_t> GetScanCodesForSwitchStates(uint64_t beforeLeft,
-                                                    uint64_t afterLeft,
-                                                    uint64_t beforeRight,
-                                                    uint64_t afterRight);
-void PerformActionsForScanCodes(const std::vector<scancode_t>& scanCodes);
-
+std::array<scancode_t, 6> GetScanCodesForSwitchStates(BoardIO::bits beforeLeft,
+                                                      BoardIO::bits afterLeft,
+                                                      BoardIO::bits beforeRight,
+                                                      BoardIO::bits afterRight);
+void PerformActionsForScanCodes(const std::array<scancode_t, 6>& scanCodes);

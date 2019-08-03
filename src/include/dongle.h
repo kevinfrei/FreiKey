@@ -30,7 +30,7 @@ class Dongle {
   static void setRed(bool on);
   static void setBlue(bool on);
 
-  static void updateClientStatus();
+  static void updateClientStatus(uint32_t now);
 
   // Callbacks from the Bluefruit runtime
   static void cent_connect(uint16_t conn_handle);

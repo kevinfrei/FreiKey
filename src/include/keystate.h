@@ -40,7 +40,7 @@ struct keystate {
         action = resolveActionForScanCodeOnActiveLayer(scanCode);
       }
     }
-    switch (action & kMask) {
+    switch (action & kActionMask) {
       case kLayerShift:
         return down ? kPushLayer : kPopLayer;
       case kLayerToggle:

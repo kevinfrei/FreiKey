@@ -4,7 +4,6 @@
 #include "dongle.h"
 #include "globals.h"
 
-
 // Report ID's
 constexpr uint8_t RID_KEYBOARD = 1;
 constexpr uint8_t RID_CONSUMER = 2;
@@ -22,6 +21,7 @@ uint16_t Dongle::leftHandle = BLE_CONN_HANDLE_INVALID;
 uint16_t Dongle::rightHandle = BLE_CONN_HANDLE_INVALID;
 Adafruit_USBD_HID Dongle::usb_hid;
 
+// Configure all the non-BLE hardware
 void Dongle::Configure() {
   // This is the user switch
   pinMode(7, INPUT_PULLUP);
@@ -39,11 +39,36 @@ void Dongle::Configure() {
   usb_hid.begin();
 }
 
+// Light up the Bluetooth stack
 void Dongle::StartListening() {
+  // No central and 2 peripheral
+  Bluefruit.begin(0, 2);
+  Bluefruit.autoConnLed(false);
+  // Acceptable values: -40, -30, -20, -16, -12, -8, -4, 0, 4
+  Bluefruit.setTxPower(4);
+  Bluefruit.setName(BT_NAME);
+
   leftUart.begin();
   leftUart.setRxCallback(Dongle::leftuart_rx_callback);
   rightUart.begin();
   rightUart.setRxCallback(Dongle::rightuart_rx_callback);
+
+  Bluefruit.Central.setConnectCallback(Dongle::cent_connect);
+  Bluefruit.Central.setDisconnectCallback(Dongle::cent_disconnect);
+
+  /* Start Central Scanning
+   * - Enable auto scan if disconnected
+   * - Interval = 100 ms, window = 80 ms
+   * - Filter only accept bleuart service
+   * - Don't use active scan
+   * - Start(timeout) with timeout = 0 will scan forever (until connected)
+   */
+  Bluefruit.Scanner.setRxCallback(Dongle::scan);
+  Bluefruit.Scanner.restartOnDisconnect(true);
+  Bluefruit.Scanner.setInterval(160, 80); // in unit of 0.625 ms
+  Bluefruit.Scanner.filterUuid(BLEUART_UUID_SERVICE);
+  Bluefruit.Scanner.useActiveScan(false);
+  Bluefruit.Scanner.start(0); // 0 = Don't stop scanning after n seconds
 }
 
 bool Dongle::Ready() {
@@ -51,18 +76,29 @@ bool Dongle::Ready() {
 }
 
 void Dongle::Reset() {
-  usb_hid.keyboardRelease(0);
+  usb_hid.keyboardRelease(RID_KEYBOARD);
+  Dongle::ConsumerRelease();
 }
 
 void Dongle::ReportKeys(uint8_t mods, uint8_t* report) {
+#if defined(DEBUG) && DEBUG > 1
+  Serial.printf("mods=%x: ", mods);
+  for (int i = 0; i < 6; i++) {
+    Serial.print(" ");
+    Serial.print(report[i], HEX);
+  }
+  Serial.println("");
+#endif
   usb_hid.keyboardReport(RID_KEYBOARD, mods, report);
 }
 
 void Dongle::ConsumerPress(uint16_t key) {
+  DBG2(dumpHex(key, "Consumer Press: "));
   usb_hid.sendReport(RID_CONSUMER, &key, sizeof(key));
 }
 
 void Dongle::ConsumerRelease() {
+  DBG2(Serial.println("Consumer Release"));
   uint16_t zero = 0;
   usb_hid.sendReport(RID_CONSUMER, &zero, sizeof(zero));
 }
@@ -89,8 +125,11 @@ void Dongle::scan(ble_gap_evt_adv_report_t* report) {
 uint32_t Dongle::connect_time = 0;
 bool Dongle::black = true;
 
-void Dongle::updateClientStatus() {
-  uint32_t theDelay = millis() - connect_time;
+// This updates the RGB LED to show something when the left & right sides
+// connect to the dongle
+
+void Dongle::updateClientStatus(uint32_t now) {
+  uint32_t theDelay = now - connect_time;
   if (theDelay < 10000) {
     uint32_t red = (rightHandle == BLE_CONN_HANDLE_INVALID) ? 0 : 0xFF;
     uint8_t blue = (leftHandle == BLE_CONN_HANDLE_INVALID) ? 0 : 0xFF;
@@ -105,23 +144,27 @@ void Dongle::updateClientStatus() {
 }
 
 void Dongle::leftuart_rx_callback(BLEClientUart& uart_svc) {
+#if 0
   // TODO: Make this async
   // i.e. make it a state, and have the central loop
   // do the actual work...
   Dongle::setRGB(0, 0, 5);
   black = false;
   delayMicroseconds(25);
-  updateClientStatus();
+  updateClientStatus(millis());
+#endif
 }
 
 void Dongle::rightuart_rx_callback(BLEClientUart& uart_svc) {
+#if 0
   // TODO: Make this async
   // i.e. make it a state, and have the central loop
   // do the actual work...
   Dongle::setRGB(1, 0, 0);
   black = false;
   delayMicroseconds(25);
-  updateClientStatus();
+  updateClientStatus(millis());
+#endif
 }
 
 // Called when we find a UART host to connect with
@@ -131,18 +174,17 @@ void Dongle::cent_connect(uint16_t conn_handle) {
   char peer_name[32] = {0};
   BLEClientUart* remoteUart = nullptr;
   Bluefruit.Connection(conn_handle)->getPeerName(peer_name, sizeof(peer_name));
-  // I ought to at least make sure the peer_name is LHS_NAME, right?
-  // TODO: Figure out if this is the left or right uart
+  // Figure out if this is the left or right uart
   if (!strcmp(LTCL_NAME, peer_name) && leftUart.discover(conn_handle)) {
     remoteUart = &leftUart;
     leftHandle = conn_handle;
     connect_time = millis();
-    updateClientStatus();
+    updateClientStatus(connect_time);
   } else if (!strcmp(RTCL_NAME, peer_name) && rightUart.discover(conn_handle)) {
     remoteUart = &rightUart;
     rightHandle = conn_handle;
     connect_time = millis();
-    updateClientStatus();
+    updateClientStatus(connect_time);
   } else {
     DBG(Serial.println("[Cent] Not connecting to the client: wrong name"));
     DBG(Serial.printf("Requester name: %s\n", peer_name));
@@ -162,7 +204,7 @@ void Dongle::cent_connect(uint16_t conn_handle) {
   resetTheWorld();
 }
 
-// Called with a UART host disconnects
+// Called when a UART host disconnects
 void Dongle::cent_disconnect(uint16_t conn_handle, uint8_t reason) {
   // TODO: Disconnect the *correct* side
   if (conn_handle == leftHandle) {
@@ -170,7 +212,7 @@ void Dongle::cent_disconnect(uint16_t conn_handle, uint8_t reason) {
   } else if (conn_handle == rightHandle) {
     rightHandle = BLE_CONN_HANDLE_INVALID;
   }
-  updateClientStatus();
+  updateClientStatus(millis());
   resetTheWorld();
 }
 
@@ -185,10 +227,8 @@ void Dongle::hid_report_callback(uint8_t report_id,
 
   // The LED bit map is as follows: (also defined by KEYBOARD_LED_* )
   // Kana (4) | Compose (3) | ScrollLock (2) | CapsLock (1) | Numlock (0)
-  uint8_t ledIndicator = buffer[0];
-
   // turn on LED if caplock is set
-  digitalWrite(LED_BUILTIN, ledIndicator & KEYBOARD_LED_CAPSLOCK);
+  digitalWrite(LED_BUILTIN, (buffer[0] & KEYBOARD_LED_CAPSLOCK) ? HIGH : LOW);
 }
 
 void rtos_idle_callback(void) {}

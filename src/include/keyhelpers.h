@@ -2,21 +2,23 @@
 
 using action_t = uint32_t;
 
-constexpr action_t kMask = 0xf00;
-constexpr action_t kKeyPress = 0x100;
-constexpr action_t kModifier = 0x200;
-constexpr action_t kTapHold = 0x300;
-constexpr action_t kToggleMod = 0x400;
-constexpr action_t kKeyAndMod = 0x500;
+constexpr action_t kActionMask = 0x7800;
+constexpr action_t kKeyPress = 0x800;
+constexpr action_t kModifier = 0x1000;
+constexpr action_t kTapHold = 0x1800;
+constexpr action_t kToggleMod = 0x2000;
+constexpr action_t kKeyAndMod = 0x2800;
 // This works like a shift key for a layer
-constexpr action_t kLayerShift = 0x600;
+constexpr action_t kLayerShift = 0x3000;
 // This turns the layer on or off
-constexpr action_t kLayerToggle = 0x700;
+constexpr action_t kLayerToggle = 0x3800;
+
 // This switches the current layer to the new one
-constexpr action_t kLayerSwitch = 0x800;
+constexpr action_t kLayerSwitch = 0x8000;
 
 // This is for flagging consumer keycodes, as I have to handle them differently
 constexpr action_t kConsumer = 0x8000;
+constexpr action_t kConsumerMask = 0x3FF;
 
 using layer_t = uint8_t;
 constexpr layer_t kPushLayer = 1;

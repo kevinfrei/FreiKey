@@ -16,5 +16,5 @@ namespace state {
     //  An *internal only* state change (i.e. nothing)
     //  A list of most everything above
     void resolveChanges(uint64_t beforeLeft, uint64_t afterleft, uint64_t beforeRight, uint64_t afterRight);
-  }
+  };
 }

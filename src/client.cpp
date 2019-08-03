@@ -1,6 +1,7 @@
 #include "mybluefruit.h"
 
 #include "client.h"
+#include "hardware.h"
 
 void Client::setup(const char* name) {
   DBG(Serial.begin(115200));
