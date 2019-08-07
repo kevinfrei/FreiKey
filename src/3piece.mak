@@ -14,7 +14,7 @@ M_OUT=out_3piece_m
 # Arduino Version
 ARDUINO_VER=10808
 # AdaFruit Software Version
-ADA_DOT_VER=0.11.0
+ADA_DOT_VER=0.12.0
 # Master/Client "Soft Device" version
 M_SD_VER=140
 C_SD_VER=132
@@ -86,7 +86,7 @@ COMMON_DEFINES=\
 	"-DARDUINO_BSP_VERSION=\"${ADA_DOT_VER}\"" \
 	-DSD_VER=${SDS_VER} \
 	-DADAFRUIT \
-	-DCFG_DEBUG=0
+	-DCFG_DEBUG=1
 
 #  -DTEST_MASTER << That mocks out the two sides and just types 1 keys at a time
 #                   from each side
@@ -112,7 +112,7 @@ C_DEFINES=${COMMON_DEFINES} \
 TARGET=-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
 CODEGEN=-nostdlib --param max-inline-insns-single=500 -ffunction-sections -fdata-sections
 FLAGS=-g -Wall -u _printf_float -MMD
-CPPLANG=-std=gnu++11 -w -x c++ -fno-rtti -fno-exceptions -fno-threadsafe-statics
+CPPLANG=-std=gnu++17 -w -x c++ -fno-rtti -fno-exceptions -fno-threadsafe-statics
 CLANG=-std=gnu11
 SLANG=-x assembler-with-cpp
 OPT=-Os
@@ -190,6 +190,7 @@ CORE_VPATH=${CORE_DIR}:\
 ${CORE_DIR}/Adafruit_TinyUSB_Core:\
 ${CORE_DIR}/Adafruit_TinyUSB_Core/tinyusb/src/class/cdc:\
 ${CORE_DIR}/Adafruit_TinyUSB_Core/tinyusb/src/class/custom:\
+${CORE_DIR}/Adafruit_TinyUSB_Core/tinyusb/src/class/vendor:\
 ${CORE_DIR}/Adafruit_TinyUSB_Core/tinyusb/src/class/hid:\
 ${CORE_DIR}/Adafruit_TinyUSB_Core/tinyusb/src/class/midi:\
 ${CORE_DIR}/Adafruit_TinyUSB_Core/tinyusb/src/class/msc:\
@@ -217,8 +218,8 @@ CORE_SRCS = \
 	Adafruit_USBD_CDC.cpp \
 	Adafruit_USBD_Device.cpp \
 	cdc_device.c \
-	custom_device.c \
 	hid_device.c \
+	vendor_device.c \
 	midi_device.c \
 	msc_device.c \
 	tusb_fifo.c \
