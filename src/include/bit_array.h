@@ -61,6 +61,13 @@ struct bit_array {
   bool get_bit(uint8_t bitnum) const {
     return !!(value[bitnum >> 3] & (1 << (bitnum & 7)));
   }
+  const uint8_t* getData() const {
+    return value.data();
+  }
+  uint8_t* getData() {
+    return value.data();
+  }
+
 #if defined(DEBUG)
   void dumpHex(const char* prf) const {
     Serial.print(prf);

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "mybluefruit.h"
+#include <queue>
 
 #include "boardio.h"
 #include "dbgcfg.h"
@@ -18,12 +19,19 @@ constexpr char* RTCL_NAME = "FreiKeys-RClient";
 
 namespace state {
 
+struct incoming {
+  BLEClientUart* which;
+  // TODO: Tag it with 'when' to synchronize the sides better
+  struct hw* what;
+};
+extern std::queue<incoming> data_queue;
+
 // This struct is to encapsulate the complete hardware state, including both
 // which switches are down, as well as the current battery level.
 struct hw {
   BoardIO::bits switches;
   uint8_t battery_level;
-
+  static constexpr std::size_t data_size = BoardIO::byte_size + 1;
   // This is just a dumb constructor
   hw(uint8_t bl = 0);
 
@@ -32,7 +40,7 @@ struct hw {
   hw(uint32_t now, const hw& prev, const BoardIO& pd);
 #endif
 
-  // This is for reading the data from the left hand side over the UART
+// This is for reading the data from remote pieces over the UART
   hw(BLEClientUart& clientUart, const hw& prev);
 
   // Generic copy constructor...
@@ -59,4 +67,3 @@ struct hw {
 #endif
 };
 } // namespace state
-

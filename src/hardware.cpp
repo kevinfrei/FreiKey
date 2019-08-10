@@ -39,6 +39,7 @@ namespace state {
 #if defined(DEBUG)
 uint32_t scans_since_last_time = 0;
 #endif
+std::queue<incoming> data_queue;
 
 hw::hw(uint8_t bl) : switches{}, battery_level(bl) {}
 
@@ -70,7 +71,10 @@ void hw::readSwitches(const BoardIO& pd, uint32_t now) {
 
 // Send the relevant data over the wire
 void hw::send(BLEUart& bleuart, const hw& prev) const {
-  bleuart.write((uint8_t*)&switches, sizeof(switches) + 1);
+  char buffer[data_size];
+  memcpy(buffer, this->switches.getData(), BoardIO::byte_size);
+  buffer[BoardIO::byte_size] = this->battery_level;
+  bleuart.write(buffer, data_size);
 }
 #endif
 
@@ -130,18 +134,11 @@ bool hw::receive(BLEClientUart& clientUart, const hw& prev) {
       return false;
   }
 #else
-  if (clientUart.available()) {
-    uint8_t size = sizeof(switches) + 1;
-    uint8_t buffer[size];
-    uint8_t pos = 0;
-    while (pos < size) {
-      if (clientUart.available()) {
-        buffer[pos++] = clientUart.read();
-      } else {
-        delayMicroseconds(25);
-      }
-    };
-    memcpy(reinterpret_cast<uint8_t*>(this), buffer, size);
+  if (!data_queue.empty() && data_queue.front().which == &clientUart) {
+    memcpy(
+        reinterpret_cast<uint8_t*>(this), data_queue.front().what, data_size);
+    delete data_queue.front().what;
+    data_queue.pop();
     return true;
   } else {
     return false;

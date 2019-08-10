@@ -40,6 +40,5 @@ class Dongle {
                                   hid_report_type_t report_type,
                                   uint8_t const* buffer,
                                   uint16_t bufsize);
-  static void leftuart_rx_callback(BLEClientUart& uart_svc);
-  static void rightuart_rx_callback(BLEClientUart& uart_svc);
+  static void receive_callback(BLEClientUart& uart_svc);
 };

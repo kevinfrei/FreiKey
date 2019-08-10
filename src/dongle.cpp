@@ -3,6 +3,7 @@
 #include "dbgcfg.h"
 #include "dongle.h"
 #include "globals.h"
+#include "hardware.h"
 
 // Report ID's
 constexpr uint8_t RID_KEYBOARD = 1;
@@ -20,6 +21,10 @@ BLEClientUart Dongle::rightUart;
 uint16_t Dongle::leftHandle = BLE_CONN_HANDLE_INVALID;
 uint16_t Dongle::rightHandle = BLE_CONN_HANDLE_INVALID;
 Adafruit_USBD_HID Dongle::usb_hid;
+
+namespace std {
+void __throw_bad_alloc() {}
+} // namespace std
 
 // Configure all the non-BLE hardware
 void Dongle::Configure() {
@@ -49,9 +54,9 @@ void Dongle::StartListening() {
   Bluefruit.setName(BT_NAME);
 
   leftUart.begin();
-  leftUart.setRxCallback(Dongle::leftuart_rx_callback);
+  leftUart.setRxCallback(Dongle::receive_callback);
   rightUart.begin();
-  rightUart.setRxCallback(Dongle::rightuart_rx_callback);
+  rightUart.setRxCallback(Dongle::receive_callback);
 
   Bluefruit.Central.setConnectCallback(Dongle::cent_connect);
   Bluefruit.Central.setDisconnectCallback(Dongle::cent_disconnect);
@@ -143,8 +148,22 @@ void Dongle::updateClientStatus(uint32_t now) {
   }
 }
 
-void Dongle::leftuart_rx_callback(BLEClientUart& uart_svc) {
+void Dongle::receive_callback(BLEClientUart& uart_svc) {
+  uint8_t buffer[state::hw::data_size];
+  for (uint8_t pos = 0; pos < sizeof(buffer); delayMicroseconds(5)) {
+    if (uart_svc.available()) {
+      buffer[pos++] = uart_svc.read();
+    }
+  }
+  // Put the data in the queue
+  state::hw* newData = new state::hw;
+  memcpy(newData->switches.getData(), buffer, BoardIO::byte_size);
+  newData->battery_level = buffer[BoardIO::byte_size];
+  state::data_queue.push({&uart_svc, newData});
+}
+
 #if 0
+void Dongle::leftuart_rx_callback(BLEClientUart& uart_svc) {
   // TODO: Make this async
   // i.e. make it a state, and have the central loop
   // do the actual work...
@@ -152,11 +171,9 @@ void Dongle::leftuart_rx_callback(BLEClientUart& uart_svc) {
   black = false;
   delayMicroseconds(25);
   updateClientStatus(millis());
-#endif
 }
 
 void Dongle::rightuart_rx_callback(BLEClientUart& uart_svc) {
-#if 0
   // TODO: Make this async
   // i.e. make it a state, and have the central loop
   // do the actual work...
@@ -164,8 +181,8 @@ void Dongle::rightuart_rx_callback(BLEClientUart& uart_svc) {
   black = false;
   delayMicroseconds(25);
   updateClientStatus(millis());
-#endif
 }
+#endif
 
 // Called when we find a UART host to connect with
 void Dongle::cent_connect(uint16_t conn_handle) {
