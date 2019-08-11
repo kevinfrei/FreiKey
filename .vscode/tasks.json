@@ -25,9 +25,7 @@
       "type": "shell",
       "command": "cd src ; make -j -f teensy32.mak flash",
       "problemMatcher": "$gcc",
-      "group": {
-        "kind": "build"
-      }
+      "group": "build"
     },
     {
       "label": "Set to Teensy",
