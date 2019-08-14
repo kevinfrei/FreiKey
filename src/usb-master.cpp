@@ -2,6 +2,7 @@
 
 #include "Adafruit_NeoPixel.h"
 
+#include "comm.h"
 #include "dbgcfg.h"
 #include "dongle.h"
 #include "hardware.h"
@@ -169,13 +170,16 @@ void updateBatteryLevel(const state::hw& downLeft, const state::hw& downRight) {
   }
 }
 
-
 uint32_t lastTime = 0;
 bool justTestIt = false;
-
+bool which = true;
 void loop() {
   uint32_t now = millis();
-
+  if (0 && now - lastTime > 1000) {
+    comm::send::sync(which ? Dongle::leftUart : Dongle::rightUart);
+    which = !which;
+    lastTime = now;
+  }
   Dongle::updateClientStatus(now);
   if (!Dongle::Ready())
     return;
@@ -322,11 +326,8 @@ void loop() {
 // In Arduino world the 'setup' function is called to initialize the device.
 // The 'loop' function is called over & over again, after setup completes.
 void setup() {
-#if SERIAL_PORT_AND_HID_KEYBOARD_DONT_SEEM_TO_WORK_AT_THE_SAME_TIME
-  DBG(Serial.begin(115200));
-  DBG(while (!Serial) delay(10)); // for nrf52840 with native usb
-#endif
   Dongle::Configure();
   resetTheWorld();
   Dongle::StartListening();
+  lastTime = millis();
 }

@@ -174,6 +174,7 @@ C_SFLAGS=${TARGET} ${FLAGS} ${CODEGEN} ${SLANG} ${C_DEFINES} ${OPT} ${C_INCLUDES
 
 SHARED_SRC = \
 	dbgcfg.cpp \
+  comm.cpp \
 	hardware.cpp
 CLIENT_SRC = \
 	debounce.cpp \

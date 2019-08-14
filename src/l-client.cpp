@@ -6,12 +6,11 @@
 // not the physical pin numbers...
 constexpr BoardIO LeftBoard = {
     {15, 2, 16, 7, 30, 27, 11}, {5, 12, 13, 28, 4, 3}, 29};
-Client LeftClient{LeftBoard};
-
+Client theClient{LeftBoard};
 void setup() {
-  LeftClient.setup(LTCL_NAME);
+  theClient.setup(LTCL_NAME);
 }
 
 void loop() {
-  LeftClient.loop();
+  theClient.loop();
 }

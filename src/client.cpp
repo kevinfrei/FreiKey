@@ -1,6 +1,7 @@
 #include "mybluefruit.h"
 
 #include "client.h"
+#include "comm.h"
 #include "hardware.h"
 
 void Client::setup(const char* name) {
@@ -22,6 +23,7 @@ void Client::setup(const char* name) {
   bledis.begin();
 
   bleuart.begin();
+  bleuart.setRxCallback(comm::recv::data);
 
   // Start Advertising the UART service to talk to the other half...
   Bluefruit.Advertising.addFlags(BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE);
@@ -54,7 +56,8 @@ void Client::loop() {
   if (down != lastRead) {
     lastRead = down;
     DBG2(down.dump());
-    down.send(bleuart, lastRead);
+    comm::send::scan(bleuart, lastRead.switches);
+    // down.send(bleuart, lastRead);
     if (!curState) {
       // if we're not already in a state, check to see if we're transitioning
       // into one

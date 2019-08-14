@@ -10,16 +10,19 @@
 
 class Client {
   BLEDis bledis;
-  BLEUart bleuart;
   uint32_t stateTime;
   SleepState sleepState;
   state::hw lastRead;
   const state::led* curState = nullptr;
-  const BoardIO theBoard;
 
  public:
+  const BoardIO theBoard;
+  BLEUart bleuart;
+
   Client(const BoardIO& board)
       : lastRead{}, theBoard(board), stateTime{0}, sleepState{0, false} {}
   void setup(const char* name);
   void loop();
 };
+
+extern Client theClient;

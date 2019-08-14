@@ -71,8 +71,8 @@ void hw::readSwitches(const BoardIO& pd, uint32_t now) {
 
 // Send the relevant data over the wire
 void hw::send(BLEUart& bleuart, const hw& prev) const {
-  char buffer[data_size];
-  memcpy(buffer, this->switches.getData(), BoardIO::byte_size);
+  uint8_t buffer[data_size];
+  this->switches.read(buffer);
   buffer[BoardIO::byte_size] = this->battery_level;
   bleuart.write(buffer, data_size);
 }

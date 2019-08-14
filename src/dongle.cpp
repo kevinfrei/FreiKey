@@ -1,5 +1,6 @@
 #include "mybluefruit.h"
 
+#include "comm.h"
 #include "dbgcfg.h"
 #include "dongle.h"
 #include "globals.h"
@@ -42,6 +43,13 @@ void Dongle::Configure() {
   usb_hid.setReportDescriptor(desc_hid_report, sizeof(desc_hid_report));
   usb_hid.setReportCallback(NULL, Dongle::hid_report_callback);
   usb_hid.begin();
+#if 0
+  // SERIAL_PORT_AND_HID_KEYBOARD_DONT_SEEM_TO_WORK_AT_THE_SAME_TIME
+  DBG(Serial.begin(115200));
+  // Don't do this: it makes the thing wait until you're actively watching
+  // data on the Serial port, which is *not* what I generally want...
+  // DBG(while (!Serial) delay(10)); // for nrf52840 with native usb
+#endif
 }
 
 // Light up the Bluetooth stack
@@ -54,9 +62,9 @@ void Dongle::StartListening() {
   Bluefruit.setName(BT_NAME);
 
   leftUart.begin();
-  leftUart.setRxCallback(Dongle::receive_callback);
+  leftUart.setRxCallback(comm::recv::data);
   rightUart.begin();
-  rightUart.setRxCallback(Dongle::receive_callback);
+  rightUart.setRxCallback(comm::recv::data);
 
   Bluefruit.Central.setConnectCallback(Dongle::cent_connect);
   Bluefruit.Central.setDisconnectCallback(Dongle::cent_disconnect);
@@ -148,42 +156,6 @@ void Dongle::updateClientStatus(uint32_t now) {
   }
 }
 
-void Dongle::receive_callback(BLEClientUart& uart_svc) {
-  uint8_t buffer[state::hw::data_size];
-  for (uint8_t pos = 0; pos < sizeof(buffer); delayMicroseconds(5)) {
-    if (uart_svc.available()) {
-      buffer[pos++] = uart_svc.read();
-    }
-  }
-  // Put the data in the queue
-  state::hw* newData = new state::hw;
-  memcpy(newData->switches.getData(), buffer, BoardIO::byte_size);
-  newData->battery_level = buffer[BoardIO::byte_size];
-  state::data_queue.push({&uart_svc, newData});
-}
-
-#if 0
-void Dongle::leftuart_rx_callback(BLEClientUart& uart_svc) {
-  // TODO: Make this async
-  // i.e. make it a state, and have the central loop
-  // do the actual work...
-  Dongle::setRGB(0, 0, 5);
-  black = false;
-  delayMicroseconds(25);
-  updateClientStatus(millis());
-}
-
-void Dongle::rightuart_rx_callback(BLEClientUart& uart_svc) {
-  // TODO: Make this async
-  // i.e. make it a state, and have the central loop
-  // do the actual work...
-  Dongle::setRGB(1, 0, 0);
-  black = false;
-  delayMicroseconds(25);
-  updateClientStatus(millis());
-}
-#endif
-
 // Called when we find a UART host to connect with
 void Dongle::cent_connect(uint16_t conn_handle) {
   // TODO: Maybe make this more secure? I haven't looked into how secure this
@@ -217,7 +189,10 @@ void Dongle::cent_connect(uint16_t conn_handle) {
   // Just keep scanning
   // I tried to detect if we've got both sides connected, but that
   // looks somewhat unreliable :(
-  Bluefruit.Scanner.start(0);
+  if (leftHandle == BLE_CONN_HANDLE_INVALID ||
+      rightHandle == BLE_CONN_HANDLE_INVALID) {
+    Bluefruit.Scanner.start(0);
+  }
   resetTheWorld();
 }
 
@@ -226,8 +201,10 @@ void Dongle::cent_disconnect(uint16_t conn_handle, uint8_t reason) {
   // TODO: Disconnect the *correct* side
   if (conn_handle == leftHandle) {
     leftHandle = BLE_CONN_HANDLE_INVALID;
+    Bluefruit.Scanner.start(0);
   } else if (conn_handle == rightHandle) {
     rightHandle = BLE_CONN_HANDLE_INVALID;
+    Bluefruit.Scanner.start(0);
   }
   updateClientStatus(millis());
   resetTheWorld();

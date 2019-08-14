@@ -25,6 +25,7 @@ void dumpHex(bool b, const char* header = nullptr);
 #define DBG(a)
 #define DBG2(a)
 #endif
+#define DBG3(a)
 
 #if defined(__VSCODE_ONLY_)
 // Stuff to make VSCode IntelliSense happy
