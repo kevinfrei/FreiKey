@@ -43,16 +43,6 @@ USER_CPP_SRCS=\
 	scanner.cpp \
 	dongle.cpp
 
-#	"-I${TUSB_ROOT}/src" \
-#	"-I${GFX_ROOT}" \
-#	"-I${SSD1306_ROOT}" \
-#	"-I${NEOPIX_ROOT}"
-
-#C_INCLUDES_2="-I${AFROOT}/variants/feather_nrf52832"\
-#	"-I${AFROOT}/libraries/Bluefruit52Lib/src"\
-#  "-I${AFROOT}/libraries/Adafruit_LittleFS/src"\
-#  "-I${AFROOT}/libraries/InternalFileSytem/src"\
-
 include adafruit.mk
 
 .PHONY: ${BUILD_PROJECT_NAME}
@@ -65,25 +55,16 @@ all: "${BUILD_PATH}" ${BUILD_PROJECT_NAME}
 
 #-include ${DEPS}
 
-#flashl: ${C_OUT}/l-client.zip
-#	${NRFUTIL} --verbose dfu serial -pkg $< -p ${LPORT} -b 115200 --singlebank
-
 #flashr: ${C_OUT}/r-client.zip
 #	${NRFUTIL} --verbose dfu serial -pkg $< -p ${RPORT} -b 115200 --singlebank
 
 #flashm: ${M_OUT}/usb-master.zip
 #	${NRFUTIL} --verbose dfu serial -pkg $< -p ${MPORT} -b 115200 --singlebank --touch 1200
 
-#left: ${C_OUT}/l-client.zip
-
-#right: ${C_OUT}/r-client.zip
-
-#master: ${M_OUT}/usb-master.zip
-
 ${BUILD_PROJECT_NAME}: ${BUILD_PATH}/${BUILD_PROJECT_NAME}.zip
 
 # Make us rebuild just my own source if I change the makefile
-$(USER_OBJS) : Makefile
+# $(USER_OBJS) : Makefile
 
 "${BUILD_PATH}":
 	-@mkdir "$@"
