@@ -7,8 +7,8 @@
 void Client::setup(const char* name) {
   DBG(Serial.begin(115200));
   Bluefruit.begin(1, 0);
-  // Turn on the Bluetooth LED
-  Bluefruit.autoConnLed(true);
+  // Don't use the Bluetooth LED
+  Bluefruit.autoConnLed(false);
   // I had turned this all the way down. Given that my receiver is less than
   // 20 cm away, I didn't know if it would be enough. I bumped it up to 20,
   // because it seemed like I was occasionally seeing weirdness that I wasn't
@@ -50,32 +50,10 @@ void Client::loop() {
   if (sleepState.CheckForSleeping(down.switches, now, theBoard)) {
     // I'm assuming this saves power. If it doesn't, there's no point...
     delay(250);
-    waitForEvent();
-    return;
-  }
-  if (down != lastRead) {
+  } else if (down != lastRead) {
     lastRead = down;
     DBG2(down.dump());
     comm::send::scan(bleuart, lastRead.switches);
-    // down.send(bleuart, lastRead);
-    if (!curState) {
-      // if we're not already in a state, check to see if we're transitioning
-      // into one
-      curState = state::led::get(down);
-      if (curState) {
-        stateTime = now;
-      }
-    }
-  }
-
-  if (curState) {
-    // We're in "Check if battery is getting kinda low" mode
-    if (now - curState->time < stateTime) {
-      theBoard.setLED(curState->get_led_value(down, now - stateTime));
-    } else {
-      theBoard.setLED(0);
-      curState = nullptr;
-    }
   }
   waitForEvent(); // Request CPU enter low-power mode until an event occurs
 }

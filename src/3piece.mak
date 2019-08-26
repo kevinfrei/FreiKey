@@ -180,8 +180,7 @@ CLIENT_SRC = \
 	debounce.cpp \
 	sleepstate.cpp \
 	client.cpp \
-	boardio.cpp \
-	led_states.cpp
+	boardio.cpp
 R_SRC = r-client.cpp ${CLIENT_SRC}
 L_SRC = l-client.cpp ${CLIENT_SRC}
 M_SRC = usb-master.cpp scanner.cpp dongle.cpp

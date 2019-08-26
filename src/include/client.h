@@ -5,7 +5,6 @@
 #include "boardio.h"
 #include "dbgcfg.h"
 #include "hardware.h"
-#include "led_states.h"
 #include "sleepstate.h"
 
 class Client {
@@ -13,7 +12,6 @@ class Client {
   uint32_t stateTime;
   SleepState sleepState;
   state::hw lastRead;
-  const state::led* curState = nullptr;
 
  public:
   const BoardIO theBoard;
