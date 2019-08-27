@@ -1,29 +1,33 @@
 # Some simple details
 ifeq ($(OS),Windows_NT)
 	uname:=Windows
+	ARD=${HOME}/AppData/Local/Arduino15/packages/arduino
+	SERIAL_PORT=COM9
 else
 	uname:=$(shell uname -s)
+	ifeq ($(uname), Darwin)
+		ARD=${HOME}/Library/Arduino15/packages/arduino
+		SERIAL_PORT=$(shell ls /dev/cu.usbmodem14*)
+	else
+		$(error No Linux support yet)
+	endif
 endif
 INPUT_BOARD=feather52840
 INPUT_SOFTDEVICE=s140v6
 INPUT_DEBUG=l0
 BUILD_ARCH=nrf52
-ifeq ($(uname), Windows)
-ARD=${HOME}/AppData/Local/Arduino15/packages/arduino
-SERIAL_PORT=COM9
-else ifeq ($(uname), Darwin)
-ARD=${HOME}/Library/Arduino15/packages/arduino
-SERIAL_PORT=$(shell ls /dev/cu.usbmodem14*)
-else
-$(error No Linux support yet)
-endif
 RUNTIME_TOOLS_ARM_NONE_EABI_GCC_PATH=${ARD}/tools/arm-none-eabi-gcc/7-2017q4
-PROGRAM_BURN_PATTERN=nyi
-CMD=nyi
 BUILD_PATH=master-out
 BUILD_PROJECT_NAME=usb-master
 
+# These should go away once I have flashing working
+PROGRAM_BURN_PATTERN=nyi
+CMD=nyi
+
+# This is how to add new flags
 COMPILER_CPP_EXTRA_FLAGS=-DUSB_MASTER -DDEBUG=2
+
+# This is how to add libraries (They currently have to be defined to 1)
 LIB_BLUEFRUIT52LIB=1
 LIB_ADAFRUIT_LITTLEFS=1
 LIB_NEOPIXEL=1
@@ -63,7 +67,7 @@ ${BUILD_PROJECT_NAME}: ${BUILD_PATH}/${BUILD_PROJECT_NAME}.zip
 # $(USER_OBJS) : Makefile
 
 "${BUILD_PATH}":
-	-@mkdir "$@"
+	test -d "$@" || mkdir "$@"
 
 # External dependency locations: These were just symlinks.
 # Now they're git submodules. I do hate those things, but
