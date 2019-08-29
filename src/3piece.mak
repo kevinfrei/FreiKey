@@ -179,7 +179,7 @@ SHARED_SRC = \
 CLIENT_SRC = \
 	debounce.cpp \
 	sleepstate.cpp \
-	client.cpp \
+	kbclient.cpp \
 	boardio.cpp
 R_SRC = r-client.cpp ${CLIENT_SRC}
 L_SRC = l-client.cpp ${CLIENT_SRC}

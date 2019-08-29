@@ -1,5 +1,4 @@
 # Some simple details
-NOT DONE YET!
 ifeq ($(OS),Windows_NT)
 	uname:=Windows
 	ARD=${HOME}/AppData/Local/Arduino15/packages/arduino
@@ -19,14 +18,14 @@ INPUT_DEBUG=l0
 BUILD_ARCH=nrf52
 RUNTIME_TOOLS_ARM_NONE_EABI_GCC_PATH=${ARD}/tools/arm-none-eabi-gcc/7-2017q4
 BUILD_PATH=client-out
-BUILD_PROJECT_NAME=left-client
+BUILD_PROJECT_NAME=right-client
 
 # These should go away once I have flashing working
 PROGRAM_BURN_PATTERN=nyi
 CMD=nyi
 
 # This is how to add new flags
-COMPILER_CPP_EXTRA_FLAGS=-DUSB_MASTER -DDEBUG=2
+COMPILER_CPP_EXTRA_FLAGS=-DUART_CLIENT -DDEBUG=2
 
 # This is how to add libraries (They currently have to be defined to 1)
 LIB_BLUEFRUIT52LIB=1
@@ -39,15 +38,17 @@ USER_CPP_SRCS=\
 	dbgcfg.cpp \
  	comm.cpp \
 	hardware.cpp \
-	usb-master.cpp \
-	scanner.cpp \
-	dongle.cpp
+  debounce.cpp \
+  sleepstate.cpp \
+  kbclient.cpp \
+  boardio.cpp \
+  r-client.cpp
 
 .PHONY: ${BUILD_PROJECT_NAME}
 
 all: "${BUILD_PATH}" ${BUILD_PROJECT_NAME}
 
-include adafruit.mk
+include af_nrf52.mk
 
 #DEPS = $(M_CORE_OBJS:.o=.d) $(C_CORE_OBJS:.o=.d) $(NFFS_OBJS:.o=.d) \
 #	$(BFLIB_OBJS:.o=.d) $(USER_OBJS:.o=.d) $(GFX_OBJS:.o=.d) $(WIRE_OBJS:.o=.d)

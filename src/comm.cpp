@@ -6,7 +6,7 @@
 #include "hardware.h"
 #else
 #include "boardio.h"
-#include "client.h"
+#include "kbclient.h"
 #endif
 
 template <uint8_t VAL, typename T, typename UART>

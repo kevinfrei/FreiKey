@@ -7,7 +7,7 @@
 #include "hardware.h"
 #include "sleepstate.h"
 
-class Client {
+class KBClient {
   BLEDis bledis;
   uint32_t stateTime;
   SleepState sleepState;
@@ -17,10 +17,10 @@ class Client {
   const BoardIO theBoard;
   BLEUart bleuart;
 
-  Client(const BoardIO& board)
+  KBClient(const BoardIO& board)
       : lastRead{}, theBoard(board), stateTime{0}, sleepState{0, false} {}
   void setup(const char* name);
   void loop();
 };
 
-extern Client theClient;
+extern KBClient theClient;

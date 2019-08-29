@@ -1,10 +1,10 @@
 #include "mybluefruit.h"
 
-#include "client.h"
+#include "kbclient.h"
 #include "comm.h"
 #include "hardware.h"
 
-void Client::setup(const char* name) {
+void KBClient::setup(const char* name) {
   DBG(Serial.begin(115200));
   Bluefruit.begin(1, 0);
   // Don't use the Bluetooth LED
@@ -43,7 +43,7 @@ void Client::setup(const char* name) {
 
 // TODO: Add bidirectional communication, so the master can ask for info or set
 // an LED state somehow
-void Client::loop() {
+void KBClient::loop() {
   uint32_t now = millis();
   state::hw down{now, lastRead, theBoard};
 

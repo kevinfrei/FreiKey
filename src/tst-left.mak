@@ -2,47 +2,47 @@
 ifeq ($(OS),Windows_NT)
 	uname:=Windows
 	ARD=${HOME}/AppData/Local/Arduino15/packages/arduino
-	SERIAL_PORT=COM9
+	SERIAL_PORT=COM4
 else
 	uname:=$(shell uname -s)
 	ifeq ($(uname), Darwin)
 		ARD=${HOME}/Library/Arduino15/packages/arduino
-		SERIAL_PORT=$(shell ls /dev/cu.usbmodem14*)
+		SERIAL_PORT=/dev/cu.SLAB_USBtoUART
 	else
 		$(error No Linux support yet)
 	endif
 endif
-INPUT_BOARD=feather52840
-INPUT_SOFTDEVICE=s140v6
+INPUT_BOARD=feather52832
+INPUT_SOFTDEVICE=s132v6
 INPUT_DEBUG=l0
 BUILD_ARCH=nrf52
 RUNTIME_TOOLS_ARM_NONE_EABI_GCC_PATH=${ARD}/tools/arm-none-eabi-gcc/7-2017q4
-BUILD_PATH=master-out
-BUILD_PROJECT_NAME=usb-master
+BUILD_PATH=client-out
+BUILD_PROJECT_NAME=left-client
 
 # These should go away once I have flashing working
 PROGRAM_BURN_PATTERN=nyi
 CMD=nyi
 
 # This is how to add new flags
-COMPILER_CPP_EXTRA_FLAGS=-DUSB_MASTER -DDEBUG=2
+COMPILER_CPP_EXTRA_FLAGS=-DUART_CLIENT -DDEBUG=2
 
 # This is how to add libraries (They currently have to be defined to 1)
 LIB_BLUEFRUIT52LIB=1
 LIB_ADAFRUIT_LITTLEFS=1
-LIB_NEOPIXEL=1
 # This is my favoritist typo. It always takes me too long to figure out :/
 LIB_INTERNALFILESYTEM=1
-LIB_TINYUSB=1
 
 USER_INCLUDES=-Iinclude
 USER_CPP_SRCS=\
 	dbgcfg.cpp \
  	comm.cpp \
 	hardware.cpp \
-	usb-master.cpp \
-	scanner.cpp \
-	dongle.cpp
+  debounce.cpp \
+  sleepstate.cpp \
+  kbclient.cpp \
+  boardio.cpp \
+  l-client.cpp
 
 .PHONY: ${BUILD_PROJECT_NAME}
 
