@@ -31,12 +31,13 @@ LIB_TINYUSB=1
 
 USER_INCLUDES=-Iinclude
 USER_CPP_SRCS=\
-	dbgcfg.cpp \
  	comm.cpp \
+	dbgcfg.cpp \
+	dongle.cpp \
 	hardware.cpp \
-	usb-master.cpp \
 	scanner.cpp \
-	dongle.cpp
+  sync.cpp \
+	usb-master.cpp
 
 include af_nrf52.mk
 

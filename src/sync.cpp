@@ -1,4 +1,4 @@
-#include "delay.h"
+#include "sync.h"
 #include "dongle.h"
 
 // I need to build a damn state machine for this
@@ -25,31 +25,12 @@
 //    if it's been too long, go to "cancel a single sync"
 //
 
-void Delay::Buffer(uint32_t time, state::hw& left, state::hw& right) {
+void Sync::Buffer(uint32_t time, state::hw& left, state::hw& right) {
   // We're called for every loop
   // If we're just waiting for a sync return, do nothing
-  if (!Dongle::BothSides()) {
-    bothSides = false;
-    return;
-  }
-  if (!bothSides) {
-    // this is the first time we've seen both sides since one
-    // disconnected. Start a latency sync!
-    bothSides = true;
-    waiting = false;
-    firstCheck = true;
-    rLoc = 0;
-    lLoc = 0;
-  }
-  // We're waiting for a response from a client
-  // Just return
-  if (waiting)
-    return;
-  if (!firstCheck)
-
 }
 
-void Delay::ReportSync(bool isLeft, uint8_t latency) {
+void Sync::ReportSync(bool isLeft, uint8_t latency) {
 }
 
 #if 0

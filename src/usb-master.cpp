@@ -10,6 +10,7 @@
 #include "keymap.h"
 #include "keystate.h"
 #include "scanner.h"
+#include "sync.h"
 
 // I'm going to update this to keep track of additional state.
 // Each key 'previously' pressed should have a 'time last pressed'
@@ -170,27 +171,8 @@ void updateBatteryLevel(const state::hw& downLeft, const state::hw& downRight) {
   }
 }
 
-uint32_t lastTime = 0;
-bool which = true;
-
-// We want to time the latency of the two halves.
-// I've seen latencies vary as much as 10ms, which is signficant when I get
-// typing pretty fast, and it's really frustrating.
-// When we first have both sides connected run 5 quick sync timers
-// That will fill up the queue to have a reasonable average
-// Once that's done, run one every 30 seconds to try to keep them well timed
-void timeSync(uint32_t now) {
-  if (lastTime < 5 {
-    comm::send::sync(Dongle::leftUart);
-
-  if (now - lastTime > 1000 && now - lastTime < 1500) {
-    comm::send::sync(which ? Dongle::leftUart : Dongle::rightUart);
-    which = !which;
-    lastTime = now;
-  }
-}
-
-Delay timeSync{};
+uint32_t lastTime;
+Sync timeSync{};
 
 void loop() {
   uint32_t now = millis();

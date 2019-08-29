@@ -6,18 +6,16 @@
 
 #include "hardware.h"
 
-class Delay {
+class Sync {
+  enum class State : uint8_t { Initial };
   static constexpr size_t sampleSize = 5;
   std::array<uint8_t, sampleSize> lsamples;
   std::array<uint8_t, sampleSize> rsamples;
   uint8_t lLoc, rLoc;
-  bool firstCheck;
-  bool waiting;
-  bool bothSides;
+  State state;
 
  public:
-  Delay()
-      : lLoc(0), rLoc(0), firstCheck(true), waiting(false), bothSides(false) {}
+  Sync() : lLoc(0), rLoc(0), state(State::Initial) {}
   void Buffer(uint32_t time, state::hw& left, state::hw& right);
   void ReportSync(bool isLeft, uint8_t latency);
 };
