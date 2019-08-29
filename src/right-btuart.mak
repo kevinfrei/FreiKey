@@ -1,11 +1,10 @@
 # Some simple details
-# Some simple details
 ifeq ($(OS),Windows_NT)
 	ARD=${HOME}/AppData/Local
 	SERIAL_PORT=COM4
 else ifeq ($(shell uname -s), Darwin)
-		ARD=${HOME}/Library
-		SERIAL_PORT=/dev/cu.SLAB_USBtoUART
+  ARD=${HOME}/Library
+  SERIAL_PORT=/dev/cu.SLAB_USBtoUART
 else
   $(error No Linux support yet)
 endif
@@ -17,7 +16,7 @@ DBG_LEVEL=l0
 CPU_ARCH=nrf52
 TOOLS_PATH=${ARD}/Arduino15/packages/arduino/tools/arm-none-eabi-gcc/7-2017q4
 BUILD_DIR=client-out
-PROJ_NAME=left-client
+PROJ_NAME=right-client
 
 # This is how to add new flags
 COMPILER_CPP_EXTRA_FLAGS=-DUART_CLIENT -DDEBUG=2
@@ -36,11 +35,7 @@ USER_CPP_SRCS=\
   sleepstate.cpp \
   kbclient.cpp \
   boardio.cpp \
-  l-client.cpp
-
-.PHONY: ${PROJ_NAME} flash
-
-all: "${BUILD_DIR}" ${PROJ_NAME}
+  r-client.cpp
 
 include af_nrf52.mk
 
@@ -48,22 +43,6 @@ include af_nrf52.mk
 #	$(BFLIB_OBJS:.o=.d) $(USER_OBJS:.o=.d) $(GFX_OBJS:.o=.d) $(WIRE_OBJS:.o=.d)
 
 #-include ${DEPS}
-
-#flashr: ${C_OUT}/r-client.zip
-#	${NRFUTIL} --verbose dfu serial -pkg $< -p ${RPORT} -b 115200 --singlebank
-
-#flashm: ${M_OUT}/usb-master.zip
-#	${NRFUTIL} --verbose dfu serial -pkg $< -p ${MPORT} -b 115200 --singlebank --touch 1200
-
-${PROJ_NAME}: ${BUILD_DIR}/${PROJ_NAME}.zip
-
-flash: ${BUILD_DIR}/${PROJ_NAME}.flash
-
-# Make us rebuild just my own source if I change the makefile(s)
-${USER_OBJS} : $(MAKEFILE_LIST)
-
-"${BUILD_DIR}":
-	test -d "$@" || mkdir "$@"
 
 # External dependency locations: These were just symlinks.
 # Now they're git submodules. I do hate those things, but

@@ -483,7 +483,30 @@ USER_OBJS=\
       $(patsubst %.cpp, %.cpp.o, \
         $(patsubst %.S, %.S.o, $(notdir ${USER_SRC})))))
 ALL_OBJS=${USER_OBJS} ${SYS_OBJS}
+
 # And now the build rules!
+
+# First, the phony rules that don't product things
+.PHONY: ${PROJ_NAME} flash
+
+# Now the default target
+all: ${BUILD_DIR} ${PROJ_NAME}
+
+# Next, the project name shortcut, cuz it's easier
+${PROJ_NAME}: ${BUILD_DIR}/${PROJ_NAME}.zip
+
+# Add a 'flash' target
+flash: ${BUILD_DIR}/${PROJ_NAME}.flash
+
+# Make us rebuild user code if the makefile(s) change:
+${USER_OBJS} : $(MAKEFILE_LIST)
+
+# And finally, create the director
+# TODO: This no worky on Windows fer sure
+${BUILD_DIR}:
+	test -d "$@" || mkdir "$@"
+
+# Now, on to the actual rules
 
 ${BUILD_PATH}/%.S.o : %.S
 	"${COMPILER_PATH}${COMPILER_S_CMD}" ${COMPILER_S_FLAGS} -DF_CPU=${BUILD_F_CPU} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DARDUINO_ARCH_${BUILD_ARCH} ${COMPILER_S_EXTRA_FLAGS} ${BUILD_EXTRA_FLAGS} ${BUILD_FLAGS_NRF} ${SYS_INCLUDES} ${USER_INCLUDES} "$<" -o "$@"
