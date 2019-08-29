@@ -58,8 +58,12 @@ void comm::send::time(BLEUart& uart, uint32_t time) {
 }
 
 #else
-
+bool waiting;
+uint32_t locTime;
 void comm::send::sync(BLEClientUart& uart) {
+  waiting = true;
+  locTime = millis();
+  DBG2(dumpVal(locTime, "Local time at sync(1) send"));
   send_packet<comm::types::SYNC>(uart);
 }
 
@@ -140,15 +144,17 @@ void comm::recv::battery(uint8_t which, uint8_t pct) {
   // TODO: Update the battery level
 }
 void comm::recv::time(uint8_t which, uint32_t time) {
-#if 0
+  waiting = false;
+  uint32_t locUpdate = millis();
   if (which == comm::LEFT_SIDE) {
-    DBG3(dumpVal(time, "Left time "));
+    DBG2(dumpVal(time, "Left time "));
     digitalWrite(LED_BLUE, HIGH);
   } else {
-    DBG3(dumpVal(time, "Right time "));
+    DBG2(dumpVal(time, "Right time "));
     digitalWrite(LED_RED, HIGH);
   }
-#endif
+  DBG2(dumpVal(locUpdate, "Local time "));
+  DBG2(dumpVal(locUpdate - locTime, "Latency: "));
 }
 #else
 void comm::recv::data(uint16_t handle) {

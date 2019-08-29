@@ -171,15 +171,29 @@ void updateBatteryLevel(const state::hw& downLeft, const state::hw& downRight) {
 }
 
 uint32_t lastTime = 0;
-bool justTestIt = false;
 bool which = true;
-void loop() {
-  uint32_t now = millis();
-  if (0 && now - lastTime > 1000) {
+
+// We want to time the latency of the two halves.
+// I've seen latencies vary as much as 10ms, which is signficant when I get
+// typing pretty fast, and it's really frustrating.
+// When we first have both sides connected run 5 quick sync timers
+// That will fill up the queue to have a reasonable average
+// Once that's done, run one every 30 seconds to try to keep them well timed
+void timeSync(uint32_t now) {
+  if (lastTime < 5 {
+    comm::send::sync(Dongle::leftUart);
+
+  if (now - lastTime > 1000 && now - lastTime < 1500) {
     comm::send::sync(which ? Dongle::leftUart : Dongle::rightUart);
     which = !which;
     lastTime = now;
   }
+}
+
+Delay timeSync{};
+
+void loop() {
+  uint32_t now = millis();
   Dongle::updateClientStatus(now);
   if (!Dongle::Ready())
     return;
@@ -195,6 +209,7 @@ void loop() {
   state::hw downRight{Dongle::rightUart, rightSide};
   state::hw downLeft{Dongle::leftUart, leftSide};
 
+  timeSync.Buffer(now, downRight, downLeft);
   // Update the combined battery level
   updateBatteryLevel(downLeft, downRight);
 

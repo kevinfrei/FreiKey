@@ -88,6 +88,11 @@ bool Dongle::Ready() {
   return usb_hid.ready();
 }
 
+bool Dongle::BothSides() {
+  return (rightHandle != BLE_CONN_HANDLE_INVALID) &&
+         (leftHandle != BLE_CONN_HANDLE_INVALID);
+}
+
 void Dongle::Reset() {
   usb_hid.keyboardRelease(RID_KEYBOARD);
   Dongle::ConsumerRelease();

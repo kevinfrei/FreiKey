@@ -22,6 +22,7 @@ class Dongle {
   static void StartListening();
   static void Reset();
   static bool Ready();
+  static bool BothSides();
   static void ReportKeys(uint8_t mods, uint8_t* report);
   static void ConsumerPress(uint16_t keycode);
   static void ConsumerRelease();
