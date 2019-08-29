@@ -487,19 +487,29 @@ ALL_OBJS=${USER_OBJS} ${SYS_OBJS}
 # And now the build rules!
 
 # First, the phony rules that don't product things
-.PHONY: ${PROJ_NAME} flash
+.PHONY: ${PROJ_NAME} flash clean allclean
 
 # Now the default target
 all: ${BUILD_DIR} ${PROJ_NAME}
+
+# Some house keeping
+clean:
+	-rm ${USER_OBJS}
+
+allclean:
+	-rm -rf ${BUILD_DIR}
+
+# Make us rebuild user code if the makefile(s) change:
+# Needs to be above the deps thing, I think
+${USER_OBJS} : $(MAKEFILE_LIST)
+
+#-include $(ALL_OBJS:.o=.d)
 
 # Next, the project name shortcut, cuz it's easier
 ${PROJ_NAME}: ${BUILD_DIR}/${PROJ_NAME}.zip
 
 # Add a 'flash' target
 flash: ${BUILD_DIR}/${PROJ_NAME}.flash
-
-# Make us rebuild user code if the makefile(s) change:
-${USER_OBJS} : $(MAKEFILE_LIST)
 
 # And finally, create the director
 # TODO: This no worky on Windows fer sure
