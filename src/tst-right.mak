@@ -1,28 +1,23 @@
 # Some simple details
+# Some simple details
 ifeq ($(OS),Windows_NT)
-	uname:=Windows
-	ARD=${HOME}/AppData/Local/Arduino15/packages/arduino
+	ARD=${HOME}/AppData/Local
 	SERIAL_PORT=COM4
-else
-	uname:=$(shell uname -s)
-	ifeq ($(uname), Darwin)
-		ARD=${HOME}/Library/Arduino15/packages/arduino
+else ifeq ($(shell uname -s), Darwin)
+		ARD=${HOME}/Library
 		SERIAL_PORT=/dev/cu.SLAB_USBtoUART
-	else
-		$(error No Linux support yet)
-	endif
+else
+  $(error No Linux support yet)
 endif
-INPUT_BOARD=feather52832
-INPUT_SOFTDEVICE=s132v6
-INPUT_DEBUG=l0
-BUILD_ARCH=nrf52
-RUNTIME_TOOLS_ARM_NONE_EABI_GCC_PATH=${ARD}/tools/arm-none-eabi-gcc/7-2017q4
-BUILD_PATH=client-out
-BUILD_PROJECT_NAME=right-client
 
-# These should go away once I have flashing working
-PROGRAM_BURN_PATTERN=nyi
-CMD=nyi
+# Necessary configuration stuff
+BOARD_NAME=feather52832
+SOFTDEVICE=s132v6
+DBG_LEVEL=l0
+CPU_ARCH=nrf52
+TOOLS_PATH=${ARD}/Arduino15/packages/arduino/tools/arm-none-eabi-gcc/7-2017q4
+BUILD_DIR=client-out
+PROJ_NAME=right-client
 
 # This is how to add new flags
 COMPILER_CPP_EXTRA_FLAGS=-DUART_CLIENT -DDEBUG=2
@@ -30,7 +25,6 @@ COMPILER_CPP_EXTRA_FLAGS=-DUART_CLIENT -DDEBUG=2
 # This is how to add libraries (They currently have to be defined to 1)
 LIB_BLUEFRUIT52LIB=1
 LIB_ADAFRUIT_LITTLEFS=1
-# This is my favoritist typo. It always takes me too long to figure out :/
 LIB_INTERNALFILESYTEM=1
 
 USER_INCLUDES=-Iinclude
@@ -44,9 +38,9 @@ USER_CPP_SRCS=\
   boardio.cpp \
   r-client.cpp
 
-.PHONY: ${BUILD_PROJECT_NAME}
+.PHONY: ${PROJ_NAME} flash
 
-all: "${BUILD_PATH}" ${BUILD_PROJECT_NAME}
+all: "${BUILD_DIR}" ${PROJ_NAME}
 
 include af_nrf52.mk
 
@@ -61,12 +55,14 @@ include af_nrf52.mk
 #flashm: ${M_OUT}/usb-master.zip
 #	${NRFUTIL} --verbose dfu serial -pkg $< -p ${MPORT} -b 115200 --singlebank --touch 1200
 
-${BUILD_PROJECT_NAME}: ${BUILD_PATH}/${BUILD_PROJECT_NAME}.zip
+${PROJ_NAME}: ${BUILD_DIR}/${PROJ_NAME}.zip
 
-# Make us rebuild just my own source if I change the makefile
-# $(USER_OBJS) : Makefile
+flash: ${BUILD_DIR}/${PROJ_NAME}.flash
 
-"${BUILD_PATH}":
+# Make us rebuild just my own source if I change the makefile(s)
+${USER_OBJS} : $(MAKEFILE_LIST)
+
+"${BUILD_DIR}":
 	test -d "$@" || mkdir "$@"
 
 # External dependency locations: These were just symlinks.

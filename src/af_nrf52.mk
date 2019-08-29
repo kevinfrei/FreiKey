@@ -1,33 +1,27 @@
 # First, add some errors for undefined values
-ifndef INPUT_BOARD
-  $(error INPUT_BOARD is not defined!)
+ifndef DBG_LEVEL
+  $(error DBG_LEVEL is not defined!)
 endif
-ifndef INPUT_SOFTDEVICE
-  $(error INPUT_SOFTDEVICE is not defined!)
+ifndef SOFTDEVICE
+  $(error SOFTDEVICE is not defined!)
 endif
-ifndef INPUT_DEBUG
-  $(error INPUT_DEBUG is not defined!)
+ifndef PROJ_NAME
+  $(error PROJ_NAME is not defined!)
 endif
-ifndef RUNTIME_TOOLS_ARM_NONE_EABI_GCC_PATH
-  $(error RUNTIME_TOOLS_ARM_NONE_EABI_GCC_PATH is not defined!)
+ifndef BUILD_DIR
+  $(error BUILD_DIR is not defined!)
 endif
-ifndef PROGRAM_BURN_PATTERN
-  $(error PROGRAM_BURN_PATTERN is not defined!)
+ifndef CPU_ARCH
+  $(error CPU_ARCH is not defined!)
 endif
-ifndef CMD
-  $(error CMD is not defined!)
+ifndef TOOLS_PATH
+  $(error TOOLS_PATH is not defined!)
 endif
-ifndef BUILD_PATH
-  $(error BUILD_PATH is not defined!)
-endif
-ifndef BUILD_PROJECT_NAME
-  $(error BUILD_PROJECT_NAME is not defined!)
+ifndef BOARD_NAME
+  $(error BOARD_NAME is not defined!)
 endif
 ifndef SERIAL_PORT
   $(error SERIAL_PORT is not defined!)
-endif
-ifndef BUILD_ARCH
-  $(error BUILD_ARCH is not defined!)
 endif
 
 # Check for some source files
@@ -48,7 +42,13 @@ RUNTIME_OS?=linux
 RUNTIME_PLATFORM_PATH=/Users/freik/src/FreiKey/src/libs/Adafruit
 RUNTIME_IDE_VERSION=10808
 IDE_VERSION=10808
-ifeq (${INPUT_BOARD}, feather52832)
+INPUT_DEBUG=${DBG_LEVEL}
+INPUT_SOFTDEVICE=${SOFTDEVICE}
+BUILD_PROJECT_NAME=${PROJ_NAME}
+BUILD_PATH=${BUILD_DIR}
+BUILD_ARCH=${CPU_ARCH}
+RUNTIME_TOOLS_ARM_NONE_EABI_GCC_PATH=${TOOLS_PATH}
+ifeq (${BOARD_NAME}, feather52832)
   BUILD_LDSCRIPT=nrf52832_s132_v6.ld
   BUILD_EXTRA_FLAGS=-DNRF52832_XXAA -DNRF52 -DARDUINO_NRF52_FEATHER
   BUILD_VARIANT=feather_nrf52832
@@ -79,7 +79,7 @@ ifeq (${INPUT_BOARD}, feather52832)
   else ifeq (${INPUT_DEBUG}, l3)
     BUILD_DEBUG_FLAGS=-DCFG_DEBUG=3
   endif
-else ifeq (${INPUT_BOARD}, feather52840)
+else ifeq (${BOARD_NAME}, feather52840)
   BUILD_PID=0x8029
   BUILD_VID=0x239A
   BUILD_LDSCRIPT=nrf52840_s140_v6.ld
@@ -120,7 +120,7 @@ else ifeq (${INPUT_BOARD}, feather52840)
   else ifeq (${INPUT_DEBUG}, l3)
     BUILD_DEBUG_FLAGS=-DCFG_DEBUG=3
   endif
-else ifeq (${INPUT_BOARD}, metro52840)
+else ifeq (${BOARD_NAME}, metro52840)
   BUILD_PID=0x803F
   BUILD_VID=0x239A
   BUILD_LDSCRIPT=nrf52840_s140_v6.ld
@@ -161,7 +161,7 @@ else ifeq (${INPUT_BOARD}, metro52840)
   else ifeq (${INPUT_DEBUG}, l3)
     BUILD_DEBUG_FLAGS=-DCFG_DEBUG=3
   endif
-else ifeq (${INPUT_BOARD}, pca10056)
+else ifeq (${BOARD_NAME}, pca10056)
   BUILD_PID=0x8029
   BUILD_VID=0x239A
   BUILD_LDSCRIPT=nrf52840_s140_v6.ld
@@ -199,11 +199,11 @@ BUILD_CORE_PATH=${RUNTIME_PLATFORM_PATH}/cores/${BUILD_CORE}
 NORDIC_PATH=${BUILD_CORE_PATH}/nordic
 RTOS_PATH=${BUILD_CORE_PATH}/freertos
 BUILD_FLAGS_USB= -DUSBCON -DUSE_TINYUSB -DUSB_VID=${BUILD_VID} -DUSB_PID=${BUILD_PID} '-DUSB_MANUFACTURER=${BUILD_USB_MANUFACTURER}' '-DUSB_PRODUCT=${BUILD_USB_PRODUCT}'
-ifeq (${INPUT_BOARD}, feather52840)
+ifeq (${BOARD_NAME}, feather52840)
   BUILD_EXTRA_FLAGS=-DNRF52840_XXAA -DARDUINO_NRF52_FEATHER ${BUILD_FLAGS_USB}
-else ifeq (${INPUT_BOARD}, metro52840)
+else ifeq (${BOARD_NAME}, metro52840)
   BUILD_EXTRA_FLAGS=-DNRF52840_XXAA -DARDUINO_NRF52_FEATHER ${BUILD_FLAGS_USB}
-else ifeq (${INPUT_BOARD}, pca10056)
+else ifeq (${BOARD_NAME}, pca10056)
   BUILD_EXTRA_FLAGS=-DNRF52840_XXAA ${BUILD_FLAGS_USB}
 endif
 BUILD_FLAGS_NRF= -DSOFTDEVICE_PRESENT -DARDUINO_FEATHER52 -DARDUINO_NRF52_ADAFRUIT -DNRF52_SERIES -DLFS_NAME_MAX=64 -Os ${BUILD_DEBUG_FLAGS} "-I${BUILD_CORE_PATH}/cmsis/include" "-I${NORDIC_PATH}" "-I${NORDIC_PATH}/nrfx" "-I${NORDIC_PATH}/nrfx/hal" "-I${NORDIC_PATH}/nrfx/mdk" "-I${NORDIC_PATH}/nrfx/soc" "-I${NORDIC_PATH}/nrfx/drivers/include" "-I${NORDIC_PATH}/nrfx/drivers/src" "-I${NORDIC_PATH}/softdevice/${BUILD_SD_NAME}_nrf52_${BUILD_SD_VERSION}_API/include" "-I${RTOS_PATH}/Source/include" "-I${RTOS_PATH}/config" "-I${RTOS_PATH}/portable/GCC/nrf52" "-I${RTOS_PATH}/portable/CMSIS/nrf52" "-I${BUILD_CORE_PATH}/sysview/SEGGER" "-I${BUILD_CORE_PATH}/sysview/Config" "-I${BUILD_CORE_PATH}/Adafruit_TinyUSB_Core" "-I${BUILD_CORE_PATH}/Adafruit_TinyUSB_Core/tinyusb/src"
@@ -234,16 +234,18 @@ COMPILER_WARNING_FLAGS_MORE=-Wall
 COMPILER_WARNING_FLAGS_NONE=-w
 VERSION=0.12.0
 NAME=Adafruit nRF52 Boards
-TOOLS_BOOTBURN_BOOTLOADER_PATTERN=${PROGRAM_BURN_PATTERN}
-TOOLS_BOOTBURN_BOOTLOADER_FILE=${RUNTIME_PLATFORM_PATH}/bootloader/${BUILD_VARIANT}/${BUILD_VARIANT}_bootloader-0.2.11_${BUILD_SD_NAME}_${BUILD_SD_VERSION}
-TOOLS_NRFUTIL_UPLOAD_PATTERN="${CMD}" ${UPLOAD_VERBOSE} dfu serial -pkg "${BUILD_PATH}/${BUILD_PROJECT_NAME}.zip" -p ${SERIAL_PORT} -b 115200 --singlebank
-TOOLS_NRFUTIL_UPLOAD_PARAMS_VERBOSE=--verbose
 ifeq (${RUNTIME_OS}, macosx)
   TOOLS_NRFUTIL_CMD=${RUNTIME_PLATFORM_PATH}/tools/adafruit-nrfutil/macos/adafruit-nrfutil
 else ifeq (${RUNTIME_OS}, windows)
   TOOLS_NRFUTIL_CMD=${RUNTIME_PLATFORM_PATH}/tools/adafruit-nrfutil/win32/adafruit-nrfutil.exe
 endif
 TOOLS_NRFUTIL_CMD?=adafruit-nrfutil
+ifeq (${UPLOAD_USE_1200BPS_TOUCH}, true)
+  UPLOAD_EXTRA_FLAGS=--touch 12000
+endif
+ifeq (${UPLOAD_TOOL}, nrfutil)
+  UPLOAD_PATTERN="${TOOLS_NRFUTIL_CMD}" ${UPLOAD_VERBOSE} dfu serial -pkg "${BUILD_PATH}/${BUILD_PROJECT_NAME}.zip" -p ${SERIAL_PORT} -b 115200 --singlebank
+endif
 ifeq (${BUILD_CORE}, nRF5)
   C_SYS_SRCS+=libs/Adafruit/cores/nRF5/Adafruit_TinyUSB_Core/tinyusb/src/class/cdc/cdc_device.c \
     libs/Adafruit/cores/nRF5/Adafruit_TinyUSB_Core/tinyusb/src/class/hid/hid_device.c \
@@ -503,3 +505,6 @@ ${BUILD_PATH}/${BUILD_PROJECT_NAME}.hex : ${BUILD_PATH}/${BUILD_PROJECT_NAME}.el
 
 ${BUILD_PATH}/${BUILD_PROJECT_NAME}.zip : ${BUILD_PATH}/${BUILD_PROJECT_NAME}.hex
 	"${TOOLS_NRFUTIL_CMD}" dfu genpkg --dev-type 0x0052 --sd-req ${BUILD_SD_FWID} --application "$<" "$@"
+
+${BUILD_PATH}/${BUILD_PROJECT_NAME}.flash : ${BUILD_PATH}/${BUILD_PROJECT_NAME}.zip
+	${UPLOAD_PATTERN} ${UPLOAD_EXTRA_FLAGS}

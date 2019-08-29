@@ -76,15 +76,7 @@
             ],
             "intelliSenseMode": "gcc-x64",
             "browse": {
-                "path": [
-                    "${workspaceRoot}",
-                    "${srcRoot}",
-                    "${adafruitRoot}",
-                    "${srcRoot}/libs/SSD1306",
-                    "${srcRoot}/libs/NeoPixel",
-                    "${srcRoot}/libs/TinyUSB",
-                    "${srcRoot}/libs/GFX"
-                ],
+                "path": [],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""
             },
