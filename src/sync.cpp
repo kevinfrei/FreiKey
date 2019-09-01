@@ -1,5 +1,3 @@
-#include <cstdlib>
-
 #include "comm.h"
 #include "dongle.h"
 #include "sync.h"
@@ -208,6 +206,7 @@ void Sync::UpdateLatency() {
   }
   lLatency = (sumL - minL - maxL) / ((sampleSize - 2) * 2);
   rLatency = (sumR - minR - maxR) / ((sampleSize - 2) * 2);
+  DELAY = abs(lLatency - rLatency);
   DBG(dumpVal(lLatency, "Left latency: "));
   DBG(dumpVal(rLatency, "Right latency: "));
 }
