@@ -120,6 +120,47 @@ else ifeq (${BOARD_NAME}, feather52840)
   else ifeq (${INPUT_DEBUG}, l3)
     BUILD_DEBUG_FLAGS=-DCFG_DEBUG=3
   endif
+else ifeq (${BOARD_NAME}, cplaynrf52840)
+  BUILD_PID=0x8045
+  BUILD_VID=0x239A
+  BUILD_LDSCRIPT=nrf52840_s140_v6.ld
+  BUILD_USB_PRODUCT="Adafruit Circuit Playground Bluefruit"
+  BUILD_USB_MANUFACTURER="Adafruit LLC"
+  BUILD_VARIANT=circuitplayground_nrf52840
+  BUILD_CORE=nRF5
+  BUILD_BOARD=CIRCUITPLAY_NRF52840
+  BUILD_F_CPU=64000000
+  BUILD_MCU=cortex-m4
+  UPLOAD_MAXIMUM_DATA_SIZE=248832
+  UPLOAD_MAXIMUM_SIZE=815104
+  UPLOAD_WAIT_FOR_UPLOAD_PORT=true
+  UPLOAD_USE_1200BPS_TOUCH=true
+  UPLOAD_PROTOCOL=nrfutil
+  UPLOAD_TOOL=nrfutil
+  BOOTLOADER_TOOL=bootburn
+  PID_3=0x8046
+  PID_2=0x0046
+  PID_1=0x0045
+  PID_0=0x8045
+  VID_3=0x239A
+  VID_2=0x239A
+  VID_1=0x239A
+  VID_0=0x239A
+  NAME=Adafruit Circuit Playground Bluefruit
+  ifeq (${INPUT_SOFTDEVICE}, s140v6)
+    BUILD_SD_FWID=0x00B6
+    BUILD_SD_VERSION=6.1.1
+    BUILD_SD_NAME=s140
+  endif
+  ifeq (${INPUT_DEBUG}, l0)
+    BUILD_DEBUG_FLAGS=-DCFG_DEBUG=0
+  else ifeq (${INPUT_DEBUG}, l1)
+    BUILD_DEBUG_FLAGS=-DCFG_DEBUG=1
+  else ifeq (${INPUT_DEBUG}, l2)
+    BUILD_DEBUG_FLAGS=-DCFG_DEBUG=2
+  else ifeq (${INPUT_DEBUG}, l3)
+    BUILD_DEBUG_FLAGS=-DCFG_DEBUG=3
+  endif
 else ifeq (${BOARD_NAME}, metro52840)
   BUILD_PID=0x803F
   BUILD_VID=0x239A
@@ -179,7 +220,7 @@ else ifeq (${BOARD_NAME}, pca10056)
   UPLOAD_PROTOCOL=nrfutil
   UPLOAD_TOOL=nrfutil
   BOOTLOADER_TOOL=bootburn
-  NAME=Noridc nRF52840DK (PCA10056)
+  NAME=Nordic nRF52840DK (PCA10056)
   ifeq (${INPUT_SOFTDEVICE}, s140v6)
     BUILD_SD_FWID=0x00B6
     BUILD_SD_VERSION=6.1.1
@@ -201,12 +242,14 @@ RTOS_PATH=${BUILD_CORE_PATH}/freertos
 BUILD_FLAGS_USB= -DUSBCON -DUSE_TINYUSB -DUSB_VID=${BUILD_VID} -DUSB_PID=${BUILD_PID} '-DUSB_MANUFACTURER=${BUILD_USB_MANUFACTURER}' '-DUSB_PRODUCT=${BUILD_USB_PRODUCT}'
 ifeq (${BOARD_NAME}, feather52840)
   BUILD_EXTRA_FLAGS=-DNRF52840_XXAA -DARDUINO_NRF52_FEATHER ${BUILD_FLAGS_USB}
+else ifeq (${BOARD_NAME}, cplaynrf52840)
+  BUILD_EXTRA_FLAGS=-DNRF52840_XXAA -DARDUINO_NRF52840_CIRCUITPLAY ${BUILD_FLAGS_USB}
 else ifeq (${BOARD_NAME}, metro52840)
   BUILD_EXTRA_FLAGS=-DNRF52840_XXAA -DARDUINO_NRF52_FEATHER ${BUILD_FLAGS_USB}
 else ifeq (${BOARD_NAME}, pca10056)
   BUILD_EXTRA_FLAGS=-DNRF52840_XXAA ${BUILD_FLAGS_USB}
 endif
-BUILD_FLAGS_NRF= -DSOFTDEVICE_PRESENT -DARDUINO_FEATHER52 -DARDUINO_NRF52_ADAFRUIT -DNRF52_SERIES -DLFS_NAME_MAX=64 -Os ${BUILD_DEBUG_FLAGS} "-I${BUILD_CORE_PATH}/cmsis/include" "-I${NORDIC_PATH}" "-I${NORDIC_PATH}/nrfx" "-I${NORDIC_PATH}/nrfx/hal" "-I${NORDIC_PATH}/nrfx/mdk" "-I${NORDIC_PATH}/nrfx/soc" "-I${NORDIC_PATH}/nrfx/drivers/include" "-I${NORDIC_PATH}/nrfx/drivers/src" "-I${NORDIC_PATH}/softdevice/${BUILD_SD_NAME}_nrf52_${BUILD_SD_VERSION}_API/include" "-I${RTOS_PATH}/Source/include" "-I${RTOS_PATH}/config" "-I${RTOS_PATH}/portable/GCC/nrf52" "-I${RTOS_PATH}/portable/CMSIS/nrf52" "-I${BUILD_CORE_PATH}/sysview/SEGGER" "-I${BUILD_CORE_PATH}/sysview/Config" "-I${BUILD_CORE_PATH}/Adafruit_TinyUSB_Core" "-I${BUILD_CORE_PATH}/Adafruit_TinyUSB_Core/tinyusb/src"
+BUILD_FLAGS_NRF= -DSOFTDEVICE_PRESENT -DARDUINO_FEATHER52 -DARDUINO_NRF52_ADAFRUIT -DNRF52_SERIES -DLFS_NAME_MAX=64 -Ofast ${BUILD_DEBUG_FLAGS} "-I${BUILD_CORE_PATH}/cmsis/include" "-I${NORDIC_PATH}" "-I${NORDIC_PATH}/nrfx" "-I${NORDIC_PATH}/nrfx/hal" "-I${NORDIC_PATH}/nrfx/mdk" "-I${NORDIC_PATH}/nrfx/soc" "-I${NORDIC_PATH}/nrfx/drivers/include" "-I${NORDIC_PATH}/nrfx/drivers/src" "-I${NORDIC_PATH}/softdevice/${BUILD_SD_NAME}_nrf52_${BUILD_SD_VERSION}_API/include" "-I${RTOS_PATH}/Source/include" "-I${RTOS_PATH}/config" "-I${RTOS_PATH}/portable/GCC/nrf52" "-I${RTOS_PATH}/portable/CMSIS/nrf52" "-I${BUILD_CORE_PATH}/sysview/SEGGER" "-I${BUILD_CORE_PATH}/sysview/Config" "-I${BUILD_CORE_PATH}/Adafruit_TinyUSB_Core" "-I${BUILD_CORE_PATH}/Adafruit_TinyUSB_Core/tinyusb/src"
 BUILD_DEBUG_FLAGS=-DCFG_DEBUG=0
 BUILD_FLOAT_FLAGS=-mfloat-abi=hard -mfpu=fpv4-sp-d16 -u _printf_float
 COMPILER_SIZE_CMD=arm-none-eabi-size
@@ -222,7 +265,7 @@ COMPILER_AR_CMD=arm-none-eabi-ar
 COMPILER_CPP_CMD=arm-none-eabi-g++
 COMPILER_S_FLAGS=-c -g -x assembler-with-cpp
 COMPILER_S_CMD=arm-none-eabi-gcc
-COMPILER_C_ELF_FLAGS=-Os -Wl,--gc-sections -save-temps
+COMPILER_C_ELF_FLAGS=-Ofast -Wl,--gc-sections -save-temps
 COMPILER_C_ELF_CMD=arm-none-eabi-gcc
 COMPILER_C_CMD=arm-none-eabi-gcc
 COMPILER_PATH=${RUNTIME_TOOLS_ARM_NONE_EABI_GCC_PATH}/bin/
@@ -232,7 +275,7 @@ COMPILER_C_FLAGS=-mcpu=${BUILD_MCU} -mthumb -c -g ${COMPILER_WARNING_FLAGS} ${BU
 COMPILER_WARNING_FLAGS_ALL=-Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wno-pointer-arith
 COMPILER_WARNING_FLAGS_MORE=-Wall
 COMPILER_WARNING_FLAGS_NONE=-w
-VERSION=0.12.0
+VERSION=0.13.0
 NAME=Adafruit nRF52 Boards
 ifeq (${RUNTIME_OS}, macosx)
   TOOLS_NRFUTIL_CMD=${RUNTIME_PLATFORM_PATH}/tools/adafruit-nrfutil/macos/adafruit-nrfutil
@@ -326,6 +369,10 @@ else ifeq (${BUILD_VARIANT}, feather_nrf52840_express)
   CPP_SYS_SRCS+=libs/Adafruit/variants/feather_nrf52840_express/variant.cpp
   SYS_INCLUDES+=-Ilibs/Adafruit/variants/feather_nrf52840_express
   VPATH_CORE+=libs/Adafruit/variants/feather_nrf52840_express
+else ifeq (${BUILD_VARIANT}, circuitplayground_nrf52840)
+  CPP_SYS_SRCS+=libs/Adafruit/variants/circuitplayground_nrf52840/variant.cpp
+  SYS_INCLUDES+=-Ilibs/Adafruit/variants/circuitplayground_nrf52840
+  VPATH_CORE+=libs/Adafruit/variants/circuitplayground_nrf52840
 else ifeq (${BUILD_VARIANT}, metro_nrf52840_express)
   CPP_SYS_SRCS+=libs/Adafruit/variants/metro_nrf52840_express/variant.cpp
   SYS_INCLUDES+=-Ilibs/Adafruit/variants/metro_nrf52840_express
@@ -413,6 +460,13 @@ ifdef LIB_INTERNALFILESYTEM
     -Ilibs/Adafruit/libraries/InternalFileSytem/src/flash
   VPATH_MORE+=libs/Adafruit/libraries/InternalFileSytem/src/flash:libs/Adafruit/libraries/InternalFileSytem/src
 endif
+ifdef LIB_PDM
+  CPP_SYS_SRCS+=libs/Adafruit/libraries/PDM/src/PDM.cpp \
+    libs/Adafruit/libraries/PDM/src/utility/PDMDoubleBuffer.cpp
+  SYS_INCLUDES+=-Ilibs/Adafruit/libraries/PDM/src \
+    -Ilibs/Adafruit/libraries/PDM/src/utility
+  VPATH_MORE+=libs/Adafruit/libraries/PDM/src:libs/Adafruit/libraries/PDM/src/utility
+endif
 ifdef LIB_ROTARYENCODER
   CPP_SYS_SRCS+=libs/Adafruit/libraries/RotaryEncoder/RotaryEncoder.cpp \
     libs/Adafruit/libraries/RotaryEncoder/SwRotaryEncoder.cpp
@@ -464,7 +518,8 @@ ifdef LIB_TINYUSB
   CPP_SYS_SRCS+=libs/TinyUSB/src/Adafruit_TinyUSB.cpp \
     libs/TinyUSB/src/Adafruit_USBD_HID.cpp \
     libs/TinyUSB/src/Adafruit_USBD_MIDI.cpp \
-    libs/TinyUSB/src/Adafruit_USBD_MSC.cpp
+    libs/TinyUSB/src/Adafruit_USBD_MSC.cpp \
+    libs/TinyUSB/src/Adafruit_USBD_WebUSB.cpp
   SYS_INCLUDES+=-Ilibs/TinyUSB/src
   VPATH_MORE+=libs/TinyUSB/src
 endif
