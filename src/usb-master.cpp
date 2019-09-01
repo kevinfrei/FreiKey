@@ -191,7 +191,11 @@ void loop() {
   state::hw downRight{Dongle::rightUart, rightSide};
   state::hw downLeft{Dongle::leftUart, leftSide};
 
-  timeSync.Buffer(now, downRight, downLeft);
+  if (timeSync.Buffer(now, downLeft, downRight)) {
+    timeSync.Delay(now, downLeft, leftSide);
+  } else {
+    timeSync.Delay(now, downRight, rightSide);
+  }
   // Update the combined battery level
   updateBatteryLevel(downLeft, downRight);
 

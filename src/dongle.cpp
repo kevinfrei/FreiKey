@@ -43,9 +43,15 @@ void Dongle::Configure() {
   usb_hid.setReportDescriptor(desc_hid_report, sizeof(desc_hid_report));
   usb_hid.setReportCallback(NULL, Dongle::hid_report_callback);
   usb_hid.begin();
-#if 0
-  // SERIAL_PORT_AND_HID_KEYBOARD_DONT_SEEM_TO_WORK_AT_THE_SAME_TIME
+#if DEBUG
+  // 5 seconds until we resume
   DBG(Serial.begin(115200));
+  uint32_t wait = millis();
+  while (!Serial) {
+    delay(10);
+    if (millis() - wait > 5000)
+      break;
+  }
   // Don't do this: it makes the thing wait until you're actively watching
   // data on the Serial port, which is *not* what I generally want...
   // DBG(while (!Serial) delay(10)); // for nrf52840 with native usb
