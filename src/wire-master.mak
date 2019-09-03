@@ -19,7 +19,8 @@ BUILD_DIR=master-out
 PROJ_NAME=usb-master
 
 # This is how to add new flags
-COMPILER_CPP_EXTRA_FLAGS=-DUSB_MASTER -DDEBUG=1
+# -DDEBUG=1/2
+COMPILER_CPP_EXTRA_FLAGS=-DUSB_MASTER
 
 # This is how to add libraries
 LIB_BLUEFRUIT52LIB=1
