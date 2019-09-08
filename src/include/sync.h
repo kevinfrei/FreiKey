@@ -39,6 +39,8 @@ class Sync {
   uint32_t dataTime;
   BoardIO::bits delayData;
   uint8_t DELAY;
+  bool Buffer(uint32_t time, state::hw& left, state::hw& right);
+  void Delay(uint32_t time, state::hw& down, state::hw& prev);
 
  public:
   Sync()
@@ -52,10 +54,13 @@ class Sync {
         rLatency(0),
         DELAY(0),
         dataWaiting(false) {}
-  bool Buffer(uint32_t time, state::hw& left, state::hw& right);
   void ReportSync(bool isLeft);
   void UpdateLatency();
-  void Delay(uint32_t time, state::hw& down, state::hw& prev);
+  void Process(uint32_t time,
+               state::hw& left,
+               state::hw& prevL,
+               state::hw& right,
+               state::hw& prevR);
 };
 
 extern Sync timeSync;

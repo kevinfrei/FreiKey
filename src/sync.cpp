@@ -1,6 +1,6 @@
+#include "sync.h"
 #include "comm.h"
 #include "dongle.h"
-#include "sync.h"
 
 // I need to build a damn state machine for this
 // External inputs:
@@ -252,5 +252,17 @@ void Sync::Delay(uint32_t now, state::hw& down, state::hw& prev) {
       std::swap(down.switches, delayData);
       dataWaiting = false;
     }
+  }
+}
+
+void Sync::Process(uint32_t now,
+                   state::hw& left,
+                   state::hw& prevL,
+                   state::hw& right,
+                   state::hw& prevR) {
+  if (timeSync.Buffer(now, left, right)) {
+    timeSync.Delay(now, left, prevL);
+  } else {
+    timeSync.Delay(now, right, prevR);
   }
 }
