@@ -34,5 +34,6 @@
 # Custom
 src/out
 src/Makefile
-src/out_3piece_m
-src/out_3piece_c
+src/out-master
+src/out-client
+src/out-betterfly

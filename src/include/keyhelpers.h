@@ -1,5 +1,9 @@
 #pragma once
 
+#include "sysstuff.h"
+
+#include "dbgcfg.h"
+
 using action_t = uint32_t;
 
 constexpr action_t kActionMask = 0x7800;
@@ -14,11 +18,19 @@ constexpr action_t kLayerShift = 0x3000;
 constexpr action_t kLayerToggle = 0x3800;
 
 // This switches the current layer to the new one
-constexpr action_t kLayerSwitch = 0x8000;
+constexpr action_t kLayerSwitch = 0x4000;
 
 // This is for flagging consumer keycodes, as I have to handle them differently
 constexpr action_t kConsumer = 0x8000;
 constexpr action_t kConsumerMask = 0x3FF;
+
+inline action_t getModifiers(action_t a) {
+  return a & kActionMask;
+}
+
+inline action_t getKeystroke(action_t a) {
+  return a & 0x7FF;
+}
 
 using layer_t = uint8_t;
 constexpr layer_t kPushLayer = 1;
@@ -28,72 +40,87 @@ constexpr layer_t kSwitchLayer = 4;
 
 #define ___ 0
 #define PASTE(a, b) a##b
-#define KEY(a) kKeyPress | PASTE(HID_KEY_, a)
-#define MOD(a) kModifier | PASTE(KEYBOARD_MODIFIER_, a)
-#define TMOD(a) kToggleMod | PASTE(KEYBOARD_MODIFIER_, a)
-#define CONS(a) kConsumer | PASTE(HID_KEY_, a)
+#if defined(TEENSY)
+#define PK(a) PASTE(KEY_, a)
+#define PM(a) PASTE(MODIFIERKEY_, a)
 
-#define TAPH(a, b) \
-  kTapHold | PASTE(HID_KEY_, a) | (PASTE(KEYBOARD_MODIFIER_, b) << 16)
-#define KMOD(a, b) \
-  kKeyAndMod | PASTE(HID_KEY_, a) | (PASTE(KEYBOARD_MODIFIER_, b) << 16)
-#define MOD1(a, b) kKeyAndMod | a | (PASTE(KEYBOARD_MODIFIER_, b) << 16)
-#define KMOD2(a, b, c)              \
-  kKeyAndMod | PASTE(HID_KEY_, a) | \
-      ((PASTE(KEYBOARD_MODIFIER_, b) | PASTE(KEYBOARD_MODIFIER_, c)) << 16)
-#define MOD2(a, b, c) \
-  kKeyAndMod | a |    \
-      ((PASTE(KEYBOARD_MODIFIER_, b) | PASTE(KEYBOARD_MODIFIER_, c)) << 16)
-#define KMOD3(a, b, c, d)                                             \
-  kKeyAndMod | PASTE(HID_KEY_, a) |                                   \
-      ((PASTE(KEYBOARD_MODIFIER_, b) | PASTE(KEYBOARD_MODIFIER_, c) | \
-        PASTE(KEYBOARD_MODIFIER_, d))                                 \
-       << 16)
-#define MOD3(a, b, c, d)                                              \
-  kKeyAndMod | a |                                                    \
-      ((PASTE(KEYBOARD_MODIFIER_, b) | PASTE(KEYBOARD_MODIFIER_, c) | \
-        PASTE(KEYBOARD_MODIFIER_, d))                                 \
-       << 16)
-#define KMOD4(a, b, c, d, e)                                          \
-  kKeyAndMod | PASTE(HID_KEY_, a) |                                   \
-      ((PASTE(KEYBOARD_MODIFIER_, b) | PASTE(KEYBOARD_MODIFIER_, c) | \
-        PASTE(KEYBOARD_MODIFIER_, d) | PASTE(KEYBOARD_MODIFIER_, e))  \
-       << 16)
-#define MOD4(a, b, c, d, e)                                           \
-  kKeyAndMod | a |                                                    \
-      ((PASTE(KEYBOARD_MODIFIER_, b) | PASTE(KEYBOARD_MODIFIER_, c) | \
-        PASTE(KEYBOARD_MODIFIER_, d) | PASTE(KEYBOARD_MODIFIER_, e))  \
-       << 16)
+#define LEFTALT LEFT_ALT
+#define RIGHTALT RIGHT_ALT
+#define LEFTGUI LEFT_GUI
+#define RIGHTGUI RIGHT_GUI
+#define LEFTCTRL LEFT_CTRL
+#define RIGHTCTRL RIGHT_CTRL
+#define LEFTSHIFT LEFT_SHIFT
+#define RIGHTSHIFT RIGHT_SHIFT
+#define KEY_ESCAPE KEY_ESC
+#define KEY_GRAVE KEY_TILDE
+#define KEY_BRACKET_LEFT KEY_LEFT_BRACE
+#define KEY_BRACKET_RIGHT KEY_RIGHT_BRACE
+#define KEY_APOSTROPHE KEY_QUOTE
+#define KEY_ARROW_UP KEY_UP
+#define KEY_ARROW_DOWN KEY_DOWN
+#define KEY_ARROW_LEFT KEY_LEFT
+#define KEY_ARROW_RIGHT KEY_RIGHT
+#define KEY_APPLICATION KEY_MENU
+#else
+#define PK(a) PASTE(HID_KEY_, a)
+#define PM(a) PASTE(KEYBOARD_MODIFIER_, a)
+#endif
+
+#define KEY(a) kKeyPress | PK(a)
+#define MOD(a) kModifier | PM(a)
+#define TMOD(a) kToggleMod | PM(a)
+#define CONS(a) kConsumer | PK(a)
+
+#define TAPH(a, b) kTapHold | PK(a) | (PM(b) << 16)
+#define KMOD(a, b) kKeyAndMod | PK(a) | (PM(b) << 16)
+#define MOD1(a, b) kKeyAndMod | a | (PM(b) << 16)
+#define KMOD2(a, b, c) kKeyAndMod | PK(a) | ((PM(b) | PM(c)) << 16)
+#define MOD2(a, b, c) kKeyAndMod | a | ((PM(b) | PM(c)) << 16)
+#define KMOD3(a, b, c, d) kKeyAndMod | PK(a) | ((PM(b) | PM(c) | PM(d)) << 16)
+#define MOD3(a, b, c, d) kKeyAndMod | a | ((PM(b) | PM(c) | PM(d)) << 16)
+#define KMOD4(a, b, c, d, e) \
+  kKeyAndMod | PK(a) | ((PM(b) | PM(c) | PM(d) | PM(e)) << 16)
+#define MOD4(a, b, c, d, e) \
+  kKeyAndMod | a | ((PM(b) | PM(c) | PM(d) | PM(e)) << 16)
 
 #define LYR_TOG(n) kLayerToggle | n
 #define LYR_SHIFT(n) kLayerShift | n
 #define LYR_SET(n) kLayerSwitch | n
 
-#define LROW1(l00, l01, l02, l03, l04, l05) \
-  ___, l05, l04, l03, l02, l01, l00
-#define LROW2(l10, l11, l12, l13, l14, l15) \
-  ___, l15, l14, l13, l12, l11, l10
-#define LROW3(l20, l21, l22, l23, l24, l25) \
-  ___, l25, l24, l23, l22, l21, l20
-#define LROW4(l30, l31, l32, l33, l34, l35) \
-  ___, l35, l34, l33, l32, l31, l30
-#define LROW5(l40, l41, l42, l43, l44, l45, lt56) \
-  lt56, l45, l44, l43, l42, l41, l40
-#define LROW6(l51, l52, l53, l54, lt65, lt66) \
-  lt66, lt65, l54, l53, l52, l51, ___
+#if defined(ADAFRUIT)
 
-#define RROW1(r00, r01, r02, r03, r04, r05) \
-  r05, r04, r03, r02, r01, r00, ___
-#define RROW2(r10, r11, r12, r13, r14, r15) \
-  r15, r14, r13, r12, r11, r10, ___
-#define RROW3(r20, r21, r22, r23, r24, r25) \
-  r25, r24, r23, r22, r21, r20, ___
-#define RROW4(r30, r31, r32, r33, r34, r35) \
-  r35, r34, r33, r32, r31, r30, ___
-#define RROW5(rt40, r40, r41, r42, r43, r44, r45) \
-  r45, r44, r43, r42, r41, r40, rt40
-#define RROW6(rt50, rt51, r51, r52, r53, r54) \
-  ___, r54, r53, r52, r51, rt51, rt50
+#define LROW1(l00, l01, l02, l03, l04, l05) ___, l05, l04, l03, l02, l01, l00
+#define LROW2(l10, l11, l12, l13, l14, l15) ___, l15, l14, l13, l12, l11, l10
+#define LROW3(l20, l21, l22, l23, l24, l25) ___, l25, l24, l23, l22, l21, l20
+#define LROW4(l30, l31, l32, l33, l34, l35) ___, l35, l34, l33, l32, l31, l30
+#define LROW5(l40, l41, l42, l43, l44, l45, lt) lt, l45, l44, l43, l42, l41, l40
+#define LROW6(l51, l52, l53, l54, lt65, lt) lt, lt65, l54, l53, l52, l51, ___
+
+#define RROW1(r00, r01, r02, r03, r04, r05) r05, r04, r03, r02, r01, r00, ___
+#define RROW2(r10, r11, r12, r13, r14, r15) r15, r14, r13, r12, r11, r10, ___
+#define RROW3(r20, r21, r22, r23, r24, r25) r25, r24, r23, r22, r21, r20, ___
+#define RROW4(r30, r31, r32, r33, r34, r35) r35, r34, r33, r32, r31, r30, ___
+#define RROW5(rt, r40, r41, r42, r43, r44, r45) r45, r44, r43, r42, r41, r40, rt
+#define RROW6(rt, rt51, r51, r52, r53, r54) ___, r54, r53, r52, r51, rt51, rt
+
+#elif defined(BETTERFLY)
+
+#define LROW1(l00, l01, l02, l03, l04, l05) l00, l01, l02, l03, l04, l05
+#define LROW2(l10, l11, l12, l13, l14, l15) l10, l11, l12, l13, l14, l15
+#define LROW3(l20, l21, l22, l23, l24, l25) l20, l21, l22, l23, l24, l25
+#define LROW4(l30, l31, l32, l33, l34, l35) l30, l31, l32, l33, l34, l35
+#define LROW5(l40, l41, l42, l43, l44, l45) l40, l41, l42, l43, l44, l45
+#define LROW6(l51, l52, l53, l54, lt55) ___, l51, l52, l53, l54, lt55
+
+#define RROW1(r00, r01, r02, r03, r04, r05) r00, r01, r02, r03, r04, r05
+#define RROW2(r10, r11, r12, r13, r14, r15) r10, r11, r12, r13, r14, r15
+#define RROW3(r20, r21, r22, r23, r24, r25) r20, r21, r22, r23, r24, r25
+#define RROW4(r30, r31, r32, r33, r34, r35) r30, r31, r32, r33, r34, r35
+#define RROW5(r40, r41, r42, r43, r44, r45) r40, r41, r42, r43, r44, r45
+#define RROW6(rt50, r51, r52, r53, r54) rt50, r51, r52, r53, r54, ___
+
+#endif
 
 // Some missing keycodes from the Arduino/AdaFruit API's that I need. You can
 // find these from the QMK firmware HIDClassCommon.h file. I also find them in
@@ -101,23 +128,26 @@ constexpr layer_t kSwitchLayer = 4;
 // www.opensource.apple.com. I'm pretty sure similar stuff is available for
 // Windows, too, somewhere (probably in MSDN docs)
 
-#define HID_KEY_M_PLAY 0xCD
-#define HID_KEY_M_PREVIOUS_TRACK 0xB6
-#define HID_KEY_M_NEXT_TRACK 0xB5
-#define HID_KEY_M_VOLUME_UP 0xE9
-#define HID_KEY_M_VOLUME_DOWN 0xEA
-#define HID_KEY_M_MUTE 0x7F
+#define DK(a, v) constexpr action_t PK(a) = v;
+#define DM(a, v) constexpr action_t PM(a) = PM(v);
+DK(M_PLAY, 0xCD)
+DK(M_PREVIOUS_TRACK, 0xB6)
+DK(M_NEXT_TRACK, 0xB5)
+DK(M_VOLUME_UP, 0xE9)
+DK(M_VOLUME_DOWN, 0xEA)
+DK(M_MUTE, 0x7F)
 
-#define HID_KEY_M_BACKWARD 0xF1
-#define HID_KEY_M_FORWARD 0xF2
-#define HID_KEY_M_SLEEP 0xF8
-#define HID_KEY_M_LOCK 0xF9
+DK(M_BACKWARD, 0xF1)
+DK(M_FORWARD, 0xF2)
+DK(M_SLEEP, 0xF8)
+DK(M_LOCK, 0xF9)
 
 // Let's mac-friendly-ify this stuff:
-#define KEYBOARD_MODIFIER_LEFTOPTION KEYBOARD_MODIFIER_LEFTALT
-#define KEYBOARD_MODIFIER_RIGHTOPTION KEYBOARD_MODIFIER_RIGHTALT
-#define KEYBOARD_MODIFIER_LEFTCOMMAND KEYBOARD_MODIFIER_LEFTGUI
-#define KEYBOARD_MODIFIER_RIGHTCOMMAND KEYBOARD_MODIFIER_RIGHTGUI
+
+#define LEFTOPTION LEFTALT
+#define RIGHTOPTION RIGHTALT
+#define LEFTCOMMAND LEFTGUI
+#define RIGHTCOMMAND RIGHTGUI
 
 // Some stuff to make the action maps prettier. I use Clang Format, and it
 // messes up the keymaps badly if they're over 80 characters on any individual

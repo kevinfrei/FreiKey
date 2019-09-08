@@ -2,6 +2,7 @@
 #include "boardio.h"
 #include "debounce.h"
 
+#if defined(HAS_BATTERY)
 // Some globals used by each half
 // The last time we reported the battery
 uint32_t last_bat_time = 0;
@@ -33,42 +34,42 @@ uint8_t readBattery(uint32_t now, uint8_t prev) {
     total += last_8_reads[i];
   return total / bounds;
 }
+#endif
 
 namespace state {
 
 #if defined(DEBUG)
 uint32_t scans_since_last_time = 0;
 #endif
-std::queue<incoming> data_queue;
 
-hw::hw(uint8_t bl) : switches{}, battery_level(bl) {}
+hw::hw(uint8_t bl) : switches {}
+#if !defined(TEENSY)
+, battery_level(bl)
+#endif
+{
+}
+hw::hw(const hw& c)
+    : switches(c.switches)
+#if !defined(TEENSY)
+      ,
+      battery_level(c.battery_level)
+#endif
+{
+}
 
 #if !defined(USB_MASTER)
 hw::hw(uint32_t now, const hw& prev, const BoardIO& pd)
-    : switches(prev.switches),
-      battery_level(readBattery(now, prev.battery_level)) {
+    : switches(prev.switches)
+#if defined(HAS_BATTERY)
+      ,
+      battery_level(readBattery(now, prev.battery_level))
+#endif
+{
   readSwitches(pd, now);
 }
 #endif
 
-hw::hw(BLEClientUart& clientUart, const hw& prev) {
-  if (!receive(clientUart, prev))
-    memcpy(reinterpret_cast<uint8_t*>(this),
-           reinterpret_cast<const uint8_t*>(&prev),
-           sizeof(hw));
-}
-
-hw::hw(const hw& c) : switches{c.switches}, battery_level(c.battery_level) {}
-
-#if !defined(USB_MASTER)
-void hw::readSwitches(const BoardIO& pd, uint32_t now) {
-#if defined(DEBUG)
-  scans_since_last_time++;
-#endif
-  // Read & debounce the current key matrix
-  this->switches = debounce(pd.Read(), now);
-}
-
+#if defined(UART_CLIENT)
 // Send the relevant data over the wire
 void hw::send(BLEUart& bleuart, const hw& prev) const {
   uint8_t buffer[data_size];
@@ -78,7 +79,26 @@ void hw::send(BLEUart& bleuart, const hw& prev) const {
 }
 #endif
 
-#if !defined(UART_CLIENT)
+#if defined(USB_MASTER)
+std::queue<incoming> data_queue;
+
+hw::hw(BLEClientUart& clientUart, const hw& prev) {
+  if (!receive(clientUart, prev))
+    memcpy(reinterpret_cast<uint8_t*>(this),
+           reinterpret_cast<const uint8_t*>(&prev),
+           sizeof(hw));
+}
+#endif
+
+#if !defined(USB_MASTER)
+void hw::readSwitches(const BoardIO& pd, uint32_t now) {
+#if defined(DEBUG)
+  scans_since_last_time++;
+#endif
+  // Read & debounce the current key matrix
+  this->switches = debounce(pd.Read(), now);
+}
+#else // defined(USB_MASTER)
 // Try to receive any relevant switch data from the wire.
 // Returns true if something was received
 #if defined(TEST_MASTER)
@@ -148,7 +168,11 @@ bool hw::receive(BLEClientUart& clientUart, const hw& prev) {
 #endif
 
 bool hw::operator==(const hw& o) const {
-  return o.battery_level == battery_level && o.switches == switches;
+  return
+#if defined(HAS_BATTERY)
+      o.battery_level == battery_level &&
+#endif
+      o.switches == switches;
 }
 
 bool hw::operator!=(const hw& o) const {

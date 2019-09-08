@@ -15,11 +15,11 @@ SOFTDEVICE=s132v6
 DBG_LEVEL=l0
 CPU_ARCH=nrf52
 TOOLS_PATH=${ARD}/Arduino15/packages/arduino/tools/arm-none-eabi-gcc/7-2017q4
-BUILD_DIR=client-out
+BUILD_DIR=out-client
 PROJ_NAME=right-client
 
 # This is how to add new flags
-COMPILER_CPP_EXTRA_FLAGS=-DUART_CLIENT -DDEBUG=2
+COMPILER_CPP_EXTRA_FLAGS=-DUART_CLIENT -DDEBUG=2 -DHAS_LED -DHAS_BATTERY
 
 # This is how to add libraries (They currently have to be defined to 1)
 LIB_BLUEFRUIT52LIB=1

@@ -15,12 +15,12 @@ SOFTDEVICE=s140v6
 DBG_LEVEL=l0
 CPU_ARCH=nrf52
 TOOLS_PATH=${ARD}/Arduino15/packages/arduino/tools/arm-none-eabi-gcc/7-2017q4
-BUILD_DIR=out-master
-PROJ_NAME=usb-master
+BUILD_DIR=disp-out
+PROJ_NAME=disp
 
 # This is how to add new flags
 # -DDEBUG=1/2
-COMPILER_CPP_EXTRA_FLAGS=-DUSB_MASTER
+COMPILER_CPP_EXTRA_FLAGS=-DUSB_MASTER -DDEBUG=2
 
 # This is how to add libraries
 LIB_BLUEFRUIT52LIB=1
@@ -28,17 +28,16 @@ LIB_ADAFRUIT_LITTLEFS=1
 LIB_NEOPIXEL=1
 LIB_INTERNALFILESYTEM=1
 LIB_TINYUSB=1
+LIB_SSD1306=1
+LIB_GFX=1
+LIB_SPI=1
+LIB_WIRE=1
 # (Ah, InternalFileSytem, you're my favorite typo)
 
 USER_INCLUDES=-Iinclude
 USER_CPP_SRCS=\
- 	comm.cpp \
-	dbgcfg.cpp \
-	dongle.cpp \
-	hardware.cpp \
-	scanner.cpp \
-  sync.cpp \
-	usb-master.cpp
+	display.cpp \
+	disp_uart.cpp
 
 include af_nrf52.mk
 
