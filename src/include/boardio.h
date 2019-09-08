@@ -1,6 +1,6 @@
 #pragma once
 
-#include "mybluefruit.h"
+#include "sysstuff.h"
 
 #include <array>
 
@@ -8,7 +8,12 @@
 
 class BoardIO {
  public:
+#if defined(ADAFRUIT)
   static const uint8_t numcols = 7;
+#elif defined(TEENSY)
+  static const uint8_t numcols = 12;
+#endif
+
   static const uint8_t numrows = 6;
   static const uint8_t matrix_size = numcols * numrows;
   typedef bit_array<matrix_size> bits;
@@ -20,8 +25,14 @@ class BoardIO {
 
   void Configure() const;
   bits Read() const;
+#if defined(HAS_LED)
   void setLED(uint32_t brightness) const;
+#endif
+#if defined(HAS_BATTERY)
   static uint8_t getBatteryPercent();
+#endif
+#if defined(ADAFRUIT)
   static void setRed(bool on);
   static void setBlue(bool on);
+#endif
 };

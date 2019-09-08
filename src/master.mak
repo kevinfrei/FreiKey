@@ -1,41 +1,44 @@
 # Some simple details
 ifeq ($(OS),Windows_NT)
 	ARD=${HOME}/AppData/Local
-	SERIAL_PORT=COM4
+	SERIAL_PORT=COM9
 else ifeq ($(shell uname -s), Darwin)
-  ARD=${HOME}/Library
-  SERIAL_PORT=/dev/cu.SLAB_USBtoUART
+		ARD=${HOME}/Library
+		SERIAL_PORT=$(shell ls /dev/cu.usbmodem14*)
 else
   $(error No Linux support yet)
 endif
 
 # Necessary configuration stuff
-BOARD_NAME=feather52832
-SOFTDEVICE=s132v6
+BOARD_NAME=feather52840
+SOFTDEVICE=s140v6
 DBG_LEVEL=l0
 CPU_ARCH=nrf52
 TOOLS_PATH=${ARD}/Arduino15/packages/arduino/tools/arm-none-eabi-gcc/7-2017q4
-BUILD_DIR=out-client
-PROJ_NAME=left-client
+BUILD_DIR=out-master
+PROJ_NAME=usb-master
 
 # This is how to add new flags
-COMPILER_CPP_EXTRA_FLAGS=-DUART_CLIENT -DDEBUG=2 -DHAS_LED -DHAS_BATTERY
+# -DDEBUG=1/2
+COMPILER_CPP_EXTRA_FLAGS=-DUSB_MASTER
 
-# This is how to add libraries (They currently have to be defined to 1)
+# This is how to add libraries
 LIB_BLUEFRUIT52LIB=1
 LIB_ADAFRUIT_LITTLEFS=1
+LIB_NEOPIXEL=1
 LIB_INTERNALFILESYTEM=1
+LIB_TINYUSB=1
+# (Ah, InternalFileSytem, you're my favorite typo)
 
 USER_INCLUDES=-Iinclude
 USER_CPP_SRCS=\
-	dbgcfg.cpp \
  	comm.cpp \
+	dbgcfg.cpp \
+	dongle.cpp \
 	hardware.cpp \
-  debounce.cpp \
-  sleepstate.cpp \
-  kbclient.cpp \
-  boardio.cpp \
-  l-client.cpp
+	scanner.cpp \
+  sync.cpp \
+	usb-master.cpp
 
 include af_nrf52.mk
 
@@ -46,7 +49,7 @@ include af_nrf52.mk
 
 # External dependency locations: These were just symlinks.
 # Now they're git submodules. I do hate those things, but
-# they appear to solve the problem I'm trying to solve relatively well
+# they appear to solve a problem I'm trying to solve relatively well
 # Read up on them here:
 # https://medium.com/@porteneuve/mastering-git-submodules-34c65e940407
 # ADAFRUIT_ROOT=./libs/Adafruit

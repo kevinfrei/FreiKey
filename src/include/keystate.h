@@ -38,9 +38,11 @@ struct keystate {
       lastChange = now;
       if (pressed) {
         action = resolveActionForScanCodeOnActiveLayer(scanCode);
+      } else {
+        action = 0;
       }
     }
-    switch (action & kActionMask) {
+    switch (getModifiers(action)) {
       case kLayerShift:
         return down ? kPushLayer : kPopLayer;
       case kLayerToggle:
