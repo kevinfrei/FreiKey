@@ -181,7 +181,9 @@ bool hw::operator!=(const hw& o) const {
 
 #if defined(DEBUG)
 void hw::dump() const {
+#if defined(HAS_BATTERY)
   dumpVal(battery_level, "Battery Level:");
+#endif
   switches.dumpHex("Integer value: ");
   Serial.println("");
   for (int64_t r = 0; r < BoardIO::numrows; r++) {

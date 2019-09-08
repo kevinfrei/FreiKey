@@ -45,6 +45,7 @@ TEENSY_REBOOT=${TOOLS}/teensy_reboot
 # F_CPU = CPU Frequency. 96, 72, 48, 24 all work
 # Docs say if I slow it down to 16, USB stops working...
 DEFINES=\
+-DDEBUG=2 \
 -DBETTERFLY \
 -DF_CPU=24000000 \
 -DARDUINO=10808 \
