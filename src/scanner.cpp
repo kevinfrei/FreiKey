@@ -6,8 +6,7 @@
 #include "scanner.h"
 
 // Declarations
-// How do keyboards do NKRO? USB specifies 6KRO:
-keystate keyStates[6];
+keystate keyStates[num_keystates];
 layer_t layer_stack[layer_max + 1];
 layer_t layer_pos = 0;
 
@@ -60,11 +59,13 @@ struct keystate* findStateSlot(scancode_t scanCode) {
 // Find the first specified action in the layer stack
 action_t resolveActionForScanCodeOnActiveLayer(uint8_t scanCode) {
   layer_t s = layer_pos;
+  DBG(dumpVal(s, "Layer position: "));
   while (s > 0 && keymap[layer_stack[s]][scanCode] == ___) {
     --s;
   }
 #if defined(DEBUG)
-  Serial.println("Resolving action to this:");
+  Serial.printf(
+      "Resolving scancode %d on layer %d to action ", scanCode, layer_stack[s]);
   dumpHex(keymap[layer_stack[s]][scanCode]);
 #endif
   return keymap[layer_stack[s]][scanCode];
@@ -126,7 +127,6 @@ void preprocessScanCode(scancode_t sc, bool pressed, uint32_t now) {
   DBG2(dumpScanCode(sc, pressed));
   // Get a state slot for this scan code
   keystate* state = findStateSlot(sc);
-  DBG(state->dump());
   if (!state) {
     // If this is a keydown and we don't have an available state slot just
     // ignore it. If we chose to toss out older keydowns instead, things could
@@ -135,6 +135,7 @@ void preprocessScanCode(scancode_t sc, bool pressed, uint32_t now) {
     DBG(Serial.println("Unable to find an unused keystat slot!"));
     return;
   }
+  DBG(state->dump());
   // State update returns a layer action to perform...
   switch (state->update(sc, pressed, now)) {
     case kPushLayer:
@@ -152,24 +153,24 @@ void preprocessScanCode(scancode_t sc, bool pressed, uint32_t now) {
   }
 }
 
-usb_report getUSBData(uint32_t now) {
-  usb_report res;
-      uint8_t key;
-  memset(&res, 0, sizeof(res));
+void ProcessKeys(uint32_t now, kb_reporter& rpt) {
+  uint8_t mods = 0;
 
   for (auto& state : keyStates) {
     if (state.scanCode == null_scan_code)
       continue;
-    DBG(state.dump());
     if ((state.action & kConsumer) == kConsumer) {
-      DBG(Serial.println("Got a consumer action"));
-      if (res.consumer) {
-        DBG(Serial.println("Trying to press multiple consumer keys at once."));
-      }
       // For a consumer control button, there are no modifiers, it's
       // just a simple call. So just call it directly:
-      res.consumer = (state.action & 0xFF) * (state.down ? 1 : -1);
-      if (!state.down) {
+      if (state.down) {
+        DBG2(dumpHex(state.action & kConsumerMask, "Consumer key press: "));
+        // See all the codes in all their glory here:
+        // https://www.usb.org/sites/default/files/documents/hut1_12v2.pdf
+        // (And if that doesn't work, check here: https://www.usb.org/hid)
+        rpt.consumer_press(state.action & kConsumerMask);
+      } else {
+        DBG2(dumpHex(state.action & kConsumerMask, "Consumer key release: "));
+        rpt.consumer_release(state.action & kConsumerMask);
         // We have to clear this thing out when we're done, because we take
         // action on the key release as well. We don't do this for the normal
         // keyboardReport.
@@ -177,42 +178,46 @@ usb_report getUSBData(uint32_t now) {
       }
     } else if (state.down) {
       switch (state.action & kActionMask) {
-        case kModifier:
-          res.mods |= state.action & 0xff;
-          break;
-        case kToggleMod:
-          res.mods ^= state.action & 0xff;
-          break;
         case kTapHold:
           if (now - state.lastChange > 200) {
             // Holding
-            res.mods |= (state.action >> 16) & 0xff;
+            mods |= (state.action >> 16) & 0xff;
+            rpt.set_modifier(mods);
           } else {
-            // Tapsg
-            key = state.action & 0xff;
-            if (key != 0 && res.repsize < 6) {
-              res.report[res.repsize++] = key;
+            // Tapping
+            uint8_t key = state.action & 0xff;
+            if (key != 0) {
+              //              report[repsize++] = key;
+              rpt.add_key_press(key);
             }
           }
           break;
-        case kKeyAndMod:
-          res.mods |= (state.action >> 16) & 0xff;
-          key = state.action & 0xff;
-          if (key != 0 && res.repsize < 6) {
-            res.report[res.repsize++] = key;
+        case kKeyAndMod: {
+          mods |= (state.action >> 16) & 0xff;
+          rpt.set_modifier(mods);
+          uint8_t key = state.action & 0xff;
+          if (key != 0) {
+            //            report[repsize++] = key;
+            rpt.add_key_press(key);
           }
+        } break;
+        case kKeyPress: {
+          uint8_t key = state.action & 0xff;
+          if (key != 0) {
+            //            report[repsize++] = key;
+            rpt.add_key_press(key);
+          }
+        } break;
+        case kModifier:
+          mods |= state.action & 0xff;
+          rpt.set_modifier(mods);
           break;
-        case kKeyPress:
-          key = state.action & 0xff;
-          if (key != 0 && res.repsize < 6) {
-            res.report[res.repsize++] = key;
-          }
+        case kToggleMod:
+          mods ^= state.action & 0xff;
+          rpt.set_modifier(mods);
           break;
       }
-    } else {
-      // Key is being released
-      state.scanCode = null_scan_code;
     }
   }
-  return res;
+  rpt.send_keys();
 }

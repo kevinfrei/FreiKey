@@ -284,7 +284,7 @@ else ifeq (${RUNTIME_OS}, windows)
 endif
 TOOLS_NRFUTIL_CMD?=adafruit-nrfutil
 ifeq (${UPLOAD_USE_1200BPS_TOUCH}, true)
-  UPLOAD_EXTRA_FLAGS=--touch 12000
+  UPLOAD_EXTRA_FLAGS=--touch 1200
 endif
 ifeq (${UPLOAD_TOOL}, nrfutil)
   UPLOAD_PATTERN="${TOOLS_NRFUTIL_CMD}" ${UPLOAD_VERBOSE} dfu serial -pkg "${BUILD_PATH}/${BUILD_PROJECT_NAME}.zip" -p ${SERIAL_PORT} -b 115200 --singlebank

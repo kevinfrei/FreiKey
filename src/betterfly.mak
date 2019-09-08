@@ -48,11 +48,11 @@ DEFINES=\
 -DDEBUG=2 \
 -DBETTERFLY \
 -DF_CPU=24000000 \
--DARDUINO=10808 \
+-DARDUINO=10809 \
 -DUSB_SERIAL_HID \
 -DLAYOUT_US_ENGLISH \
 -D__$(MCU)__ \
--DTEENSYDUINO=143 \
+-DTEENSYDUINO=147 \
 -DTEENSY
 
 TARGET=-mcpu=cortex-m4 -mthumb -fsingle-precision-constant
@@ -64,7 +64,7 @@ SLANG=-x assembler-with-cpp
 OPT=-Os
 
 SHARED_SRC = dbgcfg.cpp hardware.cpp boardio.cpp debounce.cpp
-BETTERFLY_SRC = globals.cpp betterfly.cpp scanner.cpp
+BETTERFLY_SRC = globals.cpp betterfly.cpp scanner.cpp kbreporter.cpp
 USER_SRC = ${SHARED_SRC} ${BETTERFLY_SRC}
 
 INCLUDES=-Iinclude \

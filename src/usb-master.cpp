@@ -11,6 +11,7 @@
 #include "keystate.h"
 #include "scanner.h"
 #include "sync.h"
+#include "kbreporter.h"
 
 // I'm going to update this to keep track of additional state.
 // Each key 'previously' pressed should have a 'time last pressed'
@@ -40,7 +41,7 @@ void resetTheWorld() {
   layer_stack[0] = 0;
   leftSide = state::hw{};
   rightSide = state::hw{};
-  memset(keyStates, 0xff, sizeof(keyStates));
+  memset(keyStates, null_scan_code, sizeof(keyStates));
   Dongle::Reset();
 }
 
@@ -82,7 +83,7 @@ void loop() {
   // Update the combined battery level
   updateBatteryLevel(downLeft, downRight);
 
-  // Get the before & after of each side into a 64 bit value
+  // Get the before & after of each side into the bit array
   BoardIO::bits beforeLeft{leftSide.switches};
   BoardIO::bits afterLeft{downLeft.switches};
   BoardIO::bits beforeRight{rightSide.switches};
@@ -106,72 +107,12 @@ void loop() {
   }
 
   if (keysChanged) {
-    uint8_t report[6] = {0, 0, 0, 0, 0, 0};
-    uint8_t repsize = 0;
-    uint8_t mods = 0;
-
-    for (auto& state : keyStates) {
-      if (state.scanCode == null_scan_code)
-        continue;
-      if ((state.action & kConsumer) == kConsumer) {
-        // For a consumer control button, there are no modifiers, it's
-        // just a simple call. So just call it directly:
-        if (state.down) {
-          DBG2(dumpHex(state.action & kConsumerMask, "Consumer key press: "));
-          // See all the codes in all their glory here:
-          // https://www.usb.org/sites/default/files/documents/hut1_12v2.pdf
-          // (And if that doesn't work, check here: https://www.usb.org/hid)
-          Dongle::ConsumerPress(state.action & kConsumerMask);
-        } else {
-          DBG2(dumpHex(state.action & kConsumerMask, "Consumer key release: "));
-          Dongle::ConsumerRelease();
-          // We have to clear this thing out when we're done, because we take
-          // action on the key release as well. We don't do this for the normal
-          // keyboardReport.
-          state.scanCode = null_scan_code;
-        }
-      } else if (state.down) {
-        switch (state.action & kActionMask) {
-          case kTapHold:
-            if (now - state.lastChange > 200) {
-              // Holding
-              mods |= (state.action >> 16) & 0xff;
-            } else {
-              // Tapping
-              uint8_t key = state.action & 0xff;
-              if (key != 0 && repsize < 6) {
-                report[repsize++] = key;
-              }
-            }
-            break;
-          case kKeyAndMod: {
-            mods |= (state.action >> 16) & 0xff;
-            uint8_t key = state.action & 0xff;
-            if (key != 0 && repsize < 6) {
-              report[repsize++] = key;
-            }
-          } break;
-          case kKeyPress: {
-            uint8_t key = state.action & 0xff;
-            if (key != 0 && repsize < 6) {
-              report[repsize++] = key;
-            }
-          } break;
-          case kModifier:
-            mods |= state.action & 0xff;
-            break;
-          case kToggleMod:
-            mods ^= state.action & 0xff;
-            break;
-        }
-      }
-    }
+    kb_reporter rpt;
+    ProcessKeys(now, rpt);
 
     // Update the hardware previous state
     rightSide = downRight;
     leftSide = downLeft;
-
-    Dongle::ReportKeys(mods, report);
     DBG2(Serial.println("============================="));
     DBG2(Serial.print("Left side "));
     DBG2(downLeft.dump());

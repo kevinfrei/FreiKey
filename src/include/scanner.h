@@ -1,5 +1,4 @@
-#if !defined(SCANNER_H)
-#define SCANNER_H
+#pragma once
 
 #include "sysstuff.h"
 #include <vector>
@@ -10,21 +9,14 @@
 #include "hardware.h"
 #include "keyhelpers.h"
 #include "keystate.h"
+#include "kbreporter.h"
 
 // variable declarations
-
-extern keystate keyStates[6];
+constexpr uint8_t num_keystates = 10;
+extern keystate keyStates[num_keystates];
 constexpr layer_t layer_max = 7;
 extern layer_t layer_stack[layer_max + 1];
 extern layer_t layer_pos;
-
-// Structs
-struct usb_report {
-  uint8_t report[6];
-  uint8_t repsize;
-  uint8_t mods;
-  uint16_t consumer; // negative = release
-};
 
 // Functions
 void layer_switch(layer_t layer);
@@ -36,6 +28,5 @@ scancode_t getNextScanCode(BoardIO::bits& delta,
                            bool& pressed);
 keystate* findStateSlot(scancode_t scanCode);
 void preprocessScanCode(scancode_t sc, bool pressed, uint32_t now);
-usb_report getUSBData(uint32_t now);
+void ProcessKeys(uint32_t now, kb_reporter &rpt);
 
-#endif

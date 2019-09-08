@@ -3,8 +3,8 @@ ifeq ($(OS),Windows_NT)
 	ARD=${HOME}/AppData/Local
 	SERIAL_PORT=COM9
 else ifeq ($(shell uname -s), Darwin)
-		ARD=${HOME}/Library
-		SERIAL_PORT=$(shell ls /dev/cu.usbmodem14*)
+	ARD=${HOME}/Library
+	SERIAL_PORT=$(shell ls /dev/cu.usbmodem14*)
 else
   $(error No Linux support yet)
 endif
@@ -36,6 +36,7 @@ USER_CPP_SRCS=\
 	dbgcfg.cpp \
 	dongle.cpp \
 	hardware.cpp \
+	kbreporter.cpp \
 	scanner.cpp \
   sync.cpp \
 	usb-master.cpp

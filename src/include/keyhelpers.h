@@ -41,8 +41,10 @@ constexpr layer_t kSwitchLayer = 4;
 #define ___ 0
 #define PASTE(a, b) a##b
 #if defined(TEENSY)
-#define PK(a) PASTE(KEY_, a)
-#define PM(a) PASTE(MODIFIERKEY_, a)
+#define PK(a) ((PASTE(KEY_, a)) & 0x1ff)
+#define PM(a) ((PASTE(MODIFIERKEY_, a)) & 0x1ff)
+#define PK_(a) PASTE(KEY_, a)
+#define PM_(a) PASTE(MODIFIERKEY_, a)
 
 #define LEFTALT LEFT_ALT
 #define RIGHTALT RIGHT_ALT
@@ -65,6 +67,8 @@ constexpr layer_t kSwitchLayer = 4;
 #else
 #define PK(a) PASTE(HID_KEY_, a)
 #define PM(a) PASTE(KEYBOARD_MODIFIER_, a)
+#define PK_(a) PASTE(HID_KEY_, a)
+#define PM_(a) PASTE(KEYBOARD_MODIFIER_, a)
 #endif
 
 #define KEY(a) kKeyPress | PK(a)
@@ -128,8 +132,8 @@ constexpr layer_t kSwitchLayer = 4;
 // www.opensource.apple.com. I'm pretty sure similar stuff is available for
 // Windows, too, somewhere (probably in MSDN docs)
 
-#define DK(a, v) constexpr action_t PK(a) = v;
-#define DM(a, v) constexpr action_t PM(a) = PM(v);
+#define DK(a, v) constexpr action_t PK_(a) = v;
+#define DM(a, v) constexpr action_t PM_(a) = PM(v);
 DK(M_PLAY, 0xCD)
 DK(M_PREVIOUS_TRACK, 0xB6)
 DK(M_NEXT_TRACK, 0xB5)
