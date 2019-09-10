@@ -8,14 +8,16 @@ else ifeq ($(shell uname -s), Darwin)
 else
   $(error No Linux support yet)
 endif
+# This should be windows/mac/linux specific, I imagine
+TOOLS_PATH=${ARD}/Arduino15/packages/arduino/tools/arm-none-eabi-gcc/7-2017q4
 
 # Necessary configuration stuff
 BOARD_NAME=feather52840
-SOFTDEVICE=s140v6
-DBG_LEVEL=l0
-CPU_ARCH=nrf52
-TOOLS_PATH=${ARD}/Arduino15/packages/arduino/tools/arm-none-eabi-gcc/7-2017q4
-BUILD_DIR=out-master
+IN_SOFTDEVICE=s140v6
+IN_DEBUG=l0
+BUILD_ARCH=nrf52
+RUNTIME_TOOLS_ARM_NONE_EABI_GCC_PATH=${TOOLS_PATH}
+BUILD_PATH=out-master
 PROJ_NAME=usb-master
 
 # This is how to add new flags

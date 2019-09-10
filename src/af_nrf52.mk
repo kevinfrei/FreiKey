@@ -1,27 +1,27 @@
 # First, add some errors for undefined values
-ifndef DBG_LEVEL
-  $(error DBG_LEVEL is not defined!)
-endif
-ifndef SOFTDEVICE
-  $(error SOFTDEVICE is not defined!)
-endif
 ifndef PROJ_NAME
   $(error PROJ_NAME is not defined!)
-endif
-ifndef BUILD_DIR
-  $(error BUILD_DIR is not defined!)
-endif
-ifndef CPU_ARCH
-  $(error CPU_ARCH is not defined!)
-endif
-ifndef TOOLS_PATH
-  $(error TOOLS_PATH is not defined!)
 endif
 ifndef BOARD_NAME
   $(error BOARD_NAME is not defined!)
 endif
+ifndef IN_SOFTDEVICE
+  $(error IN_SOFTDEVICE is not defined!)
+endif
+ifndef IN_DEBUG
+  $(error IN_DEBUG is not defined!)
+endif
+ifndef RUNTIME_TOOLS_ARM_NONE_EABI_GCC_PATH
+  $(error RUNTIME_TOOLS_ARM_NONE_EABI_GCC_PATH is not defined!)
+endif
+ifndef BUILD_PATH
+  $(error BUILD_PATH is not defined!)
+endif
 ifndef SERIAL_PORT
   $(error SERIAL_PORT is not defined!)
+endif
+ifndef BUILD_ARCH
+  $(error BUILD_ARCH is not defined!)
 endif
 
 # Check for some source files
@@ -42,12 +42,7 @@ RUNTIME_OS?=linux
 RUNTIME_PLATFORM_PATH=/Users/freik/src/FreiKey/src/libs/Adafruit
 RUNTIME_IDE_VERSION=10808
 IDE_VERSION=10808
-INPUT_DEBUG=${DBG_LEVEL}
-INPUT_SOFTDEVICE=${SOFTDEVICE}
 BUILD_PROJECT_NAME=${PROJ_NAME}
-BUILD_PATH=${BUILD_DIR}
-BUILD_ARCH=${CPU_ARCH}
-RUNTIME_TOOLS_ARM_NONE_EABI_GCC_PATH=${TOOLS_PATH}
 ifeq (${BOARD_NAME}, feather52832)
   BUILD_LDSCRIPT=nrf52832_s132_v6.ld
   BUILD_EXTRA_FLAGS=-DNRF52832_XXAA -DNRF52 -DARDUINO_NRF52_FEATHER
@@ -65,18 +60,18 @@ ifeq (${BOARD_NAME}, feather52832)
   UPLOAD_TOOL=nrfutil
   BOOTLOADER_TOOL=bootburn
   NAME=Adafruit Bluefruit Feather nRF52832
-  ifeq (${INPUT_SOFTDEVICE}, s132v6)
+  ifeq (${IN_SOFTDEVICE}, s132v6)
     BUILD_SD_FWID=0x00B7
     BUILD_SD_VERSION=6.1.1
     BUILD_SD_NAME=s132
   endif
-  ifeq (${INPUT_DEBUG}, l0)
+  ifeq (${IN_DEBUG}, l0)
     BUILD_DEBUG_FLAGS=-DCFG_DEBUG=0
-  else ifeq (${INPUT_DEBUG}, l1)
+  else ifeq (${IN_DEBUG}, l1)
     BUILD_DEBUG_FLAGS=-DCFG_DEBUG=1
-  else ifeq (${INPUT_DEBUG}, l2)
+  else ifeq (${IN_DEBUG}, l2)
     BUILD_DEBUG_FLAGS=-DCFG_DEBUG=2
-  else ifeq (${INPUT_DEBUG}, l3)
+  else ifeq (${IN_DEBUG}, l3)
     BUILD_DEBUG_FLAGS=-DCFG_DEBUG=3
   endif
 else ifeq (${BOARD_NAME}, feather52840)
@@ -106,18 +101,18 @@ else ifeq (${BOARD_NAME}, feather52840)
   VID_1=0x239A
   VID_0=0x239A
   NAME=Adafruit Bluefruit Feather nRF52840 Express
-  ifeq (${INPUT_SOFTDEVICE}, s140v6)
+  ifeq (${IN_SOFTDEVICE}, s140v6)
     BUILD_SD_FWID=0x00B6
     BUILD_SD_VERSION=6.1.1
     BUILD_SD_NAME=s140
   endif
-  ifeq (${INPUT_DEBUG}, l0)
+  ifeq (${IN_DEBUG}, l0)
     BUILD_DEBUG_FLAGS=-DCFG_DEBUG=0
-  else ifeq (${INPUT_DEBUG}, l1)
+  else ifeq (${IN_DEBUG}, l1)
     BUILD_DEBUG_FLAGS=-DCFG_DEBUG=1
-  else ifeq (${INPUT_DEBUG}, l2)
+  else ifeq (${IN_DEBUG}, l2)
     BUILD_DEBUG_FLAGS=-DCFG_DEBUG=2
-  else ifeq (${INPUT_DEBUG}, l3)
+  else ifeq (${IN_DEBUG}, l3)
     BUILD_DEBUG_FLAGS=-DCFG_DEBUG=3
   endif
 else ifeq (${BOARD_NAME}, cplaynrf52840)
@@ -147,18 +142,18 @@ else ifeq (${BOARD_NAME}, cplaynrf52840)
   VID_1=0x239A
   VID_0=0x239A
   NAME=Adafruit Circuit Playground Bluefruit
-  ifeq (${INPUT_SOFTDEVICE}, s140v6)
+  ifeq (${IN_SOFTDEVICE}, s140v6)
     BUILD_SD_FWID=0x00B6
     BUILD_SD_VERSION=6.1.1
     BUILD_SD_NAME=s140
   endif
-  ifeq (${INPUT_DEBUG}, l0)
+  ifeq (${IN_DEBUG}, l0)
     BUILD_DEBUG_FLAGS=-DCFG_DEBUG=0
-  else ifeq (${INPUT_DEBUG}, l1)
+  else ifeq (${IN_DEBUG}, l1)
     BUILD_DEBUG_FLAGS=-DCFG_DEBUG=1
-  else ifeq (${INPUT_DEBUG}, l2)
+  else ifeq (${IN_DEBUG}, l2)
     BUILD_DEBUG_FLAGS=-DCFG_DEBUG=2
-  else ifeq (${INPUT_DEBUG}, l3)
+  else ifeq (${IN_DEBUG}, l3)
     BUILD_DEBUG_FLAGS=-DCFG_DEBUG=3
   endif
 else ifeq (${BOARD_NAME}, metro52840)
@@ -188,18 +183,18 @@ else ifeq (${BOARD_NAME}, metro52840)
   VID_1=0x239A
   VID_0=0x239A
   NAME=Adafruit Bluefruit Metro nRF52840 Express
-  ifeq (${INPUT_SOFTDEVICE}, s140v6)
+  ifeq (${IN_SOFTDEVICE}, s140v6)
     BUILD_SD_FWID=0x00B6
     BUILD_SD_VERSION=6.1.1
     BUILD_SD_NAME=s140
   endif
-  ifeq (${INPUT_DEBUG}, l0)
+  ifeq (${IN_DEBUG}, l0)
     BUILD_DEBUG_FLAGS=-DCFG_DEBUG=0
-  else ifeq (${INPUT_DEBUG}, l1)
+  else ifeq (${IN_DEBUG}, l1)
     BUILD_DEBUG_FLAGS=-DCFG_DEBUG=1
-  else ifeq (${INPUT_DEBUG}, l2)
+  else ifeq (${IN_DEBUG}, l2)
     BUILD_DEBUG_FLAGS=-DCFG_DEBUG=2
-  else ifeq (${INPUT_DEBUG}, l3)
+  else ifeq (${IN_DEBUG}, l3)
     BUILD_DEBUG_FLAGS=-DCFG_DEBUG=3
   endif
 else ifeq (${BOARD_NAME}, pca10056)
@@ -221,18 +216,18 @@ else ifeq (${BOARD_NAME}, pca10056)
   UPLOAD_TOOL=nrfutil
   BOOTLOADER_TOOL=bootburn
   NAME=Nordic nRF52840DK (PCA10056)
-  ifeq (${INPUT_SOFTDEVICE}, s140v6)
+  ifeq (${IN_SOFTDEVICE}, s140v6)
     BUILD_SD_FWID=0x00B6
     BUILD_SD_VERSION=6.1.1
     BUILD_SD_NAME=s140
   endif
-  ifeq (${INPUT_DEBUG}, l0)
+  ifeq (${IN_DEBUG}, l0)
     BUILD_DEBUG_FLAGS=-DCFG_DEBUG=0
-  else ifeq (${INPUT_DEBUG}, l1)
+  else ifeq (${IN_DEBUG}, l1)
     BUILD_DEBUG_FLAGS=-DCFG_DEBUG=1
-  else ifeq (${INPUT_DEBUG}, l2)
+  else ifeq (${IN_DEBUG}, l2)
     BUILD_DEBUG_FLAGS=-DCFG_DEBUG=2
-  else ifeq (${INPUT_DEBUG}, l3)
+  else ifeq (${IN_DEBUG}, l3)
     BUILD_DEBUG_FLAGS=-DCFG_DEBUG=3
   endif
 endif
@@ -545,30 +540,30 @@ ALL_OBJS=${USER_OBJS} ${SYS_OBJS}
 .PHONY: ${PROJ_NAME} flash clean allclean
 
 # Now the default target
-all: ${BUILD_DIR} ${PROJ_NAME}
+all: ${BUILD_PATH} ${PROJ_NAME}
 
 # Some house keeping
 clean:
 	-rm ${USER_OBJS}
 
 allclean:
-	-rm -rf ${BUILD_DIR}
+	-rm -rf ${BUILD_PATH}
 
 # Make us rebuild user code if the makefile(s) change:
 # Needs to be above the deps thing, I think
 ${USER_OBJS} : $(MAKEFILE_LIST)
 
-#-include $(ALL_OBJS:.o=.d)
+-include $(ALL_OBJS:.o=.d)
 
 # Next, the project name shortcut, cuz it's easier
-${PROJ_NAME}: ${BUILD_DIR}/${PROJ_NAME}.zip
+${PROJ_NAME}: ${BUILD_PATH}/${PROJ_NAME}.zip
 
 # Add a 'flash' target
-flash: ${BUILD_DIR}/${PROJ_NAME}.flash
+flash: ${BUILD_PATH}/${PROJ_NAME}.flash
 
 # And finally, create the director
 # TODO: This no worky on Windows fer sure
-${BUILD_DIR}:
+${BUILD_PATH}:
 	test -d "$@" || mkdir "$@"
 
 # Now, on to the actual rules

@@ -8,15 +8,16 @@ else ifeq ($(shell uname -s), Darwin)
 else
   $(error No Linux support yet)
 endif
+TOOLS_PATH=${ARD}/Arduino15/packages/arduino/tools/arm-none-eabi-gcc/7-2017q4
 
 # Necessary configuration stuff
 BOARD_NAME=feather52832
-SOFTDEVICE=s132v6
-DBG_LEVEL=l0
-CPU_ARCH=nrf52
-TOOLS_PATH=${ARD}/Arduino15/packages/arduino/tools/arm-none-eabi-gcc/7-2017q4
-BUILD_DIR=out-client
+IN_SOFTDEVICE=s132v6
+IN_DEBUG=l0
+BUILD_ARCH=nrf52
+BUILD_PATH=out-client
 PROJ_NAME=right-client
+RUNTIME_TOOLS_ARM_NONE_EABI_GCC_PATH=${TOOLS_PATH}
 
 # This is how to add new flags
 COMPILER_CPP_EXTRA_FLAGS=-DUART_CLIENT -DDEBUG=2 -DHAS_LED -DHAS_BATTERY
