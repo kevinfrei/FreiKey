@@ -5,20 +5,20 @@ endif
 ifndef BOARD_NAME
   $(error BOARD_NAME is not defined!)
 endif
-ifndef EXTRA_TIME_LOCAL
-  $(error EXTRA_TIME_LOCAL is not defined!)
-endif
 ifndef IN_USB
   $(error IN_USB is not defined!)
-endif
-ifndef IN_SPEED
-  $(error IN_SPEED is not defined!)
 endif
 ifndef IN_OPT
   $(error IN_OPT is not defined!)
 endif
 ifndef IN_KEYS
   $(error IN_KEYS is not defined!)
+endif
+ifndef EXTRA_TIME_LOCAL
+  $(error EXTRA_TIME_LOCAL is not defined!)
+endif
+ifndef IN_SPEED
+  $(error IN_SPEED is not defined!)
 endif
 ifndef RUNTIME_HARDWARE_PATH
   $(error RUNTIME_HARDWARE_PATH is not defined!)
@@ -64,17 +64,111 @@ RUNTIME_PLATFORM_PATH=/Applications/Arduino.app/Contents/Java/hardware/teensy/av
 RUNTIME_IDE_VERSION=10808
 IDE_VERSION=10808
 BUILD_PROJECT_NAME=${PROJ_NAME}
-ifeq (${BOARD_NAME}, teensy36)
+ifeq (${BOARD_NAME}, teensy40)
+  SERIAL_RESTART_CMD=false
+  BUILD_FCPU=600000000
+  BUILD_FLAGS_LIBS=-larm_cortexM7lfsp_math -lm -lstdc++
+  BUILD_FLAGS_S=-x assembler-with-cpp
+  BUILD_FLAGS_CPP=-std=gnu++14 -fno-exceptions -fpermissive -fno-rtti -fno-threadsafe-statics -felide-constructors -Wno-error=narrowing
+  BUILD_FLAGS_DEFS=-D__IMXRT1062__ -DTEENSYDUINO=147
+  BUILD_FLAGS_CPU=-mthumb -mcpu=cortex-m7 -mfloat-abi=hard -mfpu=fpv5-d16
+  BUILD_FLAGS_OPTIMIZE=-Os
+  BUILD_FLAGS_DEP=-MMD
+  BUILD_FLAGS_COMMON=-g -Wall -ffunction-sections -fdata-sections -nostdlib
+  BUILD_COMMAND_SIZE=arm-none-eabi-size
+  BUILD_COMMAND_LINKER=arm-none-eabi-gcc
+  BUILD_COMMAND_OBJDUMP=arm-none-eabi-objdump
+  BUILD_COMMAND_OBJCOPY=arm-none-eabi-objcopy
+  BUILD_COMMAND_AR=arm-none-eabi-gcc-ar
+  BUILD_COMMAND_G++=arm-none-eabi-g++
+  BUILD_COMMAND_GCC=arm-none-eabi-gcc
+  BUILD_TOOLCHAIN=arm/bin/
+  BUILD_WARN_DATA_PERCENTAGE=99
+  BUILD_MCU=imxrt1062
+  BUILD_CORE=teensy4
+  BUILD_BOARD=TEENSY40
+  UPLOAD_PROTOCOL=halfkay
+  UPLOAD_TOOL=teensyloader
+  UPLOAD_MAXIMUM_DATA_SIZE=1048576
+  UPLOAD_MAXIMUM_SIZE=2031616
+  NAME=Teensy 4.0
+  ifeq (${IN_USB}, serial)
+    BUILD_USBTYPE=USB_SERIAL
+  endif
+  ifeq (${IN_OPT}, o2std)
+    BUILD_FLAGS_OPTIMIZE=-O2
+  else ifeq (${IN_OPT}, o1std)
+    BUILD_FLAGS_OPTIMIZE=-O1
+  else ifeq (${IN_OPT}, o3std)
+    BUILD_FLAGS_OPTIMIZE=-O3
+  else ifeq (${IN_OPT}, ogstd)
+    BUILD_FLAGS_OPTIMIZE=-Og
+  else ifeq (${IN_OPT}, osstd)
+    BUILD_FLAGS_OPTIMIZE=-Os --specs=nano.specs
+  endif
+  ifeq (${IN_KEYS}, en-us)
+    BUILD_KEYLAYOUT=US_ENGLISH
+  else ifeq (${IN_KEYS}, fr-ca)
+    BUILD_KEYLAYOUT=CANADIAN_FRENCH
+  else ifeq (${IN_KEYS}, xx-ca)
+    BUILD_KEYLAYOUT=CANADIAN_MULTILINGUAL
+  else ifeq (${IN_KEYS}, cz-cz)
+    BUILD_KEYLAYOUT=CZECH
+  else ifeq (${IN_KEYS}, da-da)
+    BUILD_KEYLAYOUT=DANISH
+  else ifeq (${IN_KEYS}, fi-fi)
+    BUILD_KEYLAYOUT=FINNISH
+  else ifeq (${IN_KEYS}, fr-fr)
+    BUILD_KEYLAYOUT=FRENCH
+  else ifeq (${IN_KEYS}, fr-be)
+    BUILD_KEYLAYOUT=FRENCH_BELGIAN
+  else ifeq (${IN_KEYS}, fr-ch)
+    BUILD_KEYLAYOUT=FRENCH_SWISS
+  else ifeq (${IN_KEYS}, de-de)
+    BUILD_KEYLAYOUT=GERMAN
+  else ifeq (${IN_KEYS}, de-dm)
+    BUILD_KEYLAYOUT=GERMAN_MAC
+  else ifeq (${IN_KEYS}, de-ch)
+    BUILD_KEYLAYOUT=GERMAN_SWISS
+  else ifeq (${IN_KEYS}, is-is)
+    BUILD_KEYLAYOUT=ICELANDIC
+  else ifeq (${IN_KEYS}, en-ie)
+    BUILD_KEYLAYOUT=IRISH
+  else ifeq (${IN_KEYS}, it-it)
+    BUILD_KEYLAYOUT=ITALIAN
+  else ifeq (${IN_KEYS}, no-no)
+    BUILD_KEYLAYOUT=NORWEGIAN
+  else ifeq (${IN_KEYS}, pt-pt)
+    BUILD_KEYLAYOUT=PORTUGUESE
+  else ifeq (${IN_KEYS}, pt-br)
+    BUILD_KEYLAYOUT=PORTUGUESE_BRAZILIAN
+  else ifeq (${IN_KEYS}, rs-rs)
+    BUILD_KEYLAYOUT=SERBIAN_LATIN_ONLY
+  else ifeq (${IN_KEYS}, es-es)
+    BUILD_KEYLAYOUT=SPANISH
+  else ifeq (${IN_KEYS}, es-mx)
+    BUILD_KEYLAYOUT=SPANISH_LATIN_AMERICA
+  else ifeq (${IN_KEYS}, sv-se)
+    BUILD_KEYLAYOUT=SWEDISH
+  else ifeq (${IN_KEYS}, tr-tr)
+    BUILD_KEYLAYOUT=TURKISH
+  else ifeq (${IN_KEYS}, en-gb)
+    BUILD_KEYLAYOUT=UNITED_KINGDOM
+  else ifeq (${IN_KEYS}, usint)
+    BUILD_KEYLAYOUT=US_INTERNATIONAL
+  endif
+else ifeq (${BOARD_NAME}, teensy36)
   SERIAL_RESTART_CMD=false
   BUILD_FLAGS_LIBS=-larm_cortexM4lf_math -lm
   BUILD_FLAGS_S=-x assembler-with-cpp
-  BUILD_FLAGS_CPP=-fno-exceptions -felide-constructors -std=gnu++14 -Wno-error=narrowing -fno-rtti
-  BUILD_FLAGS_DEFS=-D__MK66FX1M0__ -DTEENSYDUINO=145
+  BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++14 -Wno-error=narrowing -fno-rtti
+  BUILD_FLAGS_DEFS=-D__MK66FX1M0__ -DTEENSYDUINO=147
   BUILD_FLAGS_CPU=-mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -fsingle-precision-constant
   BUILD_FLAGS_OPTIMIZE=-Os
   BUILD_FLAGS_DEP=-MMD
   BUILD_FLAGS_COMMON=-g -Wall -ffunction-sections -fdata-sections -nostdlib
   BUILD_COMMAND_SIZE=arm-none-eabi-size
+  BUILD_COMMAND_LINKER=arm-none-eabi-gcc
   BUILD_COMMAND_OBJDUMP=arm-none-eabi-objdump
   BUILD_COMMAND_OBJCOPY=arm-none-eabi-objcopy
   BUILD_COMMAND_AR=arm-none-eabi-gcc-ar
@@ -262,13 +356,14 @@ else ifeq (${BOARD_NAME}, teensy35)
   SERIAL_RESTART_CMD=false
   BUILD_FLAGS_LIBS=-larm_cortexM4lf_math -lm
   BUILD_FLAGS_S=-x assembler-with-cpp
-  BUILD_FLAGS_CPP=-fno-exceptions -felide-constructors -std=gnu++14 -Wno-error=narrowing -fno-rtti
-  BUILD_FLAGS_DEFS=-D__MK64FX512__ -DTEENSYDUINO=145
+  BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++14 -Wno-error=narrowing -fno-rtti
+  BUILD_FLAGS_DEFS=-D__MK64FX512__ -DTEENSYDUINO=147
   BUILD_FLAGS_CPU=-mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -fsingle-precision-constant
   BUILD_FLAGS_OPTIMIZE=-Os
   BUILD_FLAGS_DEP=-MMD
   BUILD_FLAGS_COMMON=-g -Wall -ffunction-sections -fdata-sections -nostdlib
   BUILD_COMMAND_SIZE=arm-none-eabi-size
+  BUILD_COMMAND_LINKER=arm-none-eabi-gcc
   BUILD_COMMAND_OBJDUMP=arm-none-eabi-objdump
   BUILD_COMMAND_OBJCOPY=arm-none-eabi-objcopy
   BUILD_COMMAND_AR=arm-none-eabi-gcc-ar
@@ -458,13 +553,14 @@ else ifeq (${BOARD_NAME}, teensy31)
   SERIAL_RESTART_CMD=false
   BUILD_FLAGS_LIBS=-larm_cortexM4l_math -lm
   BUILD_FLAGS_S=-x assembler-with-cpp
-  BUILD_FLAGS_CPP=-fno-exceptions -felide-constructors -std=gnu++14 -Wno-error=narrowing -fno-rtti
-  BUILD_FLAGS_DEFS=-D__MK20DX256__ -DTEENSYDUINO=145
+  BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++14 -Wno-error=narrowing -fno-rtti
+  BUILD_FLAGS_DEFS=-D__MK20DX256__ -DTEENSYDUINO=147
   BUILD_FLAGS_CPU=-mthumb -mcpu=cortex-m4 -fsingle-precision-constant
   BUILD_FLAGS_OPTIMIZE=-Os
   BUILD_FLAGS_DEP=-MMD
   BUILD_FLAGS_COMMON=-g -Wall -ffunction-sections -fdata-sections -nostdlib
   BUILD_COMMAND_SIZE=arm-none-eabi-size
+  BUILD_COMMAND_LINKER=arm-none-eabi-gcc
   BUILD_COMMAND_OBJDUMP=arm-none-eabi-objdump
   BUILD_COMMAND_OBJCOPY=arm-none-eabi-objcopy
   BUILD_COMMAND_AR=arm-none-eabi-gcc-ar
@@ -645,13 +741,14 @@ else ifeq (${BOARD_NAME}, teensy30)
   BUILD_FLAGS_LIBS=-larm_cortexM4l_math -lm
   BUILD_FLAGS_LDSPECS=--specs=nano.specs
   BUILD_FLAGS_S=-x assembler-with-cpp
-  BUILD_FLAGS_CPP=-fno-exceptions -felide-constructors -std=gnu++14 -Wno-error=narrowing -fno-rtti
-  BUILD_FLAGS_DEFS=-D__MK20DX128__ -DTEENSYDUINO=145
+  BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++14 -Wno-error=narrowing -fno-rtti
+  BUILD_FLAGS_DEFS=-D__MK20DX128__ -DTEENSYDUINO=147
   BUILD_FLAGS_CPU=-mthumb -mcpu=cortex-m4 -fsingle-precision-constant
   BUILD_FLAGS_OPTIMIZE=-Os
   BUILD_FLAGS_DEP=-MMD
   BUILD_FLAGS_COMMON=-g -Wall -ffunction-sections -fdata-sections -nostdlib
   BUILD_COMMAND_SIZE=arm-none-eabi-size
+  BUILD_COMMAND_LINKER=arm-none-eabi-gcc
   BUILD_COMMAND_OBJDUMP=arm-none-eabi-objdump
   BUILD_COMMAND_OBJCOPY=arm-none-eabi-objcopy
   BUILD_COMMAND_AR=arm-none-eabi-gcc-ar
@@ -795,12 +892,13 @@ else ifeq (${BOARD_NAME}, teensyLC)
   SERIAL_RESTART_CMD=false
   BUILD_FLAGS_LIBS=-larm_cortexM0l_math -lm
   BUILD_FLAGS_S=-x assembler-with-cpp
-  BUILD_FLAGS_CPP=-fno-exceptions -felide-constructors -std=gnu++14 -Wno-error=narrowing -fno-rtti
-  BUILD_FLAGS_DEFS=-D__MKL26Z64__ -DTEENSYDUINO=145
+  BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++14 -Wno-error=narrowing -fno-rtti
+  BUILD_FLAGS_DEFS=-D__MKL26Z64__ -DTEENSYDUINO=147
   BUILD_FLAGS_CPU=-mthumb -mcpu=cortex-m0plus -fsingle-precision-constant
   BUILD_FLAGS_DEP=-MMD
   BUILD_FLAGS_COMMON=-g -Wall -ffunction-sections -fdata-sections -nostdlib
   BUILD_COMMAND_SIZE=arm-none-eabi-size
+  BUILD_COMMAND_LINKER=arm-none-eabi-gcc
   BUILD_COMMAND_OBJDUMP=arm-none-eabi-objdump
   BUILD_COMMAND_OBJCOPY=arm-none-eabi-objcopy
   BUILD_COMMAND_AR=arm-none-eabi-gcc-ar
@@ -939,13 +1037,14 @@ else ifeq (${BOARD_NAME}, teensypp2)
   BUILD_FLAGS_LIBS=-lm
   BUILD_FLAGS_LD=-Wl,--gc-sections,--relax
   BUILD_FLAGS_S=-x assembler-with-cpp
-  BUILD_FLAGS_CPP=-fno-exceptions -felide-constructors -std=gnu++11
-  BUILD_FLAGS_DEFS=-DTEENSYDUINO=145 -DARDUINO_ARCH_AVR
+  BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++11
+  BUILD_FLAGS_DEFS=-DTEENSYDUINO=147 -DARDUINO_ARCH_AVR
   BUILD_FLAGS_CPU=-mmcu=at90usb1286
   BUILD_FLAGS_OPTIMIZE=-Os
   BUILD_FLAGS_DEP=-MMD
   BUILD_FLAGS_COMMON=-g -Wall -ffunction-sections -fdata-sections
   BUILD_COMMAND_SIZE=avr-size
+  BUILD_COMMAND_LINKER=avr-gcc
   BUILD_COMMAND_OBJDUMP=avr-objdump
   BUILD_COMMAND_OBJCOPY=avr-objcopy
   BUILD_COMMAND_AR=avr-ar
@@ -1053,13 +1152,14 @@ else ifeq (${BOARD_NAME}, teensy2)
   BUILD_FLAGS_LIBS=-lm
   BUILD_FLAGS_LD=-Wl,--gc-sections,--relax
   BUILD_FLAGS_S=-x assembler-with-cpp
-  BUILD_FLAGS_CPP=-fno-exceptions -felide-constructors -std=gnu++11
-  BUILD_FLAGS_DEFS=-DTEENSYDUINO=145 -DARDUINO_ARCH_AVR
+  BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++11
+  BUILD_FLAGS_DEFS=-DTEENSYDUINO=147 -DARDUINO_ARCH_AVR
   BUILD_FLAGS_CPU=-mmcu=atmega32u4
   BUILD_FLAGS_OPTIMIZE=-Os
   BUILD_FLAGS_DEP=-MMD
   BUILD_FLAGS_COMMON=-g -Wall -ffunction-sections -fdata-sections
   BUILD_COMMAND_SIZE=avr-size
+  BUILD_COMMAND_LINKER=avr-gcc
   BUILD_COMMAND_OBJDUMP=avr-objdump
   BUILD_COMMAND_OBJCOPY=avr-objcopy
   BUILD_COMMAND_AR=avr-ar
@@ -1163,7 +1263,9 @@ else ifeq (${BOARD_NAME}, teensy2)
   endif
 endif
 BUILD_CORE_PATH=${RUNTIME_PLATFORM_PATH}/cores/${BUILD_CORE}
-ifeq (${BOARD_NAME}, teensy36)
+ifeq (${BOARD_NAME}, teensy40)
+  BUILD_FLAGS_LD=-Wl,--gc-sections,--relax "-T${BUILD_CORE_PATH}/imxrt1062.ld"
+else ifeq (${BOARD_NAME}, teensy36)
   BUILD_FLAGS_LD=-Wl,--gc-sections,--relax,--defsym=__rtc_localtime=${EXTRA_TIME_LOCAL} "-T${BUILD_CORE_PATH}/mk66fx1m0.ld" -lstdc++
 else ifeq (${BOARD_NAME}, teensy35)
   BUILD_FLAGS_LD=-Wl,--gc-sections,--relax,--defsym=__rtc_localtime=${EXTRA_TIME_LOCAL} "-T${BUILD_CORE_PATH}/mk64fx512.ld" -lstdc++
@@ -1174,6 +1276,7 @@ else ifeq (${BOARD_NAME}, teensy30)
 else ifeq (${BOARD_NAME}, teensyLC)
   BUILD_FLAGS_LD=-Wl,--gc-sections,--relax,--defsym=__rtc_localtime=${EXTRA_TIME_LOCAL} "-T${BUILD_CORE_PATH}/mkl26z64.ld" -lstdc++
 endif
+DISCOVERY_TEENSY_PATTERN="${RUNTIME_HARDWARE_PATH}/../tools/teensy_ports" -J2
 COMPILER_ELF2HEX_FLAGS=-O ihex -R .eeprom
 COMPILER_OBJCOPY_EEP_FLAGS=-O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0
 COMPILER_PATH=${RUNTIME_HARDWARE_PATH}/../tools/
@@ -1186,7 +1289,51 @@ endif
 ifeq (${UPLOAD_TOOL}, teensyloader)
   UPLOAD_PATTERN="${CMD_PATH}/teensy_post_compile" "-file=${BUILD_PROJECT_NAME}" "-path=${BUILD_PATH}" "-tools=${CMD_PATH}" "-board=${BUILD_BOARD}" -reboot "-port=${SERIAL_PORT}" "-portlabel=${SERIAL_PORT_LABEL}" "-portprotocol=${SERIAL_PORT_PROTOCOL}"
 endif
-ifeq (${BUILD_CORE}, teensy3)
+ifeq (${BUILD_CORE}, teensy4)
+  C_SYS_SRCS+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/analog.c \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/bootdata.c \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/clockspeed.c \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/debugprintf.c \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/delay.c \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/digital.c \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/eeprom.c \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/interrupt.c \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/keylayouts.c \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/nonstd.c \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/pwm.c \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/rtc.c \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/startup.c \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/tempmon.c \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/usb.c \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/usb_desc.c \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/usb_serial.c
+  CPP_SYS_SRCS+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/AudioStream.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/DMAChannel.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/EventResponder.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/HardwareSerial.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/HardwareSerial1.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/HardwareSerial2.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/HardwareSerial3.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/HardwareSerial4.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/HardwareSerial5.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/HardwareSerial6.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/HardwareSerial7.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/HardwareSerial8.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/IPAddress.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/IntervalTimer.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/Print.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/Stream.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/Tone.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/WMath.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/WString.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/new.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/usb_inst.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/yield.cpp
+  S_SYS_SRCS+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/memcpy-armv7m.S \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/memset.S
+  SYS_INCLUDES+= -I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4
+  VPATH_CORE+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4
+else ifeq (${BUILD_CORE}, teensy3)
   C_SYS_SRCS+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/analog.c \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/eeprom.c \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/keylayouts.c \
@@ -1303,11 +1450,6 @@ ifdef LIB_ADAFRUIT_GFX
     -I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Adafruit_GFX/Fonts
   VPATH_MORE+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Adafruit_GFX/fontconvert:/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Adafruit_GFX
 endif
-ifdef LIB_ADAFRUIT_ILI9340
-  CPP_SYS_SRCS+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Adafruit_ILI9340/Adafruit_ILI9340.cpp
-  SYS_INCLUDES+=-I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Adafruit_ILI9340
-  VPATH_MORE+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Adafruit_ILI9340
-endif
 ifdef LIB_ADAFRUIT_NEOPIXEL
   C_SYS_SRCS+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Adafruit_NeoPixel/esp8266.c
   CPP_SYS_SRCS+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Adafruit_NeoPixel/Adafruit_NeoPixel.cpp
@@ -1318,11 +1460,6 @@ ifdef LIB_ADAFRUIT_RA8875
   CPP_SYS_SRCS+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Adafruit_RA8875/Adafruit_RA8875.cpp
   SYS_INCLUDES+=-I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Adafruit_RA8875
   VPATH_MORE+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Adafruit_RA8875
-endif
-ifdef LIB_ADAFRUIT_SSD1306
-  CPP_SYS_SRCS+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Adafruit_SSD1306/Adafruit_SSD1306.cpp
-  SYS_INCLUDES+=-I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Adafruit_SSD1306
-  VPATH_MORE+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Adafruit_SSD1306
 endif
 ifdef LIB_ADAFRUIT_STMPE610
   CPP_SYS_SRCS+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Adafruit_STMPE610/Adafruit_STMPE610.cpp
@@ -1336,7 +1473,8 @@ ifdef LIB_ALTSOFTSERIAL
   VPATH_MORE+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/AltSoftSerial
 endif
 ifdef LIB_AUDIO
-  C_SYS_SRCS+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/data_ulaw.c \
+  C_SYS_SRCS+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/data_spdif.c \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/data_ulaw.c \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/data_waveforms.c \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/data_windows.c \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/extras/miditones/miditones.c \
@@ -1375,19 +1513,27 @@ ifdef LIB_AUDIO
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/input_adc.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/input_adcs.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/input_i2s.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/input_i2s2.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/input_i2s_quad.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/input_pdm.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/input_tdm.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/input_tdm2.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/mixer.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/output_adat.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/output_dac.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/output_dacs.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/output_i2s.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/output_i2s2.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/output_i2s_quad.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/output_mqs.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/output_pt8211.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/output_pt8211_2.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/output_pwm.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/output_spdif.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/output_spdif2.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/output_spdif3.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/output_tdm.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/output_tdm2.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/play_memory.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/play_queue.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/play_sd_raw.cpp \
@@ -1404,7 +1550,8 @@ ifdef LIB_AUDIO
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/synth_tonesweep.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/synth_waveform.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/synth_wavetable.cpp \
-    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/synth_whitenoise.cpp
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/synth_whitenoise.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/utility/imxrt_hw.cpp
   S_SYS_SRCS+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/memcpy_audio.S
   SYS_INCLUDES+=-I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio \
     -I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/utility
@@ -1477,16 +1624,20 @@ ifdef LIB_FASTLED
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/hsv2rgb.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/lib8tion.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/noise.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/platforms.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/power_mgt.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/wiring.cpp
   SYS_INCLUDES+=-I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED \
     -I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/lib8tion \
     -I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/platforms/arm/common \
     -I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/platforms/arm/d21 \
+    -I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/platforms/arm/d51 \
     -I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/platforms/arm/k20 \
     -I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/platforms/arm/k66 \
     -I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/platforms/arm/kl26 \
+    -I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/platforms/arm/mxrt1062 \
     -I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/platforms/arm/nrf51 \
+    -I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/platforms/arm/nrf52 \
     -I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/platforms/arm/sam \
     -I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/platforms/arm/stm32 \
     -I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/platforms/avr \
@@ -1673,7 +1824,6 @@ ifdef LIB_RESPONSIVEANALOGREAD
   VPATH_MORE+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/ResponsiveAnalogRead/src
 endif
 ifdef LIB_SD
-  C_SYS_SRCS+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/SD/utility/KinetisSDHC.c
   CPP_SYS_SRCS+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/SD/File.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/SD/SD.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/SD/cache_t3.cpp \
@@ -1682,12 +1832,13 @@ ifdef LIB_SD
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/SD/fat_t3.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/SD/file_t3.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/SD/init_t3.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/SD/utility/NXP_SDHC.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/SD/utility/Sd2Card.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/SD/utility/SdFile.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/SD/utility/SdVolume.cpp
   SYS_INCLUDES+=-I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/SD \
     -I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/SD/utility
-  VPATH_MORE+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/SD/utility:/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/SD
+  VPATH_MORE+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/SD:/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/SD/utility
 endif
 ifdef LIB_SPI
   CPP_SYS_SRCS+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/SPI/SPI.cpp
@@ -1695,7 +1846,8 @@ ifdef LIB_SPI
   VPATH_MORE+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/SPI
 endif
 ifdef LIB_ST7735_T3
-  CPP_SYS_SRCS+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/ST7735_t3/ST7735_t3.cpp
+  CPP_SYS_SRCS+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/ST7735_t3/ST7735_t3.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/ST7735_t3/ST7789_t3.cpp
   SYS_INCLUDES+=-I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/ST7735_t3
   VPATH_MORE+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/ST7735_t3
 endif
@@ -1786,6 +1938,8 @@ ifdef LIB_TLC5940
 endif
 ifdef LIB_USBHOST_T36
   CPP_SYS_SRCS+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36/antplus.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36/bluetooth.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36/digitizer.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36/ehci.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36/enumeration.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36/hid.cpp \
@@ -1799,12 +1953,14 @@ ifdef LIB_USBHOST_T36
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36/print.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36/rawhid.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36/serial.cpp
-  SYS_INCLUDES+=-I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36
+  SYS_INCLUDES+=-I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36 \
+    -I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36/utility
   VPATH_MORE+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36
 endif
 ifdef LIB_WIRE
   C_SYS_SRCS+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Wire/utility/twi.c
   CPP_SYS_SRCS+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Wire/Wire.cpp \
+    /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Wire/WireIMXRT.cpp \
     /Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Wire/WireKinetis.cpp
   SYS_INCLUDES+=-I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Wire \
     -I/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/libraries/Wire/utility
@@ -1871,7 +2027,8 @@ allclean:
 # Needs to be above the deps thing, I think
 ${USER_OBJS} : $(MAKEFILE_LIST)
 
-#-include $(ALL_OBJS:.o=.d)
+# Let's start using the generated .d files...
+-include $(ALL_OBJS:.o=.d)
 
 # Next, the project name shortcut, cuz it's easier
 ${PROJ_NAME}: ${BUILD_PATH}/${PROJ_NAME}.zip
@@ -1899,7 +2056,7 @@ ${BUILD_PATH}/system.a : ${SYS_OBJS}
 	"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_AR}" rcs "$@" $^
 
 ${BUILD_PATH}/${BUILD_PROJECT_NAME}.elf : ${BUILD_PATH}/system.a ${USER_OBJS}
-	"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_GCC}" ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_LD} ${BUILD_FLAGS_LDSPECS} ${BUILD_FLAGS_CPU} -o "$@" ${USER_OBJS} "${BUILD_PATH}/system.a" "-L${BUILD_PATH}" ${BUILD_FLAGS_LIBS}
+	"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_LINKER}" ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_LD} ${BUILD_FLAGS_LDSPECS} ${BUILD_FLAGS_CPU} -o "$@" ${USER_OBJS} "${BUILD_PATH}/system.a" "-L${BUILD_PATH}" ${BUILD_FLAGS_LIBS}
 
 ${BUILD_PATH}/${BUILD_PROJECT_NAME}.hex : ${BUILD_PATH}/${BUILD_PROJECT_NAME}.elf
 	"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_OBJCOPY}" ${COMPILER_ELF2HEX_FLAGS} "$<" "$@"
