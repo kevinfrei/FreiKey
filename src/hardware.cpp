@@ -188,7 +188,6 @@ void hw::dump() const {
   Serial.println("");
   for (int64_t r = 0; r < BoardIO::numrows; r++) {
     for (int64_t c = BoardIO::numcols - 1; c >= 0; c--) {
-      uint64_t mask = 1ULL << (r * BoardIO::numcols + c);
       if (switches.get_bit(r * BoardIO::numcols + c)) {
         Serial.print("X ");
       } else {

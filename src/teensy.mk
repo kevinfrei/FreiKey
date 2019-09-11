@@ -38,12 +38,6 @@ endif
 ifndef SERIAL_PORT_PROTOCOL
   $(error SERIAL_PORT_PROTOCOL is not defined!)
 endif
-ifndef BUILD_FLAGS_C
-  $(error BUILD_FLAGS_C is not defined!)
-endif
-ifndef BUILD_COMMAND_G__
-  $(error BUILD_COMMAND_G__ is not defined!)
-endif
 
 # Check for some source files
 ifeq (${USER_C_SRCS}${USER_CPP_SRCS}${USER_S_SRCS},)
@@ -80,7 +74,7 @@ ifeq (${BOARD_NAME}, teensy40)
   BUILD_COMMAND_OBJDUMP=arm-none-eabi-objdump
   BUILD_COMMAND_OBJCOPY=arm-none-eabi-objcopy
   BUILD_COMMAND_AR=arm-none-eabi-gcc-ar
-  BUILD_COMMAND_G++=arm-none-eabi-g++
+  BUILD_COMMAND_G__=arm-none-eabi-g++
   BUILD_COMMAND_GCC=arm-none-eabi-gcc
   BUILD_TOOLCHAIN=arm/bin/
   BUILD_WARN_DATA_PERCENTAGE=99
@@ -172,7 +166,7 @@ else ifeq (${BOARD_NAME}, teensy36)
   BUILD_COMMAND_OBJDUMP=arm-none-eabi-objdump
   BUILD_COMMAND_OBJCOPY=arm-none-eabi-objcopy
   BUILD_COMMAND_AR=arm-none-eabi-gcc-ar
-  BUILD_COMMAND_G++=arm-none-eabi-g++
+  BUILD_COMMAND_G__=arm-none-eabi-g++
   BUILD_COMMAND_GCC=arm-none-eabi-gcc
   BUILD_TOOLCHAIN=arm/bin/
   BUILD_WARN_DATA_PERCENTAGE=99
@@ -367,7 +361,7 @@ else ifeq (${BOARD_NAME}, teensy35)
   BUILD_COMMAND_OBJDUMP=arm-none-eabi-objdump
   BUILD_COMMAND_OBJCOPY=arm-none-eabi-objcopy
   BUILD_COMMAND_AR=arm-none-eabi-gcc-ar
-  BUILD_COMMAND_G++=arm-none-eabi-g++
+  BUILD_COMMAND_G__=arm-none-eabi-g++
   BUILD_COMMAND_GCC=arm-none-eabi-gcc
   BUILD_TOOLCHAIN=arm/bin/
   BUILD_WARN_DATA_PERCENTAGE=98
@@ -564,7 +558,7 @@ else ifeq (${BOARD_NAME}, teensy31)
   BUILD_COMMAND_OBJDUMP=arm-none-eabi-objdump
   BUILD_COMMAND_OBJCOPY=arm-none-eabi-objcopy
   BUILD_COMMAND_AR=arm-none-eabi-gcc-ar
-  BUILD_COMMAND_G++=arm-none-eabi-g++
+  BUILD_COMMAND_G__=arm-none-eabi-g++
   BUILD_COMMAND_GCC=arm-none-eabi-gcc
   BUILD_TOOLCHAIN=arm/bin/
   BUILD_WARN_DATA_PERCENTAGE=97
@@ -752,7 +746,7 @@ else ifeq (${BOARD_NAME}, teensy30)
   BUILD_COMMAND_OBJDUMP=arm-none-eabi-objdump
   BUILD_COMMAND_OBJCOPY=arm-none-eabi-objcopy
   BUILD_COMMAND_AR=arm-none-eabi-gcc-ar
-  BUILD_COMMAND_G++=arm-none-eabi-g++
+  BUILD_COMMAND_G__=arm-none-eabi-g++
   BUILD_COMMAND_GCC=arm-none-eabi-gcc
   BUILD_TOOLCHAIN=arm/bin/
   BUILD_WARN_DATA_PERCENTAGE=94
@@ -902,7 +896,7 @@ else ifeq (${BOARD_NAME}, teensyLC)
   BUILD_COMMAND_OBJDUMP=arm-none-eabi-objdump
   BUILD_COMMAND_OBJCOPY=arm-none-eabi-objcopy
   BUILD_COMMAND_AR=arm-none-eabi-gcc-ar
-  BUILD_COMMAND_G++=arm-none-eabi-g++
+  BUILD_COMMAND_G__=arm-none-eabi-g++
   BUILD_COMMAND_GCC=arm-none-eabi-gcc
   BUILD_TOOLCHAIN=arm/bin/
   BUILD_WARN_DATA_PERCENTAGE=88
@@ -1048,7 +1042,7 @@ else ifeq (${BOARD_NAME}, teensypp2)
   BUILD_COMMAND_OBJDUMP=avr-objdump
   BUILD_COMMAND_OBJCOPY=avr-objcopy
   BUILD_COMMAND_AR=avr-ar
-  BUILD_COMMAND_G++=avr-g++
+  BUILD_COMMAND_G__=avr-g++
   BUILD_COMMAND_GCC=avr-gcc
   BUILD_TOOLCHAIN=avr/bin/
   BUILD_WARN_DATA_PERCENTAGE=94
@@ -1163,7 +1157,7 @@ else ifeq (${BOARD_NAME}, teensy2)
   BUILD_COMMAND_OBJDUMP=avr-objdump
   BUILD_COMMAND_OBJCOPY=avr-objcopy
   BUILD_COMMAND_AR=avr-ar
-  BUILD_COMMAND_G++=avr-g++
+  BUILD_COMMAND_G__=avr-g++
   BUILD_COMMAND_GCC=avr-gcc
   BUILD_TOOLCHAIN=avr/bin/
   BUILD_WARN_DATA_PERCENTAGE=80
@@ -1287,7 +1281,7 @@ ifeq (${UPLOAD_USE_1200BPS_TOUCH}, true)
   UPLOAD_EXTRA_FLAGS=--touch 1200
 endif
 ifeq (${UPLOAD_TOOL}, teensyloader)
-  UPLOAD_PATTERN="${CMD_PATH}/teensy_post_compile" "-file=${BUILD_PROJECT_NAME}" "-path=${BUILD_PATH}" "-tools=${CMD_PATH}" "-board=${BUILD_BOARD}" -reboot "-port=${SERIAL_PORT}" "-portlabel=${SERIAL_PORT_LABEL}" "-portprotocol=${SERIAL_PORT_PROTOCOL}"
+  UPLOAD_PATTERN="${CMD_PATH}/teensy_post_compile" "-file=${BUILD_PROJECT_NAME}" "-path=$(abspath ${BUILD_PATH})" "-tools=${CMD_PATH}" "-board=${BUILD_BOARD}" -reboot "-port=${SERIAL_PORT}" "-portlabel=${SERIAL_PORT_LABEL}" "-portprotocol=${SERIAL_PORT_PROTOCOL}"
 endif
 ifeq (${BUILD_CORE}, teensy4)
   C_SYS_SRCS+=/Applications/Arduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/analog.c \
@@ -2030,8 +2024,8 @@ ${USER_OBJS} : $(MAKEFILE_LIST)
 # Let's start using the generated .d files...
 -include $(ALL_OBJS:.o=.d)
 
-# Next, the project name shortcut, cuz it's easier
-${PROJ_NAME}: ${BUILD_PATH}/${PROJ_NAME}.zip
+# Next, the project name shortcut, because it's easier
+${PROJ_NAME}: ${BUILD_PATH}/${PROJ_NAME}.hex
 
 # Add a 'flash' target
 flash: ${BUILD_PATH}/${PROJ_NAME}.flash
@@ -2044,13 +2038,13 @@ ${BUILD_PATH}:
 # Now, on to the actual rules
 
 ${BUILD_PATH}/%.S.o : %.S
-	"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_GCC}" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_S} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} ${SYS_INCLUDES} ${USER_INCLUDES} "$<" -o "$@"
+	"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_GCC}" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_S} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_S_EXTRA_FLAGS} "$<" -o "$@"
 
 ${BUILD_PATH}/%.c.o : %.c
-	"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_GCC}" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_C} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} ${SYS_INCLUDES} ${USER_INCLUDES} "$<" -o "$@"
+	"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_GCC}" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_C} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_C_EXTRA_FLAGS} "$<" -o "$@"
 
 ${BUILD_PATH}/%.cpp.o : %.cpp
-	"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_G__}" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_CPP} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} "-I${BUILD_PATH}/pch" ${SYS_INCLUDES} ${USER_INCLUDES} "$<" -o "$@"
+	"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_G__}" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_CPP} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} "-I${BUILD_PATH}/pch" ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_CPP_EXTRA_FLAGS} "$<" -o "$@"
 
 ${BUILD_PATH}/system.a : ${SYS_OBJS}
 	"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_AR}" rcs "$@" $^
@@ -2061,5 +2055,5 @@ ${BUILD_PATH}/${BUILD_PROJECT_NAME}.elf : ${BUILD_PATH}/system.a ${USER_OBJS}
 ${BUILD_PATH}/${BUILD_PROJECT_NAME}.hex : ${BUILD_PATH}/${BUILD_PROJECT_NAME}.elf
 	"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_OBJCOPY}" ${COMPILER_ELF2HEX_FLAGS} "$<" "$@"
 
-${BUILD_PATH}/${BUILD_PROJECT_NAME}.flash : ${BUILD_PATH}/${BUILD_PROJECT_NAME}.zip
+${BUILD_PATH}/${BUILD_PROJECT_NAME}.flash : ${BUILD_PATH}/${BUILD_PROJECT_NAME}.hex
 	${UPLOAD_PATTERN} ${UPLOAD_EXTRA_FLAGS}

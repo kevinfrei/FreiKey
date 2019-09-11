@@ -10,13 +10,15 @@ using scancode_t = uint8_t;
 constexpr scancode_t null_scan_code = 0xff;
 constexpr uint16_t null_consumer_code = 0x8000;
 
-constexpr char* MANUFACTURER = "FreikyStuff";
-constexpr char* MODEL = "FreiKeyboard";
-constexpr char* BT_NAME = "FreiKeys";
-constexpr char* HW_REV = "0001";
-constexpr char* LHS_NAME = "FreiKeys-Slave";
-constexpr char* LTCL_NAME = "FreiKeys-LClient";
-constexpr char* RTCL_NAME = "FreiKeys-RClient";
+#if defined(ADAFRUIT)
+constexpr const char* MANUFACTURER = "FreikyStuff";
+constexpr const char* MODEL = "FreiKeyboard";
+constexpr const char* BT_NAME = "FreiKeys";
+constexpr const char* HW_REV = "0001";
+constexpr const char* LHS_NAME = "FreiKeys-Slave";
+constexpr const char* LTCL_NAME = "FreiKeys-LClient";
+constexpr const char* RTCL_NAME = "FreiKeys-RClient";
+#endif
 
 namespace state {
 #if defined(USB_MASTER)

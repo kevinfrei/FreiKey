@@ -282,7 +282,7 @@ ifeq (${UPLOAD_USE_1200BPS_TOUCH}, true)
   UPLOAD_EXTRA_FLAGS=--touch 1200
 endif
 ifeq (${UPLOAD_TOOL}, nrfutil)
-  UPLOAD_PATTERN="${TOOLS_NRFUTIL_CMD}" ${UPLOAD_VERBOSE} dfu serial -pkg "${BUILD_PATH}/${BUILD_PROJECT_NAME}.zip" -p ${SERIAL_PORT} -b 115200 --singlebank
+  UPLOAD_PATTERN="${TOOLS_NRFUTIL_CMD}" ${UPLOAD_VERBOSE} dfu serial -pkg "$(abspath ${BUILD_PATH})/${BUILD_PROJECT_NAME}.zip" -p ${SERIAL_PORT} -b 115200 --singlebank
 endif
 ifeq (${BUILD_CORE}, nRF5)
   C_SYS_SRCS+=libs/Adafruit/cores/nRF5/Adafruit_TinyUSB_Core/tinyusb/src/class/cdc/cdc_device.c \
@@ -553,9 +553,10 @@ allclean:
 # Needs to be above the deps thing, I think
 ${USER_OBJS} : $(MAKEFILE_LIST)
 
+# Let's start using the generated .d files...
 -include $(ALL_OBJS:.o=.d)
 
-# Next, the project name shortcut, cuz it's easier
+# Next, the project name shortcut, because it's easier
 ${PROJ_NAME}: ${BUILD_PATH}/${PROJ_NAME}.zip
 
 # Add a 'flash' target

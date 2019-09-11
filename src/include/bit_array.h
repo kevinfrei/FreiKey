@@ -41,13 +41,14 @@ struct bit_array {
     return false;
   }
   uint8_t pull_a_bit() {
-    for (int i = 0; i < sizeof(value); i++) {
+    for (uint8_t i = 0; i < sizeof(value); i++) {
       if (value[i]) {
         uint8_t bit_num = get_a_set_bit(value[i]);
         value[i] ^= (1 << bit_num);
         return bit_num + i * 8;
       }
     }
+    return 0xFF;
   }
   void flip_bit(uint8_t bitnum) {
     value[bitnum >> 3] ^= 1 << (bitnum & 7);
