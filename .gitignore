@@ -35,5 +35,6 @@
 src/out
 src/Makefile
 src/out-master
-src/out-client
+src/out-lclient
+src/out-rclient
 src/out-betterfly
