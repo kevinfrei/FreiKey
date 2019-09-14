@@ -572,11 +572,32 @@ ${BUILD_PATH}:
 ${BUILD_PATH}/%.S.o : %.S
 	"${COMPILER_PATH}${COMPILER_S_CMD}" ${COMPILER_S_FLAGS} -DF_CPU=${BUILD_F_CPU} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DARDUINO_ARCH_${BUILD_ARCH} ${COMPILER_S_EXTRA_FLAGS} ${BUILD_EXTRA_FLAGS} ${BUILD_FLAGS_NRF} ${SYS_INCLUDES} ${USER_INCLUDES} "$<" -o "$@"
 
+${BUILD_PATH}/s_compile_commands.json: $(USER_S_SRCS) $(S_SYS_SRCS)
+	echo > $@
+	for i in $^ ; do \
+	echo "{ \"directory\": \"${PWD}\",\"file\":\"$$i\",\"command\":" >> $@ ; \
+	echo "\"\\\"${COMPILER_PATH}${COMPILER_S_CMD}\\\" ${COMPILER_S_FLAGS} -DF_CPU=${BUILD_F_CPU} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DARDUINO_ARCH_${BUILD_ARCH} ${COMPILER_S_EXTRA_FLAGS} ${BUILD_EXTRA_FLAGS} ${BUILD_FLAGS_NRF} ${SYS_INCLUDES} ${USER_INCLUDES} \\\"$$i\\\" -o \\\"$$i.o\\\"\"}," >> $@ ;\
+	done
+
 ${BUILD_PATH}/%.c.o : %.c
 	"${COMPILER_PATH}${COMPILER_C_CMD}" ${COMPILER_C_FLAGS} -DF_CPU=${BUILD_F_CPU} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DARDUINO_ARCH_${BUILD_ARCH} '-DARDUINO_BSP_VERSION="${VERSION}"' ${COMPILER_C_EXTRA_FLAGS} ${BUILD_EXTRA_FLAGS} ${BUILD_FLAGS_NRF} ${SYS_INCLUDES} ${USER_INCLUDES} "$<" -o "$@"
 
+${BUILD_PATH}/c_compile_commands.json: $(USER_C_SRCS) $(C_SYS_SRCS)
+	echo > $@
+	for i in $^ ; do \
+	echo "{ \"directory\": \"${PWD}\",\"file\":\"$$i\",\"command\":" >> $@ ; \
+	echo "\"\\\"${COMPILER_PATH}${COMPILER_C_CMD}\\\" ${COMPILER_C_FLAGS} -DF_CPU=${BUILD_F_CPU} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DARDUINO_ARCH_${BUILD_ARCH} -DARDUINO_BSP_VERSION=\\\"${VERSION}\\\" ${COMPILER_C_EXTRA_FLAGS} ${BUILD_EXTRA_FLAGS} ${BUILD_FLAGS_NRF} ${SYS_INCLUDES} ${USER_INCLUDES} \\\"$$i\\\" -o \\\"$$i.o\\\"\"}," >> $@ ;\
+	done
+
 ${BUILD_PATH}/%.cpp.o : %.cpp
 	"${COMPILER_PATH}${COMPILER_CPP_CMD}" ${COMPILER_CPP_FLAGS} -DF_CPU=${BUILD_F_CPU} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DARDUINO_ARCH_${BUILD_ARCH} '-DARDUINO_BSP_VERSION="${VERSION}"' ${COMPILER_CPP_EXTRA_FLAGS} ${BUILD_EXTRA_FLAGS} ${BUILD_FLAGS_NRF} ${SYS_INCLUDES} ${USER_INCLUDES} "$<" -o "$@"
+
+${BUILD_PATH}/cpp_compile_commands.json: $(USER_CPP_SRCS) $(CPP_SYS_SRCS)
+	echo > $@
+	for i in $^ ; do \
+	echo "{ \"directory\": \"${PWD}\",\"file\":\"$$i\",\"command\":" >> $@ ; \
+	echo "\"\\\"${COMPILER_PATH}${COMPILER_CPP_CMD}\\\" ${COMPILER_CPP_FLAGS} -DF_CPU=${BUILD_F_CPU} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DARDUINO_ARCH_${BUILD_ARCH} -DARDUINO_BSP_VERSION=\\\"${VERSION}\\\" ${COMPILER_CPP_EXTRA_FLAGS} ${BUILD_EXTRA_FLAGS} ${BUILD_FLAGS_NRF} ${SYS_INCLUDES} ${USER_INCLUDES} \\\"$$i\\\" -o \\\"$$i.o\\\"\"}," >> $@ ;\
+	done
 
 ${BUILD_PATH}/system.a : ${SYS_OBJS}
 	"${COMPILER_PATH}${COMPILER_AR_CMD}" ${COMPILER_AR_FLAGS} ${COMPILER_AR_EXTRA_FLAGS} "$@" $^
@@ -592,3 +613,11 @@ ${BUILD_PATH}/${BUILD_PROJECT_NAME}.zip : ${BUILD_PATH}/${BUILD_PROJECT_NAME}.he
 
 ${BUILD_PATH}/${BUILD_PROJECT_NAME}.flash : ${BUILD_PATH}/${BUILD_PROJECT_NAME}.zip
 	${UPLOAD_PATTERN} ${UPLOAD_EXTRA_FLAGS}
+
+${BUILD_PATH}/compile_commands.json: ${BUILD_PATH}/s_compile_commands.json ${BUILD_PATH}/c_compile_commands.json ${BUILD_PATH}/cpp_compile_commands.json
+	echo "[" > $@.tmp
+	cat $^ >> $@.tmp
+	echo "]" >> $@.tmp
+	sed -e ':a' -e 'N' -e '$$!ba' -e 's/},\n]/}]/g' $@.tmp > $@
+
+compile_commands: ${BUILD_PATH}/compile_commands.json
