@@ -23,8 +23,6 @@
 //  'cancel out' the key state if something specific occurs
 
 // Kind of things I want to do:
-// #0: Consumer keys, dammit!
-// #1: Some sort of time-sync capability
 // #2: Key-up triggering
 // #3: Cancellation
 // #4: Key-state back & forth (caps as a real cmd/ctrl, instead of a layer

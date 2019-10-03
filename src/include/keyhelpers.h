@@ -6,30 +6,40 @@
 
 using action_t = uint32_t;
 
-constexpr action_t kActionMask = 0x7800;
-constexpr action_t kKeyPress = 0x800;
-constexpr action_t kModifier = 0x1000;
-constexpr action_t kTapHold = 0x1800;
-constexpr action_t kToggleMod = 0x2000;
-constexpr action_t kKeyAndMod = 0x2800;
+constexpr action_t kActionMask = 0xF000;
+constexpr action_t kKeyPress = 0x1000;
+constexpr action_t kModifier = 0x2000;
+constexpr action_t kTapHold = 0x3000;
+// This one doesn't work, and I don't use it, so...
+// constexpr action_t kToggleMod = 0x4000;
+constexpr action_t kKeyAndMod = 0x5000;
 // This works like a shift key for a layer
-constexpr action_t kLayerShift = 0x3000;
+constexpr action_t kLayerShift = 0x6000;
 // This turns the layer on or off
-constexpr action_t kLayerToggle = 0x3800;
+constexpr action_t kLayerToggle = 0x7000;
 
 // This switches the current layer to the new one
-constexpr action_t kLayerSwitch = 0x4000;
+constexpr action_t kLayerSwitch = 0x8000;
 
 // This is for flagging consumer keycodes, as I have to handle them differently
-constexpr action_t kConsumer = 0x8000;
+constexpr action_t kConsumer = 0x800;
 constexpr action_t kConsumerMask = 0x3FF;
+constexpr action_t kKeyMask = 0xFF;
 
-inline action_t getModifiers(action_t a) {
+inline constexpr action_t getModifiers(action_t a) {
   return a & kActionMask;
 }
 
-inline action_t getKeystroke(action_t a) {
+inline constexpr action_t getKeystroke(action_t a) {
   return a & 0x7FF;
+}
+
+inline constexpr action_t getExtraMods(action_t a) {
+  return kKeyMask & (a >> 16);
+}
+
+inline constexpr action_t combineKeys(action_t a, action_t b) {
+  return a | b << 16;
 }
 
 using layer_t = uint8_t;
@@ -46,7 +56,7 @@ constexpr layer_t kSwitchLayer = 4;
 #define PK_(a) PASTE(KEY_, a)
 #define PM_(a) PASTE(MODIFIERKEY_, a)
 
-#define LEFTALT LEFT_ALT
+#define xLEFTALT LEFT_ALT
 #define RIGHTALT RIGHT_ALT
 #define LEFTGUI LEFT_GUI
 #define RIGHTGUI RIGHT_GUI
@@ -73,20 +83,20 @@ constexpr layer_t kSwitchLayer = 4;
 
 #define KEY(a) kKeyPress | PK(a)
 #define MOD(a) kModifier | PM(a)
-#define TMOD(a) kToggleMod | PM(a)
+//#define TMOD(a) kToggleMod | PM(a)
 #define CONS(a) kConsumer | PK(a)
 
-#define TAPH(a, b) kTapHold | PK(a) | (PM(b) << 16)
-#define KMOD(a, b) kKeyAndMod | PK(a) | (PM(b) << 16)
-#define MOD1(a, b) kKeyAndMod | a | (PM(b) << 16)
-#define KMOD2(a, b, c) kKeyAndMod | PK(a) | ((PM(b) | PM(c)) << 16)
-#define MOD2(a, b, c) kKeyAndMod | a | ((PM(b) | PM(c)) << 16)
-#define KMOD3(a, b, c, d) kKeyAndMod | PK(a) | ((PM(b) | PM(c) | PM(d)) << 16)
-#define MOD3(a, b, c, d) kKeyAndMod | a | ((PM(b) | PM(c) | PM(d)) << 16)
+#define TAPH(a, b) combineKeys(kTapHold | (a), b)
+#define KMOD(a, b) combineKeys(kKeyAndMod | PK(a), PM(b))
+#define MOD1(a, b) combineKeys(kKeyAndMod | a, PM(b))
+#define KMOD2(a, b, c) combineKeys(kKeyAndMod | PK(a), PM(b) | PM(c))
+#define MOD2(a, b, c) combineKeys(kKeyAndMod | a, PM(b) | PM(c))
+#define KMOD3(a, b, c, d) combineKeys(kKeyAndMod | PK(a), PM(b) | PM(c) | PM(d))
+#define MOD3(a, b, c, d) combineKeys(kKeyAndMod | a, PM(b) | PM(c) | PM(d))
 #define KMOD4(a, b, c, d, e) \
-  kKeyAndMod | PK(a) | ((PM(b) | PM(c) | PM(d) | PM(e)) << 16)
+  combineKeys(kKeyAndMod | PK(a), PM(b) | PM(c) | PM(d) | PM(e))
 #define MOD4(a, b, c, d, e) \
-  kKeyAndMod | a | ((PM(b) | PM(c) | PM(d) | PM(e)) << 16)
+  combineKeys(kKeyAndMod | a, PM(b) | PM(c) | PM(d) | PM(e))
 
 #define LYR_TOG(n) kLayerToggle | n
 #define LYR_SHIFT(n) kLayerShift | n
@@ -213,7 +223,7 @@ DK(M_LOCK, 0xF9)
 #define AL(a) MOD1(a, LEFTALT)
 #define ALK(a) KMOD(a, LEFTALT)
 #define GU(a) MOD1(a, LEFTGUI)
-#define GUK(a) KMOD((a, LEFTGUI)
+#define GUK(a) KMOD(a, LEFTGUI)
 #define COSK(a) KMOD3(a, LEFTCTRL, LEFTSHIFT, LEFTOPTION)
 #define COS(a) MOD3(a, LEFTCTRL, LEFTSHIFT, LEFTOPTION)
 #define ALLK(a) KMOD4(a, LEFTCTRL, LEFTSHIFT, LEFTOPTION, LEFTCOMMAND)
