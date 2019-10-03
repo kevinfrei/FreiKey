@@ -6,6 +6,8 @@
 #include "scanner.h"
 
 // Declarations
+constexpr uint32_t TapAndHoldTimeLimit = 100;
+
 keystate keyStates[num_keystates];
 layer_t layer_stack[layer_max + 1];
 layer_t layer_pos = 0;
@@ -153,6 +155,25 @@ void preprocessScanCode(scancode_t sc, bool pressed, uint32_t now) {
   }
 }
 
+void ProcessConsumer(keystate& state, kb_reporter& rpt) {
+  // For a consumer control button, there are no modifiers, it's
+  // just a simple call. So just call it directly:
+  if (state.down) {
+    DBG2(dumpHex(state.action & kConsumerMask, "Consumer key press: "));
+    // See all the codes in all their glory here:
+    // https://www.usb.org/sites/default/files/documents/hut1_12v2.pdf
+    // (And if that doesn't work, check here: https://www.usb.org/hid)
+    rpt.consumer_press(state.action & kConsumerMask);
+  } else {
+    DBG2(dumpHex(state.action & kConsumerMask, "Consumer key release: "));
+    rpt.consumer_release(state.action & kConsumerMask);
+    // We have to clear this thing out when we're done, because we take
+    // action on the key release as well. We don't do this for the normal
+    // keyboardReport.
+    state.scanCode = null_scan_code;
+  }
+}
+
 void ProcessKeys(uint32_t now, kb_reporter& rpt) {
   uint8_t mods = 0;
 
@@ -160,62 +181,51 @@ void ProcessKeys(uint32_t now, kb_reporter& rpt) {
     if (state.scanCode == null_scan_code)
       continue;
     if ((state.action & kConsumer) == kConsumer) {
-      // For a consumer control button, there are no modifiers, it's
-      // just a simple call. So just call it directly:
-      if (state.down) {
-        DBG2(dumpHex(state.action & kConsumerMask, "Consumer key press: "));
-        // See all the codes in all their glory here:
-        // https://www.usb.org/sites/default/files/documents/hut1_12v2.pdf
-        // (And if that doesn't work, check here: https://www.usb.org/hid)
-        rpt.consumer_press(state.action & kConsumerMask);
-      } else {
-        DBG2(dumpHex(state.action & kConsumerMask, "Consumer key release: "));
-        rpt.consumer_release(state.action & kConsumerMask);
-        // We have to clear this thing out when we're done, because we take
-        // action on the key release as well. We don't do this for the normal
-        // keyboardReport.
-        state.scanCode = null_scan_code;
-      }
+      // TODO: Add support for kTapHold here
+      ProcessConsumer(state, rpt);
     } else if (state.down) {
       switch (state.action & kActionMask) {
         case kTapHold:
-          if (now - state.lastChange > 200) {
+          // If we've exceeded the time limit, set the modifier
+          // If we're under the time limit, and it's a key *down* we shouldn't
+          // do anything, because we won't know what to do until after the time
+          // limit is hit, or a key-up occurs.
+          if (now - state.lastChange > TapAndHoldTimeLimit) {
             // Holding
-            mods |= (state.action >> 16) & 0xff;
-            rpt.set_modifier(mods);
-          } else {
-            // Tapping
-            uint8_t key = state.action & 0xff;
+            rpt.set_modifier(getExtraMods(state.action));
+          } else if (!state.down) {
+            // We've head it for less than the time allotted, so send the
+            // tapping key
+            // TODO: Make sure we send the key up immediate after this!
+            action_t key = getKeystroke(state.action);
             if (key != 0) {
-              //              report[repsize++] = key;
               rpt.add_key_press(key);
             }
           }
           break;
         case kKeyAndMod: {
-          mods |= (state.action >> 16) & 0xff;
-          rpt.set_modifier(mods);
-          uint8_t key = state.action & 0xff;
+          rpt.set_modifier(getExtraMods(state.action));
+          action_t key = getKeystroke(state.action);
           if (key != 0) {
-            //            report[repsize++] = key;
             rpt.add_key_press(key);
           }
         } break;
         case kKeyPress: {
-          uint8_t key = state.action & 0xff;
+          action_t key = getKeystroke(state.action);
           if (key != 0) {
-            //            report[repsize++] = key;
             rpt.add_key_press(key);
           }
         } break;
         case kModifier:
-          mods |= state.action & 0xff;
-          rpt.set_modifier(mods);
+          rpt.set_modifier(getKeystroke(state.action));
           break;
+          /*
+        This doesn't work, and I don't use it anyway
         case kToggleMod:
           mods ^= state.action & 0xff;
           rpt.set_modifier(mods);
           break;
+        */
       }
     }
   }

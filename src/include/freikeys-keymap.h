@@ -39,7 +39,7 @@ const action_t keymap[][BoardIO::matrix_size * 2] = {
      RROW3(KEY(H), KEY(J), KEY(K), KEY(L), SEMI_, QUOTE_),
      RROW4(KEY(N), KEY(M), COMMA_, DOT_, KEY(SLASH), RSHFT),
      RROW5(ENTER_, SPACE_, EQ_, UP_, VOLDN_, MUTE_, VOLUP_),
-     RROW6(KEY(CBRC), LYR_WIN, LEFT_, DOWN_, RIGHT_, ROPT)},
+     RROW6(KEY(CBRC), LYR_WIN, LEFT_, DOWN_, RIGHT_, TAPH(NXTT_, ROPT))},
 
     {// LAYER_WIN_BASE (1)
      // Put Alt & GUI in the right spots, Add the Insert key (instead of PRVT),
