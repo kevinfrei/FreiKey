@@ -2,14 +2,15 @@
 ifeq ($(OS),Windows_NT)
 	ARD=${HOME}/AppData/Local
 	SERIAL_PORT=COM9
+	# This should be windows/mac/linux specific, I imagine
+	TOOLS_PATH=${ARD}/Arduino15/packages/arduino/tools/arm-none-eabi-gcc/7-2017q4
 else ifeq ($(shell uname -s), Darwin)
 	ARD=${HOME}/Library
 	SERIAL_PORT=$(shell ls /dev/cu.usbmodem14*)
+	TOOLS_PATH=/usr/local/opt/gcc-arm-none-eabi
 else
   $(error No Linux support yet)
 endif
-# This should be windows/mac/linux specific, I imagine
-TOOLS_PATH=${ARD}/Arduino15/packages/arduino/tools/arm-none-eabi-gcc/7-2017q4
 
 # Necessary configuration stuff
 BOARD_NAME=feather52840
