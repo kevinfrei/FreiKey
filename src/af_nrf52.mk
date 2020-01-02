@@ -45,13 +45,13 @@ IDE_VERSION=10808
 BUILD_PROJECT_NAME=${PROJ_NAME}
 ifeq (${BOARD_NAME}, feather52832)
   BUILD_LDSCRIPT=nrf52832_s132_v6.ld
-  BUILD_EXTRA_FLAGS=-DNRF52832_XXAA -DNRF52 -DARDUINO_NRF52_FEATHER
+  BUILD_EXTRA_FLAGS=-DNRF52832_XXAA -DNRF52
   BUILD_VARIANT=feather_nrf52832
   BUILD_CORE=nRF5
   BUILD_BOARD=NRF52832_FEATHER
   BUILD_F_CPU=64000000
   BUILD_MCU=cortex-m4
-  UPLOAD_MAXIMUM_DATA_SIZE=51072
+  UPLOAD_MAXIMUM_DATA_SIZE=52224
   UPLOAD_MAXIMUM_SIZE=290816
   UPLOAD_NATIVE_USB=false
   UPLOAD_WAIT_FOR_UPLOAD_PORT=false
@@ -85,7 +85,7 @@ else ifeq (${BOARD_NAME}, feather52840)
   BUILD_BOARD=NRF52840_FEATHER
   BUILD_F_CPU=64000000
   BUILD_MCU=cortex-m4
-  UPLOAD_MAXIMUM_DATA_SIZE=248832
+  UPLOAD_MAXIMUM_DATA_SIZE=237568
   UPLOAD_MAXIMUM_SIZE=815104
   UPLOAD_WAIT_FOR_UPLOAD_PORT=true
   UPLOAD_USE_1200BPS_TOUCH=true
@@ -115,6 +115,47 @@ else ifeq (${BOARD_NAME}, feather52840)
   else ifeq (${IN_DEBUG}, l3)
     BUILD_DEBUG_FLAGS=-DCFG_DEBUG=3
   endif
+else ifeq (${BOARD_NAME}, itsybitsy52840)
+  BUILD_PID=0x8051
+  BUILD_VID=0x239A
+  BUILD_LDSCRIPT=nrf52840_s140_v6.ld
+  BUILD_USB_PRODUCT="ItsyBitsy nRF52840 Express"
+  BUILD_USB_MANUFACTURER="Adafruit LLC"
+  BUILD_VARIANT=itsybitsy_nrf52840_express
+  BUILD_CORE=nRF5
+  BUILD_BOARD=NRF52840_ITSYBITSY
+  BUILD_F_CPU=64000000
+  BUILD_MCU=cortex-m4
+  UPLOAD_MAXIMUM_DATA_SIZE=237568
+  UPLOAD_MAXIMUM_SIZE=815104
+  UPLOAD_WAIT_FOR_UPLOAD_PORT=true
+  UPLOAD_USE_1200BPS_TOUCH=true
+  UPLOAD_PROTOCOL=nrfutil
+  UPLOAD_TOOL=nrfutil
+  BOOTLOADER_TOOL=bootburn
+  PID_3=0x8052
+  PID_2=0x0052
+  PID_1=0x0051
+  PID_0=0x8051
+  VID_3=0x239A
+  VID_2=0x239A
+  VID_1=0x239A
+  VID_0=0x239A
+  NAME=Adafruit ItsyBitsy nRF52840 Express
+  ifeq (${IN_SOFTDEVICE}, s140v6)
+    BUILD_SD_FWID=0x00B6
+    BUILD_SD_VERSION=6.1.1
+    BUILD_SD_NAME=s140
+  endif
+  ifeq (${IN_DEBUG}, l0)
+    BUILD_DEBUG_FLAGS=-DCFG_DEBUG=0
+  else ifeq (${IN_DEBUG}, l1)
+    BUILD_DEBUG_FLAGS=-DCFG_DEBUG=1
+  else ifeq (${IN_DEBUG}, l2)
+    BUILD_DEBUG_FLAGS=-DCFG_DEBUG=2
+  else ifeq (${IN_DEBUG}, l3)
+    BUILD_DEBUG_FLAGS=-DCFG_DEBUG=3
+  endif
 else ifeq (${BOARD_NAME}, cplaynrf52840)
   BUILD_PID=0x8045
   BUILD_VID=0x239A
@@ -123,10 +164,10 @@ else ifeq (${BOARD_NAME}, cplaynrf52840)
   BUILD_USB_MANUFACTURER="Adafruit LLC"
   BUILD_VARIANT=circuitplayground_nrf52840
   BUILD_CORE=nRF5
-  BUILD_BOARD=CIRCUITPLAY_NRF52840
+  BUILD_BOARD=NRF52840_CIRCUITPLAY
   BUILD_F_CPU=64000000
   BUILD_MCU=cortex-m4
-  UPLOAD_MAXIMUM_DATA_SIZE=248832
+  UPLOAD_MAXIMUM_DATA_SIZE=237568
   UPLOAD_MAXIMUM_SIZE=815104
   UPLOAD_WAIT_FOR_UPLOAD_PORT=true
   UPLOAD_USE_1200BPS_TOUCH=true
@@ -156,6 +197,47 @@ else ifeq (${BOARD_NAME}, cplaynrf52840)
   else ifeq (${IN_DEBUG}, l3)
     BUILD_DEBUG_FLAGS=-DCFG_DEBUG=3
   endif
+else ifeq (${BOARD_NAME}, cluenrf52840)
+  BUILD_PID=0x8071
+  BUILD_VID=0x239A
+  BUILD_LDSCRIPT=nrf52840_s140_v6.ld
+  BUILD_USB_PRODUCT="Adafruit Clue"
+  BUILD_USB_MANUFACTURER="Adafruit LLC"
+  BUILD_VARIANT=clue_nrf52840
+  BUILD_CORE=nRF5
+  BUILD_BOARD=NRF52840_CLUE
+  BUILD_F_CPU=64000000
+  BUILD_MCU=cortex-m4
+  UPLOAD_MAXIMUM_DATA_SIZE=248832
+  UPLOAD_MAXIMUM_SIZE=815104
+  UPLOAD_WAIT_FOR_UPLOAD_PORT=true
+  UPLOAD_USE_1200BPS_TOUCH=true
+  UPLOAD_PROTOCOL=nrfutil
+  UPLOAD_TOOL=nrfutil
+  BOOTLOADER_TOOL=bootburn
+  PID_3=0x8071
+  PID_2=0x0071
+  PID_1=0x0072
+  PID_0=0x8072
+  VID_3=0x239A
+  VID_2=0x239A
+  VID_1=0x239A
+  VID_0=0x239A
+  NAME=Adafruit CLUE
+  ifeq (${IN_SOFTDEVICE}, s140v6)
+    BUILD_SD_FWID=0x00B6
+    BUILD_SD_VERSION=6.1.1
+    BUILD_SD_NAME=s140
+  endif
+  ifeq (${IN_DEBUG}, l0)
+    BUILD_DEBUG_FLAGS=-DCFG_DEBUG=0
+  else ifeq (${IN_DEBUG}, l1)
+    BUILD_DEBUG_FLAGS=-DCFG_DEBUG=1
+  else ifeq (${IN_DEBUG}, l2)
+    BUILD_DEBUG_FLAGS=-DCFG_DEBUG=2
+  else ifeq (${IN_DEBUG}, l3)
+    BUILD_DEBUG_FLAGS=-DCFG_DEBUG=3
+  endif
 else ifeq (${BOARD_NAME}, metro52840)
   BUILD_PID=0x803F
   BUILD_VID=0x239A
@@ -167,7 +249,7 @@ else ifeq (${BOARD_NAME}, metro52840)
   BUILD_BOARD=NRF52840_METRO
   BUILD_F_CPU=64000000
   BUILD_MCU=cortex-m4
-  UPLOAD_MAXIMUM_DATA_SIZE=248832
+  UPLOAD_MAXIMUM_DATA_SIZE=237568
   UPLOAD_MAXIMUM_SIZE=815104
   UPLOAD_WAIT_FOR_UPLOAD_PORT=true
   UPLOAD_USE_1200BPS_TOUCH=true
@@ -208,7 +290,7 @@ else ifeq (${BOARD_NAME}, pca10056)
   BUILD_BOARD=NRF52840_PCA10056
   BUILD_F_CPU=64000000
   BUILD_MCU=cortex-m4
-  UPLOAD_MAXIMUM_DATA_SIZE=248832
+  UPLOAD_MAXIMUM_DATA_SIZE=237568
   UPLOAD_MAXIMUM_SIZE=815104
   UPLOAD_WAIT_FOR_UPLOAD_PORT=true
   UPLOAD_USE_1200BPS_TOUCH=true
@@ -236,15 +318,19 @@ NORDIC_PATH=${BUILD_CORE_PATH}/nordic
 RTOS_PATH=${BUILD_CORE_PATH}/freertos
 BUILD_FLAGS_USB= -DUSBCON -DUSE_TINYUSB -DUSB_VID=${BUILD_VID} -DUSB_PID=${BUILD_PID} '-DUSB_MANUFACTURER=${BUILD_USB_MANUFACTURER}' '-DUSB_PRODUCT=${BUILD_USB_PRODUCT}'
 ifeq (${BOARD_NAME}, feather52840)
-  BUILD_EXTRA_FLAGS=-DNRF52840_XXAA -DARDUINO_NRF52_FEATHER ${BUILD_FLAGS_USB}
+  BUILD_EXTRA_FLAGS=-DNRF52840_XXAA ${BUILD_FLAGS_USB}
+else ifeq (${BOARD_NAME}, itsybitsy52840)
+  BUILD_EXTRA_FLAGS=-DNRF52840_XXAA -DARDUINO_NRF52_ITSYBITSY ${BUILD_FLAGS_USB}
 else ifeq (${BOARD_NAME}, cplaynrf52840)
-  BUILD_EXTRA_FLAGS=-DNRF52840_XXAA -DARDUINO_NRF52840_CIRCUITPLAY ${BUILD_FLAGS_USB}
+  BUILD_EXTRA_FLAGS=-DNRF52840_XXAA ${BUILD_FLAGS_USB}
+else ifeq (${BOARD_NAME}, cluenrf52840)
+  BUILD_EXTRA_FLAGS=-DNRF52840_XXAA ${BUILD_FLAGS_USB}
 else ifeq (${BOARD_NAME}, metro52840)
-  BUILD_EXTRA_FLAGS=-DNRF52840_XXAA -DARDUINO_NRF52_FEATHER ${BUILD_FLAGS_USB}
+  BUILD_EXTRA_FLAGS=-DNRF52840_XXAA ${BUILD_FLAGS_USB}
 else ifeq (${BOARD_NAME}, pca10056)
   BUILD_EXTRA_FLAGS=-DNRF52840_XXAA ${BUILD_FLAGS_USB}
 endif
-BUILD_FLAGS_NRF= -DSOFTDEVICE_PRESENT -DARDUINO_FEATHER52 -DARDUINO_NRF52_ADAFRUIT -DNRF52_SERIES -DLFS_NAME_MAX=64 -Ofast ${BUILD_DEBUG_FLAGS} "-I${BUILD_CORE_PATH}/cmsis/include" "-I${NORDIC_PATH}" "-I${NORDIC_PATH}/nrfx" "-I${NORDIC_PATH}/nrfx/hal" "-I${NORDIC_PATH}/nrfx/mdk" "-I${NORDIC_PATH}/nrfx/soc" "-I${NORDIC_PATH}/nrfx/drivers/include" "-I${NORDIC_PATH}/nrfx/drivers/src" "-I${NORDIC_PATH}/softdevice/${BUILD_SD_NAME}_nrf52_${BUILD_SD_VERSION}_API/include" "-I${RTOS_PATH}/Source/include" "-I${RTOS_PATH}/config" "-I${RTOS_PATH}/portable/GCC/nrf52" "-I${RTOS_PATH}/portable/CMSIS/nrf52" "-I${BUILD_CORE_PATH}/sysview/SEGGER" "-I${BUILD_CORE_PATH}/sysview/Config" "-I${BUILD_CORE_PATH}/Adafruit_TinyUSB_Core" "-I${BUILD_CORE_PATH}/Adafruit_TinyUSB_Core/tinyusb/src"
+BUILD_FLAGS_NRF= -DSOFTDEVICE_PRESENT -DARDUINO_NRF52_ADAFRUIT -DNRF52_SERIES -DLFS_NAME_MAX=64 -Ofast ${BUILD_DEBUG_FLAGS} "-I${BUILD_CORE_PATH}/cmsis/include" "-I${NORDIC_PATH}" "-I${NORDIC_PATH}/nrfx" "-I${NORDIC_PATH}/nrfx/hal" "-I${NORDIC_PATH}/nrfx/mdk" "-I${NORDIC_PATH}/nrfx/soc" "-I${NORDIC_PATH}/nrfx/drivers/include" "-I${NORDIC_PATH}/nrfx/drivers/src" "-I${NORDIC_PATH}/softdevice/${BUILD_SD_NAME}_nrf52_${BUILD_SD_VERSION}_API/include" "-I${RTOS_PATH}/Source/include" "-I${RTOS_PATH}/config" "-I${RTOS_PATH}/portable/GCC/nrf52" "-I${RTOS_PATH}/portable/CMSIS/nrf52" "-I${BUILD_CORE_PATH}/sysview/SEGGER" "-I${BUILD_CORE_PATH}/sysview/Config" "-I${BUILD_CORE_PATH}/TinyUSB" "-I${BUILD_CORE_PATH}/TinyUSB/Adafruit_TinyUSB_ArduinoCore" "-I${BUILD_CORE_PATH}/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src"
 BUILD_DEBUG_FLAGS=-DCFG_DEBUG=0
 BUILD_FLOAT_FLAGS=-mfloat-abi=hard -mfpu=fpv4-sp-d16 -u _printf_float
 COMPILER_SIZE_CMD=arm-none-eabi-size
@@ -270,7 +356,7 @@ COMPILER_C_FLAGS=-mcpu=${BUILD_MCU} -mthumb -c -g ${COMPILER_WARNING_FLAGS} ${BU
 COMPILER_WARNING_FLAGS_ALL=-Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wno-pointer-arith
 COMPILER_WARNING_FLAGS_MORE=-Wall
 COMPILER_WARNING_FLAGS_NONE=-w
-VERSION=0.13.0
+VERSION=0.15.1
 NAME=Adafruit nRF52 Boards
 ifeq (${RUNTIME_OS}, macosx)
   TOOLS_NRFUTIL_CMD=${RUNTIME_PLATFORM_PATH}/tools/adafruit-nrfutil/macos/adafruit-nrfutil
@@ -285,18 +371,7 @@ ifeq (${UPLOAD_TOOL}, nrfutil)
   UPLOAD_PATTERN="${TOOLS_NRFUTIL_CMD}" ${UPLOAD_VERBOSE} dfu serial -pkg "$(abspath ${BUILD_PATH})/${BUILD_PROJECT_NAME}.zip" -p ${SERIAL_PORT} -b 115200 --singlebank
 endif
 ifeq (${BUILD_CORE}, nRF5)
-  C_SYS_SRCS+=libs/Adafruit/cores/nRF5/Adafruit_TinyUSB_Core/tinyusb/src/class/cdc/cdc_device.c \
-    libs/Adafruit/cores/nRF5/Adafruit_TinyUSB_Core/tinyusb/src/class/hid/hid_device.c \
-    libs/Adafruit/cores/nRF5/Adafruit_TinyUSB_Core/tinyusb/src/class/midi/midi_device.c \
-    libs/Adafruit/cores/nRF5/Adafruit_TinyUSB_Core/tinyusb/src/class/msc/msc_device.c \
-    libs/Adafruit/cores/nRF5/Adafruit_TinyUSB_Core/tinyusb/src/class/vendor/vendor_device.c \
-    libs/Adafruit/cores/nRF5/Adafruit_TinyUSB_Core/tinyusb/src/common/tusb_fifo.c \
-    libs/Adafruit/cores/nRF5/Adafruit_TinyUSB_Core/tinyusb/src/device/usbd.c \
-    libs/Adafruit/cores/nRF5/Adafruit_TinyUSB_Core/tinyusb/src/device/usbd_control.c \
-    libs/Adafruit/cores/nRF5/Adafruit_TinyUSB_Core/tinyusb/src/portable/nordic/nrf5x/dcd_nrf5x.c \
-    libs/Adafruit/cores/nRF5/Adafruit_TinyUSB_Core/tinyusb/src/portable/nordic/nrf5x/hal_nrf5x.c \
-    libs/Adafruit/cores/nRF5/Adafruit_TinyUSB_Core/tinyusb/src/tusb.c \
-    libs/Adafruit/cores/nRF5/WInterrupts.c \
+  C_SYS_SRCS+=libs/Adafruit/cores/nRF5/WInterrupts.c \
     libs/Adafruit/cores/nRF5/avr/dtostrf.c \
     libs/Adafruit/cores/nRF5/delay.c \
     libs/Adafruit/cores/nRF5/freertos/Source/croutine.c \
@@ -314,12 +389,12 @@ ifeq (${BUILD_CORE}, nRF5)
     libs/Adafruit/cores/nRF5/itoa.c \
     libs/Adafruit/cores/nRF5/nordic/nrfx/drivers/src/nrfx_power.c \
     libs/Adafruit/cores/nRF5/nordic/nrfx/drivers/src/nrfx_qspi.c \
+    libs/Adafruit/cores/nRF5/nordic/nrfx/drivers/src/nrfx_spim.c \
     libs/Adafruit/cores/nRF5/nordic/nrfx/hal/nrf_ecb.c \
     libs/Adafruit/cores/nRF5/nordic/nrfx/hal/nrf_nvmc.c \
     libs/Adafruit/cores/nRF5/nordic/nrfx/mdk/system_nrf52.c \
     libs/Adafruit/cores/nRF5/nordic/nrfx/mdk/system_nrf52840.c \
     libs/Adafruit/cores/nRF5/pulse.c \
-    libs/Adafruit/cores/nRF5/syscall_newlib.c \
     libs/Adafruit/cores/nRF5/sysview/Config/SEGGER_SYSVIEW_Config_FreeRTOS.c \
     libs/Adafruit/cores/nRF5/sysview/SEGGER/SEGGER_RTT.c \
     libs/Adafruit/cores/nRF5/sysview/SEGGER/SEGGER_SYSVIEW.c \
@@ -331,14 +406,12 @@ ifeq (${BUILD_CORE}, nRF5)
     libs/Adafruit/cores/nRF5/wiring_digital.c \
     libs/Adafruit/cores/nRF5/wiring_private.c \
     libs/Adafruit/cores/nRF5/wiring_shift.c
-  CPP_SYS_SRCS+=libs/Adafruit/cores/nRF5/Adafruit_TinyUSB_Core/Adafruit_TinyUSB_Core.cpp \
-    libs/Adafruit/cores/nRF5/Adafruit_TinyUSB_Core/Adafruit_USBD_CDC.cpp \
-    libs/Adafruit/cores/nRF5/Adafruit_TinyUSB_Core/Adafruit_USBD_Device.cpp \
-    libs/Adafruit/cores/nRF5/HardwarePWM.cpp \
+  CPP_SYS_SRCS+=libs/Adafruit/cores/nRF5/HardwarePWM.cpp \
     libs/Adafruit/cores/nRF5/IPAddress.cpp \
     libs/Adafruit/cores/nRF5/Print.cpp \
     libs/Adafruit/cores/nRF5/RingBuffer.cpp \
     libs/Adafruit/cores/nRF5/Stream.cpp \
+    libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_nRF.cpp \
     libs/Adafruit/cores/nRF5/Tone.cpp \
     libs/Adafruit/cores/nRF5/Uart.cpp \
     libs/Adafruit/cores/nRF5/WMath.cpp \
@@ -347,6 +420,7 @@ ifeq (${BUILD_CORE}, nRF5)
     libs/Adafruit/cores/nRF5/main.cpp \
     libs/Adafruit/cores/nRF5/new.cpp \
     libs/Adafruit/cores/nRF5/rtos.cpp \
+    libs/Adafruit/cores/nRF5/utility/SoftwareTimer.cpp \
     libs/Adafruit/cores/nRF5/utility/adafruit_fifo.cpp \
     libs/Adafruit/cores/nRF5/utility/debug.cpp \
     libs/Adafruit/cores/nRF5/wiring_analog.cpp
@@ -354,7 +428,7 @@ ifeq (${BUILD_CORE}, nRF5)
     libs/Adafruit/cores/nRF5/linker/gcc_startup_nrf52840.S \
     libs/Adafruit/cores/nRF5/pulse_asm.S
   SYS_INCLUDES+= -Ilibs/Adafruit/cores/nRF5
-  VPATH_CORE+=libs/Adafruit/cores/nRF5/Adafruit_TinyUSB_Core/tinyusb/src/class/cdc:libs/Adafruit/cores/nRF5/Adafruit_TinyUSB_Core/tinyusb/src/class/hid:libs/Adafruit/cores/nRF5/Adafruit_TinyUSB_Core/tinyusb/src/class/midi:libs/Adafruit/cores/nRF5/Adafruit_TinyUSB_Core/tinyusb/src/class/msc:libs/Adafruit/cores/nRF5/Adafruit_TinyUSB_Core/tinyusb/src/class/vendor:libs/Adafruit/cores/nRF5/Adafruit_TinyUSB_Core/tinyusb/src/common:libs/Adafruit/cores/nRF5/Adafruit_TinyUSB_Core/tinyusb/src/device:libs/Adafruit/cores/nRF5/Adafruit_TinyUSB_Core/tinyusb/src/portable/nordic/nrf5x:libs/Adafruit/cores/nRF5/Adafruit_TinyUSB_Core/tinyusb/src:libs/Adafruit/cores/nRF5:libs/Adafruit/cores/nRF5/avr:libs/Adafruit/cores/nRF5/freertos/Source:libs/Adafruit/cores/nRF5/freertos/Source/portable/MemMang:libs/Adafruit/cores/nRF5/freertos/portable/CMSIS/nrf52:libs/Adafruit/cores/nRF5/freertos/portable/GCC/nrf52:libs/Adafruit/cores/nRF5/nordic/nrfx/drivers/src:libs/Adafruit/cores/nRF5/nordic/nrfx/hal:libs/Adafruit/cores/nRF5/nordic/nrfx/mdk:libs/Adafruit/cores/nRF5/sysview/Config:libs/Adafruit/cores/nRF5/sysview/SEGGER:libs/Adafruit/cores/nRF5/sysview:libs/Adafruit/cores/nRF5/utility:libs/Adafruit/cores/nRF5/Adafruit_TinyUSB_Core:libs/Adafruit/cores/nRF5/linker
+  VPATH_CORE+=libs/Adafruit/cores/nRF5:libs/Adafruit/cores/nRF5/avr:libs/Adafruit/cores/nRF5/freertos/Source:libs/Adafruit/cores/nRF5/freertos/Source/portable/MemMang:libs/Adafruit/cores/nRF5/freertos/portable/CMSIS/nrf52:libs/Adafruit/cores/nRF5/freertos/portable/GCC/nrf52:libs/Adafruit/cores/nRF5/nordic/nrfx/drivers/src:libs/Adafruit/cores/nRF5/nordic/nrfx/hal:libs/Adafruit/cores/nRF5/nordic/nrfx/mdk:libs/Adafruit/cores/nRF5/sysview/Config:libs/Adafruit/cores/nRF5/sysview/SEGGER:libs/Adafruit/cores/nRF5/sysview:libs/Adafruit/cores/nRF5/utility:libs/Adafruit/cores/nRF5/TinyUSB:libs/Adafruit/cores/nRF5/linker
 endif
 ifeq (${BUILD_VARIANT}, feather_nrf52832)
   CPP_SYS_SRCS+=libs/Adafruit/variants/feather_nrf52832/variant.cpp
@@ -364,10 +438,18 @@ else ifeq (${BUILD_VARIANT}, feather_nrf52840_express)
   CPP_SYS_SRCS+=libs/Adafruit/variants/feather_nrf52840_express/variant.cpp
   SYS_INCLUDES+=-Ilibs/Adafruit/variants/feather_nrf52840_express
   VPATH_CORE+=libs/Adafruit/variants/feather_nrf52840_express
+else ifeq (${BUILD_VARIANT}, itsybitsy_nrf52840_express)
+  CPP_SYS_SRCS+=libs/Adafruit/variants/itsybitsy_nrf52840_express/variant.cpp
+  SYS_INCLUDES+=-Ilibs/Adafruit/variants/itsybitsy_nrf52840_express
+  VPATH_CORE+=libs/Adafruit/variants/itsybitsy_nrf52840_express
 else ifeq (${BUILD_VARIANT}, circuitplayground_nrf52840)
   CPP_SYS_SRCS+=libs/Adafruit/variants/circuitplayground_nrf52840/variant.cpp
   SYS_INCLUDES+=-Ilibs/Adafruit/variants/circuitplayground_nrf52840
   VPATH_CORE+=libs/Adafruit/variants/circuitplayground_nrf52840
+else ifeq (${BUILD_VARIANT}, clue_nrf52840)
+  CPP_SYS_SRCS+=libs/Adafruit/variants/clue_nrf52840/variant.cpp
+  SYS_INCLUDES+=-Ilibs/Adafruit/variants/clue_nrf52840
+  VPATH_CORE+=libs/Adafruit/variants/clue_nrf52840
 else ifeq (${BUILD_VARIANT}, metro_nrf52840_express)
   CPP_SYS_SRCS+=libs/Adafruit/variants/metro_nrf52840_express/variant.cpp
   SYS_INCLUDES+=-Ilibs/Adafruit/variants/metro_nrf52840_express
@@ -385,6 +467,18 @@ ifdef LIB_ADAFRUIT_LITTLEFS
   SYS_INCLUDES+=-Ilibs/Adafruit/libraries/Adafruit_LittleFS/src \
     -Ilibs/Adafruit/libraries/Adafruit_LittleFS/src/littlefs
   VPATH_MORE+=libs/Adafruit/libraries/Adafruit_LittleFS/src/littlefs:libs/Adafruit/libraries/Adafruit_LittleFS/src
+endif
+ifdef LIB_BLEADAFRUITSERVICE
+  CPP_SYS_SRCS+=libs/Adafruit/libraries/BLEAdafruitService/src/services/BLEAdafruitAccel.cpp \
+    libs/Adafruit/libraries/BLEAdafruitService/src/services/BLEAdafruitAddressablePixel.cpp \
+    libs/Adafruit/libraries/BLEAdafruitService/src/services/BLEAdafruitButton.cpp \
+    libs/Adafruit/libraries/BLEAdafruitService/src/services/BLEAdafruitLightSensor.cpp \
+    libs/Adafruit/libraries/BLEAdafruitService/src/services/BLEAdafruitSensor.cpp \
+    libs/Adafruit/libraries/BLEAdafruitService/src/services/BLEAdafruitTemperature.cpp \
+    libs/Adafruit/libraries/BLEAdafruitService/src/services/BLEAdafruitTone.cpp
+  SYS_INCLUDES+=-Ilibs/Adafruit/libraries/BLEAdafruitService/src \
+    -Ilibs/Adafruit/libraries/BLEAdafruitService/src/services
+  VPATH_MORE+=libs/Adafruit/libraries/BLEAdafruitService/src/services
 endif
 ifdef LIB_BLEHOMEKIT
   C_SYS_SRCS+=libs/Adafruit/libraries/BLEHomekit/src/crypto/crypto.c \
@@ -469,7 +563,8 @@ ifdef LIB_ROTARYENCODER
   VPATH_MORE+=libs/Adafruit/libraries/RotaryEncoder
 endif
 ifdef LIB_SPI
-  CPP_SYS_SRCS+=libs/Adafruit/libraries/SPI/SPI.cpp
+  CPP_SYS_SRCS+=libs/Adafruit/libraries/SPI/SPI.cpp \
+    libs/Adafruit/libraries/SPI/SPI_nrf52832.cpp
   SYS_INCLUDES+=-Ilibs/Adafruit/libraries/SPI
   VPATH_MORE+=libs/Adafruit/libraries/SPI
 endif
