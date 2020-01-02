@@ -7,7 +7,6 @@ ifeq ($(OS),Windows_NT)
 else ifeq ($(shell uname -s), Darwin)
 	ARD=${HOME}/Library
 	SERIAL_PORT=$(shell ls /dev/cu.usbmodem14*)
-	# This should be windows/mac/linux specific, I imagine
 	TOOLS_PATH=/usr/local/opt/gcc-arm-none-eabi
 else
   $(error No Linux support yet)
