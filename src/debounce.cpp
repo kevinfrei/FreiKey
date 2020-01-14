@@ -9,7 +9,8 @@ uint32_t last_reported_time[BoardIO::matrix_size] = {0};
 // This is the # of msec to delay after reporting a change before reporting
 // another one. Rumor has it that Cherry claims a debounce period of 5ms, but
 // I still sometimes see a bounce or two, so I've increased it a bit.
-// 25ms translates to a typing speed of about 400 WPM, which seems plenty fast...
+// 25ms translates to a typing speed of about 400 WPM, which seems plenty
+// fast...
 constexpr uint8_t debounce_delay = 25;
 
 BoardIO::bits debounce(BoardIO::bits cur_switches, uint32_t now) {

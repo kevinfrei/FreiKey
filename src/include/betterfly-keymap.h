@@ -72,7 +72,6 @@ const action_t keymap[][BoardIO::matrix_size] = {
      LROW5(CTLCM, OPTCM, ___, CM_PUP, CMK(GRAVE), OPK(BKSP)),
      RROW5(CM_SPC, CM_EQ, CM_UP, CM_OBRC, MAC_WNMX, CM_CBRC),
      LROW6(PRVT_, CMK(HOME), CM_PDN, CMK(END), OPK(DEL)),
-     RROW6(CM_RET, OP_LEFT, CM_DN, OP_RIGHT, NXTT_)}
-};
+     RROW6(CM_RET, OP_LEFT, CM_DN, OP_RIGHT, NXTT_)}};
 
 #endif

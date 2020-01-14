@@ -1,17 +1,15 @@
 #include "sysstuff.h"
 
-#include "Adafruit_NeoPixel.h"
-
 #include "comm.h"
 #include "dbgcfg.h"
 #include "dongle.h"
 #include "hardware.h"
 #include "helpers.h"
+#include "kbreporter.h"
 #include "keymap.h"
 #include "keystate.h"
 #include "scanner.h"
 #include "sync.h"
-#include "kbreporter.h"
 
 // I'm going to update this to keep track of additional state.
 // Each key 'previously' pressed should have a 'time last pressed'

@@ -1,8 +1,8 @@
 #include "sysstuff.h"
 
-#include "kbclient.h"
 #include "comm.h"
 #include "hardware.h"
+#include "kbclient.h"
 
 void KBClient::setup(const char* name) {
   DBG(Serial.begin(115200));

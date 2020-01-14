@@ -14,6 +14,7 @@ class Dongle {
   static Adafruit_USBD_HID usb_hid;
   static uint16_t leftHandle;
   static uint16_t rightHandle;
+
  public:
   static BLEClientUart leftUart;
   static BLEClientUart rightUart;

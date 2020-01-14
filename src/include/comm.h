@@ -50,7 +50,7 @@ void scan(uint8_t which, const BoardIO::bits&);
 void battery(uint8_t which, uint8_t pct);
 void time(uint8_t which, uint32_t time);
 #else
-void data(uint16_t handle);//BLEUart& uart);
+void data(uint16_t handle); // BLEUart& uart);
 void sync();
 void set_led(uint8_t brightness);
 void set_red(bool on);
