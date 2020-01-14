@@ -145,7 +145,7 @@ constexpr uint8_t blueicon[] = {
     0x06, 0xC0, // ---- -xx- xx-
     0x07, 0x80, // ---- -xxx x--
     0x07, 0x00, // ---- -xxx ---
-    0x06, 0x00  // ---- -xx- ---
+    0x06, 0x00 // ---- -xx- ---
 };
 struct layer {
   union {
@@ -156,7 +156,8 @@ struct layer {
 
   layer(void (*r)(uint8_t x, uint8_t o))
       : render(r), w(0), h(0), xo(0), yo(0) {}
-  layer(const uint8_t* buf, uint8_t w, uint8_t h, uint8_t xo = 0, uint8_t yo = 0)
+  layer(
+      const uint8_t* buf, uint8_t w, uint8_t h, uint8_t xo = 0, uint8_t yo = 0)
       : buffer(buf), w(w), h(h), xo(xo), yo(yo) {}
   void draw(uint8_t x, uint8_t y) {
     if (w) {

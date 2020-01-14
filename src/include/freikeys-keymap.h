@@ -1,7 +1,7 @@
 #pragma once
 
-#include "keyhelpers.h"
 #include "boardio.h"
+#include "keyhelpers.h"
 
 #if defined(STATUS_DUMP)
 // For the status dumper thingamajig

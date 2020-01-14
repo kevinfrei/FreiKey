@@ -50,8 +50,7 @@ void cent_connect(uint16_t conn_handle) {
   // I ought to at least make sure the peer_name is LHS_NAME, right?
   if (!strcmp(LHS_NAME, peer_name) && clientUart.discover(conn_handle)) {
     remoteUart = &clientUart;
-  }
-  else {
+  } else {
     DBG(Serial.println("[Cent] Not connecting to the client: wrong name"));
     DBG(Serial.printf("Requester name: %s\n", peer_name));
     Bluefruit.Connection(conn_handle)->disconnect();

@@ -1,7 +1,5 @@
 #include "sysstuff.h"
 
-#include "Adafruit_NeoPixel.h"
-
 #include "comm.h"
 #include "dbgcfg.h"
 #include "dongle.h"

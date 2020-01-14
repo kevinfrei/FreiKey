@@ -1,7 +1,7 @@
 #pragma once
 
-#include "hardware.h"
 #include "boardio.h"
+#include "hardware.h"
 
 namespace state {
 

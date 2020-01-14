@@ -62,10 +62,10 @@ struct bit_array {
   bool get_bit(uint8_t bitnum) const {
     return !!(value[bitnum >> 3] & (1 << (bitnum & 7)));
   }
-  void write(const uint8_t *buffer) {
+  void write(const uint8_t* buffer) {
     memcpy(value.data(), buffer, num_bytes);
   }
-  void read(uint8_t *buffer) const {
+  void read(uint8_t* buffer) const {
     memcpy(buffer, value.data(), num_bytes);
   }
 #if defined(DEBUG)

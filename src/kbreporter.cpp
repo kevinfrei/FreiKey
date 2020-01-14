@@ -13,10 +13,12 @@ kb_reporter::kb_reporter() : mods(0), repsize(0) {
 void kb_reporter::set_modifier(uint8_t m) {
   mods = m;
 }
+
 void kb_reporter::add_key_press(uint8_t key) {
   if (repsize < 6)
     report[repsize++] = key;
 }
+
 void kb_reporter::consumer_press(uint16_t key) {
   Dongle::ConsumerPress(key);
 }

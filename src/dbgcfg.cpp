@@ -38,4 +38,3 @@ void dumpHex(uint64_t v, const char* header) {
 }
 
 #endif
-
