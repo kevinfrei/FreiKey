@@ -5,6 +5,9 @@ ifeq ($(OS),Windows_NT)
 else ifeq ($(shell uname -s), Darwin)
 	ARD=/Applications/Arduino.app/Contents/Java/hardware
 	SERIAL_PORT=$(shell ls /dev/cu.usbmodem5*)
+	TOOLS_PATH=/usr/local/opt/gcc-arm-none-eabi
+	RUNTIME_HARDWARE_PATH=${TOOLS_PATH}
+	CMD_PATH=${TOOLS_PATH}
 else
   $(error No Linux support yet)
 endif
@@ -18,9 +21,6 @@ IN_OPT=osstd
 IN_KEYS=en-us
 EXTRA_TIME_LOCAL=0
 BOARD_NAME=teensy31
-TOOLS_PATH=${ARD}/tools/arm
-RUNTIME_HARDWARE_PATH=${ARD}/teensy
-CMD_PATH=${ARD}/tools
 SERIAL_PORT_LABEL=${SERIAL_PORT}
 SERIAL_PORT_PROTOCOL=serial
 PROJ_NAME=betterfly

@@ -9,6 +9,15 @@ const char* layer_names[] = {
     "Base/Mac", "Win", "Fn", "MacCaps", "WinCaps", "WinCtrl"};
 #endif
 
+const uint32_t layer_colors[] = {
+    0x000000, // Base/mac
+    0x040000, // Windows: Red
+    0x000400, // Fn: Green
+    0x000004, // MacCaps: Blue
+    0x040004, // WinCaps: Purple
+    0x040400  // WinCtrl: Yellow
+};
+
 // TODO: I'm not happy that in order to override "modifier + key" it requires
 // that I create an entire layer. I want to be able to make caps+shift+volup
 // do something, but not cause the caps+shift thing to be a full layer.

@@ -7,9 +7,9 @@
 #include "boardio.h"
 #include "dbgcfg.h"
 #include "hardware.h"
+#include "kbreporter.h"
 #include "keyhelpers.h"
 #include "keystate.h"
-#include "kbreporter.h"
 
 // variable declarations
 constexpr uint8_t num_keystates = 10;
@@ -26,7 +26,7 @@ void layer_push(layer_t layer);
 scancode_t getNextScanCode(BoardIO::bits& delta,
                            BoardIO::bits& curState,
                            bool& pressed);
+uint32_t getColorForCurrentLayer();
 keystate* findStateSlot(scancode_t scanCode);
 void preprocessScanCode(scancode_t sc, bool pressed, uint32_t now);
-void ProcessKeys(uint32_t now, kb_reporter &rpt);
-
+void ProcessKeys(uint32_t now, kb_reporter& rpt);

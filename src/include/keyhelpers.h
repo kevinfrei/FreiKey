@@ -1,46 +1,8 @@
 #pragma once
 
-#include "sysstuff.h"
-
+#include "action.h"
 #include "dbgcfg.h"
-
-using action_t = uint32_t;
-
-constexpr action_t kActionMask = 0xF000;
-constexpr action_t kKeyPress = 0x1000;
-constexpr action_t kModifier = 0x2000;
-constexpr action_t kTapHold = 0x3000;
-// This one doesn't work, and I don't use it, so...
-// constexpr action_t kToggleMod = 0x4000;
-constexpr action_t kKeyAndMod = 0x5000;
-// This works like a shift key for a layer
-constexpr action_t kLayerShift = 0x6000;
-// This turns the layer on or off
-constexpr action_t kLayerToggle = 0x7000;
-
-// This switches the current layer to the new one
-constexpr action_t kLayerSwitch = 0x8000;
-
-// This is for flagging consumer keycodes, as I have to handle them differently
-constexpr action_t kConsumer = 0x800;
-constexpr action_t kConsumerMask = 0x3FF;
-constexpr action_t kKeyMask = 0xFF;
-
-inline constexpr action_t getModifiers(action_t a) {
-  return a & kActionMask;
-}
-
-inline constexpr action_t getKeystroke(action_t a) {
-  return a & 0x7FF;
-}
-
-inline constexpr action_t getExtraMods(action_t a) {
-  return kKeyMask & (a >> 16);
-}
-
-inline constexpr action_t combineKeys(action_t a, action_t b) {
-  return a | b << 16;
-}
+#include "sysstuff.h"
 
 using layer_t = uint8_t;
 constexpr layer_t kPushLayer = 1;
@@ -50,13 +12,15 @@ constexpr layer_t kSwitchLayer = 4;
 
 #define ___ 0
 #define PASTE(a, b) a##b
+
 #if defined(TEENSY)
+
 #define PK(a) ((PASTE(KEY_, a)) & 0x1ff)
 #define PM(a) ((PASTE(MODIFIERKEY_, a)) & 0x1ff)
 #define PK_(a) PASTE(KEY_, a)
 #define PM_(a) PASTE(MODIFIERKEY_, a)
 
-#define xLEFTALT LEFT_ALT
+#define LEFTALT LEFT_ALT
 #define RIGHTALT RIGHT_ALT
 #define LEFTGUI LEFT_GUI
 #define RIGHTGUI RIGHT_GUI
@@ -74,33 +38,34 @@ constexpr layer_t kSwitchLayer = 4;
 #define KEY_ARROW_LEFT KEY_LEFT
 #define KEY_ARROW_RIGHT KEY_RIGHT
 #define KEY_APPLICATION KEY_MENU
+
 #else
+
 #define PK(a) PASTE(HID_KEY_, a)
 #define PM(a) PASTE(KEYBOARD_MODIFIER_, a)
 #define PK_(a) PASTE(HID_KEY_, a)
 #define PM_(a) PASTE(KEYBOARD_MODIFIER_, a)
+
 #endif
 
-#define KEY(a) kKeyPress | PK(a)
-#define MOD(a) kModifier | PM(a)
+#define KEY(a) keyPress(PK(a))
+#define MOD(a) modPress(PM(a))
 //#define TMOD(a) kToggleMod | PM(a)
-#define CONS(a) kConsumer | PK(a)
+#define CONS(a) consPress(PK(a))
 
-#define TAPH(a, b) combineKeys(kTapHold | (a), b)
-#define KMOD(a, b) combineKeys(kKeyAndMod | PK(a), PM(b))
-#define MOD1(a, b) combineKeys(kKeyAndMod | a, PM(b))
-#define KMOD2(a, b, c) combineKeys(kKeyAndMod | PK(a), PM(b) | PM(c))
-#define MOD2(a, b, c) combineKeys(kKeyAndMod | a, PM(b) | PM(c))
-#define KMOD3(a, b, c, d) combineKeys(kKeyAndMod | PK(a), PM(b) | PM(c) | PM(d))
-#define MOD3(a, b, c, d) combineKeys(kKeyAndMod | a, PM(b) | PM(c) | PM(d))
-#define KMOD4(a, b, c, d, e) \
-  combineKeys(kKeyAndMod | PK(a), PM(b) | PM(c) | PM(d) | PM(e))
-#define MOD4(a, b, c, d, e) \
-  combineKeys(kKeyAndMod | a, PM(b) | PM(c) | PM(d) | PM(e))
+#define TAPH(a, b) tapAndHold(a, b)
+#define KMOD(a, b) keyAndModifier(PK(a), PM(b))
+#define MOD1(a, b) keyAndModifier(a, PM(b))
+#define KMOD2(a, b, c) keyAndModifiers(PK(a), PM(b), PM(c))
+#define MOD2(a, b, c) keyAndModifiers(a, PM(b), PM(c))
+#define KMOD3(a, b, c, d) keyAndModifiers(PK(a), PM(b), PM(c), PM(d))
+#define MOD3(a, b, c, d) keyAndModifiers(a, PM(b), PM(c), PM(d))
+#define KMOD4(a, b, c, d, e) keyAndModifiers(PK(a), PM(b), PM(c), PM(d), PM(e))
+#define MOD4(a, b, c, d, e) keyAndModifiers(a, PM(b), PM(c), PM(d), PM(e))
 
-#define LYR_TOG(n) kLayerToggle | n
-#define LYR_SHIFT(n) kLayerShift | n
-#define LYR_SET(n) kLayerSwitch | n
+#define LYR_TOG(n) layerToggle(n)
+#define LYR_SHIFT(n) layerShift(n)
+#define LYR_SET(n) layerSwitch(n)
 
 #if defined(ADAFRUIT)
 

@@ -7,11 +7,11 @@
 #include "dongle.h"
 #include "hardware.h"
 #include "helpers.h"
+#include "kbreporter.h"
 #include "keymap.h"
 #include "keystate.h"
 #include "scanner.h"
 #include "sync.h"
-#include "kbreporter.h"
 
 // I'm going to update this to keep track of additional state.
 // Each key 'previously' pressed should have a 'time last pressed'
@@ -116,6 +116,10 @@ void loop() {
     DBG2(downLeft.dump());
     DBG2(Serial.print("Right side "));
     DBG2(downRight.dump());
+
+    // Update the layer color on the dongle
+    uint32_t color = getColorForCurrentLayer();
+    Dongle::setRGB((color >> 16) & 0xff, (color >> 8) & 0xff, color & 0xff);
   }
 
   waitForEvent(); // Request CPU enter low-power mode until an event occurs

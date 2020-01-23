@@ -150,10 +150,10 @@ void comm::recv::time(uint8_t which, uint32_t time) {
   uint32_t locUpdate = millis();
   if (which == comm::LEFT_SIDE) {
     DBG2(dumpVal(time, "Left time "));
-    digitalWrite(LED_BLUE, HIGH);
+    // digitalWrite(LED_BLUE, HIGH);
   } else {
     DBG2(dumpVal(time, "Right time "));
-    digitalWrite(LED_RED, HIGH);
+    // digitalWrite(LED_RED, HIGH);
   }
   DBG2(dumpVal(locUpdate, "Local time "));
   DBG2(dumpVal(locUpdate - locTime, "Latency: "));
