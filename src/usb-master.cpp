@@ -119,7 +119,7 @@ void loop() {
 
     // Update the layer color on the dongle
     uint32_t color = getColorForCurrentLayer();
-    Dongle::setRGB((color >> 16) & 0xff, (color >> 8) & 0xff, color & 0xff);
+    Dongle::setRGB(color);
   }
 
   waitForEvent(); // Request CPU enter low-power mode until an event occurs

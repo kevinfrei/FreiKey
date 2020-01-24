@@ -23,7 +23,7 @@ PROJ_NAME=usb-master
 
 # This is how to add new flags
 # -DDEBUG=1/2
-COMPILER_CPP_EXTRA_FLAGS=-DUSB_MASTER
+COMPILER_CPP_EXTRA_FLAGS=-DUSB_MASTER -DDEBUG=1
 
 # This is how to add libraries
 LIB_BLUEFRUIT52LIB=1

@@ -54,8 +54,8 @@ constexpr layer_t kSwitchLayer = 4;
 #define CONS(a) consPress(PK(a))
 
 #define TAPH(a, b) tapAndHold(a, b)
-#define KMOD(a, b) keyAndModifier(PK(a), PM(b))
-#define MOD1(a, b) keyAndModifier(a, PM(b))
+#define KMOD(a, b) keyAndModifiers(PK(a), PM(b))
+#define MOD1(a, b) keyAndModifiers(a, PM(b))
 #define KMOD2(a, b, c) keyAndModifiers(PK(a), PM(b), PM(c))
 #define MOD2(a, b, c) keyAndModifiers(a, PM(b), PM(c))
 #define KMOD3(a, b, c, d) keyAndModifiers(PK(a), PM(b), PM(c), PM(d))

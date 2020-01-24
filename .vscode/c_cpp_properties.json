@@ -1,66 +1,64 @@
 {
-    "env": {
-        "gccRoot": "${workspaceRoot}/../../Library/Arduino15/packages/arduino/tools/arm-none-eabi-gcc/7-2017q4",
-        "gccVer": "7.2.1",
-        "srcRoot": "${workspaceRoot}/src",
-        "adafruitRoot": "${workspaceRoot}/src/libs/Adafruit",
-        "nrfRoot": "${workspaceRoot}/src/libs/Adafruit/cores/nRF5",
-        "variableReference": "https://code.visualstudio.com/docs/editor/variables-reference",
-        "fileReference": "https://github.com/Microsoft/vscode-cpptools/blob/master/Documentation/LanguageServer/c_cpp_properties.json.md"
+  "env": {
+    "gccRoot": "/usr/local/opt/gcc-arm-none-eabi",
+    "gccVer": "8.3.1",
+    "srcRoot": "${workspaceRoot}/src",
+    "variableReference": "https://code.visualstudio.com/docs/editor/variables-reference",
+    "fileReference": "https://github.com/Microsoft/vscode-cpptools/blob/master/Documentation/LanguageServer/c_cpp_properties.json.md"
+  },
+  "configurations": [
+    {
+      "name": "Master",
+      "intelliSenseMode": "gcc-x86",
+      "browse": {
+        "path": [],
+        "limitSymbolsToIncludedHeaders": true,
+        "databaseFilename": ""
+      },
+      "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
+      "cStandard": "c11",
+      "cppStandard": "c++17",
+      "compileCommands": "${workspaceRoot}/src/out-master/compile_commands.json"
     },
-    "configurations": [
-        {
-            "name": "Master",
-            "intelliSenseMode": "gcc-x64",
-            "browse": {
-                "path": [],
-                "limitSymbolsToIncludedHeaders": true,
-                "databaseFilename": ""
-            },
-            "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
-            "cStandard": "c11",
-            "cppStandard": "c++11",
-            "compileCommands": "${workspaceRoot}/src/out-master/compile_commands.json"
-        },
-        {
-            "name": "Left",
-            "intelliSenseMode": "gcc-x86",
-            "browse": {
-                "path": [],
-                "limitSymbolsToIncludedHeaders": true,
-                "databaseFilename": ""
-            },
-            "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
-            "cStandard": "c11",
-            "cppStandard": "c++11",
-            "compileCommands": "${workspaceRoot}/src/out-lclient/compile_commands.json"
-        },
-        {
-            "name": "Right",
-            "intelliSenseMode": "gcc-x86",
-            "browse": {
-                "path": [],
-                "limitSymbolsToIncludedHeaders": true,
-                "databaseFilename": ""
-            },
-            "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
-            "cStandard": "c11",
-            "cppStandard": "c++11",
-            "compileCommands": "${workspaceRoot}/src/out-rclient/compile_commands.json"
-        },
-        {
-            "name": "Betterfly",
-            "intelliSenseMode": "gcc-x86",
-            "browse": {
-                "path": [],
-                "limitSymbolsToIncludedHeaders": true,
-                "databaseFilename": ""
-            },
-            "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
-            "cStandard": "c11",
-            "cppStandard": "c++11",
-            "compileCommands": "${workspaceRoot}/src/out-betterfly/compile_commands.json"
-        }
-    ],
-    "version": 4
+    {
+      "name": "Left",
+      "intelliSenseMode": "gcc-x86",
+      "browse": {
+        "path": [],
+        "limitSymbolsToIncludedHeaders": true,
+        "databaseFilename": ""
+      },
+      "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
+      "cStandard": "c11",
+      "cppStandard": "c++17",
+      "compileCommands": "${workspaceRoot}/src/out-lclient/compile_commands.json"
+    },
+    {
+      "name": "Right",
+      "intelliSenseMode": "gcc-x86",
+      "browse": {
+        "path": [],
+        "limitSymbolsToIncludedHeaders": true,
+        "databaseFilename": ""
+      },
+      "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
+      "cStandard": "c11",
+      "cppStandard": "c++17",
+      "compileCommands": "${workspaceRoot}/src/out-rclient/compile_commands.json"
+    },
+    {
+      "name": "Betterfly",
+      "intelliSenseMode": "gcc-x86",
+      "browse": {
+        "path": [],
+        "limitSymbolsToIncludedHeaders": true,
+        "databaseFilename": ""
+      },
+      "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
+      "cStandard": "c11",
+      "cppStandard": "c++17",
+      "compileCommands": "${workspaceRoot}/src/out-betterfly/compile_commands.json"
+    }
+  ],
+  "version": 4
 }

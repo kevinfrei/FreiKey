@@ -42,28 +42,11 @@ inline constexpr action_t tapAndHold(action_t tap, action_t hold) {
   return combineKeys(kTapHold | tap, hold);
 }
 
-inline constexpr action_t keyAndModifier(action_t key, action_t mod) {
-  return combineKeys(kKeyAndMod | key, mod);
-}
-
 inline constexpr action_t keyAndModifiers(action_t key,
                                            action_t mod1,
-                                           action_t mod2) {
-  return combineKeys(kKeyAndMod | key, mod1 | mod2);
-}
-
-inline constexpr action_t keyAndModifiers(action_t key,
-                                           action_t mod1,
-                                           action_t mod2,
-                                           action_t mod3) {
-  return combineKeys(kKeyAndMod | key, mod1 | mod2 | mod3);
-}
-
-inline constexpr action_t keyAndModifiers(action_t key,
-                                           action_t mod1,
-                                           action_t mod2,
-                                           action_t mod3,
-                                           action_t mod4) {
+                                           action_t mod2 = 0,
+                                           action_t mod3 = 0,
+                                           action_t mod4 = 0) {
   return combineKeys(kKeyAndMod | key, mod1 | mod2 | mod3 | mod4);
 }
 
