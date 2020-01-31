@@ -1,8 +1,14 @@
 #pragma once
 
-#if defined(ARDUINO_NRF52_ADAFRUIT)
+#if defined(MOCKING)
+#include "mock.h"
+#elif defined(ARDUINO_NRF52_ADAFRUIT)
 #define ADAFRUIT
 #include <bluefruit.h>
+
+#include "Adafruit_NeoPixel.h"
+#include "Adafruit_TinyUSB.h"
+
 #undef min
 #undef max
 #elif defined(TEENSY)

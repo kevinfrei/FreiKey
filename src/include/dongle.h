@@ -4,9 +4,6 @@
 
 #include <array>
 
-#include "Adafruit_NeoPixel.h"
-#include "Adafruit_TinyUSB.h"
-
 class Dongle {
   static uint32_t connect_time;
   static bool black;
