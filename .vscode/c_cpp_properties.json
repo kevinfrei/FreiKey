@@ -21,6 +21,12 @@
       "compileCommands": "${workspaceRoot}/src/out-master/compile_commands.json"
     },
     {
+      "name": "Mock",
+      "intelliSenseMode": "clang-x64",
+      "cppStandard": "c++17",
+      "compileCommands": "${workspaceRoot}/src/out-mock-master/compile_commands.json"
+    },
+    {
       "name": "Left",
       "intelliSenseMode": "gcc-x86",
       "browse": {

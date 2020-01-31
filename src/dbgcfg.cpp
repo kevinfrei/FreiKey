@@ -18,15 +18,15 @@ void dumpHex(uint32_t v, const char* header) {
 }
 
 void dumpHex(uint16_t v, const char* header) {
-  dumpHex(static_cast<unsigned long>(v), header);
+  dumpHex(static_cast<uint32_t>(v), header);
 }
 
 void dumpHex(uint8_t v, const char* header) {
-  dumpHex(static_cast<unsigned long>(v), header);
+  dumpHex(static_cast<uint32_t>(v), header);
 }
 
 void dumpHex(bool v, const char* header) {
-  dumpHex(static_cast<unsigned long>(v), header);
+  dumpHex(static_cast<uint32_t>(v), header);
 }
 
 void dumpHex(uint64_t v, const char* header) {
