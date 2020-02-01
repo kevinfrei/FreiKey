@@ -140,6 +140,10 @@ void Dongle::setRGB(uint8_t r, uint8_t g, uint8_t b) {
   neopix.show();
 }
 
+void Dongle::setRGB(uint32_t rgb) {
+  Dongle::setRGB((rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff);
+}
+
 // Called when the system detects someone looking for a client
 void Dongle::scan(ble_gap_evt_adv_report_t* report) {
   // Connect to device with bleuart service in advertising

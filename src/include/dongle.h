@@ -26,6 +26,7 @@ class Dongle {
   static void ConsumerRelease();
 
   static void setRGB(uint8_t r, uint8_t g, uint8_t b);
+  static void setRGB(uint32_t rgb);
   static void setRed(bool on);
   static void setBlue(bool on);
 

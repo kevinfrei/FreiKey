@@ -166,13 +166,13 @@ void ProcessConsumer(keystate& state, kb_reporter& rpt) {
   // For a consumer control button, there are no modifiers, it's
   // just a simple call. So just call it directly:
   if (state.down) {
-    DBG2(dumpHex(state.action & kConsumerMask, "Consumer key press: "));
+    DBG(dumpHex(state.action & kConsumerMask, "Consumer key press: "));
     // See all the codes in all their glory here:
     // https://www.usb.org/sites/default/files/documents/hut1_12v2.pdf
     // (And if that doesn't work, check here: https://www.usb.org/hid)
     rpt.consumer_press(state.action & kConsumerMask);
   } else {
-    DBG2(dumpHex(state.action & kConsumerMask, "Consumer key release: "));
+    DBG(dumpHex(state.action & kConsumerMask, "Consumer key release: "));
     rpt.consumer_release(state.action & kConsumerMask);
     // We have to clear this thing out when we're done, because we take
     // action on the key release as well. We don't do this for the normal
@@ -181,37 +181,48 @@ void ProcessConsumer(keystate& state, kb_reporter& rpt) {
   }
 }
 
+void HandleTapAndHold(keystate &state, uint8_t &mods, uint32_t now, kb_reporter& rpt) {
+  // If we've exceeded the time limit, set the modifier
+  // If we're under the time limit, and it's a key *down* we shouldn't
+  // do anything, because we won't know what to do until after the time
+  // limit is hit, or a key-up occurs.
+  if (now - state.lastChange > TapAndHoldTimeLimit) {
+    // Holding
+    mods |= getExtraMods(state.action);
+    DBG(dumpHex(mods, " (Holding)"));
+    rpt.set_modifier(mods);
+  } else if (!state.down) {
+    // We've head it for less than the time allotted, so send the
+    // tapping key
+    // TODO: Make sure we send the key up immediate after this!
+    action_t key = getKeystroke(state.action);
+    if (key != 0) {
+      rpt.add_key_press(key);
+      DBG(dumpHex(key, " Tapping"));
+    }
+  }
+}
+
 void ProcessKeys(uint32_t now, kb_reporter& rpt) {
   uint8_t mods = 0;
-
+  
   for (auto& state : keyStates) {
     if (state.scanCode == null_scan_code)
       continue;
     if ((state.action & kConsumer) == kConsumer) {
       // TODO: Add support for kTapHold here
-      ProcessConsumer(state, rpt);
+      if ((state.action & kActionMask) == kTapHold) {
+
+      } else {
+        ProcessConsumer(state, rpt);
+      }
     } else if (state.down) {
       switch (state.action & kActionMask) {
         case kTapHold:
-          // If we've exceeded the time limit, set the modifier
-          // If we're under the time limit, and it's a key *down* we shouldn't
-          // do anything, because we won't know what to do until after the time
-          // limit is hit, or a key-up occurs.
-          if (now - state.lastChange > TapAndHoldTimeLimit) {
-            // Holding
-            rpt.set_modifier(getExtraMods(state.action));
-          } else if (!state.down) {
-            // We've head it for less than the time allotted, so send the
-            // tapping key
-            // TODO: Make sure we send the key up immediate after this!
-            action_t key = getKeystroke(state.action);
-            if (key != 0) {
-              rpt.add_key_press(key);
-            }
-          }
           break;
         case kKeyAndMod: {
-          rpt.set_modifier(getExtraMods(state.action));
+          mods |= getExtraMods(state.action);
+          rpt.set_modifier(mods);
           action_t key = getKeystroke(state.action);
           if (key != 0) {
             rpt.add_key_press(key);
@@ -224,7 +235,8 @@ void ProcessKeys(uint32_t now, kb_reporter& rpt) {
           }
         } break;
         case kModifier:
-          rpt.set_modifier(getKeystroke(state.action));
+          mods |= getKeystroke(state.action);
+          rpt.set_modifier(mods);
           break;
           /*
         This doesn't work, and I don't use it anyway
