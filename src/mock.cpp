@@ -1,8 +1,16 @@
-#include "mock.h"
 #include <string.h>
 
+#include "boardio.h"
+#include "mock.h"
+
+#if defined(TEENSY)
+extern "C" {
+#endif
 void setup();
 void loop();
+#if defined(TEENSY)
+}
+#endif
 
 int main(int argc, const char* argv[]) {
   setup();
@@ -16,8 +24,13 @@ void pinMode(uint16_t, uint8_t) {
   // digital/analog/read/write
 }
 
-void digitalWrite(uint16_t ping, uint32_t val) {
+void digitalWrite(uint16_t pin, uint32_t val) {
   // TODO: check, record, report?
+}
+
+uint8_t digitalRead(uint16_t pin) {
+  // TODO: Make this do some stuff?
+  return 0;
 }
 
 void waitForEvent() {}
@@ -108,3 +121,30 @@ void Adafruit_USBD_HID::sendReport(uint8_t, uint16_t*, size_t) {}
 void Adafruit_USBD_HID::setReportCallback(
     const char*,
     void (*func)(uint8_t, hid_report_type_t, const uint8_t*, uint16_t)) {}
+// Adafruit graphics stuff
+
+WireMock Wire;
+Adafruit_SSD1306::Adafruit_SSD1306(uint16_t width,
+                                   uint16_t height,
+                                   void*,
+                                   uint8_t resetPin) {}
+void Adafruit_SSD1306::begin(uint32_t, uint8_t) {}
+void Adafruit_SSD1306::display() {}
+
+// Teensy stuff
+KeyboardMock Keyboard;
+void KeyboardMock::press(uint16_t) {}
+void KeyboardMock::release(uint16_t) {}
+void KeyboardMock::set_key1(uint8_t) {}
+void KeyboardMock::set_key2(uint8_t) {}
+void KeyboardMock::set_key3(uint8_t) {}
+void KeyboardMock::set_key4(uint8_t) {}
+void KeyboardMock::set_key5(uint8_t) {}
+void KeyboardMock::set_key6(uint8_t) {}
+void KeyboardMock::set_modifier(uint8_t) {}
+void KeyboardMock::send_now() {}
+
+BoardIO::bits BoardIO::Read() const {
+  BoardIO::bits switches{};
+  return switches;
+}

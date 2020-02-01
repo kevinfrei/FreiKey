@@ -16,4 +16,7 @@
 #include "usb_keyboard.h"
 #include "usb_serial.h"
 #include <stddef.h>
+
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
 #endif

@@ -8,12 +8,12 @@
 
 class BoardIO {
  public:
-#if defined(ADAFRUIT)
+#if defined(MOCKING)
+  static const uint8_t numcols = 1;
+#elif defined(ADAFRUIT)
   static const uint8_t numcols = 7;
 #elif defined(TEENSY)
   static const uint8_t numcols = 12;
-#elif defined(MOCKING)
-  static const uint8_t numcols = 1;
 #endif
 
   static const uint8_t numrows = 6;

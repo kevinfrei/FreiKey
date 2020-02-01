@@ -51,6 +51,9 @@ void BoardIO::Configure() const {
 #endif
 }
 
+// This is the core place to simulate the keyboard for mocking (at least in the
+// betterfly config)
+#if !defined(MOCKING)
 BoardIO::bits BoardIO::Read() const {
   BoardIO::bits switches{};
   for (uint64_t colNum = 0; colNum < numcols; ++colNum) {
@@ -65,6 +68,7 @@ BoardIO::bits BoardIO::Read() const {
   }
   return switches;
 }
+#endif
 
 #if defined(HAS_LED)
 void BoardIO::setLED(uint32_t brightness) const {

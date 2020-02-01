@@ -33,8 +33,6 @@ void kb_reporter::send_keys() {
 
 #elif defined(TEENSY)
 
-#include "usb_keyboard.h"
-
 kb_reporter::kb_reporter() : mods(0), repsize(0) {
   memset(report, 0, 6);
 }

@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <stdio.h>
+#include <memory.h>
 
 // General Arduino stuff
 class SerialMock {
@@ -20,6 +21,7 @@ extern SerialMock Serial;
 
 void delayMicroseconds(uint64_t s);
 void digitalWrite(uint16_t pin, uint32_t val);
+uint8_t digitalRead(uint16_t pin);
 void pinMode(uint16_t pin, uint8_t mode);
 uint32_t millis();
 void delay(uint32_t);
@@ -28,6 +30,7 @@ void waitForEvent();
 constexpr uint32_t HIGH = 255;
 constexpr uint32_t LOW = 0;
 constexpr uint8_t OUTPUT = 1;
+constexpr uint8_t INPUT = 2;
 constexpr uint8_t INPUT_PULLUP = 3;
 
 // Board specific stuff (should eventually be moved)
@@ -118,3 +121,31 @@ struct Adafruit_USBD_HID {
 #define HID_REPORT_ID(a) a
 #define TUD_HID_REPORT_DESC_KEYBOARD(...) __VA_ARGS__ '0'
 #define TUD_HID_REPORT_DESC_CONSUMER(...) __VA_ARGS__ '1'
+
+// GFX stuff
+class WireMock {};
+extern WireMock Wire;
+class Adafruit_SSD1306 {
+  public:
+  Adafruit_SSD1306(uint16_t width, uint16_t height, void *, uint8_t resetPin);
+  void begin(uint32_t, uint8_t);
+  void display();
+};
+constexpr uint32_t SSD1306_SWITCHCAPVCC = 0;
+#define SSD1306_LCDHEIGHT 32
+
+// Teensy stuff
+class KeyboardMock {
+  public:
+  void press(uint16_t);
+  void release(uint16_t);
+  void set_key1(uint8_t);
+  void set_key2(uint8_t);
+  void set_key3(uint8_t);
+  void set_key4(uint8_t);
+  void set_key5(uint8_t);
+  void set_key6(uint8_t);
+  void set_modifier(uint8_t);
+  void send_now();
+};
+extern KeyboardMock Keyboard;

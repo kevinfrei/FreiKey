@@ -67,7 +67,7 @@ ${BUILD_PATH}:
 
 ${BUILD_PATH}/%.cpp.o : %.cpp
 	"${COMPILER_PATH}${COMPILER_CPP_CMD}" ${COMPILER_CPP_FLAGS} ${COMPILER_CPP_EXTRA_FLAGS} \
-	${BUILD_EXTRA_FLAGS} ${SYS_INCLUDES} ${USER_INCLUDES} -g -c "$<" -o "$@"
+	${BUILD_EXTRA_FLAGS} ${SYS_INCLUDES} ${USER_INCLUDES} -O0 -g -c "$<" -o "$@"
 
 ${BUILD_PATH}/cpp_compile_commands.json: $(USER_CPP_SRCS) $(CPP_SYS_SRCS)
 	echo > $@

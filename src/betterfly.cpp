@@ -1,6 +1,4 @@
 #include "sysstuff.h"
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
 
 #include "boardio.h"
 #include "dbgcfg.h"
@@ -12,8 +10,12 @@
 #include "led_states.h"
 #include "scanner.h"
 
+#if !defined(MOCKING)
 constexpr BoardIO Betterfly = {{1, 0, 13, 2, 10, 11, 9, 20, 3, 14, 5, 4},
                                {23, 22, 21, 17, 16, 15}};
+#else
+constexpr BoardIO Betterfly = {{0}, {1, 2, 3, 4, 5, 6}};
+#endif
 Adafruit_SSD1306 display(128, 32, &Wire, 12); // The reset switch on the OLED is
                                               // pin 12
 #if (SSD1306_LCDHEIGHT != 32)
