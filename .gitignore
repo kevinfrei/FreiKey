@@ -39,3 +39,4 @@ src/out-lclient
 src/out-rclient
 src/out-betterfly
 src/out-mock-master
+src/out-mock-betterfly
