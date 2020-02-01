@@ -73,6 +73,13 @@ action_t resolveActionForScanCodeOnActiveLayer(uint8_t scanCode) {
   return keymap[layer_stack[s]][scanCode];
 }
 
+#if defined(USB_MASTER)
+// For no good reason, I only have 2 bits per color...
+uint32_t getColorForCurrentLayer() {
+  return layer_colors[layer_stack[layer_pos]];
+}
+#endif
+
 // Given a delta mask, get the scan code, update the delta mask and set pressed
 // while we're at it.
 scancode_t getNextScanCode(BoardIO::bits& delta,

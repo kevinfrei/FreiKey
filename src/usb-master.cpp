@@ -114,6 +114,10 @@ void loop() {
     DBG2(downLeft.dump());
     DBG2(Serial.print("Right side "));
     DBG2(downRight.dump());
+
+    // Update the layer color on the dongle
+    uint32_t color = getColorForCurrentLayer();
+    Dongle::setRGB((color >> 16) & 0xff, (color >> 8) & 0xff, color & 0xff);
   }
 
   waitForEvent(); // Request CPU enter low-power mode until an event occurs
