@@ -13,3 +13,7 @@
 [submodule "src/libs/Adafruit"]
 	path = src/libs/Adafruit
 	url = git@github.com:kevinfrei/Adafruit_nRF52_Arduino.git
+[submodule "src/libs/Arduino2Make"]
+	path = src/libs/Arduino2Make
+	url = git@github.com:kevinfrei/Arduino2Make.git
+	branch = master
