@@ -14,8 +14,8 @@ class BoardIO {
   static const uint8_t numcols = 7;
 #elif defined(TEENSY)
   static const uint8_t numcols = 12;
-#elif defined(MOCKING)
-  static const uint8_t numcols = 1;
+#else
+  #error You must define a target for the number of columns on the board
 #endif
 
   static const uint8_t numrows = 6;

@@ -6,8 +6,10 @@
 #define ADAFRUIT
 #include <bluefruit.h>
 
+#if defined(USB_MASTER)
 #include "Adafruit_NeoPixel.h"
 #include "Adafruit_TinyUSB.h"
+#endif
 
 #undef min
 #undef max
