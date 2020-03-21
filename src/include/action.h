@@ -22,7 +22,7 @@ constexpr action_t kConsumer = 0x800;
 constexpr action_t kConsumerMask = 0x3FF;
 constexpr action_t kKeyMask = 0xFF;
 
-inline constexpr action_t getModifiers(action_t a) {
+inline constexpr action_t getActions(action_t a) {
   return a & kActionMask;
 }
 

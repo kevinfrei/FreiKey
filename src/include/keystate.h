@@ -43,7 +43,7 @@ struct keystate {
         action = 0;
       }
     }
-    switch (getModifiers(action)) {
+    switch (getActions(action)) {
       case kLayerShift:
         return down ? kPushLayer : kPopLayer;
       case kLayerToggle:

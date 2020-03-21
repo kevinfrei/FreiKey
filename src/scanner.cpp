@@ -132,6 +132,8 @@ void layer_switch(layer_t layer) {
   DBG(dumpLayers());
 }
 
+// Called immediately after seeing the scan code:
+// Find a slot for the key, and deal with layer "stuff"
 void preprocessScanCode(scancode_t sc, bool pressed, uint32_t now) {
   DBG2(dumpScanCode(sc, pressed));
   // Get a state slot for this scan code
@@ -181,72 +183,72 @@ void ProcessConsumer(keystate& state, kb_reporter& rpt) {
   }
 }
 
-void HandleTapAndHold(keystate &state, uint8_t &mods, uint32_t now, kb_reporter& rpt) {
-  // If we've exceeded the time limit, set the modifier
-  // If we're under the time limit, and it's a key *down* we shouldn't
-  // do anything, because we won't know what to do until after the time
-  // limit is hit, or a key-up occurs.
-  if (now - state.lastChange > TapAndHoldTimeLimit) {
-    // Holding
-    mods |= getExtraMods(state.action);
-    DBG(dumpHex(mods, " (Holding)"));
-    rpt.set_modifier(mods);
-  } else if (!state.down) {
-    // We've head it for less than the time allotted, so send the
-    // tapping key
-    // TODO: Make sure we send the key up immediate after this!
-    action_t key = getKeystroke(state.action);
-    if (key != 0) {
-      rpt.add_key_press(key);
-      DBG(dumpHex(key, " Tapping"));
-    }
-  }
-}
-
 void ProcessKeys(uint32_t now, kb_reporter& rpt) {
   uint8_t mods = 0;
   
   for (auto& state : keyStates) {
     if (state.scanCode == null_scan_code)
       continue;
-    if ((state.action & kConsumer) == kConsumer) {
-      // TODO: Add support for kTapHold here
-      if ((state.action & kActionMask) == kTapHold) {
-
-      } else {
-        ProcessConsumer(state, rpt);
+    action_t actions = getActions(state.action);
+    if (actions == kTapHold) {
+      // If we've exceeded the time limit, set the modifier
+      // If we're under the time limit, and it's a key *down* we shouldn't
+      // do anything, because we won't know what to do until after the time
+      // limit is hit, or a key-up occurs.
+      if (now - state.lastChange > TapAndHoldTimeLimit) {
+        // Holding
+        mods |= getExtraMods(state.action);
+        DBG(dumpHex(mods, " (Holding)"));
+        rpt.set_modifier(mods);
+      } else if (state.down) {
+        continue;
       }
-    } else if (state.down) {
-      switch (state.action & kActionMask) {
-        case kTapHold:
-          break;
-        case kKeyAndMod: {
-          mods |= getExtraMods(state.action);
-          rpt.set_modifier(mods);
-          action_t key = getKeystroke(state.action);
-          if (key != 0) {
-            rpt.add_key_press(key);
-          }
-        } break;
-        case kKeyPress: {
-          action_t key = getKeystroke(state.action);
-          if (key != 0) {
-            rpt.add_key_press(key);
-          }
-        } break;
-        case kModifier:
-          mods |= getKeystroke(state.action);
-          rpt.set_modifier(mods);
-          break;
-          /*
-        This doesn't work, and I don't use it anyway
-        case kToggleMod:
-          mods ^= state.action & 0xff;
-          rpt.set_modifier(mods);
-          break;
-        */
+      // We've had it for less than the time allotted, so send the tapping key
+      // TODO: Make sure we send the key up immediate after this!
+      if ((state.action & kConsumer) == kConsumer) {
+          DBG(dumpHex(key, " Tapping Consumer Key"));
+        state.down = true;
+        ProcessConsumer(state, rpt);
+        state.down = false;
+        ProcessConsumer(state, rpt);
+      } else {
+        action_t key = getKeystroke(state.action);
+        if (key != 0) {
+          rpt.add_key_press(key);
+          DBG(dumpHex(key, " Tapping"));
+        }
+      }
+    } else if ((state.action & kConsumer) == kConsumer) {
+      ProcessConsumer(state, rpt);
+    } else if (actions == kKeyAndMod) {
+      if (state.down) {
+        mods |= getExtraMods(state.action);
+        rpt.set_modifier(mods);
+        action_t key = getKeystroke(state.action);
+        if (key != 0) {
+          rpt.add_key_press(key);
+        }
+      }
+    } else if (actions == kKeyPress) {
+      if (state.down) {
+        action_t key = getKeystroke(state.action);
+        if (key != 0) {
+          rpt.add_key_press(key);
+        }
+      }
+    } else if (actions == kModifier) {
+      if (state.down) {
+        mods |= getKeystroke(state.action);
+        rpt.set_modifier(mods);
       }
     }
+    /*
+  This doesn't work, and I don't use it anyway
+  case kToggleMod:
+    mods ^= state.action & 0xff;
+    rpt.set_modifier(mods);
+    break;
+  */
   }
   rpt.send_keys();
 }
