@@ -5,38 +5,185 @@
 #include <array>
 
 #include "bit_array.h"
+#include "crtp.h"
 
-class BoardIO {
+template <uint8_t pinLED>
+class Analog_LED {
  public:
-#if defined(MOCKING)
-  static const uint8_t numcols = 1;
-#elif defined(ADAFRUIT)
-  static const uint8_t numcols = 7;
-#elif defined(TEENSY)
-  static const uint8_t numcols = 12;
-#else
-  #error You must define a target for the number of columns on the board
-#endif
+  static void ConfigLED() {
+    pinMode(pinLED, OUTPUT);
+    delay(1);
+    analogWrite(pinLED, 0);
+  }
+  static void setLED(uint32_t brightness) {
+    analogWrite(pinLED, brightness);
+  }
+};
 
-  static const uint8_t numrows = 6;
-  static const uint8_t matrix_size = numcols * numrows;
+template <uint8_t tRED,uint8_t tBLUE>
+class Digital_LEDs {
+ public:
+  static void ConfigLEDs() {
+    pinMode(tRED, OUTPUT);
+    pinMode(tBLUE, OUTPUT);
+  }
+  static void setRed(bool on) {
+    digitalWrite(tRED, on ? HIGH : LOW);
+  }
+  static void setBlue(bool on) {
+    digitalWrite(tBLUE, on ? HIGH : LOW);
+  }
+};
+
+template <uint8_t batPin = PIN_VBAT>
+class Battery {
+ public:
+  // pin 31 on the 832, pin 30 on the 840, is available for sampling the battery
+  static constexpr uint8_t VBAT_PIN = batPin;
+
+  // 3.0V ADC range and 12-bit ADC resolution = 3000mV/4096
+  static constexpr uint32_t VBAT_NUM = 3000;
+  static constexpr uint32_t VBAT_DEN = 4096;
+
+  static void ConfigBattery() {
+    analogReference(AR_INTERNAL_3_0);
+    analogReadResolution(12);
+    delay(1);
+  }
+
+  // This stuff shamelessly stolen from the AdaFruit example
+  static uint8_t getBatteryPercent() {
+    uint32_t bat = analogRead(VBAT_PIN) * VBAT_NUM / VBAT_DEN;
+    if (bat >= 3000) {
+      return 100;
+    } else if (bat > 2900) {
+      return 100 - ((3000 - bat) * 58) / 100;
+    } else if (bat > 2740) {
+      return 42 - ((2900 - bat) * 24) / 160;
+    } else if (bat > 2440) {
+      return 18 - ((2740 - bat) * 12) / 300;
+    } else if (bat > 2100) {
+      return 6 - ((2440 - bat) * 6) / 340;
+    } else {
+      return 0;
+    }
+  }
+};
+
+template <typename T, uint8_t nCols, uint8_t nRows, uint8_t... cols_then_rows>
+class KeyMatrix : crtp<T> {
+ public:
+  static constexpr uint8_t numcols = nCols;
+  static constexpr uint8_t numrows = nRows;
+  static constexpr uint8_t matrix_size = numcols * numrows;
   typedef bit_array<matrix_size> bits;
   static constexpr uint8_t byte_size = bits::num_bytes;
 
-  const std::array<uint8_t, numcols> cols;
-  const std::array<uint8_t, numrows> rows;
-  uint8_t led;
+  static void ConfigMatrix() {
+    // For my wiring, the columns are output, and the rows are input...
+    std::array<uint8_t> c_r{cols_then_rows...};
+    for (uint8_t pn = 0; pn < nCols + nRows; pn++) {
+      if (pn < nCols) {
+        DBG(dumpVal(c_r[pn], "Output Pin "));
+        T::configOutputPin(c_r[pn]);
+      } else {
+        DBG(dumpVal(c_r[pn], "Input Pullup "));
+        T::configInputPin(c_r[pn], INPUT_PULLUP);
+      }
+    }
+  };
 
-  void Configure() const;
-  bits Read() const;
-#if defined(HAS_LED)
-  void setLED(uint32_t brightness) const;
-#endif
-#if defined(HAS_BATTERY)
-  static uint8_t getBatteryPercent();
-#endif
-#if defined(ADAFRUIT)
-  static void setRed(bool on);
-  static void setBlue(bool on);
-#endif
+  // This is the core place to simulate the keyboard for mocking
+  // (at least in the betterfly config)
+  static bits Read() {
+    bits switches{};
+    for (uint64_t colNum = 0; colNum < numcols; ++colNum) {
+      T::prepPinForRead(cols[colNum]);
+      delay(1); // TODO: Make this faster (which it microseconds)
+      for (uint64_t rowNum = 0; rowNum < numrows; ++rowNum) {
+        if (!digitalRead(rows[rowNum])) {
+          switches.set_bit(rowNum * numcols + colNum);
+        }
+      }
+      T::completePin(cols[colNum]);
+    }
+    return switches;
+  }
 };
+
+class Teensy {
+  // This configuration make sit so the Teensy LED (on pin 13)
+  // doesn't stay lit 99.999% of the time...
+ public:
+  static void configOutputPin(uint8_t pin) {
+    pinMode(pin, INPUT);
+  }
+  static void configInputPin(uint8_t pin) {
+    pinMode(pin, INPUT_PULLUP);
+  }
+  static void prepPinForRead(uint8_t pin) {
+    pinMode(pin, OUTPUT);
+    digitalWrite(pin, LOW);
+  }
+  static void completePin(uint8_t pin) {
+    pinMode(pin, INPUT);
+  }
+};
+
+class AdafruitNRF52 {
+ public:
+  static void configOutputPin(uint8_t pin) {
+    pinMode(pin, OUTPUT);
+    digitalWrite(pin, HIGH);
+  }
+  static void configInputPin(uint8_t pin) {
+    pinMode(pin, INPUT_PULLUP);
+  }
+  static void prepPinForRead(uint8_t pin) {
+    digitalWrite(pin, LOW);
+  }
+  static void completePin(uint8_t pin) {
+    digitalWrite(pin, HIGH);
+  }
+};
+
+#if defined(ADAFRUIT)
+// clang-format off
+using LeftMatrix = KeyMatrix<AdafruitNRF52,
+  // Cols:
+  7,
+  // Rows:
+  6,
+  // Column Pins:
+  15, A0, 16, 7, A6, 27, 11,
+  // Row Pins:
+  A3, 12, 13, A4, A2, A1>; 
+//}, A5} >;
+using RightMatrix = KeyMatrix<AdafruitNRF52,
+  // Cols:
+  7,
+  // Rows:
+  6,
+  // Column Pins:
+  29, 16, 15, 7, 27, 11, 30,
+  // Row Pins:
+  13, 4, 2, 3, 5, 12>;
+//}, 28};
+// clang-format on
+
+class LeftBoard : LeftMatrix, Digital_LEDs<LED_RED, LED_BLUE>, Analog_LED<A5>, Battery<> {
+  public:
+  static void Configure() {
+    ConfigMatrix();
+    ConfigLEDs();
+    ConfigLED();
+    ConfigBattery();
+  }
+};
+
+#elif defined(MOCKING)
+using BoardIO = BoardIOBase<1>;
+#elif defined(TEENSY)
+using BoardIO = BoardIOBase<12>;
+#error You must define a target for the number of columns on the board
+#endif

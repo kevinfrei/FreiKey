@@ -21,7 +21,6 @@ COMPILER_CPP_EXTRA_FLAGS=-DBETTERYFLY -DTEENSY -DDEBUG=1
 USER_INCLUDES=-Iinclude
 USER_CPP_SRCS=\
 	betterfly.cpp \
-	boardio.cpp \
 	dbgcfg.cpp \
 	debounce.cpp \
 	globals.cpp \

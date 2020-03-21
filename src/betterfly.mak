@@ -38,7 +38,6 @@ USER_INCLUDES=-Iinclude
 
 USER_CPP_SRCS=\
 	betterfly.cpp \
-	boardio.cpp \
 	dbgcfg.cpp \
 	debounce.cpp \
 	globals.cpp \

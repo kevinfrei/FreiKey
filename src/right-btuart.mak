@@ -36,7 +36,6 @@ USER_CPP_SRCS=\
   debounce.cpp \
   sleepstate.cpp \
   kbclient.cpp \
-  boardio.cpp \
   r-client.cpp
 
 include af_nrf52.mk
