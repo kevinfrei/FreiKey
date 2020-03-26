@@ -58,3 +58,13 @@ void KBClient::loop() {
   }
   waitForEvent(); // Request CPU enter low-power mode until an event occurs
 }
+
+KBClient theClient{};
+
+void setup() {
+  theClient.setup(RTCL_NAME);
+}
+
+void loop() {
+  theClient.loop();
+}

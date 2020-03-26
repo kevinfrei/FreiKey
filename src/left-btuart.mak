@@ -22,7 +22,7 @@ RUNTIME_TOOLS_ARM_NONE_EABI_GCC_PATH=${TOOLS_PATH}
 
 
 # This is how to add new flags
-COMPILER_CPP_EXTRA_FLAGS=-DUART_CLIENT -DDEBUG=2 -DHAS_LED -DHAS_BATTERY
+COMPILER_CPP_EXTRA_FLAGS=-DUART_CLIENT -DLEFT_CLIENT -DDEBUG=2 -DHAS_BATTERY
 
 # This is how to add libraries (They currently have to be defined to 1)
 LIB_BLUEFRUIT52LIB=1
@@ -36,8 +36,7 @@ USER_CPP_SRCS=\
 	hardware.cpp \
   debounce.cpp \
   sleepstate.cpp \
-  kbclient.cpp \
-  l-client.cpp
+  kbclient.cpp
 
 include af_nrf52.mk
 

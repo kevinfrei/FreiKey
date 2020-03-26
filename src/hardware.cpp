@@ -11,7 +11,7 @@ uint8_t last_8_reads[num_reads] = {0};
 int8_t cur_bat_loc = -1 - num_reads;
 
 uint8_t readBattery(uint32_t now, uint8_t prev) {
-  if (prev && now - last_r-\1bat_time <= 30000) {
+  if (prev && now - last_bat_time <= 30000) {
     // There's a lot of variance in the reading, so no need to over-report it.
     return prev;
   }
