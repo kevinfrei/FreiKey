@@ -205,4 +205,13 @@ using BoardIO = BoardIOBase<12>;
 #error You must define a target for the number of columns on the board
 #endif
 
+#if defined(USB_MASTER)
+struct RemoteBoard {
+  static constexpr uint8_t numcols = 7;
+  static constexpr uint8_t numrows = 6;
+};
+using BoardIO = RemoteBoard;
+using MatrixBits = bit_array<RemoteBoard::numcols * RemoteBoard::numrows>;
+#else
 using MatrixBits = typename BoardIO::bits;
+#endif

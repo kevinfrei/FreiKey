@@ -82,8 +82,8 @@ uint32_t getColorForCurrentLayer() {
 
 // Given a delta mask, get the scan code, update the delta mask and set pressed
 // while we're at it.
-scancode_t getNextScanCode(BoardIO::bits& delta,
-                           BoardIO::bits& curState,
+scancode_t getNextScanCode(MatrixBits& delta,
+                           MatrixBits& curState,
                            bool& pressed) {
   scancode_t sc = delta.pull_a_bit();
   pressed = curState.get_bit(sc);
@@ -185,7 +185,7 @@ void ProcessConsumer(keystate& state, kb_reporter& rpt) {
 
 void ProcessKeys(uint32_t now, kb_reporter& rpt) {
   uint8_t mods = 0;
-  
+
   for (auto& state : keyStates) {
     if (state.scanCode == null_scan_code)
       continue;
@@ -206,7 +206,8 @@ void ProcessKeys(uint32_t now, kb_reporter& rpt) {
       // We've had it for less than the time allotted, so send the tapping key
       // TODO: Make sure we send the key up immediate after this!
       if ((state.action & kConsumer) == kConsumer) {
-          DBG(dumpHex(key, " Tapping Consumer Key"));
+        action_t key = getKeystroke(state.action);
+        DBG(dumpHex(key, " Tapping Consumer Key"));
         state.down = true;
         ProcessConsumer(state, rpt);
         state.down = false;

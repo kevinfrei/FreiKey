@@ -1,5 +1,6 @@
 #include "sysstuff.h"
 
+#include "boardio.h"
 #include "comm.h"
 
 #if defined(USB_MASTER)
@@ -7,7 +8,6 @@
 #include "hardware.h"
 #include "sync.h"
 #else
-#include "boardio.h"
 #include "kbclient.h"
 #endif
 
@@ -99,7 +99,7 @@ void comm::recv::data(BLEClientUart& uart) {
   }
   switch (h.type) {
     case comm::types::SCAN: {
-      BoardIO::bits b;
+      MatrixBits b;
       b.write(buf);
       comm::recv::scan(whichOne(uart), b);
     } break;
@@ -117,7 +117,7 @@ void comm::recv::data(BLEClientUart& uart) {
   }
 }
 
-void comm::recv::scan(uint8_t which, const BoardIO::bits& b) {
+void comm::recv::scan(uint8_t which, const MatrixBits& b) {
   // Put the data in the queue
   state::hw* newData = new state::hw;
   DBG2(b.dumpHex((which == comm::LEFT_SIDE) ? "Left Scan " : "Right Scan "));

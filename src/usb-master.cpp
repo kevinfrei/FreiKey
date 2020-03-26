@@ -80,13 +80,13 @@ void loop() {
   updateBatteryLevel(downLeft, downRight);
 
   // Get the before & after of each side into the bit array
-  BoardIO::bits beforeLeft{leftSide.switches};
-  BoardIO::bits afterLeft{downLeft.switches};
-  BoardIO::bits beforeRight{rightSide.switches};
-  BoardIO::bits afterRight{downRight.switches};
+  MatrixBits beforeLeft{leftSide.switches};
+  MatrixBits afterLeft{downLeft.switches};
+  MatrixBits beforeRight{rightSide.switches};
+  MatrixBits afterRight{downRight.switches};
 
-  BoardIO::bits deltaLeft = beforeLeft.delta(afterLeft);
-  BoardIO::bits deltaRight = beforeRight.delta(afterRight);
+  MatrixBits deltaLeft = beforeLeft.delta(afterLeft);
+  MatrixBits deltaRight = beforeRight.delta(afterRight);
   bool keysChanged = deltaLeft.any() || deltaRight.any();
 
   while (deltaLeft.any() || deltaRight.any()) {
@@ -97,7 +97,7 @@ void loop() {
     } else {
       // Add offset to the right scan code...
       sc = getNextScanCode(deltaRight, afterRight, pressed) +
-           BoardIO::matrix_size;
+           MatrixBits::num_bits;
     }
     preprocessScanCode(sc, pressed, now);
   }

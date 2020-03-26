@@ -34,7 +34,7 @@ const uint32_t layer_colors[] = {
 //  Action: keypress (either with exist modifiers, or 'unique')
 //          Layer change (latch, lock, or shift)
 
-const action_t keymap[][BoardIO::matrix_size * 2] = {
+const action_t keymap[][MatrixBits::num_bits * 2] = {
     {// LAYER_MAC_BASE (0)
      LROW1(KEY(ESCAPE), KEY(1), KEY(2), KEY(3), KEY(4), KEY(5)),
      LROW2(KEY(TAB), KEY(Q), KEY(W), KEY(E), KEY(R), KEY(T)),
