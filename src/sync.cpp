@@ -1,6 +1,6 @@
 #include "sync.h"
-#include "comm.h"
 #include "dongle.h"
+#include "master-comm.h"
 
 // I need to build a damn state machine for this
 // External inputs:

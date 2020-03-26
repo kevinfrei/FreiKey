@@ -1,6 +1,5 @@
 #include "sysstuff.h"
 
-#include "comm.h"
 #include "dbgcfg.h"
 #include "dongle.h"
 #include "hardware.h"
@@ -8,6 +7,7 @@
 #include "kbreporter.h"
 #include "keymap.h"
 #include "keystate.h"
+#include "master-comm.h"
 #include "scanner.h"
 #include "sync.h"
 

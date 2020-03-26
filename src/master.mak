@@ -35,11 +35,11 @@ LIB_TINYUSB=1
 
 USER_INCLUDES=-Iinclude
 USER_CPP_SRCS=\
- 	comm.cpp \
 	dbgcfg.cpp \
 	dongle.cpp \
 	hardware.cpp \
 	kbreporter.cpp \
+ 	master-comm.cpp \
 	scanner.cpp \
   sync.cpp \
 	usb-master.cpp

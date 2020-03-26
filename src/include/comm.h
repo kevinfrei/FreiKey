@@ -30,34 +30,38 @@ struct header {
   uint8_t size : 4;
 };
 
-namespace send {
-#if !defined(USB_MASTER)
-void scan(BLEUart& uart, const MatrixBits &);
-void battery(BLEUart& uart, uint8_t pct);
-void time(BLEUart& uart, uint32_t time);
-#else
-void sync(BLEClientUart& uart);
-void set_led(BLEClientUart& uart, uint8_t brightness);
-void set_red(BLEClientUart& uart, bool on);
-void set_blue(BLEClientUart& uart, bool on);
-#endif
-} // namespace send
-
-namespace recv {
-
-#if defined(USB_MASTER)
-void data(BLEClientUart& uart);
-void scan(uint8_t which, const MatrixBits &);
-void battery(uint8_t which, uint8_t pct);
-void time(uint8_t which, uint32_t time);
-#else
-void data(uint16_t handle); // BLEUart& uart);
-void sync();
-void set_led(uint8_t brightness);
-void set_red(bool on);
-void set_blue(bool on);
-#endif
-
-} // namespace recv
-
 } // namespace comm
+
+template <uint8_t VAL, typename T, typename UART>
+void send_packet(UART& uart, const T& v) {
+  comm::header h;
+  char buffer[sizeof(h) + sizeof(T)];
+  h.side = comm::LEFT_SIDE; // TODO: Fix This
+  h.type = VAL;
+  h.size = comm::sizes[VAL];
+  memcpy(&buffer[0], reinterpret_cast<char*>(&h), sizeof(h));
+  memcpy(&buffer[sizeof(h)], reinterpret_cast<const char*>(&v), sizeof(T));
+  for (int i = 0; i < sizeof(buffer); i++) {
+    DBG2(dumpHex((uint32_t)buffer[i], "S:"));
+  }
+  uart.write(buffer, sizeof(buffer));
+  DBG2(Serial.println("---"));
+};
+
+template <uint8_t VAL, typename UART>
+void send_packet(UART& uart) {
+  comm::header h;
+  h.side = comm::LEFT_SIDE; // TODO: Fix This
+  h.type = VAL;
+  h.size = comm::sizes[VAL];
+  DBG2(dumpHex((uint8_t)(*(reinterpret_cast<char*>(&h))), "SB:"));
+  uart.write(*reinterpret_cast<char*>(&h));
+};
+
+template <typename UART>
+uint8_t waitForByte(UART& uart) {
+  while (!uart.available()) {
+    delayMicroseconds(5);
+  }
+  return uart.read();
+}

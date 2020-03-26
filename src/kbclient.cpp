@@ -1,7 +1,7 @@
 #include "sysstuff.h"
 
 #include "boardio.h"
-#include "comm.h"
+#include "client-comm.h"
 #include "hardware.h"
 #include "kbclient.h"
 

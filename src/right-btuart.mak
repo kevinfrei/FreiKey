@@ -31,7 +31,7 @@ LIB_INTERNALFILESYTEM=1
 USER_INCLUDES=-Iinclude
 USER_CPP_SRCS=\
 	dbgcfg.cpp \
- 	comm.cpp \
+ 	client-comm.cpp \
 	hardware.cpp \
   debounce.cpp \
   sleepstate.cpp \

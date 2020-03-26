@@ -1,65 +1,12 @@
 #include "sysstuff.h"
 
 #include "boardio.h"
-#include "comm.h"
-
-#if defined(USB_MASTER)
+#include "master-comm.h"
 #include "dongle.h"
 #include "hardware.h"
 #include "sync.h"
-#else
-#include "kbclient.h"
-#endif
 
-template <uint8_t VAL, typename T, typename UART>
-void send_packet(UART& uart, const T& v) {
-  comm::header h;
-  char buffer[sizeof(h) + sizeof(T)];
-  h.side = comm::LEFT_SIDE; // TODO: Fix This
-  h.type = VAL;
-  h.size = comm::sizes[VAL];
-  memcpy(&buffer[0], reinterpret_cast<char*>(&h), sizeof(h));
-  memcpy(&buffer[sizeof(h)], reinterpret_cast<const char*>(&v), sizeof(T));
-  for (int i = 0; i < sizeof(buffer); i++) {
-    DBG2(dumpHex((uint32_t)buffer[i], "S:"));
-  }
-  uart.write(buffer, sizeof(buffer));
-  DBG2(Serial.println("---"));
-};
 
-template <uint8_t VAL, typename UART>
-void send_packet(UART& uart) {
-  comm::header h;
-  h.side = comm::LEFT_SIDE; // TODO: Fix This
-  h.type = VAL;
-  h.size = comm::sizes[VAL];
-  DBG2(dumpHex((uint8_t)(*(reinterpret_cast<char*>(&h))), "SB:"));
-  uart.write(*reinterpret_cast<char*>(&h));
-};
-
-template <typename UART>
-uint8_t waitForByte(UART& uart) {
-  while (!uart.available()) {
-    delayMicroseconds(5);
-  }
-  return uart.read();
-}
-
-#if !defined(USB_MASTER)
-
-void comm::send::scan(BLEUart& uart, const MatrixBits& b) {
-  send_packet<comm::types::SCAN>(uart, b);
-}
-
-void comm::send::battery(BLEUart& uart, uint8_t pct) {
-  send_packet<comm::types::BATTERY>(uart, pct);
-}
-
-void comm::send::time(BLEUart& uart, uint32_t time) {
-  send_packet<comm::types::TIME>(uart, time);
-}
-
-#else
 bool waiting;
 uint32_t locTime;
 void comm::send::sync(BLEClientUart& uart) {
@@ -80,9 +27,7 @@ void comm::send::set_red(BLEClientUart& uart, bool on) {
 void comm::send::set_blue(BLEClientUart& uart, bool on) {
   send_packet<comm::types::SETBLUE>(uart, on);
 }
-#endif
 
-#if defined(USB_MASTER)
 uint8_t whichOne(BLEClientUart& uart) {
   return (&uart == &Dongle::leftUart) ? comm::LEFT_SIDE : comm::RIGHT_SIDE;
 }
@@ -142,9 +87,11 @@ void comm::recv::scan(uint8_t which, const MatrixBits& b) {
   digitalWrite(LED_RED, LOW);
 #endif
 }
+
 void comm::recv::battery(uint8_t which, uint8_t pct) {
   // TODO: Update the battery level
 }
+
 void comm::recv::time(uint8_t which, uint32_t time) {
   waiting = false;
   timeSync.ReportSync(which == comm::LEFT_SIDE);
@@ -159,46 +106,3 @@ void comm::recv::time(uint8_t which, uint32_t time) {
   DBG2(dumpVal(locUpdate, "Local time "));
   DBG2(dumpVal(locUpdate - locTime, "Latency: "));
 }
-#else
-void comm::recv::data(uint16_t handle) {
-  comm::header h;
-  uint8_t buf[15];
-  buf[0] = waitForByte(theClient.bleuart);
-  DBG2(dumpHex(buf[0], "r:"));
-  memcpy(reinterpret_cast<char*>(&h), &buf, 1);
-  for (uint8_t i = 0; i < h.size; i++) {
-    buf[i] = waitForByte(theClient.bleuart);
-    DBG2(dumpHex(buf[i], "r:"));
-  }
-  switch (h.type) {
-    case comm::types::SYNC:
-      comm::recv::sync();
-      break;
-    case comm::types::SETLED:
-      comm::recv::set_led(buf[0]);
-      break;
-    case comm::types::SETRED:
-      comm::recv::set_red(buf[0]);
-      break;
-    case comm::types::SETBLUE:
-      comm::recv::set_blue(buf[0]);
-      break;
-    default:
-      // TODO: ERROR!
-      break;
-  }
-}
-void comm::recv::sync() {
-  DBG2(Serial.println("Sync received"));
-  comm::send::time(theClient.bleuart, millis());
-}
-void comm::recv::set_led(uint8_t brightness) {
-  BoardIO::setLED(brightness);
-}
-void comm::recv::set_red(bool on) {
-  BoardIO::setRed(on);
-}
-void comm::recv::set_blue(bool on) {
-  BoardIO::setBlue(on);
-}
-#endif

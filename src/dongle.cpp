@@ -1,10 +1,10 @@
 #include "sysstuff.h"
 
-#include "comm.h"
 #include "dbgcfg.h"
 #include "dongle.h"
 #include "globals.h"
 #include "hardware.h"
+#include "master-comm.h"
 
 // Report ID's
 constexpr uint8_t RID_KEYBOARD = 1;
