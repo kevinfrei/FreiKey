@@ -1,8 +1,8 @@
 {
   "env": {
     "gccRoot": "/usr/local/opt/gcc-arm-none-eabi",
-    "gccVer": "8.3.1",
-    "srcRoot": "${workspaceRoot}/src",
+    "gccVer": "8.3.2",
+    "srcRoot": "${workspaceRoot}",
     "variableReference": "https://code.visualstudio.com/docs/editor/variables-reference",
     "fileReference": "https://github.com/Microsoft/vscode-cpptools/blob/master/Documentation/LanguageServer/c_cpp_properties.json.md"
   },
@@ -17,14 +17,14 @@
       },
       "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
       "cStandard": "c11",
-      "cppStandard": "c++17",
-      "compileCommands": "${workspaceRoot}/src/out-master/compile_commands.json"
+      "cppStandard": "c++20",
+      "compileCommands": "${workspaceRoot}/out-master/compile_commands.json"
     },
     {
       "name": "Mock",
       "intelliSenseMode": "clang-x64",
-      "cppStandard": "c++17",
-      "compileCommands": "${workspaceRoot}/src/out-mock-master/compile_commands.json"
+      "cppStandard": "c++20",
+      "compileCommands": "${workspaceRoot}/out-mock-master/compile_commands.json"
     },
     {
       "name": "Left",
@@ -37,7 +37,7 @@
       "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
       "cStandard": "c11",
       "cppStandard": "c++17",
-      "compileCommands": "${workspaceRoot}/src/out-lclient/compile_commands.json"
+      "compileCommands": "${workspaceRoot}/out-lclient/compile_commands.json"
     },
     {
       "name": "Right",
@@ -50,7 +50,7 @@
       "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
       "cStandard": "c11",
       "cppStandard": "c++17",
-      "compileCommands": "${workspaceRoot}/src/out-rclient/compile_commands.json"
+      "compileCommands": "${workspaceRoot}/out-rclient/compile_commands.json"
     },
     {
       "name": "Betterfly",
@@ -63,7 +63,7 @@
       "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
       "cStandard": "c11",
       "cppStandard": "c++17",
-      "compileCommands": "${workspaceRoot}/src/out-betterfly/compile_commands.json"
+      "compileCommands": "${workspaceRoot}/out-betterfly/compile_commands.json"
     }
   ],
   "version": 4

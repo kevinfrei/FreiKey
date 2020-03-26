@@ -23,8 +23,8 @@ void layer_switch(layer_t layer);
 void layer_toggle(layer_t layer);
 void layer_pop(layer_t layer);
 void layer_push(layer_t layer);
-scancode_t getNextScanCode(BoardIO::bits& delta,
-                           BoardIO::bits& curState,
+scancode_t getNextScanCode(MatrixBits& delta,
+                           MatrixBits& curState,
                            bool& pressed);
 uint32_t getColorForCurrentLayer();
 keystate* findStateSlot(scancode_t scanCode);

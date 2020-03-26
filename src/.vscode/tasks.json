@@ -6,7 +6,7 @@
     {
       "label": "Build",
       "type": "shell",
-      "command": "cd src ; make -j",
+      "command": "make -j",
       "problemMatcher": "$gcc",
       "group": {
         "kind": "build",
@@ -16,56 +16,63 @@
     {
       "label": "Clean",
       "type": "shell",
-      "command": "cd src ; make allclean",
+      "command": "make allclean",
       "problemMatcher": "$gcc",
       "group": "build"
     },
     {
       "label": "Flash Betterfly",
       "type": "shell",
-      "command": "cd src ; make -j -f teensy32.mak flash",
+      "command": "make -j -f betterfly.mak flash",
       "problemMatcher": "$gcc",
       "group": "build"
     },
     {
-      "label": "Set to Teensy",
+      "label": "Set to Betterfly",
       "type": "shell",
-      "command": "cd src ; rm Makefile ; ln -s teensy32.mak Makefile",
-      "problemMatcher": [],
-      "group": "none"
-    },
-    {
-      "label": "Set to Master/Slave",
-      "type": "shell",
-      "command": "cd src ; rm Makefile ; ln -s master-slave.mak Makefile",
+      "command": "rm Makefile ; ln -s betterfly.mak Makefile",
       "problemMatcher": [],
       "group": "none"
     },
     {
       "label": "Set to Dongle",
       "type": "shell",
-      "command": "cd src ; rm Makefile ; ln -s 3piece.mak Makefile",
+      "command": "rm Makefile ; ln -s master.mak Makefile",
+      "problemMatcher": [],
+      "group": "none"
+    },
+    {
+      "label": "Set to Left",
+      "type": "shell",
+      "command": "rm Makefile ; ln -s left-btuart.mak Makefile",
+      "problemMatcher": [],
+      "group": "none"
+    },
+    {
+      "label": "Set to Right",
+      "type": "shell",
+      "command": "rm Makefile ; ln -s right-btuart.mak Makefile",
       "problemMatcher": [],
       "group": "none"
     },
     {
       "label": "Flash Right",
       "type": "shell",
-      "command": "cd src ; make flashr",
+      "command": "make -j -f right-btuart.mak flash",
       "problemMatcher": "$gcc",
       "group": "build"
     },
     {
       "label": "Flash Left",
       "type": "shell",
-      "command": "cd src ; make flashl",
+      "command": "make -j -f left-btuart.mak flash",
       "problemMatcher": "$gcc",
       "group": "build"
     },
     {
       "label": "Flash Dongle",
       "type": "shell",
-      "command": "cd src ; make flashm",
+      "command": "make -j -f master.mak flash",
       "problemMatcher": "$gcc",
       "group": "build"
     }

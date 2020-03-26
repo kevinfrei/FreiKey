@@ -1,5 +1,6 @@
 #include "sysstuff.h"
 
+#include "boardio.h"
 #include "comm.h"
 #include "hardware.h"
 #include "kbclient.h"
@@ -38,16 +39,16 @@ void KBClient::setup(const char* name) {
   // power.
   Bluefruit.Advertising.start(0); // 0 = Don't stop advertising after n
                                   // seconds
-  theBoard.Configure();
+  BoardIO::Configure();
 }
 
 // TODO: Add bidirectional communication, so the master can ask for info or set
 // an LED state somehow
 void KBClient::loop() {
   uint32_t now = millis();
-  state::hw down{now, lastRead, theBoard};
+  state::hw down{now, lastRead};
 
-  if (sleepState.CheckForSleeping(down.switches, now, theBoard)) {
+  if (sleepState.CheckForSleeping(down.switches, now)) {
     // I'm assuming this saves power. If it doesn't, there's no point...
     delay(250);
   } else if (down != lastRead) {

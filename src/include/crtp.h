@@ -3,7 +3,7 @@
 // Shamelessly stolen from
 // https://www.fluentcpp.com/2017/05/19/crtp-helper/
 
-template <typename T, template <typename> class crtpType>
+template <typename T/*, template <typename> class crtpType*/>
 struct crtp {
   T& underlying() {
     return static_cast<T&>(*this);
@@ -14,5 +14,5 @@ struct crtp {
 
  private:
   crtp() {}
-  friend crtpType<T>;
+/*  friend crtpType<T>; */
 };

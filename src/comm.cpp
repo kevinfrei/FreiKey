@@ -1,6 +1,7 @@
 #include "sysstuff.h"
 
 #include "comm.h"
+
 #if defined(USB_MASTER)
 #include "dongle.h"
 #include "hardware.h"
@@ -46,7 +47,7 @@ uint8_t waitForByte(UART& uart) {
 
 #if !defined(USB_MASTER)
 
-void comm::send::scan(BLEUart& uart, const BoardIO::bits& b) {
+void comm::send::scan(BLEUart& uart, const MatrixBits& b) {
   send_packet<comm::types::SCAN>(uart, b);
 }
 
@@ -192,12 +193,12 @@ void comm::recv::sync() {
   comm::send::time(theClient.bleuart, millis());
 }
 void comm::recv::set_led(uint8_t brightness) {
-  theClient.theBoard.setLED(brightness);
+  BoardIO::setLED(brightness);
 }
 void comm::recv::set_red(bool on) {
-  theClient.theBoard.setRed(on);
+  BoardIO::setRed(on);
 }
 void comm::recv::set_blue(bool on) {
-  theClient.theBoard.setBlue(on);
+  BoardIO::setBlue(on);
 }
 #endif

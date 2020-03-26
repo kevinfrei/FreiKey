@@ -2,9 +2,7 @@
 #include "boardio.h"
 #include "hardware.h"
 
-bool SleepState::CheckForSleeping(BoardIO::bits switches,
-                                  uint32_t time,
-                                  const BoardIO& board) {
+bool SleepState::CheckForSleeping(MatrixBits& switches, uint32_t time) {
   // If we're in forced sleep mode, don't wake up
   if (!forced) {
     // First, handle sleeping states
@@ -12,7 +10,7 @@ bool SleepState::CheckForSleeping(BoardIO::bits switches,
       // We detected a keypress!
       if (sleeping) {
         // Turn off the LED if we were sleeping
-        board.setLED(0);
+        BoardIO::setLED(0);
         DBG(dumpVal(lastPressTime, "Exiting sleep from "));
       }
       sleeping = false;
@@ -27,7 +25,7 @@ bool SleepState::CheckForSleeping(BoardIO::bits switches,
   if (sleeping || forced) {
     // Blink the LED a little bit
     uint8_t brightness = !((time >> 9) & 3);
-    board.setLED(brightness);
+    BoardIO::setLED(brightness);
   }
   return sleeping;
 }

@@ -2,8 +2,9 @@
 
 #include "sysstuff.h"
 
-#include "boardio.h"
 #include <array>
+
+#include "boardio.h"
 
 namespace comm {
 
@@ -22,7 +23,7 @@ constexpr uint8_t count = 7;
 } // namespace types
 
 constexpr std::array<uint8_t, types::count> sizes{
-    BoardIO::byte_size, 1, sizeof(uint32_t), 0, 1, 1, 1};
+    MatrixBits::num_bytes, 1, sizeof(uint32_t), 0, 1, 1, 1};
 struct header {
   uint8_t side : 1;
   uint8_t type : 3;
@@ -31,7 +32,7 @@ struct header {
 
 namespace send {
 #if !defined(USB_MASTER)
-void scan(BLEUart& uart, const BoardIO::bits&);
+void scan(BLEUart& uart, const MatrixBits &);
 void battery(BLEUart& uart, uint8_t pct);
 void time(BLEUart& uart, uint32_t time);
 #else
@@ -46,7 +47,7 @@ namespace recv {
 
 #if defined(USB_MASTER)
 void data(BLEClientUart& uart);
-void scan(uint8_t which, const BoardIO::bits&);
+void scan(uint8_t which, const MatrixBits &);
 void battery(uint8_t which, uint8_t pct);
 void time(uint8_t which, uint32_t time);
 #else

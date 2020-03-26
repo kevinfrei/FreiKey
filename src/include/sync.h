@@ -37,7 +37,7 @@ class Sync {
 
   bool dataWaiting;
   uint32_t dataTime;
-  BoardIO::bits delayData;
+  MatrixBits delayData;
   uint8_t DELAY;
   bool Buffer(uint32_t time, state::hw& left, state::hw& right);
   void Delay(uint32_t time, state::hw& down, state::hw& prev);

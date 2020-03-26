@@ -5,11 +5,9 @@
 #include <array>
 
 #include "bit_array.h"
-#include "crtp.h"
 
 template <uint8_t pinLED>
-class Analog_LED {
- public:
+struct Analog_LED {
   static void ConfigLED() {
     pinMode(pinLED, OUTPUT);
     delay(1);
@@ -20,9 +18,8 @@ class Analog_LED {
   }
 };
 
-template <uint8_t tRED,uint8_t tBLUE>
-class Digital_LEDs {
- public:
+template <uint8_t tRED, uint8_t tBLUE>
+struct Digital_LEDs {
   static void ConfigLEDs() {
     pinMode(tRED, OUTPUT);
     pinMode(tBLUE, OUTPUT);
@@ -36,8 +33,7 @@ class Digital_LEDs {
 };
 
 template <uint8_t batPin = PIN_VBAT>
-class Battery {
- public:
+struct Battery {
   // pin 31 on the 832, pin 30 on the 840, is available for sampling the battery
   static constexpr uint8_t VBAT_PIN = batPin;
 
@@ -71,8 +67,7 @@ class Battery {
 };
 
 template <typename T, uint8_t nCols, uint8_t nRows, uint8_t... cols_then_rows>
-class KeyMatrix : crtp<T> {
- public:
+struct KeyMatrix {
   static constexpr uint8_t numcols = nCols;
   static constexpr uint8_t numrows = nRows;
   static constexpr uint8_t matrix_size = numcols * numrows;
@@ -81,14 +76,14 @@ class KeyMatrix : crtp<T> {
 
   static void ConfigMatrix() {
     // For my wiring, the columns are output, and the rows are input...
-    std::array<uint8_t> c_r{cols_then_rows...};
+    std::array<uint8_t, nCols + nRows> c_r{cols_then_rows...};
     for (uint8_t pn = 0; pn < nCols + nRows; pn++) {
       if (pn < nCols) {
         DBG(dumpVal(c_r[pn], "Output Pin "));
         T::configOutputPin(c_r[pn]);
       } else {
         DBG(dumpVal(c_r[pn], "Input Pullup "));
-        T::configInputPin(c_r[pn], INPUT_PULLUP);
+        T::configInputPin(c_r[pn]);
       }
     }
   };
@@ -96,25 +91,25 @@ class KeyMatrix : crtp<T> {
   // This is the core place to simulate the keyboard for mocking
   // (at least in the betterfly config)
   static bits Read() {
+    std::array<uint8_t, nCols + nRows> c_r{cols_then_rows...};
     bits switches{};
     for (uint64_t colNum = 0; colNum < numcols; ++colNum) {
-      T::prepPinForRead(cols[colNum]);
+      T::prepPinForRead(c_r[colNum]);
       delay(1); // TODO: Make this faster (which it microseconds)
       for (uint64_t rowNum = 0; rowNum < numrows; ++rowNum) {
-        if (!digitalRead(rows[rowNum])) {
+        if (!digitalRead(c_r[nCols + rowNum])) {
           switches.set_bit(rowNum * numcols + colNum);
         }
       }
-      T::completePin(cols[colNum]);
+      T::completePin(c_r[colNum]);
     }
     return switches;
   }
 };
 
-class Teensy {
+struct Teensy {
   // This configuration make sit so the Teensy LED (on pin 13)
   // doesn't stay lit 99.999% of the time...
- public:
   static void configOutputPin(uint8_t pin) {
     pinMode(pin, INPUT);
   }
@@ -130,8 +125,7 @@ class Teensy {
   }
 };
 
-class AdafruitNRF52 {
- public:
+struct AdafruitNRF52 {
   static void configOutputPin(uint8_t pin) {
     pinMode(pin, OUTPUT);
     digitalWrite(pin, HIGH);
@@ -147,7 +141,8 @@ class AdafruitNRF52 {
   }
 };
 
-#if defined(ADAFRUIT)
+#if defined(UART_CLIENT)
+
 // clang-format off
 using LeftMatrix = KeyMatrix<AdafruitNRF52,
   // Cols:
@@ -157,8 +152,8 @@ using LeftMatrix = KeyMatrix<AdafruitNRF52,
   // Column Pins:
   15, A0, 16, 7, A6, 27, 11,
   // Row Pins:
-  A3, 12, 13, A4, A2, A1>; 
-//}, A5} >;
+  A3, 12, 13, A4, A2, A1>;
+
 using RightMatrix = KeyMatrix<AdafruitNRF52,
   // Cols:
   7,
@@ -168,11 +163,13 @@ using RightMatrix = KeyMatrix<AdafruitNRF52,
   29, 16, 15, 7, 27, 11, 30,
   // Row Pins:
   13, 4, 2, 3, 5, 12>;
-//}, 28};
+
 // clang-format on
 
-class LeftBoard : LeftMatrix, Digital_LEDs<LED_RED, LED_BLUE>, Analog_LED<A5>, Battery<> {
-  public:
+struct LeftBoard : public LeftMatrix,
+                   public Digital_LEDs<LED_RED, LED_BLUE>,
+                   public Analog_LED<A5>,
+                   public Battery<> {
   static void Configure() {
     ConfigMatrix();
     ConfigLEDs();
@@ -181,9 +178,31 @@ class LeftBoard : LeftMatrix, Digital_LEDs<LED_RED, LED_BLUE>, Analog_LED<A5>, B
   }
 };
 
+struct RightBoard : public RightMatrix,
+                    public Digital_LEDs<LED_RED, LED_BLUE>,
+                    public Analog_LED<28>,
+                    public Battery<> {
+  static void Configure() {
+    ConfigMatrix();
+    ConfigLEDs();
+    ConfigLED();
+    ConfigBattery();
+  };
+};
+
+#if defined(RIGHT_CLIENT)
+using BoardIO = RightBoard;
+#elif defined(LEFT_CLIENT)
+using BoardIO = LeftBoard;
+#else
+#error You must select a left or right client
+#endif
+
 #elif defined(MOCKING)
 using BoardIO = BoardIOBase<1>;
 #elif defined(TEENSY)
 using BoardIO = BoardIOBase<12>;
 #error You must define a target for the number of columns on the board
 #endif
+
+using MatrixBits = typename BoardIO::bits;

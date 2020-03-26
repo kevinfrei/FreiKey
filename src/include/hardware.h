@@ -33,17 +33,17 @@ extern std::queue<incoming> data_queue;
 // This struct is to encapsulate the complete hardware state, including both
 // which switches are down, as well as the current battery level.
 struct hw {
-  BoardIO::bits switches;
+ MatrixBits switches;
 #if !defined(TEENSY)
   uint8_t battery_level;
 #endif
-  static constexpr std::size_t data_size = BoardIO::byte_size + 1;
+  static constexpr std::size_t data_size = MatrixBits::num_bytes + 1;
   // This is just a dumb constructor
   hw(uint8_t bl = 0);
 
 #if !defined(USB_MASTER)
   // This is for reading the data from the hardware
-  hw(uint32_t now, const hw& prev, const BoardIO& pd);
+  hw(uint32_t now, const hw& prev);
 #endif
 #if defined(UART_CLIENT)
   // Send the relevant data over the wire
@@ -58,7 +58,7 @@ struct hw {
   bool receive(BLEClientUart& clientUart, const hw& prev);
 #else
   // Just reads the switches...
-  void readSwitches(const BoardIO& pd, uint32_t now);
+  void readSwitches(uint32_t now);
 #endif
 
   // Generic copy constructor...

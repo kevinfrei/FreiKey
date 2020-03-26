@@ -3,9 +3,9 @@
 #include "helpers.h"
 
 // The last set of switches we reported
-BoardIO::bits last_reported_switches{};
+MatrixBits last_reported_switches{};
 // This is just the set of report times for switches
-uint32_t last_reported_time[BoardIO::matrix_size] = {0};
+uint32_t last_reported_time[MatrixBits::num_bits] = {0};
 // This is the # of msec to delay after reporting a change before reporting
 // another one. Rumor has it that Cherry claims a debounce period of 5ms, but
 // I still sometimes see a bounce or two, so I've increased it a bit.
@@ -13,13 +13,13 @@ uint32_t last_reported_time[BoardIO::matrix_size] = {0};
 // fast...
 constexpr uint8_t debounce_delay = 25;
 
-BoardIO::bits debounce(BoardIO::bits cur_switches, uint32_t now) {
+MatrixBits debounce(MatrixBits cur_switches, uint32_t now) {
   // If we've read the same thing we last reported, there's nothing to do
   if (last_reported_switches == cur_switches)
     return cur_switches;
   // This gets us a set of bits that are different between last report &
   // the current read
-  BoardIO::bits change = last_reported_switches.delta(cur_switches);
+  MatrixBits change = last_reported_switches.delta(cur_switches);
   while (change.any()) {
     uint8_t bit_num = change.pull_a_bit();
     if (bit_num > 63)

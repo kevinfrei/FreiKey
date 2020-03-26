@@ -2,4 +2,4 @@
 
 #include "boardio.h"
 
-BoardIO::bits debounce(BoardIO::bits cur_switches, uint32_t now);
+MatrixBits debounce(MatrixBits cur_switches, uint32_t now);

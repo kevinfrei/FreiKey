@@ -6,8 +6,8 @@
 namespace state {
 
 struct led {
-  BoardIO::bits left_state;
-  BoardIO::bits right_state;
+  MatrixBits left_state;
+  MatrixBits right_state;
   uint32_t (*get_led_value)(const state::hw& switches, uint32_t time_offset);
   uint32_t time;
   static const led* get(const state::hw& switches, uint8_t layer = 0);

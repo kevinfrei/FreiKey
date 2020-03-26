@@ -11,7 +11,7 @@ uint8_t last_8_reads[num_reads] = {0};
 int8_t cur_bat_loc = -1 - num_reads;
 
 uint8_t readBattery(uint32_t now, uint8_t prev) {
-  if (prev && now - last_bat_time <= 30000) {
+  if (prev && now - last_r-\1bat_time <= 30000) {
     // There's a lot of variance in the reading, so no need to over-report it.
     return prev;
   }
@@ -58,14 +58,14 @@ hw::hw(const hw& c)
 }
 
 #if !defined(USB_MASTER)
-hw::hw(uint32_t now, const hw& prev, const BoardIO& pd)
+hw::hw(uint32_t now, const hw& prev)
     : switches(prev.switches)
 #if defined(HAS_BATTERY)
       ,
       battery_level(readBattery(now, prev.battery_level))
 #endif
 {
-  readSwitches(pd, now);
+  readSwitches(now);
 }
 #endif
 
@@ -74,7 +74,7 @@ hw::hw(uint32_t now, const hw& prev, const BoardIO& pd)
 void hw::send(BLEUart& bleuart, const hw& prev) const {
   uint8_t buffer[data_size];
   this->switches.read(buffer);
-  buffer[BoardIO::byte_size] = this->battery_level;
+  buffer[MatrixBits::num_bytes] = this->battery_level;
   bleuart.write(buffer, data_size);
 }
 #endif
@@ -91,12 +91,12 @@ hw::hw(BLEClientUart& clientUart, const hw& prev) {
 #endif
 
 #if !defined(USB_MASTER)
-void hw::readSwitches(const BoardIO& pd, uint32_t now) {
+void hw::readSwitches(uint32_t now) {
 #if defined(DEBUG)
   scans_since_last_time++;
 #endif
   // Read & debounce the current key matrix
-  this->switches = debounce(pd.Read(), now);
+  this->switches = debounce(BoardIO::Read(), now);
 }
 #else // defined(USB_MASTER)
 // Try to receive any relevant switch data from the wire.
