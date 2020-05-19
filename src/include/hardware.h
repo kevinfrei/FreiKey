@@ -11,6 +11,15 @@ constexpr scancode_t null_scan_code = 0xff;
 constexpr uint16_t null_consumer_code = 0x8000;
 
 #if defined(ADAFRUIT)
+#if defined(LEFT_KARBON) || defined(RIGHT_KARBON) || defined(KARBON)
+constexpr const char* MANUFACTURER = "FreikyStuff";
+constexpr const char* MODEL = "Karbon";
+constexpr const char* BT_NAME = "Karbon";
+constexpr const char* HW_REV = "0001";
+constexpr const char* LHS_NAME = "Karbon";
+constexpr const char* LTCL_NAME = "Karbon-Left";
+constexpr const char* RTCL_NAME = "Karbon-Right";
+# else 
 constexpr const char* MANUFACTURER = "FreikyStuff";
 constexpr const char* MODEL = "FreiKeyboard";
 constexpr const char* BT_NAME = "FreiKeys";
@@ -18,6 +27,7 @@ constexpr const char* HW_REV = "0001";
 constexpr const char* LHS_NAME = "FreiKeys-Slave";
 constexpr const char* LTCL_NAME = "FreiKeys-LClient";
 constexpr const char* RTCL_NAME = "FreiKeys-RClient";
+#endif
 #endif
 
 namespace state {

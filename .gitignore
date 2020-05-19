@@ -34,9 +34,4 @@
 # Custom
 src/out
 src/Makefile
-src/out-master
-src/out-lclient
-src/out-rclient
-src/out-betterfly
-src/out-mock-master
-src/out-mock-betterfly
+src/out-*

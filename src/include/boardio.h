@@ -18,6 +18,12 @@ struct Analog_LED {
   }
 };
 
+struct No_Analog_LED {
+  static void setLED(uint32_t brightness) {
+    // Do nothing: Maybe in the future do something else?
+  }
+};
+
 template <uint8_t tRED, uint8_t tBLUE>
 struct Digital_LEDs {
   static void ConfigLEDs() {
@@ -164,6 +170,26 @@ using RightMatrix = KeyMatrix<AdafruitNRF52,
   // Row Pins:
   13, 4, 2, 3, 5, 12>;
 
+using LeftKarbonMatrix = KeyMatrix<AdafruitNRF52,
+  // Cols:
+  6,
+  // Rows:
+  6,
+  // Column pins:
+  15, 30, 27, A4, SCK, MOSI, // From 'outer' to 'inner'
+  // Row pins:
+  A1, A0, A2, 11, 7, 16>;
+
+using RightKarbonMatrix = KeyMatrix<AdafruitNRF52,
+  // Cols:
+  6,
+  // Rows:
+  6,
+  // Column pins:
+  16, 27, 30, MOSI, SCK, A0, // from 'inner' to 'outer'
+  // Row pins:
+  A2, 15, A1, A5, A4, A3>;
+
 // clang-format on
 
 struct LeftBoard : public LeftMatrix,
@@ -190,10 +216,36 @@ struct RightBoard : public RightMatrix,
   };
 };
 
+struct LeftKarbon : public LeftKarbonMatrix,
+                    public Digital_LEDs<LED_RED, LED_BLUE>,
+                    public No_Analog_LED,
+                    public Battery<> {
+  static void Configure() {
+    ConfigMatrix();
+    ConfigLEDs();
+    ConfigBattery();
+  }
+};
+
+struct RightKarbon : public RightKarbonMatrix,
+                     public Digital_LEDs<LED_RED, LED_BLUE>,
+                     public No_Analog_LED,
+                     public Battery<> {
+  static void Configure() {
+    ConfigMatrix();
+    ConfigLEDs();
+    ConfigBattery();
+  }
+};
+
 #if defined(RIGHT_CLIENT)
 using BoardIO = RightBoard;
 #elif defined(LEFT_CLIENT)
 using BoardIO = LeftBoard;
+#elif defined(RIGHT_KARBON)
+using BoardIO = RightKarbon;
+#elif defined(LEFT_KARBON)
+using BoardIO = LeftKarbon;
 #else
 #error You must select a left or right client
 #endif
@@ -208,6 +260,13 @@ using BoardIO = BoardIOBase<12>;
 #if defined(USB_MASTER)
 struct RemoteBoard {
   static constexpr uint8_t numcols = 7;
+  static constexpr uint8_t numrows = 6;
+};
+using BoardIO = RemoteBoard;
+using MatrixBits = bit_array<RemoteBoard::numcols * RemoteBoard::numrows>;
+#elif defined(KARBON)
+struct RemoteBoard {
+  static constexpr uint8_t numcols = 6;
   static constexpr uint8_t numrows = 6;
 };
 using BoardIO = RemoteBoard;
