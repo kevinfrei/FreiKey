@@ -38,7 +38,7 @@ struct Digital_LEDs {
   }
 };
 
-template <uint8_t batPin = PIN_VBAT>
+template <uint8_t batPin>
 struct Battery {
   // pin 31 on the 832, pin 30 on the 840, is available for sampling the battery
   static constexpr uint8_t VBAT_PIN = batPin;
@@ -113,151 +113,24 @@ struct KeyMatrix {
   }
 };
 
-struct Teensy {
-  // This configuration make sit so the Teensy LED (on pin 13)
-  // doesn't stay lit 99.999% of the time...
-  static void configOutputPin(uint8_t pin) {
-    pinMode(pin, INPUT);
-  }
-  static void configInputPin(uint8_t pin) {
-    pinMode(pin, INPUT_PULLUP);
-  }
-  static void prepPinForRead(uint8_t pin) {
-    pinMode(pin, OUTPUT);
-    digitalWrite(pin, LOW);
-  }
-  static void completePin(uint8_t pin) {
-    pinMode(pin, INPUT);
-  }
-};
+#include "mpu.h"
 
-struct AdafruitNRF52 {
-  static void configOutputPin(uint8_t pin) {
-    pinMode(pin, OUTPUT);
-    digitalWrite(pin, HIGH);
-  }
-  static void configInputPin(uint8_t pin) {
-    pinMode(pin, INPUT_PULLUP);
-  }
-  static void prepPinForRead(uint8_t pin) {
-    digitalWrite(pin, LOW);
-  }
-  static void completePin(uint8_t pin) {
-    digitalWrite(pin, HIGH);
-  }
-};
+#include "board-instance.h"
 
-#if defined(UART_CLIENT)
 
-// clang-format off
-using LeftMatrix = KeyMatrix<AdafruitNRF52,
-  // Cols:
-  7,
-  // Rows:
-  6,
-  // Column Pins:
-  15, A0, 16, 7, A6, 27, 11,
-  // Row Pins:
-  A3, 12, 13, A4, A2, A1>;
+#if defined(CLIENT)
 
-using RightMatrix = KeyMatrix<AdafruitNRF52,
-  // Cols:
-  7,
-  // Rows:
-  6,
-  // Column Pins:
-  29, 16, 15, 7, 27, 11, 30,
-  // Row Pins:
-  13, 4, 2, 3, 5, 12>;
-
-using LeftKarbonMatrix = KeyMatrix<AdafruitNRF52,
-  // Cols:
-  6,
-  // Rows:
-  6,
-  // Column pins:
-  15, 30, 27, A4, SCK, MOSI, // From 'outer' to 'inner'
-  // Row pins:
-  A1, A0, A2, 11, 7, 16>;
-
-using RightKarbonMatrix = KeyMatrix<AdafruitNRF52,
-  // Cols:
-  6,
-  // Rows:
-  6,
-  // Column pins:
-  16, 27, 30, MOSI, SCK, A0, // from 'inner' to 'outer'
-  // Row pins:
-  A2, 15, A1, A5, A4, A3>;
-
-// clang-format on
-
-struct LeftBoard : public LeftMatrix,
-                   public Digital_LEDs<LED_RED, LED_BLUE>,
-                   public Analog_LED<A5>,
-                   public Battery<> {
-  static void Configure() {
-    ConfigMatrix();
-    ConfigLEDs();
-    ConfigLED();
-    ConfigBattery();
-  }
-};
-
-struct RightBoard : public RightMatrix,
-                    public Digital_LEDs<LED_RED, LED_BLUE>,
-                    public Analog_LED<28>,
-                    public Battery<> {
-  static void Configure() {
-    ConfigMatrix();
-    ConfigLEDs();
-    ConfigLED();
-    ConfigBattery();
-  };
-};
-
-struct LeftKarbon : public LeftKarbonMatrix,
-                    public Digital_LEDs<LED_RED, LED_BLUE>,
-                    public No_Analog_LED,
-                    public Battery<> {
-  static void Configure() {
-    ConfigMatrix();
-    ConfigLEDs();
-    ConfigBattery();
-  }
-};
-
-struct RightKarbon : public RightKarbonMatrix,
-                     public Digital_LEDs<LED_RED, LED_BLUE>,
-                     public No_Analog_LED,
-                     public Battery<> {
-  static void Configure() {
-    ConfigMatrix();
-    ConfigLEDs();
-    ConfigBattery();
-  }
-};
-
-#if defined(RIGHT_CLIENT)
+#if defined(RIGHT)
 using BoardIO = RightBoard;
-#elif defined(LEFT_CLIENT)
+#elif defined(LEFT)
 using BoardIO = LeftBoard;
-#elif defined(RIGHT_KARBON)
-using BoardIO = RightKarbon;
-#elif defined(LEFT_KARBON)
-using BoardIO = LeftKarbon;
 #else
 #error You must select a left or right client
 #endif
 
-#elif defined(MOCKING)
-using BoardIO = BoardIOBase<1>;
-#elif defined(TEENSY)
-using BoardIO = BoardIOBase<12>;
-#error You must define a target for the number of columns on the board
-#endif
+#else
 
-#if defined(USB_MASTER)
+#if defined(FREIKEYS)
 struct RemoteBoard {
   static constexpr uint8_t numcols = 7;
   static constexpr uint8_t numrows = 6;
@@ -270,7 +143,12 @@ struct RemoteBoard {
   static constexpr uint8_t numrows = 6;
 };
 using BoardIO = RemoteBoard;
-using MatrixBits = bit_array<RemoteBoard::numcols * RemoteBoard::numrows>;
+#elif defined(BETTERFLY)
+using BoardIO = BoardIOBase<12>;
 #else
-using MatrixBits = typename BoardIO::bits;
+#error You must define a target for the number of columns on the board
 #endif
+
+#endif
+
+using MatrixBits = bit_array<BoardIO::numcols * BoardIO::numrows>;

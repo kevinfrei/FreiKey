@@ -23,7 +23,7 @@ PROJ_NAME=usb-master
 
 # This is how to add new flags
 # -DDEBUG=1/2
-COMPILER_CPP_EXTRA_FLAGS=-DUSB_MASTER -DDEBUG=1
+COMPILER_CPP_EXTRA_FLAGS=-DFREIKEYS -DMASTER -DDEBUG=2
 
 # This is how to add libraries
 LIB_BLUEFRUIT52LIB=1
@@ -33,7 +33,7 @@ LIB_INTERNALFILESYTEM=1
 LIB_TINYUSB=1
 # (Ah, InternalFileSytem, you're my favorite typo)
 
-USER_INCLUDES=-Iinclude/freikeys -Iinclude
+USER_INCLUDES=-Iinclude/freikeys -Iinclude/adafruit_nrf52 -Iinclude
 USER_CPP_SRCS=\
 	dbgcfg.cpp \
 	dongle.cpp \

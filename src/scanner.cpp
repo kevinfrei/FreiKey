@@ -73,7 +73,7 @@ action_t resolveActionForScanCodeOnActiveLayer(uint8_t scanCode) {
   return keymap[layer_stack[s]][scanCode];
 }
 
-#if defined(USB_MASTER) || defined(KARBON)
+#if defined(MASTER)
 // For no good reason, I only have 2 bits per color...
 uint32_t getColorForCurrentLayer() {
   return layer_colors[layer_stack[layer_pos]];

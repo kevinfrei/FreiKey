@@ -23,7 +23,7 @@ PROJ_NAME=karbon
 
 # This is how to add new flags
 # -DDEBUG=1/2
-COMPILER_CPP_EXTRA_FLAGS=-DKARBON -DDEBUG=2
+COMPILER_CPP_EXTRA_FLAGS=-DKARBON -DMASTER -DDEBUG=2
 
 # This is how to add libraries
 LIB_BLUEFRUIT52LIB=1
@@ -33,7 +33,7 @@ LIB_INTERNALFILESYTEM=1
 LIB_TINYUSB=1
 # (Ah, InternalFileSytem, you're my favorite typo)
 
-USER_INCLUDES=-Iinclude/karbon -Iinclude
+USER_INCLUDES=-Iinclude/karbon -Iinclude/adafruit_nrf52 -Iinclude
 USER_CPP_SRCS=\
 	dbgcfg.cpp \
 	dongle.cpp \

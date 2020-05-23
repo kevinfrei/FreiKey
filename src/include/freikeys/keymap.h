@@ -3,6 +3,20 @@
 #include "boardio.h"
 #include "keyhelpers.h"
 
+#define LROW1(l00, l01, l02, l03, l04, l05) ___, l05, l04, l03, l02, l01, l00
+#define LROW2(l10, l11, l12, l13, l14, l15) ___, l15, l14, l13, l12, l11, l10
+#define LROW3(l20, l21, l22, l23, l24, l25) ___, l25, l24, l23, l22, l21, l20
+#define LROW4(l30, l31, l32, l33, l34, l35) ___, l35, l34, l33, l32, l31, l30
+#define LROW5(l40, l41, l42, l43, l44, l45, lt) lt, l45, l44, l43, l42, l41, l40
+#define LROW6(l51, l52, l53, l54, lt65, lt) lt, lt65, l54, l53, l52, l51, ___
+
+#define RROW1(r00, r01, r02, r03, r04, r05) r05, r04, r03, r02, r01, r00, ___
+#define RROW2(r10, r11, r12, r13, r14, r15) r15, r14, r13, r12, r11, r10, ___
+#define RROW3(r20, r21, r22, r23, r24, r25) r25, r24, r23, r22, r21, r20, ___
+#define RROW4(r30, r31, r32, r33, r34, r35) r35, r34, r33, r32, r31, r30, ___
+#define RROW5(rt, r40, r41, r42, r43, r44, r45) r45, r44, r43, r42, r41, r40, rt
+#define RROW6(rt, rt51, r51, r52, r53, r54) ___, r54, r53, r52, r51, rt51, rt
+
 #if defined(STATUS_DUMP)
 // For the status dumper thingamajig
 const char* layer_names[] = {

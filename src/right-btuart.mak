@@ -21,14 +21,14 @@ PROJ_NAME=right-client
 RUNTIME_TOOLS_ARM_NONE_EABI_GCC_PATH=${TOOLS_PATH}
 
 # This is how to add new flags
-COMPILER_CPP_EXTRA_FLAGS=-DUART_CLIENT -DRIGHT -DRIGHT_CLIENT -DDEBUG=2 -DHAS_BATTERY
+COMPILER_CPP_EXTRA_FLAGS=-DCLIENT -DRIGHT -DFREIKEYS -DDEBUG=2 -DHAS_BATTERY
 
 # This is how to add libraries (They currently have to be defined to 1)
 LIB_BLUEFRUIT52LIB=1
 LIB_ADAFRUIT_LITTLEFS=1
 LIB_INTERNALFILESYTEM=1
 
-USER_INCLUDES=-Iinclude/freikeys -Iinclude
+USER_INCLUDES=-Iinclude/freikeys -Iinclude/adafruit_nrf52 -Iinclude
 USER_CPP_SRCS=\
 	dbgcfg.cpp \
  	client-comm.cpp \
