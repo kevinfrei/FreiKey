@@ -1,5 +1,8 @@
 #pragma once
 
+#include "sysstuff.h"
+
+#include <array>
 #include <initializer_list>
 
 #include "dbgcfg.h"

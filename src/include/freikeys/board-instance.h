@@ -1,4 +1,9 @@
-// This is included from boardio.h
+#pragma once
+
+#include "adafruit_nrf52/mpu.h"
+#include "battery.h"
+#include "keymatrix.h"
+#include "leds.h"
 
 // clang-format off
 

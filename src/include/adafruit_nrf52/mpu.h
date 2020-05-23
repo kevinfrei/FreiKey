@@ -1,4 +1,7 @@
-// This is included from within boardio.h
+#pragma once
+
+#include "sysstuff.h"
+
 
 struct AdafruitNRF52 {
   static void configOutputPin(uint8_t pin) {

@@ -1,4 +1,6 @@
-// This is included from within boardio.h
+#pragma once
+
+#include "sysstuff.h"
 
 struct Teensy {
   // This configuration make sit so the Teensy LED (on pin 13)
