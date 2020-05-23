@@ -18,7 +18,7 @@ PROJ_NAME=mock-master
 # -DDEBUG=1/2
 COMPILER_CPP_EXTRA_FLAGS=-DUSB_MASTER -DADAFRUIT -DHAS_LED -DDEBUG=1
 
-USER_INCLUDES=-Iinclude
+USER_INCLUDES=-Iinclude/mock -Iinclude
 USER_CPP_SRCS=\
  	comm.cpp \
 	dbgcfg.cpp \

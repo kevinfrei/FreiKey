@@ -1,4 +1,5 @@
-# FreiKey: My fully self-designed keyboard
+# FreiKey: Firmware for fully self-designed & manufactured keyboards
+
 My fully custom ergonomic two piece Bluetooth keyboard. This is forked from the
 [ErgoBlue](https://github.com/kevinfrei/ErgoBlue) repository, which is now
 effectively dead, since I'm not using the ErgoDox/ErgoBlue layout any longer.

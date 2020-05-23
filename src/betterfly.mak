@@ -34,7 +34,7 @@ LIB_WIRE=1
 LIB_SPI=1
 LIB_GFX=1
 LIB_SSD1306=1
-USER_INCLUDES=-Iinclude
+USER_INCLUDES=-Iinclude/betterfly -Iinclude
 
 USER_CPP_SRCS=\
 	betterfly.cpp \

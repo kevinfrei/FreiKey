@@ -33,7 +33,7 @@ LIB_INTERNALFILESYTEM=1
 LIB_TINYUSB=1
 # (Ah, InternalFileSytem, you're my favorite typo)
 
-USER_INCLUDES=-Iinclude
+USER_INCLUDES=-Iinclude/freikeys -Iinclude
 USER_CPP_SRCS=\
 	dbgcfg.cpp \
 	dongle.cpp \

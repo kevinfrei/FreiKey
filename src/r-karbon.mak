@@ -28,7 +28,7 @@ LIB_BLUEFRUIT52LIB=1
 LIB_ADAFRUIT_LITTLEFS=1
 LIB_INTERNALFILESYTEM=1
 
-USER_INCLUDES=-Iinclude
+USER_INCLUDES=-Iinclude/karbon -Iinclude
 USER_CPP_SRCS=\
 	dbgcfg.cpp \
  	client-comm.cpp \

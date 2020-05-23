@@ -18,7 +18,7 @@ PROJ_NAME=mock-betterfly
 # -DDEBUG=1/2
 COMPILER_CPP_EXTRA_FLAGS=-DBETTERYFLY -DTEENSY -DDEBUG=1
 
-USER_INCLUDES=-Iinclude
+USER_INCLUDES=-Imock -Iinclude
 USER_CPP_SRCS=\
 	betterfly.cpp \
 	dbgcfg.cpp \
