@@ -5,7 +5,7 @@ ifeq ($(OS),Windows_NT)
 else ifeq ($(shell uname -s), Darwin)
 	ARD=/Applications/Arduino.app/Contents/Java/hardware
 	SERIAL_PORT=$(shell ls /dev/cu.usbmodem5*)
-	TOOLS_PATH=/usr/local/opt/gcc-arm-none-eabi
+	TOOLS_PATH=/usr/local/opt/forTeensy
 	RUNTIME_HARDWARE_PATH=${TOOLS_PATH}
 	CMD_PATH=${TOOLS_PATH}
 else

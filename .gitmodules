@@ -17,3 +17,6 @@
 	path = src/libs/Arduino2Make
 	url = git@github.com:kevinfrei/Arduino2Make.git
 	branch = master
+[submodule "src/libs/ArduinoCore"]
+	path = src/libs/ArduinoCore
+	url = https://github.com/arduino/ArduinoCore-avr.git
