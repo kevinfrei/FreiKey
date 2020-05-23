@@ -2,9 +2,8 @@
 
 #include "sysstuff.h"
 
-#include <array>
 #include "bit_array.h"
-
+#include <array>
 
 template <typename T, uint8_t nCols, uint8_t nRows, uint8_t... cols_then_rows>
 struct KeyMatrix {
@@ -13,10 +12,18 @@ struct KeyMatrix {
   static constexpr uint8_t matrix_size = numcols * numrows;
   typedef bit_array<matrix_size> bits;
   static constexpr uint8_t byte_size = bits::num_bytes;
+  typedef std::array<uint8_t, nCols + nRows> ColsRows;
+
+  static uint64_t colPin(const ColsRows& c_r, uint64_t col) {
+    return c_r[col];
+  }
+  static uint64_t rowNum(const ColsRows& c_r, uint64_t row) {
+    return c_r[nCols + row];
+  }
 
   static void ConfigMatrix() {
     // For my wiring, the columns are output, and the rows are input...
-    std::array<uint8_t, nCols + nRows> c_r{cols_then_rows...};
+    ColsRows c_r{cols_then_rows...};
     for (uint8_t pn = 0; pn < nCols + nRows; pn++) {
       if (pn < nCols) {
         DBG(dumpVal(c_r[pn], "Output Pin "));
@@ -31,7 +38,7 @@ struct KeyMatrix {
   // This is the core place to simulate the keyboard for mocking
   // (at least in the betterfly config)
   static bits Read() {
-    std::array<uint8_t, nCols + nRows> c_r{cols_then_rows...};
+    ColsRows c_r{cols_then_rows...};
     bits switches{};
     for (uint64_t colNum = 0; colNum < numcols; ++colNum) {
       T::prepPinForRead(c_r[colNum]);
