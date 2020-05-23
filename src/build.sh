@@ -1,10 +1,10 @@
 #!/bin/bash
 echo FreiKeys-Master
-make -f master.mak -j all out-master/compile_commands.json
+make -f freikeys.mak -j all out-freikeys/compile_commands.json
 echo FreiKeys-Left
-make -f left-btuart.mak -j all out-lclient/compile_commands.json
+make -f l-freikeys.mak -j all out-lfreikeys/compile_commands.json
 echo FreiKeys-Right
-make -f right-btuart.mak -j all out-rclient/compile_commands.json
+make -f r-freikeys.mak -j all out-rfreikeys/compile_commands.json
 echo Karbon-Master
 make -f karbon.mak -j all out-karbon/compile_commands.json
 echo Karbon-Left

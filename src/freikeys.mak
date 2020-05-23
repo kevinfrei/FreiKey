@@ -18,8 +18,8 @@ IN_SOFTDEVICE=s140v6
 IN_DEBUG=l0
 BUILD_ARCH=nrf52
 RUNTIME_TOOLS_ARM_NONE_EABI_GCC_PATH=${TOOLS_PATH}
-BUILD_PATH=out-master
-PROJ_NAME=usb-master
+BUILD_PATH=out-freikeys
+PROJ_NAME=freikeys
 
 # This is how to add new flags
 # -DDEBUG=1/2

@@ -16,8 +16,8 @@ BOARD_NAME=feather52832
 IN_SOFTDEVICE=s132v6
 IN_DEBUG=l0
 BUILD_ARCH=nrf52
-BUILD_PATH=out-rclient
-PROJ_NAME=right-client
+BUILD_PATH=out-rfreikeys
+PROJ_NAME=right-freikeys
 RUNTIME_TOOLS_ARM_NONE_EABI_GCC_PATH=${TOOLS_PATH}
 
 # This is how to add new flags
