@@ -62,7 +62,13 @@ void KBClient::loop() {
 KBClient theClient{};
 
 void setup() {
+#if defined(LEFT)
+  theClient.setup(LTCL_NAME);
+#elif defined(RIGHT)
   theClient.setup(RTCL_NAME);
+#else
+#error Select Left or RIGHT
+#endif
 }
 
 void loop() {

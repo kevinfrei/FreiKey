@@ -6,7 +6,7 @@
 #define ADAFRUIT
 #include <bluefruit.h>
 
-#if defined(USB_MASTER)
+#if defined(USB_MASTER) || defined(KARBON)
 #include "Adafruit_NeoPixel.h"
 #include "Adafruit_TinyUSB.h"
 #endif

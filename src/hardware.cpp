@@ -57,7 +57,7 @@ hw::hw(const hw& c)
 {
 }
 
-#if !defined(USB_MASTER)
+#if !defined(USB_MASTER) && !defined(KARBON)
 hw::hw(uint32_t now, const hw& prev)
     : switches(prev.switches)
 #if defined(HAS_BATTERY)
@@ -79,7 +79,7 @@ void hw::send(BLEUart& bleuart, const hw& prev) const {
 }
 #endif
 
-#if defined(USB_MASTER)
+#if defined(USB_MASTER) || defined(KARBON)
 std::queue<incoming> data_queue;
 
 hw::hw(BLEClientUart& clientUart, const hw& prev) {
@@ -90,7 +90,7 @@ hw::hw(BLEClientUart& clientUart, const hw& prev) {
 }
 #endif
 
-#if !defined(USB_MASTER)
+#if !defined(USB_MASTER) && !defined(KARBON)
 void hw::readSwitches(uint32_t now) {
 #if defined(DEBUG)
   scans_since_last_time++;

@@ -4,6 +4,8 @@
 #include "mock-keymap.h"
 #elif defined(BETTERFLY)
 #include "betterfly-keymap.h"
+#elif defined(KARBON)
+#include "karbon-keymap.h"
 #elif defined(ARDUINO_NRF52_ADAFRUIT)
 #include "freikeys-keymap.h"
 #elif defined(MOCKING)

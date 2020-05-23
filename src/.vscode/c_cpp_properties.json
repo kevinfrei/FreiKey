@@ -21,6 +21,19 @@
       "compileCommands": "${workspaceRoot}/out-master/compile_commands.json"
     },
     {
+      "name": "Karbon",
+      "intelliSenseMode": "gcc-x86",
+      "browse": {
+        "path": [],
+        "limitSymbolsToIncludedHeaders": true,
+        "databaseFilename": ""
+      },
+      "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
+      "cStandard": "c11",
+      "cppStandard": "c++20",
+      "compileCommands": "${workspaceRoot}/out-karbon/compile_commands.json"
+    },
+    {
       "name": "Mock",
       "intelliSenseMode": "clang-x64",
       "cppStandard": "c++20",

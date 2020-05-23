@@ -19,7 +19,7 @@ constexpr const char* HW_REV = "0001";
 constexpr const char* LHS_NAME = "Karbon";
 constexpr const char* LTCL_NAME = "Karbon-Left";
 constexpr const char* RTCL_NAME = "Karbon-Right";
-# else 
+# else
 constexpr const char* MANUFACTURER = "FreikyStuff";
 constexpr const char* MODEL = "FreiKeyboard";
 constexpr const char* BT_NAME = "FreiKeys";
@@ -31,7 +31,7 @@ constexpr const char* RTCL_NAME = "FreiKeys-RClient";
 #endif
 
 namespace state {
-#if defined(USB_MASTER)
+#if defined(USB_MASTER) || defined(KARBON)
 struct incoming {
   BLEClientUart* which;
   // TODO: Tag it with 'when' to synchronize the sides better
@@ -51,7 +51,7 @@ struct hw {
   // This is just a dumb constructor
   hw(uint8_t bl = 0);
 
-#if !defined(USB_MASTER)
+#if !defined(USB_MASTER) && !defined(KARBON)
   // This is for reading the data from the hardware
   hw(uint32_t now, const hw& prev);
 #endif
@@ -60,7 +60,7 @@ struct hw {
   void send(BLEUart& bleuart, const hw& prev) const;
 #endif
 
-#if defined(USB_MASTER)
+#if defined(USB_MASTER) || defined(KARBON)
   // This is for reading the data from remote pieces over the UART
   hw(BLEClientUart& clientUart, const hw& prev);
   // Try to receive any relevant switch data from the wire.
