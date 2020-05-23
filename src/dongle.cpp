@@ -13,8 +13,8 @@ constexpr uint8_t RID_CONSUMER = 2;
 // Composite HID report including both a keyboard and consumer device
 // Necessary to support the consumer keys (volume/play/pause, etc...)
 uint8_t const desc_hid_report[] = {
-    TUD_HID_REPORT_DESC_KEYBOARD(HID_REPORT_ID(RID_KEYBOARD), ),
-    TUD_HID_REPORT_DESC_CONSUMER(HID_REPORT_ID(RID_CONSUMER), )};
+    TUD_HID_REPORT_DESC_KEYBOARD(HID_REPORT_ID(RID_KEYBOARD)),
+    TUD_HID_REPORT_DESC_CONSUMER(HID_REPORT_ID(RID_CONSUMER))};
 
 Adafruit_NeoPixel Dongle::neopix{1, PIN_NEOPIXEL, NEO_GRB + NEO_KHZ800};
 BLEClientUart Dongle::leftUart;
