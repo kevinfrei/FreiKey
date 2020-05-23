@@ -3,13 +3,23 @@ My fully custom ergonomic two piece Bluetooth keyboard. This is forked from the
 [ErgoBlue](https://github.com/kevinfrei/ErgoBlue) repository, which is now
 effectively dead, since I'm not using the ErgoDox/ErgoBlue layout any longer.
 
-![Final Canvas XDA](docs/FinalCanvasXDA.jpg)
+![FreiKeys](docs/FinalCanvasXDA.jpg)
+![Karbon](docs/KarbonCanvasXDA.jpg)
+
+## Software
+
+I have been refactoring this stuff a bit, and it's cleaner, but still not quite
+where I want it to be. Once I'm happy with it, I'll probably write more about
+how to use the software. For now, you'll just have to stare at it. You need to
+install the arm-none-eabi version of GCC, as I hate the Arduino IDE and have
+been using a tool I built (https://github.com/kevinfrei/Arduino2Make) to
+just use `make` to build & flash the firmware.
 
 ## Quick Summary
 
-I designed & manufactured this thing all myself. It's using a pair of AdaFruit
-Feather nRF52's, same as the ErgoBlue keyboard I wired together myself. The
-reason for this keyboard is twofold:
+I designed & manufactured these keyboards all myself. They're using a pair of
+AdaFruit Feather nRF52's, same as the ErgoBlue keyboard I wired together
+myself. The reason for the new designs are two-fold:
 
 1. A better fit for my thumbs. The ErgoDox thumb cluster took a couple weeks to
    get accustomed to, and when I've gone back and tried it after having grown
@@ -21,12 +31,29 @@ reason for this keyboard is twofold:
    cluster (and, on the other side, a pgup/pgdn/home/end cluster) directly below
    the home row. You just have to slide your hand down about 2 inches!
 
-Rather than cutting an aluminum plate and manually wiring the matrix, I designed
-a PCB, with a spot to put the Feather controllers. This was the first time I've
-designed (and milled) a PCB, as well as the first time I've milled aluminum, so
-it's been an adventure. A few key points worth noting:
+The walnut keyboard (top) I've called 'FreiKeys'. It's got an aluminum keyplate
+and a 2500mAh battery in each half. The lower one is called 'Karbon'. The
+keyplate is milled out of 1.5mm carbon fiber. The middle layers are 3D-printed
+PLA (space for a battery, etc...) and then the back 2mm carbon fiber. Karbon is
+the second generation of my custom keyboard. The primary problems I had with
+FreiKeys are that the placement of \`/~ and =/+ were pretty hard to hit
+reliably, which is frustrating while coding, and I just don't really use the
+bottom row (except for the curly brace/brackets) and when I did, they were
+highly inconvenient to actually hit. So I removed the bottom row, and moved
+around the thumb keys enough so that hopefully it will be easier to hit the
+\`/~ and =/+ keys with my thumbs. I'm enjoying it thus far, though typing this
+paragraph is the first time I've used this keyboard :D.
+
+For these keyboards, rather than cutting an aluminum plate and manually wiring
+the matrix, I designed a PCB, with a spot to put the Feather controllers. This
+was the first time I've designed (and milled) a PCB, as well as the first time
+I've milled aluminum, and carbon fiber, so it's been an adventure. A few key
+points worth noting:
+
+Stuff I've learned from FreiKeys:
 * Small end mills break easily (particularly on Aluminum)!
-* Large 'V' bits **don't** break easily (certainly not while ripping through some copper clad PCB blanks)
+* Large 'V' bits **don't** break easily (certainly not while ripping through
+some copper clad PCB blanks)
 * Clearing away the spare copper of a PCB isn't necessary. You just need to make
   sure each circuit that matters is isolated (much faster to mill.)
 * Aluminum is much harder than wood
@@ -40,83 +67,23 @@ it's been an adventure. A few key points worth noting:
   off pieces of the trace you care about!
 * Surface mounting something that isn't really designed for it is awkward
 
-## Narrative
-
-With that, here's what I did:
-
-First, I swiped the ErgoDox STL files to get a good 'starting point' for key
-layout. I like the ortholinear, staggered fingers for the ErgoDox. I actually
-shifted the index finger to be a little lower than the ring finger, and pulled
-the G and H rows down a little bit more, because it made sense to me (at least
-for my hand/finger shape). Next, I deleted the "inner" row of keys. They were
-always too far a reach, and I didn't really find them that useful. I always had
-to look to see what I was hitting. I then added an extra set of 3 keys in the
-J/K/L columns to provide the Arrow-T locations. Finally, I put a few keys in a
-rainbow shape near where I figured my thumb would be comfortable. Instead of
-just milling it in aluminum (which I knew was going to be messy), I extruded the
-key holes into 'fake' keys and milled the shape out of a chunk of old styrofoam
-insulation I've been carrying around for years. It's super easy to mill, and
-holds a shape nicely. This gave me an opportunity to sort of try the layout of
-the thumb cluster to see if it was comfortable. Turns out, I needed the keys a
-little closer. At the same time, I figured it wouldn't hurt to add another key
-beside the arrow cluster.
-
-Once I had the key layout, I milled a baseplate out of 1.6mm aluminum. This was
-my first time milling aluminum, so I broke a lot of bits, but eventually got a
-finished plate. I stuck a bunch of keyswitches in the plate to get a feel for
-them, and decided I needed to change the thumbs a bit more. I turned the
-'resting' key from a 1x1.5 to a simple 1x1 key, and pulled the 1.5 and 1.25 keys
-even closer, leaving the solitary 1x1 at the bottom. In addition, I had started
-designing the PCB & wooden cases and realized that I needed to carve out a space
-for a battery, so I took out a chunk from the aluminum plate under the wrist
-wrest to put it.
-
-For the PCB's, I started out with a matrix, similar to what I did for the
-ErgoBlue project. Once I had the matrix, I started running traces. I didn't
-really optimize for anything, here. I'm sure I could have done a much better job
-at preventing myself from needing to do so much soldering of wire on the
-diode-side of the PCB if I'd spent more time. Maybe next project :)
-
-The big, exciting addition to this project is an LED. While the ErgoBlue worked
-fine, I found only being able to use the "typing stuff into a text window"
-capability to communicate status a bit of a bummer. Each half has a solitary LED
-in the upper 'inside' corner, near the '5' and '6' keys. As of this writing, the
-only thing that it does is flicker when you're over 10% battery life (and you
-hit a combination of 4 keys), or stay solid if you're under 10%. But I plan on
-addition more capabilities "soon".
-
-For the wood cases, there are a couple things of note. The first is that I had
-the leg (almost) fully modeled, so I went ahead and had the CNC cut it out. It
-was kind of slow, because of the tapers, but resulted in a completely consistent
-leg length, which is somewhat difficult to do manually on such a small part. The
-other interesting element of the case is that the leg is attached with a cheesy
-little 1" x 1/2" hinge, which has a small cut-away on the "inner" edge of the
-case, which allowed for a smaller case. I had milled one case with enough space
-to attach the leg hinge on the underside of the case, but that resulted in a
-rather chunky looking case. I prefer the new version.
-
-A few final points of interest: I'm using 2500mAH batteries from AdaFruit. They
-last about a week, even with basically *no* attention to power consumption. If
-you use different batteries, you'll need to change the shape of the battery
-cut-outs to match. I carved the cases out of walnut this go around. It's a
-gorgeous, dark wood, and is hard enough that I didn't have *any* breaking
-pieces, even with connections of less than a 50 square millimeters.
-
+Stuff I've learned from Karbon:
+* Carbon is theoretically slower to mill than aluminum, but if you mill it in a
+water bath, it's super easy to just start the program, and ignore it, as the
+water keeps the bit from overheating.
+* Sharp small V-bits hold up just as well as the big spiral V-bits, and leave a
+clean edge!
+* Fusion360 has Eagle circuit stuff built in now, but it's still restricted to
+circuit boards smaller than half a keyboard, so I'm still just doing everything
+manually...
 ## The Good Stuff
-
 Here's stuff that doesn't live on GitHub (A bunch of AutoDesk Fusion 360 projects)
-* [The aluminum 
+### FreiKeys stuff
+* [The aluminum
 keyplate](https://a360.co/2L1pxVX) is the same for both the left & right hand.
 * [The left side PCB](https://a360.co/2KXEIiF).
 * [The right side PCB](https://a360.co/2KZmqhe).
 * [The wooden cases](https://a360.co/2L0rK3Y) in a single project.
-
-Here's a view pictures of the various parts in various stages of creation:
-
-### Milling Aluminum is Kinda Messy
-![Doing this right takes time](docs/AluminumIsHard.jpg)
-
-This was my practice sheet of aluminum. The first problem was bad "speeds and
-feeds". The second was that a 1/8" bt is just too big. I didn't want the corners
-that 'cleaned out'. The final key-hole was cut using a single-flute 2mm bit,
-which can be had for cheap on Amazon.
+### Karbon
+ * Everything for this keyboard is in a single project,
+[here](https://a360.co/2ZAojex)
