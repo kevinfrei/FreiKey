@@ -52,6 +52,9 @@ void KBClient::loop() {
     // I'm assuming this saves power. If it doesn't, there's no point...
     delay(250);
   } else if (down != lastRead) {
+    if (lastRead.battery_level != down.battery_level) {
+      comm::send::battery(bleuart, down.battery_level);
+    }
     lastRead = down;
     DBG2(down.dump());
     comm::send::scan(bleuart, lastRead.switches);
@@ -62,13 +65,7 @@ void KBClient::loop() {
 KBClient theClient{};
 
 void setup() {
-#if defined(LEFT)
-  theClient.setup(LTCL_NAME);
-#elif defined(RIGHT)
-  theClient.setup(RTCL_NAME);
-#else
-#error Select Left or RIGHT
-#endif
+  theClient.setup(CLIENT_NAME);
 }
 
 void loop() {

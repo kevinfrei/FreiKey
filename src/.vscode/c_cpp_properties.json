@@ -8,7 +8,7 @@
   },
   "configurations": [
     {
-      "name": "Master",
+      "name": "FreiKeys",
       "intelliSenseMode": "gcc-x86",
       "browse": {
         "path": [],
@@ -18,7 +18,7 @@
       "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
       "cStandard": "c11",
       "cppStandard": "c++20",
-      "compileCommands": "${workspaceRoot}/out-master/compile_commands.json"
+      "compileCommands": "${workspaceRoot}/out-freikeys/compile_commands.json"
     },
     {
       "name": "Karbon",
@@ -34,13 +34,39 @@
       "compileCommands": "${workspaceRoot}/out-karbon/compile_commands.json"
     },
     {
+      "name": "Karbon-Left",
+      "intelliSenseMode": "gcc-x86",
+      "browse": {
+        "path": [],
+        "limitSymbolsToIncludedHeaders": true,
+        "databaseFilename": ""
+      },
+      "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
+      "cStandard": "c11",
+      "cppStandard": "c++20",
+      "compileCommands": "${workspaceRoot}/out-lkarbon/compile_commands.json"
+    },
+    {
+      "name": "Karbon-Right",
+      "intelliSenseMode": "gcc-x86",
+      "browse": {
+        "path": [],
+        "limitSymbolsToIncludedHeaders": true,
+        "databaseFilename": ""
+      },
+      "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
+      "cStandard": "c11",
+      "cppStandard": "c++20",
+      "compileCommands": "${workspaceRoot}/out-rkarbon/compile_commands.json"
+    },
+    {
       "name": "Mock",
       "intelliSenseMode": "clang-x64",
       "cppStandard": "c++20",
       "compileCommands": "${workspaceRoot}/out-mock-master/compile_commands.json"
     },
     {
-      "name": "Left",
+      "name": "Left FreiKeys",
       "intelliSenseMode": "gcc-x86",
       "browse": {
         "path": [],
@@ -50,10 +76,10 @@
       "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
       "cStandard": "c11",
       "cppStandard": "c++17",
-      "compileCommands": "${workspaceRoot}/out-lclient/compile_commands.json"
+      "compileCommands": "${workspaceRoot}/out-lfreikeys/compile_commands.json"
     },
     {
-      "name": "Right",
+      "name": "Right FreiKeys",
       "intelliSenseMode": "gcc-x86",
       "browse": {
         "path": [],
@@ -63,7 +89,7 @@
       "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
       "cStandard": "c11",
       "cppStandard": "c++17",
-      "compileCommands": "${workspaceRoot}/out-rclient/compile_commands.json"
+      "compileCommands": "${workspaceRoot}/out-rfreikeys/compile_commands.json"
     },
     {
       "name": "Betterfly",

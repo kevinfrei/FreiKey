@@ -22,22 +22,26 @@ BUILD_PATH=out-karbon
 PROJ_NAME=karbon
 
 # This is how to add new flags
-# -DDEBUG=1/2
-COMPILER_CPP_EXTRA_FLAGS=-Os -DKARBON -DMASTER -DDEBUG=2
-COMPILER_C_EXTRA_FLAGS=-Os
+COMPILER_CPP_EXTRA_FLAGS=-DKARBON -DMASTER -DHAS_DISPLAY -DDEBUG=1
 
 # This is how to add libraries
 LIB_BLUEFRUIT52LIB=1
 LIB_ADAFRUIT_LITTLEFS=1
 LIB_NEOPIXEL=1
+# Ah, InternalFileSytem, you're my favorite typo
 LIB_INTERNALFILESYTEM=1
 LIB_TINYUSB=1
-# (Ah, InternalFileSytem, you're my favorite typo)
+LIB_GFX=1
+LIB_BUSIO=1
+LIB_SSD1306=1
+LIB_WIRE=1
+LIB_SPI=1
 
 USER_INCLUDES=-Iinclude/karbon -Iinclude
 USER_CPP_SRCS=\
 	dbgcfg.cpp \
 	dongle.cpp \
+	drawing.cpp \
 	hardware.cpp \
 	kbreporter.cpp \
  	master-comm.cpp \
@@ -47,18 +51,3 @@ USER_CPP_SRCS=\
 
 include af_nrf52.mk
 
-#DEPS = $(M_CORE_OBJS:.o=.d) $(C_CORE_OBJS:.o=.d) $(NFFS_OBJS:.o=.d) \
-#	$(BFLIB_OBJS:.o=.d) $(USER_OBJS:.o=.d) $(GFX_OBJS:.o=.d) $(WIRE_OBJS:.o=.d)
-
-#-include ${DEPS}
-
-# External dependency locations: These were just symlinks.
-# Now they're git submodules. I do hate those things, but
-# they appear to solve a problem I'm trying to solve relatively well
-# Read up on them here:
-# https://medium.com/@porteneuve/mastering-git-submodules-34c65e940407
-# ADAFRUIT_ROOT=./libs/Adafruit
-# SSD1306_ROOT=./libs/SSD1306
-# GFX_ROOT=./libs/GFX
-# TUSB_ROOT=./libs/TinyUSB
-# NEOPIX_ROOT=./libs/NeoPixel

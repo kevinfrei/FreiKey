@@ -492,7 +492,7 @@ COMPILER_C_ELF_CMD=arm-none-eabi-gcc
 COMPILER_C_CMD=arm-none-eabi-gcc
 COMPILER_PATH=${RUNTIME_TOOLS_ARM_NONE_EABI_GCC_PATH}/bin/
 COMPILER_WARNING_FLAGS=-w
-COMPILER_CPP_FLAGS=-mcpu=${BUILD_MCU} -mthumb -c -g ${COMPILER_WARNING_FLAGS} ${BUILD_FLOAT_FLAGS} -std=gnu++11 -ffunction-sections -fdata-sections -fno-threadsafe-statics -nostdlib --param max-inline-insns-single=500 -fno-rtti -fno-exceptions -MMD
+COMPILER_CPP_FLAGS=-mcpu=${BUILD_MCU} -mthumb -c -g ${COMPILER_WARNING_FLAGS} ${BUILD_FLOAT_FLAGS} -std=gnu++17 -ffunction-sections -fdata-sections -fno-threadsafe-statics -nostdlib --param max-inline-insns-single=500 -fno-rtti -fno-exceptions -MMD
 COMPILER_C_FLAGS=-mcpu=${BUILD_MCU} -mthumb -c -g ${COMPILER_WARNING_FLAGS} ${BUILD_FLOAT_FLAGS} -std=gnu11 -ffunction-sections -fdata-sections -nostdlib --param max-inline-insns-single=500 -MMD
 COMPILER_WARNING_FLAGS_ALL=-Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wno-pointer-arith
 COMPILER_WARNING_FLAGS_MORE=-Wall
@@ -774,6 +774,13 @@ ifdef LIB_WIRE
   CPP_SYS_SRCS+=libs/Adafruit/libraries/Wire/Wire_nRF52.cpp
   SYS_INCLUDES+=-Ilibs/Adafruit/libraries/Wire
   VPATH_MORE+=libs/Adafruit/libraries/Wire
+endif
+ifdef LIB_BUSIO
+  CPP_SYS_SRCS+=libs/BusIO/Adafruit_BusIO_Register.cpp \
+    libs/BusIO/Adafruit_I2CDevice.cpp \
+    libs/BusIO/Adafruit_SPIDevice.cpp
+  SYS_INCLUDES+=-Ilibs/BusIO
+  VPATH_MORE+=libs/BusIO
 endif
 ifdef LIB_GFX
   C_SYS_SRCS+=libs/GFX/fontconvert/fontconvert.c \

@@ -20,3 +20,6 @@
 [submodule "src/libs/ArduinoCore"]
 	path = src/libs/ArduinoCore
 	url = https://github.com/arduino/ArduinoCore-avr.git
+[submodule "src/libs/BusIO"]
+	path = src/libs/BusIO
+	url = https://github.com/adafruit/Adafruit_BusIO.git

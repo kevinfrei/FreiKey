@@ -10,7 +10,11 @@ namespace comm {
 
 constexpr uint8_t LEFT_SIDE = 0;
 constexpr uint8_t RIGHT_SIDE = 1;
-
+#if defined(LEFT)
+constexpr uint8_t WHICH_SIDE = LEFT_SIDE;
+#elif defined(RIGHT)
+constexpr uint8_t WHICH_SIDE = RIGHT_SIDE;
+#endif
 namespace types {
 constexpr uint8_t SCAN = 0;
 constexpr uint8_t BATTERY = 1;
@@ -32,11 +36,20 @@ struct header {
 
 } // namespace comm
 
+template <typename UART>
+uint8_t getSide(UART& uart) {
+#if defined(MASTER)
+  return comm::LEFT_SIDE; // TODO: Fix this
+#else
+  return comm::WHICH_SIDE;
+#endif
+}
+
 template <uint8_t VAL, typename T, typename UART>
 void send_packet(UART& uart, const T& v) {
   comm::header h;
   char buffer[sizeof(h) + sizeof(T)];
-  h.side = comm::LEFT_SIDE; // TODO: Fix This
+  h.side = getSide(uart);
   h.type = VAL;
   h.size = comm::sizes[VAL];
   memcpy(&buffer[0], reinterpret_cast<char*>(&h), sizeof(h));
@@ -51,7 +64,7 @@ void send_packet(UART& uart, const T& v) {
 template <uint8_t VAL, typename UART>
 void send_packet(UART& uart) {
   comm::header h;
-  h.side = comm::LEFT_SIDE; // TODO: Fix This
+  h.side = getSide(uart);
   h.type = VAL;
   h.size = comm::sizes[VAL];
   DBG2(dumpHex((uint8_t)(*(reinterpret_cast<char*>(&h))), "SB:"));

@@ -58,7 +58,8 @@ Sync timeSync{};
 
 void loop() {
   uint32_t now = millis();
-  Dongle::updateClientStatus(now);
+  Dongle::updateClientStatus(
+      now, leftSide.battery_level, rightSide.battery_level);
   if (!Dongle::Ready())
     return;
   //  // Remote wakeup

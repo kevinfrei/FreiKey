@@ -1,7 +1,14 @@
 #include "sysstuff.h"
 
+#if defined(HAS_DISPLAY)
+#include <Adafruit_SSD1306.h>
+#include <SPI.h>
+#include <Wire.h>
+#endif
+
 #include "dbgcfg.h"
 #include "dongle.h"
+#include "drawing.h"
 #include "globals.h"
 #include "hardware.h"
 #include "master-comm.h"
@@ -22,6 +29,12 @@ BLEClientUart Dongle::rightUart;
 uint16_t Dongle::leftHandle = BLE_CONN_HANDLE_INVALID;
 uint16_t Dongle::rightHandle = BLE_CONN_HANDLE_INVALID;
 Adafruit_USBD_HID Dongle::usb_hid;
+#if defined(HAS_DISPLAY)
+Adafruit_SSD1306 Dongle::display(Dongle::ScreenWidth,
+                                 Dongle::ScreenHeight,
+                                 &Wire,
+                                 Dongle::OledResetPin);
+#endif
 
 namespace std {
 void __throw_bad_alloc() {}
@@ -33,9 +46,6 @@ void Dongle::Configure() {
   pinMode(7, INPUT_PULLUP);
   // Blink the RGB light on the board
   neopix.begin();
-  setRGB(7, 5, 0);
-  delay(125);
-  setRGB(0, 0, 0);
   pinMode(LED_RED, OUTPUT);
   pinMode(LED_BLUE, OUTPUT);
   // Setup the USB stuff
@@ -55,6 +65,21 @@ void Dongle::Configure() {
   // Don't do this: it makes the thing wait until you're actively watching
   // data on the Serial port, which is *not* what I generally want...
   // DBG(while (!Serial) delay(10)); // for nrf52840 with native usb
+#endif
+
+#if defined(HAS_DISPLAY)
+  // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
+  // Address 0x3C for 128x32
+  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    for (;;) {
+      Serial.println("SSD1306 allocation failed");
+      delay(750); // Don't proceed, loop forever
+    }
+  }
+  display.setRotation(3);
+  display.clearDisplay();
+  drawing::drawThing(drawing::Thing::Apple, 0, 0);
+  display.display();
 #endif
 }
 
@@ -144,6 +169,12 @@ void Dongle::setRGB(uint32_t rgb) {
   Dongle::setRGB((rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff);
 }
 
+void Dongle::blinkRGB(uint8_t r, uint8_t g, uint8_t b, uint16_t length) {
+  setRGB(r, g, b);
+  delay(length);
+  setRGB(0, 0, 0);
+}
+
 // Called when the system detects someone looking for a client
 void Dongle::scan(ble_gap_evt_adv_report_t* report) {
   // Connect to device with bleuart service in advertising
@@ -155,8 +186,14 @@ bool Dongle::black = true;
 
 // This updates the RGB LED to show something when the left & right sides
 // connect to the dongle
-
-void Dongle::updateClientStatus(uint32_t now) {
+drawing::Thing lastRight = drawing::Thing::Apple;
+drawing::Thing lastLeft = drawing::Thing::Apple;
+uint8_t lastLBat = 0xff;
+uint8_t lastRBat = 0xff;
+uint8_t vals[16] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5, 4, 3, 2, 1};
+void Dongle::updateClientStatus(uint32_t now,
+                                uint8_t batLeft,
+                                uint8_t batRight) {
   uint32_t theDelay = now - connect_time;
   if (theDelay < 10000) {
     uint32_t red = (rightHandle == BLE_CONN_HANDLE_INVALID) ? 0 : 0xFF;
@@ -168,7 +205,36 @@ void Dongle::updateClientStatus(uint32_t now) {
   } else if (!black) {
     Dongle::setRGB(0, 0, 0);
     black = true;
+  } else {
+    uint8_t r = vals[(now >> 16) & 15];
+    uint8_t g = vals[(now >> 13) & 15];
+    uint8_t b = vals[(now >> 10) & 15];
+    Dongle::setRGB(r, g, b);
   }
+
+#if defined(HAS_DISPLAY)
+
+  drawing::Thing right = (rightHandle == BLE_CONN_HANDLE_INVALID)
+                             ? drawing::Thing::NoBlue
+                             : drawing::Thing::Bluetooth;
+  drawing::Thing left = (leftHandle == BLE_CONN_HANDLE_INVALID)
+                            ? drawing::Thing::NoBlue
+                            : drawing::Thing::Bluetooth;
+
+  if (lastLeft != left || lastRight != right || lastLBat != batLeft ||
+      lastRBat != batRight) {
+    display.clearDisplay();
+    drawing::drawThing(left, 0, 20);
+    drawing::drawBattery(batLeft, 1, 0);
+    drawing::drawThing(right, 20, 91);
+    drawing::drawBattery(batRight, 1, 107);
+    display.display();
+    lastLeft = left;
+    lastRight = right;
+    lastLBat = batLeft;
+    lastRBat = batRight;
+  }
+#endif
 }
 
 // Called when we find a UART host to connect with
@@ -183,12 +249,12 @@ void Dongle::cent_connect(uint16_t conn_handle) {
     remoteUart = &leftUart;
     leftHandle = conn_handle;
     connect_time = millis();
-    updateClientStatus(connect_time);
+    updateClientStatus(connect_time, lastLBat, lastRBat);
   } else if (!strcmp(RTCL_NAME, peer_name) && rightUart.discover(conn_handle)) {
     remoteUart = &rightUart;
     rightHandle = conn_handle;
     connect_time = millis();
-    updateClientStatus(connect_time);
+    updateClientStatus(connect_time, lastLBat, lastRBat);
   } else {
     DBG(Serial.println("[Cent] Not connecting to the client: wrong name"));
     DBG(Serial.printf("Requester name: %s\n", peer_name));
@@ -221,7 +287,7 @@ void Dongle::cent_disconnect(uint16_t conn_handle, uint8_t reason) {
     rightHandle = BLE_CONN_HANDLE_INVALID;
     Bluefruit.Scanner.start(0);
   }
-  updateClientStatus(millis());
+  updateClientStatus(millis(), lastLBat, lastRBat);
   resetTheWorld();
 }
 

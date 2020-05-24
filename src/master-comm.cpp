@@ -1,14 +1,16 @@
 #include "sysstuff.h"
 
 #include "boardio.h"
-#include "master-comm.h"
 #include "dongle.h"
 #include "hardware.h"
+#include "master-comm.h"
 #include "sync.h"
-
 
 bool waiting;
 uint32_t locTime;
+uint8_t leftBattery = 0xff;
+uint8_t rightBattery = 0xff;
+
 void comm::send::sync(BLEClientUart& uart) {
   waiting = true;
   locTime = millis();
@@ -65,31 +67,20 @@ void comm::recv::data(BLEClientUart& uart) {
 void comm::recv::scan(uint8_t which, const MatrixBits& b) {
   // Put the data in the queue
   state::hw* newData = new state::hw;
-  DBG2(b.dumpHex((which == comm::LEFT_SIDE) ? "Left Scan " : "Right Scan "));
+  bool isLeft = which == comm::LEFT_SIDE;
+  DBG2(b.dumpHex(isLeft ? "Left Scan " : "Right Scan "));
   newData->switches = b;
-  newData->battery_level = 50;
+  newData->battery_level = isLeft ? leftBattery : rightBattery;
   state::data_queue.push(
-      {(which == comm::LEFT_SIDE) ? &Dongle::leftUart : &Dongle::rightUart,
-       newData});
-#if defined(LOTSA_BLINKING)
-  if (which == comm::LEFT_SIDE) {
-    Dongle::setRGB(0, 0, 250);
-  } else {
-    Dongle::setRGB(250, 0, 0);
-  }
-  if (b.any())
-    digitalWrite(LED_RED, HIGH);
-  else
-    digitalWrite(LED_BLUE, HIGH);
-  delay(5);
-  Dongle::setRGB(0, 0, 0);
-  digitalWrite(LED_BLUE, LOW);
-  digitalWrite(LED_RED, LOW);
-#endif
+      {isLeft ? &Dongle::leftUart : &Dongle::rightUart, newData});
 }
 
 void comm::recv::battery(uint8_t which, uint8_t pct) {
-  // TODO: Update the battery level
+  if (which == comm::LEFT_SIDE) {
+    leftBattery = pct;
+  } else {
+    rightBattery = pct;
+  }
 }
 
 void comm::recv::time(uint8_t which, uint32_t time) {

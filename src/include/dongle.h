@@ -2,9 +2,18 @@
 
 #include "sysstuff.h"
 
+#if defined(HAS_DISPLAY)
+#include <Adafruit_SSD1306.h>
+#endif
+
 #include <array>
 
 class Dongle {
+
+  static const uint32_t ScreenWidth = 128;
+  static const uint32_t ScreenHeight = 32;
+  static const uint8_t OledResetPin = 13;
+
   static uint32_t connect_time;
   static bool black;
   static Adafruit_NeoPixel neopix;
@@ -13,6 +22,9 @@ class Dongle {
   static uint16_t rightHandle;
 
  public:
+#if defined(HAS_DISPLAY)
+  static Adafruit_SSD1306 display;
+#endif
   static BLEClientUart leftUart;
   static BLEClientUart rightUart;
 
@@ -29,8 +41,11 @@ class Dongle {
   static void setRGB(uint32_t rgb);
   static void setRed(bool on);
   static void setBlue(bool on);
+  static void blinkRGB(uint8_t r, uint8_t g, uint8_t b, uint16_t length = 250);
 
-  static void updateClientStatus(uint32_t now);
+  static void updateClientStatus(uint32_t now,
+                                 uint8_t batLeft,
+                                 uint8_t batRight);
 
   // Callbacks from the Bluefruit runtime
   static void cent_connect(uint16_t conn_handle);
