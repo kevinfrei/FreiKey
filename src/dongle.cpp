@@ -9,6 +9,7 @@
 #include "dbgcfg.h"
 #include "dongle.h"
 #include "drawing.h"
+#include "general.h"
 #include "globals.h"
 #include "hardware.h"
 #include "master-comm.h"
@@ -213,27 +214,7 @@ void Dongle::updateClientStatus(uint32_t now,
   }
 
 #if defined(HAS_DISPLAY)
-
-  drawing::Thing right = (rightHandle == BLE_CONN_HANDLE_INVALID)
-                             ? drawing::Thing::NoBlue
-                             : drawing::Thing::Bluetooth;
-  drawing::Thing left = (leftHandle == BLE_CONN_HANDLE_INVALID)
-                            ? drawing::Thing::NoBlue
-                            : drawing::Thing::Bluetooth;
-
-  if (lastLeft != left || lastRight != right || lastLBat != batLeft ||
-      lastRBat != batRight) {
-    display.clearDisplay();
-    drawing::drawThing(left, 0, 20);
-    drawing::drawBattery(batLeft, 1, 0);
-    drawing::drawThing(right, 20, 91);
-    drawing::drawBattery(batRight, 1, 107);
-    display.display();
-    lastLeft = left;
-    lastRight = right;
-    lastLBat = batLeft;
-    lastRBat = batRight;
-  }
+  drawing::updateState();
 #endif
 }
 
@@ -248,11 +229,13 @@ void Dongle::cent_connect(uint16_t conn_handle) {
   if (!strcmp(LTCL_NAME, peer_name) && leftUart.discover(conn_handle)) {
     remoteUart = &leftUart;
     leftHandle = conn_handle;
+    curState.left.connected = true;
     connect_time = millis();
     updateClientStatus(connect_time, lastLBat, lastRBat);
   } else if (!strcmp(RTCL_NAME, peer_name) && rightUart.discover(conn_handle)) {
     remoteUart = &rightUart;
     rightHandle = conn_handle;
+    curState.right.connected = true;
     connect_time = millis();
     updateClientStatus(connect_time, lastLBat, lastRBat);
   } else {
@@ -282,9 +265,11 @@ void Dongle::cent_disconnect(uint16_t conn_handle, uint8_t reason) {
   // TODO: Disconnect the *correct* side
   if (conn_handle == leftHandle) {
     leftHandle = BLE_CONN_HANDLE_INVALID;
+    curState.left.connected = false;
     Bluefruit.Scanner.start(0);
   } else if (conn_handle == rightHandle) {
     rightHandle = BLE_CONN_HANDLE_INVALID;
+    curState.right.connected = false;
     Bluefruit.Scanner.start(0);
   }
   updateClientStatus(millis(), lastLBat, lastRBat);

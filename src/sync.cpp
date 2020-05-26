@@ -1,5 +1,6 @@
 #include "sync.h"
 #include "dongle.h"
+#include "general.h"
 #include "master-comm.h"
 
 // I need to build a damn state machine for this
@@ -158,7 +159,7 @@ bool Sync::Buffer(uint32_t time, state::hw& left, state::hw& right) {
   if (left.switches.any() || right.switches.any()) {
     lastTapOrPing = time;
   }
-  return lLatency < rLatency;
+  return curState.left.latency < curState.right.latency;
 }
 
 void Sync::ReportSync(bool isReportLeft) {
@@ -204,11 +205,11 @@ void Sync::UpdateLatency() {
     sumL += l;
     sumR += r;
   }
-  lLatency = (sumL - minL - maxL) / ((sampleSize - 2) * 2);
-  rLatency = (sumR - minR - maxR) / ((sampleSize - 2) * 2);
-  DELAY = abs(lLatency - rLatency);
-  DBG(dumpVal(lLatency, "Left latency: "));
-  DBG(dumpVal(rLatency, "Right latency: "));
+  curState.left.latency = (sumL - minL - maxL) / ((sampleSize - 2) * 2);
+  curState.right.latency = (sumR - minR - maxR) / ((sampleSize - 2) * 2);
+  DELAY = abs(curState.left.latency - curState.right.latency);
+  DBG(dumpVal(curState.left.latency, "Left latency: "));
+  DBG(dumpVal(curState.right.latency, "Right latency: "));
 }
 
 void Sync::Delay(uint32_t now, state::hw& down, state::hw& prev) {

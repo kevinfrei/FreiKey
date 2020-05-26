@@ -2,14 +2,14 @@
 
 #include "boardio.h"
 #include "dongle.h"
+#include "general.h"
 #include "hardware.h"
 #include "master-comm.h"
 #include "sync.h"
 
 bool waiting;
 uint32_t locTime;
-uint8_t leftBattery = 0xff;
-uint8_t rightBattery = 0xff;
+GeneralState curState{};
 
 void comm::send::sync(BLEClientUart& uart) {
   waiting = true;
@@ -70,16 +70,17 @@ void comm::recv::scan(uint8_t which, const MatrixBits& b) {
   bool isLeft = which == comm::LEFT_SIDE;
   DBG2(b.dumpHex(isLeft ? "Left Scan " : "Right Scan "));
   newData->switches = b;
-  newData->battery_level = isLeft ? leftBattery : rightBattery;
+  newData->battery_level =
+      isLeft ? curState.left.battery : curState.right.battery;
   state::data_queue.push(
       {isLeft ? &Dongle::leftUart : &Dongle::rightUart, newData});
 }
 
 void comm::recv::battery(uint8_t which, uint8_t pct) {
   if (which == comm::LEFT_SIDE) {
-    leftBattery = pct;
+    curState.left.battery = pct;
   } else {
-    rightBattery = pct;
+    curState.right.battery = pct;
   }
 }
 

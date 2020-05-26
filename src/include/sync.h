@@ -33,7 +33,6 @@ class Sync {
   bool leftPacketReceived, rightPacketReceived;
   uint32_t lastTapOrPing;
   uint32_t sendTime;
-  int8_t lLatency, rLatency;
 
   bool dataWaiting;
   uint32_t dataTime;
@@ -50,8 +49,6 @@ class Sync {
         rightPacketReceived(false),
         leftPacketReceived(false),
         lastTapOrPing(0),
-        lLatency(0),
-        rLatency(0),
         DELAY(0),
         dataWaiting(false) {}
   void ReportSync(bool isLeft);

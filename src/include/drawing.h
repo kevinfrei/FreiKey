@@ -27,4 +27,6 @@ uint8_t encodeBatteryValue(uint8_t chargeRemaining,
                            bool isPresent);
 void drawBattery(uint8_t rate, uint8_t x, uint8_t y);
 void drawThing(Thing lyr, uint8_t x, uint8_t y);
+
+void updateState();
 } // namespace drawing

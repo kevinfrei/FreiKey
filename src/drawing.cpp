@@ -2,6 +2,9 @@
 
 #include "dongle.h"
 #include "drawing.h"
+#include "general.h"
+
+GeneralState prevState{};
 
 namespace drawing {
 
@@ -30,6 +33,16 @@ void drawBattery(uint8_t rate, uint8_t x, uint8_t y) {
       // double inversion pixels
       Dongle::display.drawFastHLine(x + 3, y + 8, 25, INVERSE);
     }
+    Dongle::display.setTextColor(BLACK);
+    for (int i = -1; i < 2; i++){
+      for (int j = -1; j < 2; j++){
+    Dongle::display.setCursor(x + 10 + i, y + 5+j);
+    Dongle::display.printf("%d", rate);
+      }
+    }
+    Dongle::display.setTextColor(WHITE);
+    Dongle::display.setCursor(x + 10, y + 5);
+    Dongle::display.printf("%d", rate);
   } else {
     Dongle::display.setCursor(x + 6, y + 5);
     Dongle::display.setTextColor(INVERSE);
@@ -154,7 +167,6 @@ constexpr uint8_t noblue[] = {
   0b0000'0111, 0b0011'0000,
   0b0000'0110, 0b0011'0000,
 };
-
 // clang-format on
 
 struct layer {
@@ -189,8 +201,26 @@ void drawThing(Thing lyr, uint8_t x, uint8_t y) {
   layers[static_cast<size_t>(lyr)].draw(x, y);
 }
 
-/*void battery() {
-  drawBattery(leftBattery, 0, 7);
-  drawBattery(rightBattery, 96, 7);
-}*/
+bool seenOnce = false;
+void updateState() {
+  if (!seenOnce || curState != prevState) {
+    seenOnce = true;
+    Thing right = curState.right.connected ? Thing::Bluetooth : Thing::NoBlue;
+    Thing left = curState.left.connected ? Thing::Bluetooth : Thing::NoBlue;
+
+    Dongle::display.clearDisplay();
+    drawThing(left, 0, 20);
+    drawBattery(curState.left.battery, 1, 0);
+    drawThing(right, 20, 91);
+    drawBattery(curState.right.battery, 1, 107);
+    Dongle::display.setCursor(16, 24);
+    Dongle::display.setTextColor(INVERSE);
+    Dongle::display.printf("%d", curState.left.latency);
+    Dongle::display.setCursor(5, 95);
+    Dongle::display.setTextColor(INVERSE);
+    Dongle::display.printf("%d", curState.right.latency);
+    Dongle::display.display();
+    prevState = curState;
+  }
+}
 } // namespace drawing
