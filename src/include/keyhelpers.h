@@ -69,17 +69,23 @@ constexpr layer_t kSwitchLayer = 4;
 
 // Some missing keycodes from the Arduino/AdaFruit API's that I need. You can
 // find these from the QMK firmware HIDClassCommon.h file. I also find them in
-// IOHIDUsageTable.h from the IOHIDFamily source code available at
-// www.opensource.apple.com. I'm pretty sure similar stuff is available for
-// Windows, too, somewhere (probably in MSDN docs)
+// https://opensource.apple.com/source/IOHIDFamily/IOHIDFamily-1446.11.12/IOHIDFamily/IOHIDUsageTables.h.auto.html
+// I'm 100% certain that stuff is available for Windows, too, somewhere in
+// MSDN, cuz MSFT documents their stuff, unlike Apple...
 
-#define DK(a, v) constexpr action_t PK_(a) = v;
-#define DM(a, v) constexpr action_t PM_(a) = PM(v);
-            DK(M_PLAY, 0xCD) DK(M_PREVIOUS_TRACK, 0xB6) DK(M_NEXT_TRACK, 0xB5)
-                DK(M_VOLUME_UP, 0xE9) DK(M_VOLUME_DOWN, 0xEA) DK(M_MUTE, 0x7F)
+#define DK(a, v) constexpr action_t PK_(a) = v
+#define DM(a, v) constexpr action_t PM_(a) = PM(v)
+DK(M_PLAY, 0xCD);
+DK(M_PREVIOUS_TRACK, 0xB6);
+DK(M_NEXT_TRACK, 0xB5);
+DK(M_VOLUME_UP, 0xE9);
+DK(M_VOLUME_DOWN, 0xEA);
+DK(M_MUTE, 0x7F);
 
-                    DK(M_BACKWARD, 0xF1) DK(M_FORWARD, 0xF2) DK(M_SLEEP, 0xF8)
-                        DK(M_LOCK, 0xF9)
+DK(M_BACKWARD, 0xF1);
+DK(M_FORWARD, 0xF2);
+DK(M_SLEEP, 0xF8);
+DK(M_LOCK, 0xF9);
 
 // Let's mac-friendly-ify this stuff:
 

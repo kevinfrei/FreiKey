@@ -80,6 +80,9 @@ void loop() {
   // Update the combined battery level
   updateBatteryLevel(downLeft, downRight);
 
+#if defined(MACRO_PAD)
+  Dongle::macro_scan();
+#endif
   // Get the before & after of each side into the bit array
   MatrixBits beforeLeft{leftSide.switches};
   MatrixBits afterLeft{downLeft.switches};

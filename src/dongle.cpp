@@ -14,6 +14,16 @@
 #include "hardware.h"
 #include "master-comm.h"
 
+#if defined(MACRO_PAD)
+#include "Button.h"
+#include "keyhelpers.h"
+
+// l/c/r/b/t => left, center, right, bottom, top
+Button lb(A0, 150), cb(A1, 150), rb(A2, 150), rt(A3), ct(A4), lt(A5);
+Button* buttons[6] = {&lb, &cb, &rb, &lt, &ct, &rt};
+
+#endif
+
 // Report ID's
 constexpr uint8_t RID_KEYBOARD = 1;
 constexpr uint8_t RID_CONSUMER = 2;
@@ -66,6 +76,12 @@ void Dongle::Configure() {
   // Don't do this: it makes the thing wait until you're actively watching
   // data on the Serial port, which is *not* what I generally want...
   // DBG(while (!Serial) delay(10)); // for nrf52840 with native usb
+#endif
+
+#if defined(MACRO_PAD)
+  for (auto btn : buttons) {
+    btn->begin();
+  }
 #endif
 
 #if defined(HAS_DISPLAY)
@@ -207,9 +223,9 @@ void Dongle::updateClientStatus(uint32_t now,
     Dongle::setRGB(0, 0, 0);
     black = true;
   } else {
-    uint8_t r = vals[(now >> 16) & 15];
-    uint8_t g = vals[(now >> 13) & 15];
-    uint8_t b = vals[(now >> 10) & 15];
+    uint8_t g = vals[(now >> 16) & 15];
+    uint8_t b = vals[(now >> 13) & 15];
+    uint8_t r = vals[(now >> 10) & 15];
     Dongle::setRGB(r, g, b);
   }
 
@@ -290,5 +306,43 @@ void Dongle::hid_report_callback(uint8_t report_id,
   // turn on LED if caplock is set
   digitalWrite(LED_BUILTIN, (buffer[0] & KEYBOARD_LED_CAPSLOCK) ? HIGH : LOW);
 }
+
+#if defined(MACRO_PAD)
+void handleConsumer(Button& b, uint16_t consKey) {
+  if (b.pressed()) {
+    Dongle::ConsumerPress(consKey);
+  } else if (b.released()) {
+    Dongle::ConsumerRelease();
+  }
+}
+
+void handleRegular(Button& b, uint8_t keyCode) {
+  bool pressed = b.pressed();
+  bool released = pressed ? false : b.released();
+  uint8_t keys[6] = {pressed ? keyCode : 0, 0, 0, 0, 0, 0};
+  if (pressed || released) {
+    Dongle::ReportKeys(0, keys);
+  }
+}
+
+uint8_t Dongle::macro_scan() {
+  // This should handle anything related to the buttons themselves
+  handleConsumer(lt, PK(M_VOLUME_DOWN));
+  handleRegular(ct, PK(M_MUTE));
+  handleConsumer(rt, PK(M_VOLUME_UP));
+
+  handleConsumer(lb, PK(M_PREVIOUS_TRACK));
+  handleConsumer(cb, PK(M_PLAY));
+  handleConsumer(rb, PK(M_NEXT_TRACK));
+
+  uint8_t bit = 1, res = 0;
+  for (auto btn : buttons) {
+    if (btn->read()) {
+      res |= bit;
+    }
+    bit = bit << 1;
+  }
+}
+#endif
 
 void rtos_idle_callback(void) {}

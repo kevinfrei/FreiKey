@@ -43,6 +43,9 @@ class Dongle {
   static void setBlue(bool on);
   static void blinkRGB(uint8_t r, uint8_t g, uint8_t b, uint16_t length = 250);
 
+#if defined(MACRO_PAD)
+  static uint8_t macro_scan();
+#endif
   static void updateClientStatus(uint32_t now,
                                  uint8_t batLeft,
                                  uint8_t batRight);
