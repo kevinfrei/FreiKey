@@ -19,7 +19,7 @@
 #include "keyhelpers.h"
 
 // l/c/r/b/t => left, center, right, bottom, top
-Button lb(A0, 150), cb(A1, 150), rb(A2, 150), rt(A3), ct(A4), lt(A5);
+Button rb(A0, 150), cb(A1, 150), lb(A2, 150), rt(A3), ct(A4), lt(A5);
 Button* buttons[6] = {&lb, &cb, &rb, &lt, &ct, &rt};
 
 #endif
@@ -342,6 +342,7 @@ uint8_t Dongle::macro_scan() {
     }
     bit = bit << 1;
   }
+  return res;
 }
 #endif
 

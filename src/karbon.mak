@@ -15,7 +15,9 @@ endif
 # Necessary configuration stuff
 BOARD_NAME=feather52840
 IN_SOFTDEVICE=s140v6
-IN_DEBUG=l0
+# l0/l1/l2/l3 for system debug info
+# anything else for no system debug logging
+IN_DEBUG=none
 BUILD_ARCH=nrf52
 RUNTIME_TOOLS_ARM_NONE_EABI_GCC_PATH=${TOOLS_PATH}
 BUILD_PATH=out-karbon
