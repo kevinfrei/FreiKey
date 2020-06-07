@@ -7,6 +7,7 @@
 #endif
 
 #include "dbgcfg.h"
+#include "debounce.h"
 #include "dongle.h"
 #include "drawing.h"
 #include "general.h"
@@ -15,13 +16,15 @@
 #include "master-comm.h"
 
 #if defined(MACRO_PAD)
-#include "Button.h"
+/*#include "Button.h"
 #include "keyhelpers.h"
 
 // l/c/r/b/t => left, center, right, bottom, top
 Button rb(A0, 150), cb(A1, 150), lb(A2, 150), rt(A3), ct(A4), lt(A5);
 Button* buttons[6] = {&lb, &cb, &rb, &lt, &ct, &rt};
-
+*/
+constexpr std::array<uint8_t, 6> padPins = {A5, A4, A3, A2, A1, A0};
+Debouncer<MacroBits> debouncer{};
 #endif
 
 // Report ID's
@@ -79,8 +82,8 @@ void Dongle::Configure() {
 #endif
 
 #if defined(MACRO_PAD)
-  for (auto btn : buttons) {
-    btn->begin();
+  for (auto pin : padPins) {
+    pinMode(pin, INPUT_PULLUP);
   }
 #endif
 
@@ -308,42 +311,23 @@ void Dongle::hid_report_callback(uint8_t report_id,
 }
 
 #if defined(MACRO_PAD)
-void handleConsumer(Button& b, uint16_t consKey) {
-  if (b.pressed()) {
-    Dongle::ConsumerPress(consKey);
-  } else if (b.released()) {
-    Dongle::ConsumerRelease();
-  }
-}
 
-void handleRegular(Button& b, uint8_t keyCode) {
-  bool pressed = b.pressed();
-  bool released = pressed ? false : b.released();
-  uint8_t keys[6] = {pressed ? keyCode : 0, 0, 0, 0, 0, 0};
-  if (pressed || released) {
-    Dongle::ReportKeys(0, keys);
-  }
-}
-
-uint8_t Dongle::macro_scan() {
+MacroBits Dongle::key_scan(uint32_t now) {
   // This should handle anything related to the buttons themselves
-  handleConsumer(lt, PK(M_VOLUME_DOWN));
-  handleRegular(ct, PK(M_MUTE));
-  handleConsumer(rt, PK(M_VOLUME_UP));
-
-  handleConsumer(lb, PK(M_PREVIOUS_TRACK));
-  handleConsumer(cb, PK(M_PLAY));
-  handleConsumer(rb, PK(M_NEXT_TRACK));
-
-  uint8_t bit = 1, res = 0;
-  for (auto btn : buttons) {
-    if (btn->read()) {
-      res |= bit;
+  // rb(A0, 150), cb(A1, 150), lb(A2, 150), rt(A3), ct(A4), lt(A5);
+  MacroBits res{0};
+  uint8_t bit = 0;
+  for (auto pin : padPins) {
+    if (digitalRead(pin) == HIGH) {
+      res.clear_bit(bit);
+    } else {
+      res.set_bit(bit);
     }
-    bit = bit << 1;
+    bit++;
   }
-  return res;
+  return debouncer.update(res, now);
 }
+
 #endif
 
 void rtos_idle_callback(void) {}

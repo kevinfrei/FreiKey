@@ -1,3 +1,5 @@
+#include "sysstuff.h"
+
 // Taken from https://github.com/madleech/Button
 // Reduced debounce time to 20 ms, and made it configurable
 // Adding "repeat" capability
@@ -50,7 +52,8 @@ class Button {
         _has_changed = true;
       }
     }
-    return _state;
+    // These things are pullup's, so high = "open" and low = "closed"
+    return !_state;
   }
 
   // has the button been toggled from on -> off, or vice versa

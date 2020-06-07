@@ -1,3 +1,4 @@
+#include "debounce.h"
 #include "boardio.h"
 #include "dbgcfg.h"
 #include "helpers.h"
@@ -13,7 +14,10 @@ uint32_t last_reported_time[MatrixBits::num_bits] = {0};
 // fast...
 constexpr uint8_t debounce_delay = 25;
 
+Debouncer<MatrixBits> matrixDebouncer{};
 MatrixBits debounce(MatrixBits cur_switches, uint32_t now) {
+  return matrixDebouncer.update(cur_switches, now);
+#if 0
   // If we've read the same thing we last reported, there's nothing to do
   if (last_reported_switches == cur_switches)
     return cur_switches;
@@ -39,4 +43,5 @@ MatrixBits debounce(MatrixBits cur_switches, uint32_t now) {
   // Save off the things we're reporting
   last_reported_switches = cur_switches;
   return cur_switches;
+#endif
 }

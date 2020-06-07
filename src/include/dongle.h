@@ -8,6 +8,10 @@
 
 #include <array>
 
+#include "bit_array.h"
+
+using MacroBits = bit_array<6>;
+
 class Dongle {
 
   static const uint32_t ScreenWidth = 128;
@@ -44,7 +48,7 @@ class Dongle {
   static void blinkRGB(uint8_t r, uint8_t g, uint8_t b, uint16_t length = 250);
 
 #if defined(MACRO_PAD)
-  static uint8_t macro_scan();
+  static MacroBits key_scan(uint32_t now);
 #endif
   static void updateClientStatus(uint32_t now,
                                  uint8_t batLeft,

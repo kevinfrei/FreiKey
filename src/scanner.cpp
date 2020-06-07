@@ -80,16 +80,6 @@ uint32_t getColorForCurrentLayer() {
 }
 #endif
 
-// Given a delta mask, get the scan code, update the delta mask and set pressed
-// while we're at it.
-scancode_t getNextScanCode(MatrixBits& delta,
-                           MatrixBits& curState,
-                           bool& pressed) {
-  scancode_t sc = delta.pull_a_bit();
-  pressed = curState.get_bit(sc);
-  return sc;
-}
-
 void layer_push(layer_t layer) {
   DBG(dumpVal(layer, "Push "));
   if (layer_pos < layer_max)
