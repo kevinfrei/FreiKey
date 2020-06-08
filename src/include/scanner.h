@@ -3,7 +3,6 @@
 #include "sysstuff.h"
 #include <vector>
 
-#include "bit_array.h"
 #include "boardio.h"
 #include "dbgcfg.h"
 #include "hardware.h"
@@ -14,9 +13,6 @@
 // variable declarations
 constexpr uint8_t num_keystates = 10;
 extern keystate keyStates[num_keystates];
-constexpr layer_t layer_max = 7;
-extern layer_t layer_stack[layer_max + 1];
-extern layer_t layer_pos;
 
 // Functions
 void layer_switch(layer_t layer);

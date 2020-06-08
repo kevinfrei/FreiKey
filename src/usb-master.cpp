@@ -2,6 +2,7 @@
 
 #include "dbgcfg.h"
 #include "dongle.h"
+#include "general.h"
 #include "hardware.h"
 #include "helpers.h"
 #include "kbreporter.h"
@@ -34,8 +35,7 @@ MacroBits prevMacroPad{0};
 // initialized.
 // The idea is that it should just wipe everything clean.
 void resetTheWorld() {
-  layer_pos = 0;
-  layer_stack[0] = 0;
+  curState.reset();
   prevLeftSide = state::hw{};
   prevRightSide = state::hw{};
   prevMacroPad = MacroBits{0};

@@ -34,10 +34,10 @@ void drawBattery(uint8_t rate, uint8_t x, uint8_t y) {
       Dongle::display.drawFastHLine(x + 3, y + 8, 25, INVERSE);
     }
     Dongle::display.setTextColor(BLACK);
-    for (int i = -1; i < 2; i++){
-      for (int j = -1; j < 2; j++){
-    Dongle::display.setCursor(x + 10 + i, y + 5+j);
-    Dongle::display.printf("%d", rate);
+    for (int i = -1; i < 2; i++) {
+      for (int j = -1; j < 2; j++) {
+        Dongle::display.setCursor(x + 10 + i, y + 5 + j);
+        Dongle::display.printf("%d", rate);
       }
     }
     Dongle::display.setTextColor(WHITE);
@@ -190,7 +190,7 @@ struct layer {
   }
 };
 
-layer layers[] = {layer(&apple[0], 16, 21, 1),
+layer layers[] = {layer(&apple[0], 16, 22, 1),
                   layer(drawWin),
                   layer(&linux[0], 21, 21),
                   layer(&func[0], 16, 21),
@@ -201,24 +201,70 @@ void drawThing(Thing lyr, uint8_t x, uint8_t y) {
   layers[static_cast<size_t>(lyr)].draw(x, y);
 }
 
+// Check to see if Mac is our active layer (or Windows...)
+bool isMacActiveLayer() {
+  for (uint8_t l = curState.layer_pos; l > 0; l--) {
+    if (curState.layer_stack[l] == LAYER_WIN_BASE)
+      return false;
+  }
+  return true;
+}
+
+bool isFnLayerActive() {
+  for (uint8_t l = curState.layer_pos; l > 0; l--) {
+    if (curState.layer_stack[l] == LAYER_FUNC)
+      return true;
+  }
+  return false;
+}
+
 bool seenOnce = false;
 void updateState() {
   if (!seenOnce || curState != prevState) {
     seenOnce = true;
+
     Thing right = curState.right.connected ? Thing::Bluetooth : Thing::NoBlue;
     Thing left = curState.left.connected ? Thing::Bluetooth : Thing::NoBlue;
 
     Dongle::display.clearDisplay();
+    // Draw the left bluetooth connected/disconnected graphic
     drawThing(left, 0, 20);
+    // Draw the left battery (at the top)
     drawBattery(curState.left.battery, 1, 0);
+
+    // Draw the right bluetooth connected/disconnected graphic
     drawThing(right, 20, 91);
+    // Draw the right battery (at the bottom)
     drawBattery(curState.right.battery, 1, 107);
+
+    // Draw the current layer stack
+    bool isMac = isMacActiveLayer();
+    bool fnKeysActive = isFnLayerActive();
+
+    // Draw the Apple or Windows thing
+    drawThing(
+        isMac ? Thing::Apple : Thing::Windows, 7, 35 + (fnKeysActive ? 0 : 15));
+    if (fnKeysActive)
+      drawThing(Thing::Func, 7, 65);
+
+#if defined(LAYER_DEBUGGING)
+    for (uint8_t l = 0; l < curState.layer_max; l++) {
+      Dongle::display.setCursor((l == curState.layer_pos) ? 16 : 12,
+                                l * 8 + 32);
+      Dongle::display.printf("%d", curState.layer_stack[l]);
+    }
+#endif
+    // Write out the left latency
     Dongle::display.setCursor(16, 24);
     Dongle::display.setTextColor(INVERSE);
     Dongle::display.printf("%d", curState.left.latency);
+
+    // Write out the right latency
     Dongle::display.setCursor(5, 95);
     Dongle::display.setTextColor(INVERSE);
     Dongle::display.printf("%d", curState.right.latency);
+
+    // Show the screen!
     Dongle::display.display();
     prevState = curState;
   }
