@@ -18,11 +18,15 @@ void drawBattery(uint8_t rate, uint8_t x, uint8_t y) {
   bool charge = (rate > 100);
   rate = rate - (charge ? 100 : 0);
   bool error = (rate > 100);
-  Dongle::display.drawRect(x, y, 30, 18, WHITE);
-  Dongle::display.drawRect(x + 30, y + 6, 2, 6, WHITE);
+  // Outer triangle
+  Dongle::display.drawRect(x, y, 30, 15, WHITE);
+  // Positive connector 'nub'
+  Dongle::display.drawRect(x + 30, y + 4, 2, 6, WHITE);
   if (!error) {
-    Dongle::display.fillRect(x + 2, y + 2, 26 * rate / 100, 14, WHITE);
+    // This draws the 'fill line' for remaining charge
+    Dongle::display.fillRect(x + 2, y + 2, 26 * (rate + 3) / 100, 11, WHITE);
     if (charge) {
+      // Draw the little charge icon
       for (uint32_t i = 0; i < 4; i++) {
         Dongle::display.drawFastHLine(
             x + 15 - i * 3, y + i + 4, i * 3 + 2, INVERSE);
@@ -33,18 +37,19 @@ void drawBattery(uint8_t rate, uint8_t x, uint8_t y) {
       // double inversion pixels
       Dongle::display.drawFastHLine(x + 3, y + 8, 25, INVERSE);
     }
+    // Outline & draw the % charge remaining text
     Dongle::display.setTextColor(BLACK);
     for (int i = -1; i < 2; i++) {
       for (int j = -1; j < 2; j++) {
-        Dongle::display.setCursor(x + 10 + i, y + 5 + j);
+        Dongle::display.setCursor(x + 10 + i, y + 4 + j);
         Dongle::display.printf("%d", rate);
       }
     }
     Dongle::display.setTextColor(WHITE);
-    Dongle::display.setCursor(x + 10, y + 5);
+    Dongle::display.setCursor(x + 10, y + 4);
     Dongle::display.printf("%d", rate);
   } else {
-    Dongle::display.setCursor(x + 6, y + 5);
+    Dongle::display.setCursor(x + 6, y + 4);
     Dongle::display.setTextColor(INVERSE);
     Dongle::display.print("???");
   }
@@ -218,24 +223,26 @@ bool isFnLayerActive() {
   return false;
 }
 
-bool seenOnce = false;
+uint32_t lastTime = 0xFFFFFF;
+
 void updateState() {
-  if (!seenOnce || curState != prevState) {
-    seenOnce = true;
+  uint32_t now = millis();
+  if (now / 500 != lastTime || curState != prevState) {
+    lastTime = now / 500;
 
     Thing right = curState.right.connected ? Thing::Bluetooth : Thing::NoBlue;
     Thing left = curState.left.connected ? Thing::Bluetooth : Thing::NoBlue;
 
     Dongle::display.clearDisplay();
     // Draw the left bluetooth connected/disconnected graphic
-    drawThing(left, 0, 20);
+    drawThing(left, 0, 17);
     // Draw the left battery (at the top)
     drawBattery(curState.left.battery, 1, 0);
 
     // Draw the right bluetooth connected/disconnected graphic
-    drawThing(right, 20, 91);
+    drawThing(right, 20, 93);
     // Draw the right battery (at the bottom)
-    drawBattery(curState.right.battery, 1, 107);
+    drawBattery(curState.right.battery, 1, 109);
 
     // Draw the current layer stack
     bool isMac = isMacActiveLayer();
@@ -247,6 +254,15 @@ void updateState() {
     if (fnKeysActive)
       drawThing(Thing::Func, 7, 65);
 
+    Dongle::display.setTextColor(INVERSE);
+    // Write out the left latency
+    Dongle::display.setCursor(16, 21);
+    Dongle::display.printf("%d", curState.left.latency);
+
+    // Write out the right latency
+    Dongle::display.setCursor(5, 97);
+    Dongle::display.printf("%d", curState.right.latency);
+
 #if defined(LAYER_DEBUGGING)
     for (uint8_t l = 0; l < curState.layer_max; l++) {
       Dongle::display.setCursor((l == curState.layer_pos) ? 16 : 12,
@@ -254,15 +270,12 @@ void updateState() {
       Dongle::display.printf("%d", curState.layer_stack[l]);
     }
 #endif
-    // Write out the left latency
-    Dongle::display.setCursor(16, 24);
-    Dongle::display.setTextColor(INVERSE);
-    Dongle::display.printf("%d", curState.left.latency);
 
-    // Write out the right latency
-    Dongle::display.setCursor(5, 95);
-    Dongle::display.setTextColor(INVERSE);
-    Dongle::display.printf("%d", curState.right.latency);
+    for (int i = 0; i < 16; i++) {
+      if (lastTime & (1 << i)) {
+        Dongle::display.fillRect(i * 2, 126, 2, 2, WHITE);
+      }
+    }
 
     // Show the screen!
     Dongle::display.display();
