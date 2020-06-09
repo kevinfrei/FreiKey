@@ -218,10 +218,12 @@ bool isFnLayerActive() {
   return false;
 }
 
-bool seenOnce = false;
+uint32_t lastTime = 0xFFFFFF;
+
 void updateState() {
-  if (!seenOnce || curState != prevState) {
-    seenOnce = true;
+  uint32_t now = millis();
+  if (now / 500 != lastTime || curState != prevState) {
+    lastTime = now / 500;
 
     Thing right = curState.right.connected ? Thing::Bluetooth : Thing::NoBlue;
     Thing left = curState.left.connected ? Thing::Bluetooth : Thing::NoBlue;
@@ -233,9 +235,9 @@ void updateState() {
     drawBattery(curState.left.battery, 1, 0);
 
     // Draw the right bluetooth connected/disconnected graphic
-    drawThing(right, 20, 91);
+    drawThing(right, 20, 89);
     // Draw the right battery (at the bottom)
-    drawBattery(curState.right.battery, 1, 107);
+    drawBattery(curState.right.battery, 1, 105);
 
     // Draw the current layer stack
     bool isMac = isMacActiveLayer();
@@ -247,6 +249,15 @@ void updateState() {
     if (fnKeysActive)
       drawThing(Thing::Func, 7, 65);
 
+    Dongle::display.setTextColor(INVERSE);
+    // Write out the left latency
+    Dongle::display.setCursor(16, 24);
+    Dongle::display.printf("%d", curState.left.latency);
+
+    // Write out the right latency
+    Dongle::display.setCursor(5, 93);
+    Dongle::display.printf("%d", curState.right.latency);
+
 #if defined(LAYER_DEBUGGING)
     for (uint8_t l = 0; l < curState.layer_max; l++) {
       Dongle::display.setCursor((l == curState.layer_pos) ? 16 : 12,
@@ -254,15 +265,12 @@ void updateState() {
       Dongle::display.printf("%d", curState.layer_stack[l]);
     }
 #endif
-    // Write out the left latency
-    Dongle::display.setCursor(16, 24);
-    Dongle::display.setTextColor(INVERSE);
-    Dongle::display.printf("%d", curState.left.latency);
 
-    // Write out the right latency
-    Dongle::display.setCursor(5, 95);
-    Dongle::display.setTextColor(INVERSE);
-    Dongle::display.printf("%d", curState.right.latency);
+    for (int i = 0; i < 16; i++) {
+      if (lastTime & (1 << i)) {
+        Dongle::display.fillRect(i * 2, 126, 2, 2, WHITE);
+      }
+    }
 
     // Show the screen!
     Dongle::display.display();
