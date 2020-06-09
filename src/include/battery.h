@@ -13,7 +13,7 @@ struct Battery {
     delay(1);
   }
 
-  // I ran the Adafruit 500mah LiPo battery down, logging values
+  // I ran the Adafruit 500mah LiPo battery down, logging values until it died
   // this is a general linear approximation, cuz I'm not good enough at math
   // anymore to do anything fancier :/
   static uint8_t getBatteryPercent() {
