@@ -33,7 +33,6 @@ USER_CPP_SRCS=\
 	dbgcfg.cpp \
  	client-comm.cpp \
 	hardware.cpp \
-  debounce.cpp \
   sleepstate.cpp \
   kbclient.cpp
 
