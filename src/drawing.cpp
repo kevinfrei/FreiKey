@@ -19,37 +19,37 @@ void drawBattery(uint8_t rate, uint8_t x, uint8_t y) {
   rate = rate - (charge ? 100 : 0);
   bool error = (rate > 100);
   // Outer triangle
-  Dongle::display.drawRect(x, y, 30, 15, WHITE);
+  Dongle::display.drawRect(x, y, 30, 13, WHITE);
   // Positive connector 'nub'
-  Dongle::display.drawRect(x + 30, y + 4, 2, 6, WHITE);
+  Dongle::display.drawRect(x + 30, y + 4, 2, 5, WHITE);
   if (!error) {
     // This draws the 'fill line' for remaining charge
-    Dongle::display.fillRect(x + 2, y + 2, 26 * (rate + 3) / 100, 11, WHITE);
+    Dongle::display.fillRect(x + 2, y + 2, 26 * (rate + 3) / 100, 9, WHITE);
     if (charge) {
       // Draw the little charge icon
       for (uint32_t i = 0; i < 4; i++) {
         Dongle::display.drawFastHLine(
-            x + 15 - i * 3, y + i + 4, i * 3 + 2, INVERSE);
-        Dongle::display.drawFastHLine(x + 14, y - i + 12, i * 3 + 2, INVERSE);
+            x + 15 - i * 3, y + i + 3, i * 3 + 2, INVERSE);
+        Dongle::display.drawFastHLine(x + 14, y - i + 11, i * 3 + 2, INVERSE);
       }
       // Draw the middle line
       // If I did this in the above loop, it has a few
       // double inversion pixels
-      Dongle::display.drawFastHLine(x + 3, y + 8, 25, INVERSE);
+      Dongle::display.drawFastHLine(x + 3, y + 7, 25, INVERSE);
     }
     // Outline & draw the % charge remaining text
     Dongle::display.setTextColor(BLACK);
     for (int i = -1; i < 2; i++) {
       for (int j = -1; j < 2; j++) {
-        Dongle::display.setCursor(x + 10 + i, y + 4 + j);
+        Dongle::display.setCursor(x + 10 + i, y + 3 + j);
         Dongle::display.printf("%d", rate);
       }
     }
     Dongle::display.setTextColor(WHITE);
-    Dongle::display.setCursor(x + 10, y + 4);
+    Dongle::display.setCursor(x + 10, y + 3);
     Dongle::display.printf("%d", rate);
   } else {
-    Dongle::display.setCursor(x + 6, y + 4);
+    Dongle::display.setCursor(x + 6, y + 3);
     Dongle::display.setTextColor(INVERSE);
     Dongle::display.print("???");
   }
@@ -235,14 +235,14 @@ void updateState() {
 
     Dongle::display.clearDisplay();
     // Draw the left bluetooth connected/disconnected graphic
-    drawThing(left, 0, 17);
+    drawThing(left, 0, 15);
     // Draw the left battery (at the top)
     drawBattery(curState.left.battery, 1, 0);
 
     // Draw the right bluetooth connected/disconnected graphic
-    drawThing(right, 20, 93);
+    drawThing(right, 20, 97);
     // Draw the right battery (at the bottom)
-    drawBattery(curState.right.battery, 1, 109);
+    drawBattery(curState.right.battery, 1, 113);
 
     // Draw the current layer stack
     bool isMac = isMacActiveLayer();
@@ -250,17 +250,17 @@ void updateState() {
 
     // Draw the Apple or Windows thing
     drawThing(
-        isMac ? Thing::Apple : Thing::Windows, 7, 35 + (fnKeysActive ? 0 : 15));
+        isMac ? Thing::Apple : Thing::Windows, 7, 35 + (fnKeysActive ? 0 : 14));
     if (fnKeysActive)
-      drawThing(Thing::Func, 7, 65);
+      drawThing(Thing::Func, 7, 67);
 
     Dongle::display.setTextColor(INVERSE);
     // Write out the left latency
-    Dongle::display.setCursor(16, 21);
+    Dongle::display.setCursor(16, 19);
     Dongle::display.printf("%d", curState.left.latency);
 
     // Write out the right latency
-    Dongle::display.setCursor(5, 97);
+    Dongle::display.setCursor(5, 101);
     Dongle::display.printf("%d", curState.right.latency);
 
 #if defined(LAYER_DEBUGGING)
