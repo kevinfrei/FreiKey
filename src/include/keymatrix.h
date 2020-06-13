@@ -52,4 +52,31 @@ struct KeyMatrix {
     }
     return switches;
   }
+
+    static void setInterrupts(void (*handler)()) {
+        std::array<uint8_t, nCols + nRows> c_r{cols_then_rows...};
+
+    Serial.println("Enabling Interrupts");
+    for (uint8_t colNum = 0; colNum < numcols; colNum++) {
+      digitalWrite(c_r[colNum], LOW);
+    }
+    // I hate this sort of crap, but it seems necessary...
+    delay(1);
+    for (uint8_t rowNum = 0; rowNum < numrows; rowNum++) {
+      attachInterrupt(digitalPinToInterrupt(c_r[nCols + rowNum]), handler, CHANGE);
+    }
+  }
+
+  static void disableInterrupts() {
+        std::array<uint8_t, nCols + nRows> c_r{cols_then_rows...};
+
+    for (uint8_t rowNum = 0; rowNum < numrows; rowNum++) {
+      detachInterrupt(digitalPinToInterrupt(c_r[nCols + rowNum]));
+    }
+    // I hate this sort of crap, but it seems necessary :/
+    delay(1);
+    for (uint8_t colNum = 0; colNum < numcols; colNum++) {
+      digitalWrite(c_r[colNum], HIGH);
+    }
+  }
 };
