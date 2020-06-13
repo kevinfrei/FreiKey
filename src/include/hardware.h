@@ -5,6 +5,7 @@
 
 #include "boardio.h"
 #include "dbgcfg.h"
+#include "debounce.h"
 
 using scancode_t = uint8_t;
 constexpr scancode_t null_scan_code = 0xff;
@@ -70,6 +71,7 @@ struct hw {
   // Returns true if something was received
   bool receive(BLEClientUart& clientUart, const hw& prev);
 #else
+  Debouncer<MatrixBits> debouncer;
   // This is for reading the data from the hardware
   hw(uint32_t now, const hw& prev);
   // Just reads the switches...

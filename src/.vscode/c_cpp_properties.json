@@ -9,7 +9,7 @@
   "configurations": [
     {
       "name": "FreiKeys",
-      "intelliSenseMode": "gcc-x86",
+      "intelliSenseMode": "gcc-arm",
       "browse": {
         "path": [],
         "limitSymbolsToIncludedHeaders": true,
@@ -28,7 +28,7 @@
     },
     {
       "name": "Karbon",
-      "intelliSenseMode": "gcc-x86",
+      "intelliSenseMode": "gcc-arm",
       "browse": {
         "path": [],
         "limitSymbolsToIncludedHeaders": true,
@@ -47,7 +47,7 @@
     },
     {
       "name": "Karbon-Left",
-      "intelliSenseMode": "gcc-x86",
+      "intelliSenseMode": "gcc-arm",
       "browse": {
         "path": [],
         "limitSymbolsToIncludedHeaders": true,
@@ -60,7 +60,7 @@
     },
     {
       "name": "Karbon-Right",
-      "intelliSenseMode": "gcc-x86",
+      "intelliSenseMode": "gcc-arm",
       "browse": {
         "path": [],
         "limitSymbolsToIncludedHeaders": true,
@@ -79,7 +79,7 @@
     },
     {
       "name": "Left FreiKeys",
-      "intelliSenseMode": "gcc-x86",
+      "intelliSenseMode": "gcc-arm",
       "browse": {
         "path": [],
         "limitSymbolsToIncludedHeaders": true,
@@ -92,7 +92,7 @@
     },
     {
       "name": "Right FreiKeys",
-      "intelliSenseMode": "gcc-x86",
+      "intelliSenseMode": "gcc-arm",
       "browse": {
         "path": [],
         "limitSymbolsToIncludedHeaders": true,
@@ -105,7 +105,7 @@
     },
     {
       "name": "Betterfly",
-      "intelliSenseMode": "gcc-x86",
+      "intelliSenseMode": "gcc-arm",
       "browse": {
         "path": [],
         "limitSymbolsToIncludedHeaders": true,

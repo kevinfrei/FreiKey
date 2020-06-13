@@ -24,7 +24,7 @@
 //   "L/R Sent"
 //   "L/R Received"
 //  "End the Sync"
-#if DEBUG
+#if defined(DEBUG)
 const char* stateNames[] = {"BothNotConnected",
                             "BothSidesFirstConnected",
                             "StartFullSync",
@@ -43,13 +43,13 @@ const char* stateNames[] = {"BothNotConnected",
 
 bool Sync::Buffer(uint32_t time, state::hw& left, state::hw& right) {
   // Check for transitionary details
-#if DEBUG == 2
+#if defined(DEBUG) && DEBUG > 2
   static Sync::State last = State::EndPing;
   static uint32_t lastTime = 0;
 #endif
   bool done;
   do {
-#if DEBUG == 2
+#if DEBUG > 2
     if (last != this->state || time - lastTime > 1000) {
       lastTime = time;
       last = this->state;
@@ -177,7 +177,7 @@ void Sync::ReportSync(bool isReportLeft) {
     rsamples[rLoc] = delta & 0xFF;
     rightPacketReceived = true;
   }
-#if DEBUG == 2
+#if defined(DEBUG) && DEBUG > 2
   Serial.println("Sample Recevied:");
   for (int i = 0; i < sampleSize; i++) {
     Serial.printf("Left: %3d\t Right %3d\n",

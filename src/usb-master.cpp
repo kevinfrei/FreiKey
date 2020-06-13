@@ -2,6 +2,7 @@
 
 #include "dbgcfg.h"
 #include "dongle.h"
+#include "general.h"
 #include "hardware.h"
 #include "helpers.h"
 #include "kbreporter.h"
@@ -26,30 +27,31 @@
 // #4: Key-state back & forth (caps as a real cmd/ctrl, instead of a layer
 // shift)
 
-state::hw leftSide{};
-state::hw rightSide{};
+state::hw prevLeftSide{};
+state::hw prevRightSide{};
+MacroBits prevMacroPad{0};
 
 // This is called when a device connects, disconnects, and when the system is
 // initialized.
 // The idea is that it should just wipe everything clean.
 void resetTheWorld() {
-  layer_pos = 0;
-  layer_stack[0] = 0;
-  leftSide = state::hw{};
-  rightSide = state::hw{};
+  curState.reset();
+  prevLeftSide = state::hw{};
+  prevRightSide = state::hw{};
+  prevMacroPad = MacroBits{0};
   memset(keyStates, null_scan_code, sizeof(keyStates));
   Dongle::Reset();
 }
 
 // Check to see if we should update the battery level and if so, do so
 void updateBatteryLevel(const state::hw& downLeft, const state::hw& downRight) {
-  if (downRight.battery_level != rightSide.battery_level ||
-      downLeft.battery_level != leftSide.battery_level) {
+  if (downRight.battery_level != prevRightSide.battery_level ||
+      downLeft.battery_level != prevLeftSide.battery_level) {
     // We only get the battery level from the left side once you hit a key, so
     // only report it if we have something to actually report
     // TODO: Update something here.
-    rightSide.battery_level = downRight.battery_level;
-    leftSide.battery_level = downLeft.battery_level;
+    prevRightSide.battery_level = downRight.battery_level;
+    prevLeftSide.battery_level = downLeft.battery_level;
   }
 }
 
@@ -59,7 +61,7 @@ Sync timeSync{};
 void loop() {
   uint32_t now = millis();
   Dongle::updateClientStatus(
-      now, leftSide.battery_level, rightSide.battery_level);
+      now, prevLeftSide.battery_level, prevRightSide.battery_level);
   if (!Dongle::Ready())
     return;
   //  // Remote wakeup
@@ -71,37 +73,41 @@ void loop() {
   //  }
 
   // Get the hardware state for the two sides...
-  state::hw downRight{Dongle::rightUart, rightSide};
-  state::hw downLeft{Dongle::leftUart, leftSide};
+  state::hw downRight{Dongle::rightUart, prevRightSide};
+  state::hw downLeft{Dongle::leftUart, prevLeftSide};
 
   // Deal with synchonization
-  timeSync.Process(now, downLeft, leftSide, downRight, rightSide);
+  timeSync.Process(now, downLeft, prevLeftSide, downRight, prevRightSide);
 
   // Update the combined battery level
   updateBatteryLevel(downLeft, downRight);
 
-#if defined(MACRO_PAD)
-  Dongle::macro_scan();
-#endif
   // Get the before & after of each side into the bit array
-  MatrixBits beforeLeft{leftSide.switches};
+  MatrixBits beforeLeft{prevLeftSide.switches};
   MatrixBits afterLeft{downLeft.switches};
-  MatrixBits beforeRight{rightSide.switches};
+  MatrixBits beforeRight{prevRightSide.switches};
   MatrixBits afterRight{downRight.switches};
+  MacroBits macro = Dongle::key_scan(now);
 
+  MacroBits deltaPad = prevMacroPad.delta(macro);
   MatrixBits deltaLeft = beforeLeft.delta(afterLeft);
   MatrixBits deltaRight = beforeRight.delta(afterRight);
-  bool keysChanged = deltaLeft.any() || deltaRight.any();
+  bool keysChanged = deltaLeft.any() || deltaRight.any() || deltaPad.any();
 
-  while (deltaLeft.any() || deltaRight.any()) {
-    scancode_t sc;
-    bool pressed;
+  while (deltaLeft.any() || deltaRight.any() || deltaPad.any()) {
+    scancode_t sc = 0xFF;
+    bool pressed = false;
     if (deltaLeft.any()) {
       sc = getNextScanCode(deltaLeft, afterLeft, pressed);
-    } else {
+    } else if (deltaRight.any()) {
       // Add offset to the right scan code...
       sc = getNextScanCode(deltaRight, afterRight, pressed) +
            MatrixBits::num_bits;
+    } else if (deltaPad.any()) {
+      sc = getNextScanCode(deltaPad, macro, pressed) + MatrixBits::num_bits * 2;
+    } else {
+      DBG(Serial.println("Unexpectedly still in this loop"));
+      continue;
     }
     preprocessScanCode(sc, pressed, now);
   }
@@ -111,8 +117,9 @@ void loop() {
     ProcessKeys(now, rpt);
 
     // Update the hardware previous state
-    rightSide = downRight;
-    leftSide = downLeft;
+    prevRightSide = downRight;
+    prevLeftSide = downLeft;
+    prevMacroPad = macro;
     DBG2(Serial.println("============================="));
     DBG2(Serial.print("Left side "));
     DBG2(downLeft.dump());

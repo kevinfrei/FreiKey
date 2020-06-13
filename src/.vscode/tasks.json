@@ -6,7 +6,7 @@
     {
       "label": "Build",
       "type": "shell",
-      "command": "make -j",
+      "command": "make -j all compile_commands",
       "problemMatcher": "$gcc",
       "group": {
         "kind": "build",
@@ -35,44 +35,51 @@
       "group": "none"
     },
     {
-      "label": "Set to Dongle",
+      "label": "Set to Karbon",
       "type": "shell",
-      "command": "rm Makefile ; ln -s master.mak Makefile",
+      "command": "rm Makefile ; ln -s karbon.mak Makefile",
       "problemMatcher": [],
       "group": "none"
     },
     {
-      "label": "Set to Left",
+      "label": "Set to Left Karbon",
       "type": "shell",
-      "command": "rm Makefile ; ln -s left-btuart.mak Makefile",
+      "command": "rm Makefile ; ln -s l-karbon.mak Makefile",
       "problemMatcher": [],
       "group": "none"
     },
     {
-      "label": "Set to Right",
+      "label": "Set to Right Karbon",
       "type": "shell",
-      "command": "rm Makefile ; ln -s right-btuart.mak Makefile",
+      "command": "rm Makefile ; ln -s r-karbon.mak Makefile",
       "problemMatcher": [],
       "group": "none"
     },
     {
-      "label": "Flash Right",
+      "label": "Set to FreiKeys",
       "type": "shell",
-      "command": "make -j -f right-btuart.mak flash",
-      "problemMatcher": "$gcc",
-      "group": "build"
+      "command": "rm Makefile ; ln -s freikeys.mak Makefile",
+      "problemMatcher": [],
+      "group": "none"
     },
     {
-      "label": "Flash Left",
+      "label": "Set to Left FreiKeys",
       "type": "shell",
-      "command": "make -j -f left-btuart.mak flash",
-      "problemMatcher": "$gcc",
-      "group": "build"
+      "command": "rm Makefile ; ln -s l-freikeys.mak Makefile",
+      "problemMatcher": [],
+      "group": "none"
     },
     {
-      "label": "Flash Dongle",
+      "label": "Set to Right FreiKeys",
       "type": "shell",
-      "command": "make -j -f master.mak flash",
+      "command": "rm Makefile ; ln -s r-freikeys.mak Makefile",
+      "problemMatcher": [],
+      "group": "none"
+    },
+    {
+      "label": "Flash",
+      "type": "shell",
+      "command": "make -j flash",
       "problemMatcher": "$gcc",
       "group": "build"
     }

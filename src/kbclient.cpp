@@ -43,7 +43,10 @@ void KBClient::setup(const char* name) {
 }
 
 // TODO: Add bidirectional communication, so the master can ask for info or set
-// an LED state somehow
+// TODO: an LED state somehow
+// TODO: Also make this thing use interrupts to 'wake from sleep' instead of the
+// TODO: current 'reduce scan speed and miss keystrokes until they're held down
+// TODO: for .25s' malarkey
 void KBClient::loop() {
   uint32_t now = millis();
   state::hw down{now, lastRead};

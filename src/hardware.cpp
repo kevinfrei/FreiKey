@@ -43,14 +43,14 @@ uint32_t scans_since_last_time = 0;
 #endif
 
 hw::hw(uint8_t bl) : switches {}
-#if !defined(TEENSY)
+#if defined(HAS_BATTERY)
 , battery_level(bl)
 #endif
 {
 }
 hw::hw(const hw& c)
     : switches(c.switches)
-#if !defined(TEENSY)
+#if defined(HAS_BATTERY)
       ,
       battery_level(c.battery_level)
 #endif
@@ -96,7 +96,7 @@ void hw::readSwitches(uint32_t now) {
   scans_since_last_time++;
 #endif
   // Read & debounce the current key matrix
-  this->switches = debounce(BoardIO::Read(), now);
+  this->switches = this->debouncer.update(BoardIO::Read(), now);
 }
 #else // defined(MASTER)
 // Try to receive any relevant switch data from the wire.

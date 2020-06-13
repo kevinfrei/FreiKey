@@ -42,7 +42,6 @@ struct KeyMatrix {
     bits switches{};
     for (uint64_t colNum = 0; colNum < numcols; ++colNum) {
       T::prepPinForRead(c_r[colNum]);
-      delay(1); // TODO: Make this faster (which it microseconds)
       for (uint64_t rowNum = 0; rowNum < numrows; ++rowNum) {
         if (!digitalRead(c_r[nCols + rowNum])) {
           switches.set_bit(rowNum * numcols + colNum);

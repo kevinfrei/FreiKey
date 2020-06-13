@@ -1,6 +1,7 @@
 #pragma once
 
 #include "boardio.h"
+#include "dongle.h"
 #include "keyhelpers.h"
 
 #define LROW1(l00, l01, l02, l03, l04, l05) l05, l04, l03, l02, l01, l00
@@ -16,6 +17,9 @@
 #define RROW4(r30, r31, r32, r33, r34, r35) r35, r34, r33, r32, r31, r30
 #define RROW5(r40, r41, r42, r43, r44, r45) r45, r44, r43, r42, r41, r40
 #define RROW6(rt51, r52, r53, r54) ___, ___, r54, r53, r52, rt51
+
+#define PROW1(t1, t2, t3) t1, t2, t3
+#define PROW2(b1, b2, b3) b1, b2, b3
 
 #if defined(STATUS_DUMP)
 // For the status dumper thingamajig
@@ -48,7 +52,7 @@ const uint32_t layer_colors[] = {
 //  Action: keypress (either with exist modifiers, or 'unique')
 //          Layer change (latch, lock, or shift)
 
-const action_t keymap[][MatrixBits::num_bits * 2] = {
+const action_t keymap[][MatrixBits::num_bits * 2 + MacroBits::num_bits] = {
     {// LAYER_MAC_BASE (0)
      LROW1(KEY(ESCAPE), KEY(1), KEY(2), KEY(3), KEY(4), KEY(5)),
      LROW2(KEY(TAB), KEY(Q), KEY(W), KEY(E), KEY(R), KEY(T)),
@@ -62,7 +66,10 @@ const action_t keymap[][MatrixBits::num_bits * 2] = {
      RROW3(KEY(H), KEY(J), KEY(K), KEY(L), SEMI_, QUOTE_),
      RROW4(KEY(N), KEY(M), COMMA_, DOT_, KEY(SLASH), RSHFT),
      RROW5(SPACE_, EQ_, UP_, KEY(OBRC), ROPT, KEY(CBRC)),
-     RROW6(ENTER_, LEFT_, DOWN_, RIGHT_)},
+     RROW6(ENTER_, LEFT_, DOWN_, RIGHT_),
+
+     PROW1(VOLDN_, MUTE_, VOLUP_),
+     PROW2(PRVT_, PLAY_, NXTT_)},
 
     {// LAYER_WIN_BASE (1)
      // Put Alt & GUI in the right spots, Add the Insert key (instead of PRVT),
@@ -78,8 +85,11 @@ const action_t keymap[][MatrixBits::num_bits * 2] = {
      RROW2(___, ___, ___, ___, ___, ___),
      RROW3(___, ___, ___, ___, ___, ___),
      RROW4(___, ___, ___, ___, ___, ___),
-     RROW5(___, ___, ___, ___, ___, ___),
-     RROW6(___, ___, ___, ___)},
+     RROW5(___, ___, ___, ___, RGUI, ___),
+     RROW6(___, ___, ___, ___),
+
+     PROW1(___, ___, ___),
+     PROW2(___, ___, ___)},
 
     {// LAYER_FUNC (2)
      // Nothing too exciting here. I might perhaps go add my Rocksmith
@@ -97,7 +107,10 @@ const action_t keymap[][MatrixBits::num_bits * 2] = {
      RROW3(___, ___, ___, ___, ___, ___),
      RROW4(___, ___, ___, ___, ___, ___),
      RROW5(___, ___, ___, ___, ___, ___),
-     RROW6(___, ___, ___, ___)},
+     RROW6(___, ___, ___, ___),
+
+     PROW1(___, ___, ___),
+     PROW2(___, ___, ___)},
 
     {// LAYER_MAC_CAP (3)
      // Mostly just cmd + key (CMK(a)), with exceptions for some window
@@ -114,7 +127,10 @@ const action_t keymap[][MatrixBits::num_bits * 2] = {
      RROW3(CMK(H), CMK(J), CMK(K), CMK(L), CM_SEMI, CM_QUOTE),
      RROW4(CMK(N), CMK(M), CM_CMA, CM_DOT, CM_SLSH, CM_SPC),
      RROW5(CM_SPC, CM_EQ, CM_UP, CM_CBRC, ___, CM_OBRC),
-     RROW6(CM_RET, OP_LEFT, CM_DN, OP_RIGHT)},
+     RROW6(CM_RET, OP_LEFT, CM_DN, OP_RIGHT),
+
+     PROW1(___, LYR_WIN, ___),
+     PROW2(___, LYR_FN, ___)},
 
     {// LAYER_WIN_CAP (4)
      // This is magic to get a bunch of mac commands to send their Windows
@@ -135,7 +151,11 @@ const action_t keymap[][MatrixBits::num_bits * 2] = {
      RROW3(CTK(H), CTK(J), CTK(K), CTK(L), CT_SEMI, CT_QUOTE),
      RROW4(CTK(N), CTK(M), CT_CMA, KEY(ESCAPE), CT_SLSH, RGUI),
      RROW5(CT_SPC, CT_EQ, CT_UP, CT_OBRC, ___, CT_CBRC),
-     RROW6(CT_RET, CT_LEFT, CT_DN, CT_RIGHT)},
+     RROW6(CT_RET, CT_LEFT, CT_DN, CT_RIGHT),
+
+     PROW1(___, LYR_MAC, ___),
+     PROW2(___, LYR_FN, ___)},
+
     {// LAYER_WIN_CTL (5)
      // This is magic to make Unix line editing controls to work like they do in
      // Unix, but when working on Windows. The only one I can't really do is
@@ -157,4 +177,7 @@ const action_t keymap[][MatrixBits::num_bits * 2] = {
      RROW3(CTK(H), CTK(J), CTK(K), CTK(L), CT_SEMI, CT_QUOTE),
      RROW4(DOWN_, CTK(M), CT_CMA, CT_DOT, CT_SLSH, RSHFT | LCTL),
      RROW5(CT_SPC, CT_EQ, CT_UP, CT_OBRC, ___, CT_CBRC),
-     RROW6(CT_RET, CT_LEFT, CT_DN, CT_RIGHT)}};
+     RROW6(CT_RET, CT_LEFT, CT_DN, CT_RIGHT),
+
+     PROW1(___, ___, ___),
+     PROW2(___, ___, ___)}};

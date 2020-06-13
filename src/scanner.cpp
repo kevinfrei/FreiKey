@@ -1,6 +1,7 @@
 #include <vector>
 
 #include "dbgcfg.h"
+#include "general.h"
 #include "keymap.h"
 #include "keystate.h"
 #include "scanner.h"
@@ -9,8 +10,6 @@
 constexpr uint32_t TapAndHoldTimeLimit = 100;
 
 keystate keyStates[num_keystates];
-layer_t layer_stack[layer_max + 1];
-layer_t layer_pos = 0;
 
 #if defined(DEBUG)
 void dumpScanCode(uint8_t sc, bool pressed) {
@@ -18,14 +17,7 @@ void dumpScanCode(uint8_t sc, bool pressed) {
   Serial.print(sc, HEX);
   Serial.println(pressed ? " was pressed" : " was released");
 }
-void dumpLayers() {
-  Serial.print("Layer stack: ");
-  for (int i = 0; i <= layer_pos; i++) {
-    Serial.print(layer_stack[i]);
-    Serial.print(" ");
-  }
-  Serial.println("");
-}
+
 #endif
 
 // Look for a slot that is either already in use for this scan code, or vacant.
@@ -60,77 +52,26 @@ struct keystate* findStateSlot(scancode_t scanCode) {
 
 // Find the first specified action in the layer stack
 action_t resolveActionForScanCodeOnActiveLayer(uint8_t scanCode) {
-  layer_t s = layer_pos;
+  layer_t s = curState.layer_pos;
   DBG(dumpVal(s, "Layer position: "));
-  while (s > 0 && keymap[layer_stack[s]][scanCode] == ___) {
+  while (s > 0 && keymap[curState.layer_stack[s]][scanCode] == ___) {
     --s;
   }
 #if defined(DEBUG)
-  Serial.printf(
-      "Resolving scancode %d on layer %d to action ", scanCode, layer_stack[s]);
-  dumpHex(keymap[layer_stack[s]][scanCode]);
+  Serial.printf("Resolving scancode %d on layer %d to action ",
+                scanCode,
+                curState.layer_stack[s]);
+  dumpHex(keymap[curState.layer_stack[s]][scanCode]);
 #endif
-  return keymap[layer_stack[s]][scanCode];
+  return keymap[curState.layer_stack[s]][scanCode];
 }
 
 #if defined(MASTER)
 // For no good reason, I only have 2 bits per color...
 uint32_t getColorForCurrentLayer() {
-  return layer_colors[layer_stack[layer_pos]];
+  return layer_colors[curState.layer_stack[curState.layer_pos]];
 }
 #endif
-
-// Given a delta mask, get the scan code, update the delta mask and set pressed
-// while we're at it.
-scancode_t getNextScanCode(MatrixBits& delta,
-                           MatrixBits& curState,
-                           bool& pressed) {
-  scancode_t sc = delta.pull_a_bit();
-  pressed = curState.get_bit(sc);
-  return sc;
-}
-
-void layer_push(layer_t layer) {
-  DBG(dumpVal(layer, "Push "));
-  if (layer_pos < layer_max)
-    layer_stack[++layer_pos] = layer;
-  DBG(dumpLayers());
-}
-
-void layer_pop(layer_t layer) {
-  DBG(dumpVal(layer, "Pop "));
-  if (layer_pos > 0)
-    --layer_pos;
-  DBG(dumpLayers());
-}
-
-void layer_toggle(layer_t layer) {
-  // Toggling a layer: If it exists *anywhere* in the layer stack, turn it
-  // off (and fold the layer stack down) If it's *not* in the layer stack,
-  // add it.
-  for (layer_t l = layer_pos; l != 0; l--) {
-    if (layer_stack[l] == layer) {
-      DBG(dumpVal(layer, "Turning off layer "));
-      DBG(dumpVal(l, "at location "));
-      if (layer_pos != l) {
-        DBG(dumpVal(layer_pos - l, "Shifting by "));
-        memmove(&layer_stack[l], &layer_stack[l + 1], layer_pos - l);
-      }
-      layer_pos--;
-      DBG(dumpLayers());
-      return;
-    }
-  }
-  DBG(Serial.print("(For Toggle) "));
-  layer_push(layer);
-}
-
-void layer_switch(layer_t layer) {
-  DBG(dumpVal(layer_stack[layer_pos], "Switching layer "));
-  DBG(dumpVal(layer, "to layer "));
-  layer_stack[layer_pos] = layer;
-  DBG(dumpLayers());
-}
 
 // Called immediately after seeing the scan code:
 // Find a slot for the key, and deal with layer "stuff"
@@ -146,20 +87,20 @@ void preprocessScanCode(scancode_t sc, bool pressed, uint32_t now) {
     DBG(Serial.println("Unable to find an unused keystat slot!"));
     return;
   }
-  DBG(state->dump());
+  DBG2(state->dump());
   // State update returns a layer action to perform...
   switch (state->update(sc, pressed, now)) {
     case kPushLayer:
-      layer_push(state->get_layer());
+      curState.push_layer(state->get_layer());
       break;
     case kPopLayer:
-      layer_pop(state->get_layer());
+      curState.pop_layer(state->get_layer());
       break;
     case kToggleLayer:
-      layer_toggle(state->get_layer());
+      curState.toggle_layer(state->get_layer());
       break;
     case kSwitchLayer:
-      layer_switch(state->get_layer());
+      curState.switch_layer(state->get_layer());
       break;
   }
 }

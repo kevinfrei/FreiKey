@@ -14,7 +14,9 @@ endif
 # Necessary configuration stuff
 BOARD_NAME=feather52832
 IN_SOFTDEVICE=s132v6
-IN_DEBUG=l0
+# l0/l1/l2/l3 for system debug info
+# anything else for no system debug logging
+IN_DEBUG=none
 BUILD_ARCH=nrf52
 BUILD_PATH=out-rkarbon
 PROJ_NAME=right-karbon
@@ -33,7 +35,6 @@ USER_CPP_SRCS=\
 	dbgcfg.cpp \
  	client-comm.cpp \
 	hardware.cpp \
-  debounce.cpp \
   sleepstate.cpp \
   kbclient.cpp
 

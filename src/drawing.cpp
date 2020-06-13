@@ -18,33 +18,38 @@ void drawBattery(uint8_t rate, uint8_t x, uint8_t y) {
   bool charge = (rate > 100);
   rate = rate - (charge ? 100 : 0);
   bool error = (rate > 100);
-  Dongle::display.drawRect(x, y, 30, 18, WHITE);
-  Dongle::display.drawRect(x + 30, y + 6, 2, 6, WHITE);
+  // Outer triangle
+  Dongle::display.drawRect(x, y, 30, 13, WHITE);
+  // Positive connector 'nub'
+  Dongle::display.drawRect(x + 30, y + 4, 2, 5, WHITE);
   if (!error) {
-    Dongle::display.fillRect(x + 2, y + 2, 26 * rate / 100, 14, WHITE);
+    // This draws the 'fill line' for remaining charge
+    Dongle::display.fillRect(x + 2, y + 2, 26 * (rate + 3) / 100, 9, WHITE);
     if (charge) {
+      // Draw the little charge icon
       for (uint32_t i = 0; i < 4; i++) {
         Dongle::display.drawFastHLine(
-            x + 15 - i * 3, y + i + 4, i * 3 + 2, INVERSE);
-        Dongle::display.drawFastHLine(x + 14, y - i + 12, i * 3 + 2, INVERSE);
+            x + 15 - i * 3, y + i + 3, i * 3 + 2, INVERSE);
+        Dongle::display.drawFastHLine(x + 14, y - i + 11, i * 3 + 2, INVERSE);
       }
       // Draw the middle line
       // If I did this in the above loop, it has a few
       // double inversion pixels
-      Dongle::display.drawFastHLine(x + 3, y + 8, 25, INVERSE);
+      Dongle::display.drawFastHLine(x + 3, y + 7, 25, INVERSE);
     }
+    // Outline & draw the % charge remaining text
     Dongle::display.setTextColor(BLACK);
-    for (int i = -1; i < 2; i++){
-      for (int j = -1; j < 2; j++){
-    Dongle::display.setCursor(x + 10 + i, y + 5+j);
-    Dongle::display.printf("%d", rate);
+    for (int i = -1; i < 2; i++) {
+      for (int j = -1; j < 2; j++) {
+        Dongle::display.setCursor(x + 10 + i, y + 3 + j);
+        Dongle::display.printf("%d", rate);
       }
     }
     Dongle::display.setTextColor(WHITE);
-    Dongle::display.setCursor(x + 10, y + 5);
+    Dongle::display.setCursor(x + 10, y + 3);
     Dongle::display.printf("%d", rate);
   } else {
-    Dongle::display.setCursor(x + 6, y + 5);
+    Dongle::display.setCursor(x + 6, y + 3);
     Dongle::display.setTextColor(INVERSE);
     Dongle::display.print("???");
   }
@@ -190,7 +195,7 @@ struct layer {
   }
 };
 
-layer layers[] = {layer(&apple[0], 16, 21, 1),
+layer layers[] = {layer(&apple[0], 16, 22, 1),
                   layer(drawWin),
                   layer(&linux[0], 21, 21),
                   layer(&func[0], 16, 21),
@@ -201,24 +206,78 @@ void drawThing(Thing lyr, uint8_t x, uint8_t y) {
   layers[static_cast<size_t>(lyr)].draw(x, y);
 }
 
-bool seenOnce = false;
+// Check to see if Mac is our active layer (or Windows...)
+bool isMacActiveLayer() {
+  for (uint8_t l = curState.layer_pos; l > 0; l--) {
+    if (curState.layer_stack[l] == LAYER_WIN_BASE)
+      return false;
+  }
+  return true;
+}
+
+bool isFnLayerActive() {
+  for (uint8_t l = curState.layer_pos; l > 0; l--) {
+    if (curState.layer_stack[l] == LAYER_FUNC)
+      return true;
+  }
+  return false;
+}
+
+uint32_t lastTime = 0xFFFFFF;
+
 void updateState() {
-  if (!seenOnce || curState != prevState) {
-    seenOnce = true;
+  uint32_t now = millis();
+  if (now / 500 != lastTime || curState != prevState) {
+    lastTime = now / 500;
+
     Thing right = curState.right.connected ? Thing::Bluetooth : Thing::NoBlue;
     Thing left = curState.left.connected ? Thing::Bluetooth : Thing::NoBlue;
 
     Dongle::display.clearDisplay();
-    drawThing(left, 0, 20);
+    // Draw the left bluetooth connected/disconnected graphic
+    drawThing(left, 0, 15);
+    // Draw the left battery (at the top)
     drawBattery(curState.left.battery, 1, 0);
-    drawThing(right, 20, 91);
-    drawBattery(curState.right.battery, 1, 107);
-    Dongle::display.setCursor(16, 24);
+
+    // Draw the right bluetooth connected/disconnected graphic
+    drawThing(right, 20, 97);
+    // Draw the right battery (at the bottom)
+    drawBattery(curState.right.battery, 1, 113);
+
+    // Draw the current layer stack
+    bool isMac = isMacActiveLayer();
+    bool fnKeysActive = isFnLayerActive();
+
+    // Draw the Apple or Windows thing
+    drawThing(
+        isMac ? Thing::Apple : Thing::Windows, 7, 35 + (fnKeysActive ? 0 : 14));
+    if (fnKeysActive)
+      drawThing(Thing::Func, 7, 67);
+
     Dongle::display.setTextColor(INVERSE);
+    // Write out the left latency
+    Dongle::display.setCursor(16, 19);
     Dongle::display.printf("%d", curState.left.latency);
-    Dongle::display.setCursor(5, 95);
-    Dongle::display.setTextColor(INVERSE);
+
+    // Write out the right latency
+    Dongle::display.setCursor(5, 101);
     Dongle::display.printf("%d", curState.right.latency);
+
+#if defined(LAYER_DEBUGGING)
+    for (uint8_t l = 0; l < curState.layer_max; l++) {
+      Dongle::display.setCursor((l == curState.layer_pos) ? 16 : 12,
+                                l * 8 + 32);
+      Dongle::display.printf("%d", curState.layer_stack[l]);
+    }
+#endif
+
+    for (int i = 0; i < 16; i++) {
+      if (lastTime & (1 << i)) {
+        Dongle::display.fillRect(i * 2, 126, 2, 2, WHITE);
+      }
+    }
+
+    // Show the screen!
     Dongle::display.display();
     prevState = curState;
   }
