@@ -5,6 +5,39 @@
 #include "hardware.h"
 #include "kbclient.h"
 
+BLEDis KBClient::bledis;
+uint32_t KBClient::stateTime = 0;
+SleepState KBClient::sleepState{0, false};
+state::hw KBClient::lastRead{};
+BLEUart KBClient::bleuart;
+bool KBClient::notified;
+uint32_t KBClient::lastDelta = 0;
+
+volatile bool KBClient::interruptsEnabled = false;
+volatile bool KBClient::interruptTriggered = false;
+
+void KBClient::enableInterrupts() {
+  if (!KBClient::interruptsEnabled) {
+    DBG(Serial.println("Enabling Interrupts"));
+    BoardIO::setInterrupts(KBClient::interruptHandler);
+    KBClient::interruptsEnabled = true;
+  }
+  DBG(Serial.println("Enabled Interrupts"));
+}
+
+void KBClient::disableInterrupts() {
+  if (KBClient::interruptsEnabled) {
+    DBG(Serial.println("Disabling Interrupts"));
+    BoardIO::disableInterrupts();
+    KBClient::interruptsEnabled = false;
+  }
+  DBG(Serial.println("Disabled Interrupts"));
+}
+
+void KBClient::interruptHandler() {
+  KBClient::interruptTriggered = true;
+}
+
 void KBClient::setup(const char* name) {
   DBG(Serial.begin(115200));
   Bluefruit.begin(1, 0);
@@ -40,6 +73,10 @@ void KBClient::setup(const char* name) {
   Bluefruit.Advertising.start(0); // 0 = Don't stop advertising after n
                                   // seconds
   BoardIO::Configure();
+  KBClient::lastDelta = millis();
+  KBClient::interruptTriggered = false;
+  KBClient::notified = true;
+  enableInterrupts();
 }
 
 // TODO: Add bidirectional communication, so the master can ask for info or set
@@ -49,28 +86,26 @@ void KBClient::setup(const char* name) {
 // TODO: for .25s' malarkey
 void KBClient::loop() {
   uint32_t now = millis();
-  state::hw down{now, lastRead};
+  state::hw down{now, KBClient::lastRead};
 
-  if (sleepState.CheckForSleeping(down.switches, now)) {
+  if (KBClient::sleepState.CheckForSleeping(down.switches, now)) {
     // I'm assuming this saves power. If it doesn't, there's no point...
     delay(250);
-  } else if (down != lastRead) {
-    if (lastRead.battery_level != down.battery_level) {
-      comm::send::battery(bleuart, down.battery_level);
+  } else if (down != KBClient::lastRead) {
+    if (KBClient::lastRead.battery_level != down.battery_level) {
+      comm::send::battery(KBClient::bleuart, down.battery_level);
     }
-    lastRead = down;
+    KBClient::lastRead = down;
     DBG2(down.dump());
-    comm::send::scan(bleuart, lastRead.switches);
+    comm::send::scan(KBClient::bleuart, lastRead.switches);
   }
   waitForEvent(); // Request CPU enter low-power mode until an event occurs
 }
 
-KBClient theClient{};
-
 void setup() {
-  theClient.setup(CLIENT_NAME);
+  KBClient::setup(CLIENT_NAME);
 }
 
 void loop() {
-  theClient.loop();
+  KBClient::loop();
 }

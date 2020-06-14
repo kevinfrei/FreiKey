@@ -7,18 +7,22 @@
 #include "sleepstate.h"
 
 class KBClient {
-  BLEDis bledis;
-  uint32_t stateTime;
-  SleepState sleepState;
-  state::hw lastRead;
+  static BLEDis bledis;
+  static uint32_t stateTime;
+  static SleepState sleepState;
+  static state::hw lastRead;
+  static volatile bool interruptsEnabled;
+  static volatile bool interruptTriggered;
+  static uint32_t lastDelta;
+  static bool notified;
+
+  static void enableInterrupts();
+  static void disableInterrupts();
+  static void interruptHandler();
 
  public:
-  BLEUart bleuart;
+  static BLEUart bleuart;
 
-  KBClient()
-      : lastRead{}, stateTime{0}, sleepState{0, false} {}
-  void setup(const char* name);
-  void loop();
+  static void setup(const char* name);
+  static void loop();
 };
-
-extern KBClient theClient;

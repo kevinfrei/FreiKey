@@ -19,11 +19,11 @@ void comm::send::time(BLEUart& uart, uint32_t time) {
 void comm::recv::data(uint16_t handle) {
   comm::header h;
   uint8_t buf[15];
-  buf[0] = waitForByte(theClient.bleuart);
+  buf[0] = waitForByte(KBClient::bleuart);
   DBG2(dumpHex(buf[0], "r:"));
   memcpy(reinterpret_cast<char*>(&h), &buf, 1);
   for (uint8_t i = 0; i < h.size; i++) {
-    buf[i] = waitForByte(theClient.bleuart);
+    buf[i] = waitForByte(KBClient::bleuart);
     DBG2(dumpHex(buf[i], "r:"));
   }
   switch (h.type) {
@@ -46,7 +46,7 @@ void comm::recv::data(uint16_t handle) {
 }
 void comm::recv::sync() {
   DBG2(Serial.println("Sync received"));
-  comm::send::time(theClient.bleuart, millis());
+  comm::send::time(KBClient::bleuart, millis());
 }
 void comm::recv::set_led(uint8_t brightness) {
   BoardIO::setLED(brightness);

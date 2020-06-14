@@ -14,68 +14,64 @@ struct KeyMatrix {
   static constexpr uint8_t byte_size = bits::num_bytes;
   typedef std::array<uint8_t, nCols + nRows> ColsRows;
 
-  static uint64_t colPin(const ColsRows& c_r, uint64_t col) {
+  static inline uint8_t colPin(uint8_t col) {
+    constexpr ColsRows c_r{cols_then_rows...};
     return c_r[col];
   }
-  static uint64_t rowNum(const ColsRows& c_r, uint64_t row) {
+  static inline uint8_t rowPin(uint8_t row) {
+    constexpr ColsRows c_r{cols_then_rows...};
     return c_r[nCols + row];
   }
 
   static void ConfigMatrix() {
     // For my wiring, the columns are output, and the rows are input...
-    ColsRows c_r{cols_then_rows...};
-    for (uint8_t pn = 0; pn < nCols + nRows; pn++) {
-      if (pn < nCols) {
-        DBG(dumpVal(c_r[pn], "Output Pin "));
-        T::configOutputPin(c_r[pn]);
-      } else {
-        DBG(dumpVal(c_r[pn], "Input Pullup "));
-        T::configInputPin(c_r[pn]);
-      }
+    for (uint8_t cn = 0; cn < nCols; cn++) {
+      DBG(dumpVal(colPin(cn), "Output Pin "));
+      T::configOutputPin(colPin(cn));
+    }
+    for (uint8_t rn = 0; rn < nRows; rn++) {
+      DBG(dumpVal(rowPin(rn), "Input Pullup "));
+      T::configInputPin(rowPin(rn));
     }
   };
 
   // This is the core place to simulate the keyboard for mocking
   // (at least in the betterfly config)
   static bits Read() {
-    ColsRows c_r{cols_then_rows...};
     bits switches{};
     for (uint64_t colNum = 0; colNum < numcols; ++colNum) {
-      T::prepPinForRead(c_r[colNum]);
+      T::prepPinForRead(colPin(colNum));
       for (uint64_t rowNum = 0; rowNum < numrows; ++rowNum) {
-        if (!digitalRead(c_r[nCols + rowNum])) {
+        if (!digitalRead(rowPin(rowNum))) {
           switches.set_bit(rowNum * numcols + colNum);
         }
       }
-      T::completePin(c_r[colNum]);
+      T::completePin(colPin(colNum));
     }
     return switches;
   }
 
-    static void setInterrupts(void (*handler)()) {
-        std::array<uint8_t, nCols + nRows> c_r{cols_then_rows...};
-
-    Serial.println("Enabling Interrupts");
+  static void setInterrupts(void (*handler)()) {
+    DBG(Serial.println("Enabling Interrupts"));
     for (uint8_t colNum = 0; colNum < numcols; colNum++) {
-      digitalWrite(c_r[colNum], LOW);
+      digitalWrite(colPin(colNum), LOW);
     }
     // I hate this sort of crap, but it seems necessary...
     delay(1);
     for (uint8_t rowNum = 0; rowNum < numrows; rowNum++) {
-      attachInterrupt(digitalPinToInterrupt(c_r[nCols + rowNum]), handler, CHANGE);
+      attachInterrupt(digitalPinToInterrupt(rowPin(rowNum)), handler, CHANGE);
     }
   }
 
   static void disableInterrupts() {
-        std::array<uint8_t, nCols + nRows> c_r{cols_then_rows...};
-
+    DBG(Serial.println("Disabling Interrupts"));
     for (uint8_t rowNum = 0; rowNum < numrows; rowNum++) {
-      detachInterrupt(digitalPinToInterrupt(c_r[nCols + rowNum]));
+      detachInterrupt(digitalPinToInterrupt(rowPin(rowNum)));
     }
     // I hate this sort of crap, but it seems necessary :/
     delay(1);
     for (uint8_t colNum = 0; colNum < numcols; colNum++) {
-      digitalWrite(c_r[colNum], HIGH);
+      digitalWrite(colPin(colNum), HIGH);
     }
   }
 };
