@@ -1,10 +1,5 @@
-#include <Adafruit_LittleFS.h>
-#include <InternalFileSystem.h>
-
 #include <array>
 #include <initializer_list>
-
-using namespace Adafruit_LittleFS_Namespace;
 
 // Shamelessly stolen from
 // https://www.fluentcpp.com/2017/05/19/crtp-helper/
@@ -278,19 +273,23 @@ class AdafruitNRF52 {
 };
 
 // clang-format off
-using RightMatrix = KeyMatrix<AdafruitNRF52,
-      // Cols:
-      7,
-      // Rows:
-      6,
-      // Column Pins:
-      29, 16, 15, 7, 27, 11, 30,
-      // Row Pins:
-      13, 4, 2, 3, 5, 12>;
-//}, 28};
-// clang-format on
+using LeftKarbonMatrix = KeyMatrix<AdafruitNRF52,
+  // Cols, Rows
+  6, 6,
+  // Column pins:
+  15, 30, 27, A4, SCK, MOSI, // From 'outer' to 'inner'
+  // Row pins:
+  A1, A0, A2, 11, 7, 16>;
 
-class RightBoard : public RightMatrix,
+using RightKarbonMatrix = KeyMatrix<AdafruitNRF52,
+  // Cols, Rows
+  6, 6,
+  // Column pins:
+  16, 27, 30, MOSI, SCK, A0, // from 'inner' to 'outer'
+  // Row pins:
+  A2, 15, A1, A5, A4, A3>;
+
+class RightBoard : public LeftKarbonMatrix,
                    public Digital_LEDs<LED_RED, LED_BLUE>,
                    public Analog_LED<28>,
                    public Battery<> {
@@ -338,25 +337,13 @@ bits prev;
 uint32_t lastDelta;
 bool notified;
 
-File file(InternalFS);
-
 void setup() {
   Serial.begin(115200);
-  // Initialize Internal File System
-  InternalFS.begin();
   RightBoard::Configure();
   triggered = false;
   notified = true;
   lastDelta = millis();
   enableInterrupt();
-  if (file.open("/battery.txt", FILE_O_READ)) {
-    char buffer[100];
-    file.read(buffer, 99);
-    Serial.print(buffer);
-    file.close();
-  } else {
-    Serial.println("Unable to open the battery file for reading.");
-  }
 }
 
 uint32_t lastBattery = 0;
