@@ -37,6 +37,7 @@ void drawBattery(uint8_t rate, uint8_t x, uint8_t y) {
       // double inversion pixels
       Dongle::display.drawFastHLine(x + 3, y + 7, 25, INVERSE);
     }
+#if 0
     // Outline & draw the % charge remaining text
     Dongle::display.setTextColor(BLACK);
     for (int i = -1; i < 2; i++) {
@@ -48,6 +49,7 @@ void drawBattery(uint8_t rate, uint8_t x, uint8_t y) {
     Dongle::display.setTextColor(WHITE);
     Dongle::display.setCursor(x + 10, y + 3);
     Dongle::display.printf("%d", rate);
+#endif
   } else {
     Dongle::display.setCursor(x + 6, y + 3);
     Dongle::display.setTextColor(INVERSE);
