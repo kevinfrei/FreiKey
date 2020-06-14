@@ -234,7 +234,7 @@ class KeyMatrix : crtp<T> {
   }
 
   static void setInterrupts(void (*handler)()) {
-        std::array<uint8_t, nCols + nRows> c_r{cols_then_rows...};
+    std::array<uint8_t, nCols + nRows> c_r{cols_then_rows...};
 
     Serial.println("Enabling Interrupts");
     for (uint8_t colNum = 0; colNum < numcols; colNum++) {
@@ -242,12 +242,13 @@ class KeyMatrix : crtp<T> {
     }
     delay(1);
     for (uint8_t rowNum = 0; rowNum < numrows; rowNum++) {
-      attachInterrupt(digitalPinToInterrupt(c_r[nCols + rowNum]), handler, CHANGE);
+      attachInterrupt(
+          digitalPinToInterrupt(c_r[nCols + rowNum]), handler, CHANGE);
     }
   }
 
   static void disableInterrupts() {
-        std::array<uint8_t, nCols + nRows> c_r{cols_then_rows...};
+    std::array<uint8_t, nCols + nRows> c_r{cols_then_rows...};
 
     for (uint8_t rowNum = 0; rowNum < numrows; rowNum++) {
       detachInterrupt(digitalPinToInterrupt(c_r[nCols + rowNum]));
@@ -364,7 +365,7 @@ uint32_t lastBattery = 0;
 // and up to 100 ms after the last change
 void loop() {
   uint32_t now = millis();
-  if (triggered || ((now - lastDelta) < 100) || prev.any()){
+  if (triggered || ((now - lastDelta) < 100) || prev.any()) {
     disableInterrupt();
     bits cur = RightBoard::Read();
     notified = false;
@@ -378,18 +379,6 @@ void loop() {
     Serial.printf("Halting scans for now\n");
     notified = true;
     enableInterrupt();
-  }
-  if (!(now & 0xffff)) {
-    uint32_t newBattery = RightBoard::getBatteryLevel();
-    if (file.open("/battery.txt", FILE_O_WRITE)) {
-      file.seek(0);
-      file.printf("New: %d Last: %d\n", newBattery, lastBattery);
-      file.close();
-    } else {
-      Serial.println("Unable to open the file for writing");
-    }
-    Serial.printf("Battery: %d, previous: %d\n", newBattery, lastBattery);
-    lastBattery = newBattery;
   }
   waitForEvent();
 }
