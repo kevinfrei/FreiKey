@@ -1,22 +1,6 @@
 #include <array>
 #include <initializer_list>
 
-// Shamelessly stolen from
-// https://www.fluentcpp.com/2017/05/19/crtp-helper/
-
-template <typename T>
-struct crtp {
-  T& underlying() {
-    return static_cast<T&>(*this);
-  }
-  T const& underlying() const {
-    return static_cast<T const&>(*this);
-  }
-
- private:
-  crtp() {}
-};
-
 void dumpVal(uint32_t v, const char* header) {
   if (header)
     Serial.print(header);
@@ -121,74 +105,25 @@ struct bit_array {
   }
 };
 
-template <uint8_t pinLED>
-class Analog_LED {
+class AdafruitNRF52 {
  public:
-  static void ConfigLED() {
-    pinMode(pinLED, OUTPUT);
-    delay(1);
-    analogWrite(pinLED, 0);
+  static void configOutputPin(uint8_t pin) {
+    pinMode(pin, OUTPUT);
+    digitalWrite(pin, HIGH);
   }
-  static void setLED(uint32_t brightness) {
-    analogWrite(pinLED, brightness);
+  static void configInputPin(uint8_t pin) {
+    pinMode(pin, INPUT_PULLUP);
   }
-};
-
-template <uint8_t tRED, uint8_t tBLUE>
-class Digital_LEDs {
- public:
-  static void ConfigLEDs() {
-    pinMode(tRED, OUTPUT);
-    pinMode(tBLUE, OUTPUT);
+  static void prepPinForRead(uint8_t pin) {
+    digitalWrite(pin, LOW);
   }
-  static void setRed(bool on) {
-    digitalWrite(tRED, on ? HIGH : LOW);
-  }
-  static void setBlue(bool on) {
-    digitalWrite(tBLUE, on ? HIGH : LOW);
-  }
-};
-
-template <uint8_t batPin = PIN_VBAT>
-class Battery {
- public:
-  // pin 31 on the 832, pin 30 on the 840, is available for sampling the battery
-  static constexpr uint8_t VBAT_PIN = batPin;
-
-  // 3.0V ADC range and 12-bit ADC resolution = 3000mV/4096
-  static constexpr uint32_t VBAT_NUM = 3000;
-  static constexpr uint32_t VBAT_DEN = 4096;
-
-  static void ConfigBattery() {
-    analogReference(AR_INTERNAL_3_0);
-    analogReadResolution(12);
-    delay(1);
-  }
-
-  static uint32_t getBatteryLevel() {
-    return analogRead(VBAT_PIN) * VBAT_NUM / VBAT_DEN;
-  }
-  // This stuff shamelessly stolen from the AdaFruit example
-  static uint8_t getBatteryPercent() {
-    uint32_t bat = getBatteryLevel();
-    if (bat >= 3000) {
-      return 100;
-    } else if (bat > 2900) {
-      return 100 - ((3000 - bat) * 58) / 100;
-    } else if (bat > 2740) {
-      return 42 - ((2900 - bat) * 24) / 160;
-    } else if (bat > 2440) {
-      return 18 - ((2740 - bat) * 12) / 300;
-    } else if (bat > 2100) {
-      return 6 - ((2440 - bat) * 6) / 340;
-    } else {
-      return 0;
-    }
+  static void completePin(uint8_t pin) {
+    digitalWrite(pin, HIGH);
   }
 };
 
 template <typename T, uint8_t nCols, uint8_t nRows, uint8_t... cols_then_rows>
-class KeyMatrix : crtp<T> {
+class KeyMatrix {
  public:
   static constexpr uint8_t numcols = nCols;
   static constexpr uint8_t numrows = nRows;
@@ -255,23 +190,6 @@ class KeyMatrix : crtp<T> {
   }
 };
 
-class AdafruitNRF52 {
- public:
-  static void configOutputPin(uint8_t pin) {
-    pinMode(pin, OUTPUT);
-    digitalWrite(pin, HIGH);
-  }
-  static void configInputPin(uint8_t pin) {
-    pinMode(pin, INPUT_PULLUP);
-  }
-  static void prepPinForRead(uint8_t pin) {
-    digitalWrite(pin, LOW);
-  }
-  static void completePin(uint8_t pin) {
-    digitalWrite(pin, HIGH);
-  }
-};
-
 // clang-format off
 using LeftKarbonMatrix = KeyMatrix<AdafruitNRF52,
   // Cols, Rows
@@ -289,16 +207,10 @@ using RightKarbonMatrix = KeyMatrix<AdafruitNRF52,
   // Row pins:
   A2, 15, A1, A5, A4, A3>;
 
-class RightBoard : public LeftKarbonMatrix,
-                   public Digital_LEDs<LED_RED, LED_BLUE>,
-                   public Analog_LED<28>,
-                   public Battery<> {
+class TheBoard : public LeftKarbonMatrix {
  public:
   static void Configure() {
     ConfigMatrix();
-    ConfigLEDs();
-    ConfigLED();
-    ConfigBattery();
   }
 };
 
@@ -308,21 +220,17 @@ volatile bool intEnabled = false;
 
 void enableInterrupt() {
   if (!intEnabled) {
-    RightBoard::setInterrupts(trigger);
+    TheBoard::setInterrupts(trigger);
     intEnabled = true;
   }
-  RightBoard::setBlue(!intEnabled);
-  RightBoard::setRed(intEnabled);
 }
 
 void disableInterrupt() {
   if (intEnabled) {
     Serial.println("Disabling Interrupts");
-    RightBoard::disableInterrupts();
+    TheBoard::disableInterrupts();
     intEnabled = false;
   }
-  RightBoard::setBlue(!intEnabled);
-  RightBoard::setRed(intEnabled);
 }
 
 volatile bool triggered;
@@ -331,7 +239,7 @@ void trigger() {
   triggered = true;
 }
 
-using bits = RightBoard::bits;
+using bits = TheBoard::bits;
 
 bits prev;
 uint32_t lastDelta;
@@ -339,7 +247,7 @@ bool notified;
 
 void setup() {
   Serial.begin(115200);
-  RightBoard::Configure();
+  TheBoard::Configure();
   triggered = false;
   notified = true;
   lastDelta = millis();
@@ -354,7 +262,7 @@ void loop() {
   uint32_t now = millis();
   if (triggered || ((now - lastDelta) < 100) || prev.any()) {
     disableInterrupt();
-    bits cur = RightBoard::Read();
+    bits cur = TheBoard::Read();
     notified = false;
     triggered = false;
     if (prev != cur) {
