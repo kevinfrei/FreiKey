@@ -28,7 +28,7 @@ void KBClient::enableInterrupts() {
 void KBClient::disableInterrupts() {
   if (KBClient::interruptsEnabled) {
     DBG(Serial.println("Disabling Interrupts"));
-    BoardIO::disableInterrupts();
+    BoardIO::clearInterrupts();
     KBClient::interruptsEnabled = false;
   }
   DBG(Serial.println("Disabled Interrupts"));

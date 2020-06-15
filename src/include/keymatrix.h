@@ -52,26 +52,28 @@ struct KeyMatrix {
   }
 
   static void setInterrupts(void (*handler)()) {
-    DBG(Serial.println("Enabling Interrupts"));
+    DBG(Serial.println("Enabling HW Interrupts"));
     for (uint8_t colNum = 0; colNum < numcols; colNum++) {
-      digitalWrite(colPin(colNum), LOW);
+      T::prepForInterrupt(colPin(colNum));
     }
     // I hate this sort of crap, but it seems necessary...
     delay(1);
     for (uint8_t rowNum = 0; rowNum < numrows; rowNum++) {
       attachInterrupt(digitalPinToInterrupt(rowPin(rowNum)), handler, CHANGE);
     }
+    DBG(Serial.println("HW Interrupts Enabled"));
   }
 
-  static void disableInterrupts() {
-    DBG(Serial.println("Disabling Interrupts"));
+  static void clearInterrupts() {
+    DBG(Serial.println("Disabling HW Interrupts"));
     for (uint8_t rowNum = 0; rowNum < numrows; rowNum++) {
       detachInterrupt(digitalPinToInterrupt(rowPin(rowNum)));
     }
     // I hate this sort of crap, but it seems necessary :/
     delay(1);
     for (uint8_t colNum = 0; colNum < numcols; colNum++) {
-      digitalWrite(colPin(colNum), HIGH);
+      T::restoreFromInterrupt(colPin(colNum));
     }
+    DBG(Serial.println("HW Interrupts Disabled"));
   }
 };
