@@ -1,38 +1,6 @@
 #include <array>
 #include <initializer_list>
 
-void dumpVal(uint32_t v, const char* header) {
-  if (header)
-    Serial.print(header);
-  Serial.println(v);
-}
-
-void dumpHex(uint32_t v, const char* header) {
-  if (header)
-    Serial.print(header);
-  Serial.println(v, HEX);
-}
-
-void dumpHex(uint16_t v, const char* header) {
-  dumpHex(static_cast<uint32_t>(v), header);
-}
-
-void dumpHex(uint8_t v, const char* header) {
-  dumpHex(static_cast<uint32_t>(v), header);
-}
-
-void dumpHex(bool v, const char* header) {
-  dumpHex(static_cast<uint32_t>(v), header);
-}
-
-void dumpHex(uint64_t v, const char* header) {
-  if (header)
-    Serial.print(header);
-  Serial.printf("0x%08x|0x%08x\n",
-                static_cast<uint32_t>(v >> 32),
-                static_cast<uint32_t>(v));
-}
-
 template <int T>
 struct bit_array {
   constexpr static uint32_t num_bits = T;
@@ -136,10 +104,10 @@ class KeyMatrix {
     std::array<uint8_t, nCols + nRows> c_r{cols_then_rows...};
     for (uint8_t pn = 0; pn < nCols + nRows; pn++) {
       if (pn < nCols) {
-        dumpVal(c_r[pn], "Output Pin ");
+        Serial.printf("Output Pin :%d\n", c_r[pn]);
         T::configOutputPin(c_r[pn]);
       } else {
-        dumpVal(c_r[pn], "Input Pullup ");
+        Serial.printf("Input Pin  :%d\n", c_r[pn]);
         T::configInputPin(c_r[pn]);
       }
     }
