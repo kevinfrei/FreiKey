@@ -86,18 +86,25 @@ void KBClient::setup(const char* name) {
 // TODO: for .25s' malarkey
 void KBClient::loop() {
   uint32_t now = millis();
-  state::hw down{now, KBClient::lastRead};
-
-  if (KBClient::sleepState.CheckForSleeping(down.switches, now)) {
-    // I'm assuming this saves power. If it doesn't, there's no point...
-    delay(250);
-  } else if (down != KBClient::lastRead) {
-    if (KBClient::lastRead.battery_level != down.battery_level) {
-      comm::send::battery(KBClient::bleuart, down.battery_level);
+  if (KBClient::interruptTriggered || ((now - KBClient::lastDelta) < 100) ||
+      KBClient::lastRead.switches.any()) {
+    KBClient::disableInterrupts();
+    state::hw down{now, KBClient::lastRead};
+    KBClient::notified = false;
+    KBClient::interruptTriggered = false;
+    if (down != KBClient::lastRead) {
+      if (KBClient::lastRead.battery_level != down.battery_level) {
+        comm::send::battery(KBClient::bleuart, down.battery_level);
+      }
+      KBClient::lastRead = down;
+      DBG2(down.dump());
+      comm::send::scan(KBClient::bleuart, lastRead.switches);
+      KBClient::lastDelta = now;
     }
-    KBClient::lastRead = down;
-    DBG2(down.dump());
-    comm::send::scan(KBClient::bleuart, lastRead.switches);
+  } else if (!KBClient::notified) {
+    DBG(Serial.println("Halting Scans for now"));
+    KBClient::notified = true;
+    KBClient::enableInterrupts();
   }
   waitForEvent(); // Request CPU enter low-power mode until an event occurs
 }
