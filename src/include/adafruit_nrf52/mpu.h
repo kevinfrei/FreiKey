@@ -4,7 +4,7 @@
 
 struct AdafruitNRF52 {
   static void configOutputPin(uint8_t pin) {
-    pinMode(pin, INPUT);
+    pinMode(pin, OUTPUT);
     digitalWrite(pin, HIGH);
   }
   static void configInputPin(uint8_t pin) {
@@ -12,6 +12,7 @@ struct AdafruitNRF52 {
   }
   static void prepPinForRead(uint8_t pin) {
     digitalWrite(pin, LOW);
+    delayMicroseconds(500);
   }
   static void completePin(uint8_t pin) {
     digitalWrite(pin, HIGH);

@@ -26,11 +26,11 @@ struct KeyMatrix {
   static void ConfigMatrix() {
     // For my wiring, the columns are output, and the rows are input...
     for (uint8_t cn = 0; cn < nCols; cn++) {
-      DBG(dumpVal(colPin(cn), "Output Pin "));
+      DBG2(dumpVal(colPin(cn), "Output Pin "));
       T::configOutputPin(colPin(cn));
     }
     for (uint8_t rn = 0; rn < nRows; rn++) {
-      DBG(dumpVal(rowPin(rn), "Input Pullup "));
+      DBG2(dumpVal(rowPin(rn), "Input Pullup "));
       T::configInputPin(rowPin(rn));
     }
   };
@@ -52,7 +52,7 @@ struct KeyMatrix {
   }
 
   static void setInterrupts(void (*handler)()) {
-    DBG(Serial.println("Enabling HW Interrupts"));
+    DBG2(Serial.println("Enabling HW Interrupts"));
     for (uint8_t colNum = 0; colNum < numcols; colNum++) {
       T::prepForInterrupt(colPin(colNum));
     }
@@ -61,11 +61,11 @@ struct KeyMatrix {
     for (uint8_t rowNum = 0; rowNum < numrows; rowNum++) {
       attachInterrupt(digitalPinToInterrupt(rowPin(rowNum)), handler, CHANGE);
     }
-    DBG(Serial.println("HW Interrupts Enabled"));
+    DBG2(Serial.println("HW Interrupts Enabled"));
   }
 
   static void clearInterrupts() {
-    DBG(Serial.println("Disabling HW Interrupts"));
+    DBG2(Serial.println("Disabling HW Interrupts"));
     for (uint8_t rowNum = 0; rowNum < numrows; rowNum++) {
       detachInterrupt(digitalPinToInterrupt(rowPin(rowNum)));
     }
@@ -74,6 +74,6 @@ struct KeyMatrix {
     for (uint8_t colNum = 0; colNum < numcols; colNum++) {
       T::restoreFromInterrupt(colPin(colNum));
     }
-    DBG(Serial.println("HW Interrupts Disabled"));
+    DBG2(Serial.println("HW Interrupts Disabled"));
   }
 };

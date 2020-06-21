@@ -18,20 +18,18 @@ volatile bool KBClient::interruptTriggered = false;
 
 void KBClient::enableInterrupts() {
   if (!KBClient::interruptsEnabled) {
-    DBG(Serial.println("Enabling Interrupts"));
+    DBG2(Serial.println("Enabling Interrupts"));
     BoardIO::setInterrupts(KBClient::interruptHandler);
     KBClient::interruptsEnabled = true;
   }
-  DBG(Serial.println("Enabled Interrupts"));
 }
 
 void KBClient::disableInterrupts() {
   if (KBClient::interruptsEnabled) {
-    DBG(Serial.println("Disabling Interrupts"));
+    DBG2(Serial.println("Disabling Interrupts"));
     BoardIO::clearInterrupts();
     KBClient::interruptsEnabled = false;
   }
-  DBG(Serial.println("Disabled Interrupts"));
 }
 
 void KBClient::interruptHandler() {
@@ -86,7 +84,7 @@ void KBClient::setup(const char* name) {
 // TODO: for .25s' malarkey
 void KBClient::loop() {
   uint32_t now = millis();
-  if (KBClient::interruptTriggered || ((now - KBClient::lastDelta) < 100) ||
+  if (KBClient::interruptTriggered || ((now - KBClient::lastDelta) < 500) ||
       KBClient::lastRead.switches.any()) {
     KBClient::disableInterrupts();
     state::hw down{now, KBClient::lastRead};
@@ -102,9 +100,11 @@ void KBClient::loop() {
       KBClient::lastDelta = now;
     }
   } else if (!KBClient::notified) {
-    DBG(Serial.println("Halting Scans for now"));
+    DBG2(Serial.println("Halting Scans for now"));
     KBClient::notified = true;
     KBClient::enableInterrupts();
+  } else {
+    delay(5);
   }
   waitForEvent(); // Request CPU enter low-power mode until an event occurs
 }
