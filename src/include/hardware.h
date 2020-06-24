@@ -32,11 +32,11 @@ constexpr const char* RTCL_NAME = "FreiKeys-RClient";
 #error You need to create a bluetooth name setup
 #endif
 
-#if defined(CLIENT)
+#if defined(BTLE_CLIENT)
 #if defined(LEFT)
-constexpr const char* CLIENT_NAME = LTCL_NAME;
+constexpr const char* BTLE_CLIENT_NAME = LTCL_NAME;
 #elif defined(RIGHT)
-constexpr const char* CLIENT_NAME = RTCL_NAME;
+constexpr const char* BTLE_CLIENT_NAME = RTCL_NAME;
 #else
 #error For a client build, you need to pick left or right
 #endif
@@ -44,7 +44,7 @@ constexpr const char* CLIENT_NAME = RTCL_NAME;
 #endif
 
 namespace state {
-#if defined(MASTER)
+#if defined(BTLE_HOST)
 struct incoming {
   BLEClientUart* which;
   // TODO: Tag it with 'when' to synchronize the sides better
@@ -64,7 +64,7 @@ struct hw {
   // This is just a dumb constructor
   hw(uint8_t bl = 0);
 
-#if defined(MASTER)
+#if defined(BTLE_HOST)
   // This is for reading the data from remote pieces over the UART
   hw(BLEClientUart& clientUart, const hw& prev);
   // Try to receive any relevant switch data from the wire.
@@ -78,7 +78,7 @@ struct hw {
   void readSwitches(uint32_t now);
 #endif
 
-#if defined(CLIENT)
+#if defined(BTLE_CLIENT)
   // Send the relevant data over the wire
   void send(BLEUart& bleuart, const hw& prev) const;
 #endif

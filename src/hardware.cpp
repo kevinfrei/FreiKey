@@ -57,7 +57,7 @@ hw::hw(const hw& c)
 {
 }
 
-#if !defined(MASTER)
+#if !defined(BTLE_HOST)
 hw::hw(uint32_t now, const hw& prev)
     : switches(prev.switches)
 #if defined(HAS_BATTERY)
@@ -69,7 +69,7 @@ hw::hw(uint32_t now, const hw& prev)
 }
 #endif
 
-#if defined(CLIENT)
+#if defined(BTLE_CLIENT)
 // Send the relevant data over the wire
 void hw::send(BLEUart& bleuart, const hw& prev) const {
   uint8_t buffer[data_size];
@@ -79,7 +79,7 @@ void hw::send(BLEUart& bleuart, const hw& prev) const {
 }
 #endif
 
-#if defined(MASTER)
+#if defined(BTLE_HOST)
 std::queue<incoming> data_queue;
 
 hw::hw(BLEClientUart& clientUart, const hw& prev) {
@@ -90,7 +90,7 @@ hw::hw(BLEClientUart& clientUart, const hw& prev) {
 }
 #endif
 
-#if !defined(MASTER)
+#if !defined(BTLE_HOST)
 void hw::readSwitches(uint32_t now) {
 #if defined(DEBUG)
   scans_since_last_time++;
@@ -98,10 +98,10 @@ void hw::readSwitches(uint32_t now) {
   // Read & debounce the current key matrix
   this->switches = this->debouncer.update(BoardIO::Read(), now);
 }
-#else // defined(MASTER)
+#else // defined(BTLE_HOST)
 // Try to receive any relevant switch data from the wire.
 // Returns true if something was received
-#if defined(TEST_MASTER)
+#if defined(TEST_BTLE_HOST)
 constexpr uint8_t INIT = 0;
 constexpr uint8_t WAIT = 1;
 constexpr uint8_t PRESSED = 2;
@@ -113,7 +113,7 @@ uint8_t state = 0;
 #endif
 
 bool hw::receive(BLEClientUart& clientUart, const hw& prev) {
-#if defined(TEST_MASTER)
+#if defined(TEST_BTLE_HOST)
   // This is my little 'fake hitting buttons' to test the dongle by itself
   uint32_t now = millis();
   switch (state) {

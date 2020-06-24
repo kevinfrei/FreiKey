@@ -38,7 +38,7 @@ struct header {
 
 template <typename UART>
 uint8_t getSide(UART& uart) {
-#if defined(MASTER)
+#if defined(BTLE_HOST)
   return comm::LEFT_SIDE; // TODO: Fix this
 #else
   return comm::WHICH_SIDE;

@@ -110,7 +110,7 @@ void KBClient::loop() {
 }
 
 void setup() {
-  KBClient::setup(CLIENT_NAME);
+  KBClient::setup(BTLE_CLIENT_NAME);
 }
 
 void loop() {

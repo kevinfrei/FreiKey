@@ -19,7 +19,7 @@
       "cStandard": "c11",
       "cppStandard": "c++20",
       "compileCommands": "${workspaceRoot}/out-freikeys/compile_commands.json",
-      "defines": ["FREIKEYS", "MASTER", "DEBUG=2"],
+      "defines": ["FREIKEYS", "BTLE_HOST", "DEBUG=2"],
       "includePath": [
         "${workspaceRoot}/include",
         "${workspaceRoot}/include/freikeys",
@@ -38,7 +38,7 @@
       "cStandard": "c11",
       "cppStandard": "c++20",
       "compileCommands": "${workspaceRoot}/out-karbon/compile_commands.json",
-      "defines": ["KARBON", "MASTER", "MACRO_PAD", "HAS_DISPLAY", "DEBUG=2"],
+      "defines": ["KARBON", "BTLE_HOST", "MACRO_PAD", "HAS_DISPLAY", "DEBUG=2"],
       "includePath": [
         "${workspaceRoot}/include",
         "${workspaceRoot}/include/karbon",

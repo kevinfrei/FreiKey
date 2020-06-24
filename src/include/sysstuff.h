@@ -6,7 +6,7 @@
 #define ADAFRUIT
 #include <bluefruit.h>
 
-#if defined(MASTER)
+#if defined(BTLE_HOST)
 #include "Adafruit_NeoPixel.h"
 #include "Adafruit_TinyUSB.h"
 #endif

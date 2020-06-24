@@ -3,7 +3,7 @@
 #include "bit_array.h"
 #include "board-instance.h"
 
-#if defined(CLIENT)
+#if defined(BTLE_CLIENT)
 
 #if defined(RIGHT)
 using BoardIO = RightBoard;

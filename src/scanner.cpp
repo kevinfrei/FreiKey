@@ -66,7 +66,7 @@ action_t resolveActionForScanCodeOnActiveLayer(uint8_t scanCode) {
   return keymap[curState.layer_stack[s]][scanCode];
 }
 
-#if defined(MASTER)
+#if defined(BTLE_HOST)
 // For no good reason, I only have 2 bits per color...
 uint32_t getColorForCurrentLayer() {
   return layer_colors[curState.layer_stack[curState.layer_pos]];
