@@ -24,16 +24,18 @@
 #if defined(STATUS_DUMP)
 // For the status dumper thingamajig
 const char* layer_names[] = {
-    "Base/Mac", "Win", "Fn", "MacCaps", "WinCaps", "WinCtrl"};
+    "Base/Mac", "Win", "Linux", "Fn", "MacCaps", "WinCaps", "LinuxCaps", "WinCtrl"};
 #endif
 
 const uint32_t layer_colors[] = {
     0x000000, // Base/mac
     0x040000, // Windows: Red
-    0x000400, // Fn: Green
+    0x000404, // Linux:   Cyan
+    0x000400, // Fn:      Green
     0x000004, // MacCaps: Blue
     0x040004, // WinCaps: Purple
-    0x040400  // WinCtrl: Yellow
+    0x040400, // WinCtrl: Yellow
+    0x040404  // LinCaps: White
 };
 
 // TODO: I'm not happy that in order to override "modifier + key" it requires
@@ -72,8 +74,7 @@ const action_t keymap[][MatrixBits::num_bits * 2 + MacroBits::num_bits] = {
      PROW2(PRVT_, PLAY_, NXTT_)},
 
     {// LAYER_WIN_BASE (1)
-     // Put Alt & GUI in the right spots, Add the Insert key (instead of PRVT),
-     // Print Screen (instead of NXTT) and the application key (instead of MUTE)
+     // Put Alt & GUI in the right spots
      LROW1(___, ___, ___, ___, ___, ___),
      LROW2(___, ___, ___, ___, ___, ___),
      LROW3(WIN_CAP, ___, ___, ___, ___, ___),
@@ -91,7 +92,28 @@ const action_t keymap[][MatrixBits::num_bits * 2 + MacroBits::num_bits] = {
      PROW1(___, ___, ___),
      PROW2(___, ___, ___)},
 
-    {// LAYER_FUNC (2)
+
+    {// LAYER_LINUX_BASE (2)
+     // Put Alt & GUI in the right spots, Add the Insert key (instead of PRVT),
+     // Print Screen (instead of NXTT) and the application key (instead of MUTE)
+     LROW1(___, ___, ___, ___, ___, ___),
+     LROW2(___, ___, ___, ___, ___, ___),
+     LROW3(LIN_CAP, ___, ___, ___, ___, ___),
+     LROW4(___, ___, ___, ___, ___, ___),
+     LROW5(___, LGUI, LALT, ___, ___, ___),
+     LROW6(___, ___, ___, ___),
+
+     RROW1(___, ___, ___, ___, ___, ___),
+     RROW2(___, ___, ___, ___, ___, ___),
+     RROW3(___, ___, ___, ___, ___, ___),
+     RROW4(___, ___, ___, ___, ___, ___),
+     RROW5(___, ___, ___, ___, RGUI, ___),
+     RROW6(___, ___, ___, ___),
+
+     PROW1(___, ___, ___),
+     PROW2(___, ___, ___)},
+
+    {// LAYER_FUNC (3)
      // Nothing too exciting here. I might perhaps go add my Rocksmith
      // keybindings, and perhaps put the function keys in a more 'debugger
      // binding friendly' order...
@@ -112,7 +134,7 @@ const action_t keymap[][MatrixBits::num_bits * 2 + MacroBits::num_bits] = {
      PROW1(___, ___, ___),
      PROW2(___, ___, ___)},
 
-    {// LAYER_MAC_CAP (3)
+    {// LAYER_MAC_CAP (4)
      // Mostly just cmd + key (CMK(a)), with exceptions for some window
      // manipulatiton bindings for my HammerSpoon configuration
      LROW1(CMK(ESCAPE), CMK(1), CMK(2), CMK(3), CMK(4), CMK(5)),
@@ -129,10 +151,10 @@ const action_t keymap[][MatrixBits::num_bits * 2 + MacroBits::num_bits] = {
      RROW5(CM_SPC, CM_EQ, CM_UP, CM_CBRC, ___, CM_OBRC),
      RROW6(CM_RET, OP_LEFT, CM_DN, OP_RIGHT),
 
-     PROW1(___, LYR_WIN, ___),
-     PROW2(___, LYR_FN, ___)},
+     PROW1(___, ___, ___),
+     PROW2(LYR_WIN, LYR_LIN, LYR_FN)},
 
-    {// LAYER_WIN_CAP (4)
+    {// LAYER_WIN_CAP (5)
      // This is magic to get a bunch of mac commands to send their Windows
      // equivalent The poster children are Caps-Q => Alt-F4 and Caps-W => Ctl-F4
      // Effectively making Caps-Q & Caps-W correspond to Quit and Close Window
@@ -153,10 +175,10 @@ const action_t keymap[][MatrixBits::num_bits * 2 + MacroBits::num_bits] = {
      RROW5(CT_SPC, CT_EQ, CT_UP, CT_OBRC, ___, CT_CBRC),
      RROW6(CT_RET, CT_LEFT, CT_DN, CT_RIGHT),
 
-     PROW1(___, LYR_MAC, ___),
-     PROW2(___, LYR_FN, ___)},
+     PROW1(___, ___, ___),
+     PROW2(LYR_MAC, LYR_LIN, LYR_FN)},
 
-    {// LAYER_WIN_CTL (5)
+    {// LAYER_WIN_CTL (6)
      // This is magic to make Unix line editing controls to work like they do in
      // Unix, but when working on Windows. The only one I can't really do is
      // ctrl-t because Transpose would require something quite fancy. I could
@@ -180,4 +202,23 @@ const action_t keymap[][MatrixBits::num_bits * 2 + MacroBits::num_bits] = {
      RROW6(CT_RET, CT_LEFT, CT_DN, CT_RIGHT),
 
      PROW1(___, ___, ___),
-     PROW2(___, ___, ___)}};
+     PROW2(___, ___, ___)},
+     
+    {// LAYER_LIN_CAP (7)
+     LROW1(CTK(ESCAPE), CTK(1), CTK(2), CTK(3), CTK(4), CTK(5)),
+     LROW2(CTK(TAB), ALK(F4), CTK(F4), CTK(E), CTK(R), CTK(T)),
+     LROW3(___, CTK(A), CTK(S), CTK(D), CTK(F), CTK(G)),
+     LROW4(SHFTCT, CTK(Z), CTK(X), CTK(C), CTK(V), CTK(B)),
+     LROW5(LCTL, GUICT, ALTCT, CT_PUP, CTK(GRAVE), CTK(BKSP)),
+     LROW6(CTK(HOME), CT_PDN, CTK(END), CTK(DEL)),
+
+     RROW1(CTK(6), CTK(7), CTK(8), CTK(9), CTK(0), CTK(MINUS)),
+     RROW2(CTK(Y), CTK(U), CTK(I), CTK(O), CTK(P), CTK(BACKSLASH)),
+     RROW3(CTK(H), CTK(J), CTK(K), CTK(L), CT_SEMI, CT_QUOTE),
+     RROW4(CTK(N), CTK(M), CT_CMA, KEY(ESCAPE), CT_SLSH, RGUI),
+     RROW5(CT_SPC, CT_EQ, CT_UP, CT_OBRC, ___, CT_CBRC),
+     RROW6(CT_RET, CT_LEFT, CT_DN, CT_RIGHT),
+
+     PROW1(___, ___, ___),
+     PROW2(LYR_MAC, LYR_WIN, LYR_FN)},
+};

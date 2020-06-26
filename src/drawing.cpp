@@ -208,18 +208,22 @@ void drawThing(Thing lyr, uint8_t x, uint8_t y) {
   layers[static_cast<size_t>(lyr)].draw(x, y);
 }
 
-// Check to see if Mac is our active layer (or Windows...)
+// Special case for Mac, because it's the base layer
 bool isMacActiveLayer() {
   for (uint8_t l = curState.layer_pos; l > 0; l--) {
-    if (curState.layer_stack[l] == LAYER_WIN_BASE)
+    if (curState.layer_stack[l] == LAYER_WIN_BASE ||
+        curState.layer_stack[l] == LAYER_LIN_BASE)
       return false;
   }
   return true;
 }
 
-bool isFnLayerActive() {
+bool isLayerActive(uint8_t layer) {
+  if (layer == LAYER_MAC_BASE) {
+    return isMacActiveLayer();
+  }
   for (uint8_t l = curState.layer_pos; l > 0; l--) {
-    if (curState.layer_stack[l] == LAYER_FUNC)
+    if (curState.layer_stack[l] == layer)
       return true;
   }
   return false;
@@ -247,8 +251,9 @@ void updateState() {
     drawBattery(curState.right.battery, 1, 113);
 
     // Draw the current layer stack
-    bool isMac = isMacActiveLayer();
-    bool fnKeysActive = isFnLayerActive();
+    bool isMac = isLayerActive(LAYER_MAC_BASE);
+    bool fnKeysActive = isLayerActive(LAYER_FUNC);
+    bool isWin = isLayerActive(LAYER_WIN_BASE);
 
     // Draw the Apple or Windows thing
     drawThing(
