@@ -13,20 +13,5 @@
 //  and a 32 bit value
 
 namespace drawing {
-enum class Thing : uint8_t {
-  Apple = 0,
-  Windows = 1,
-  Linux = 2,
-  Func = 3,
-  Bluetooth = 4,
-  NoBlue = 5
-};
-
-uint8_t encodeBatteryValue(uint8_t chargeRemaining,
-                           bool isCharging,
-                           bool isPresent);
-void drawBattery(uint8_t rate, uint8_t x, uint8_t y);
-void drawThing(Thing lyr, uint8_t x, uint8_t y);
-
 void updateState();
 } // namespace drawing

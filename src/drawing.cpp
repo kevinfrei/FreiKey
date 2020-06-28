@@ -197,6 +197,15 @@ struct layer {
   }
 };
 
+enum class Thing : uint8_t {
+  Apple = 0,
+  Windows = 1,
+  Linux = 2,
+  Func = 3,
+  Bluetooth = 4,
+  NoBlue = 5
+};
+
 layer layers[] = {layer(&apple[0], 16, 22, 1),
                   layer(drawWin),
                   layer(&linux[0], 21, 21),
@@ -251,13 +260,17 @@ void updateState() {
     drawBattery(curState.right.battery, 1, 113);
 
     // Draw the current layer stack
-    bool isMac = isLayerActive(LAYER_MAC_BASE);
+    Thing which = Thing::Apple;
+    if (isLayerActive(LAYER_WIN_BASE)) {
+      which = Thing::Windows;
+    } else if (isLayerActive(LAYER_LIN_BASE)) {
+      which = Thing::Linux;
+    }
+
     bool fnKeysActive = isLayerActive(LAYER_FUNC);
-    bool isWin = isLayerActive(LAYER_WIN_BASE);
 
     // Draw the Apple or Windows thing
-    drawThing(
-        isMac ? Thing::Apple : Thing::Windows, 7, 35 + (fnKeysActive ? 0 : 14));
+    drawThing(which, 7, 35 + (fnKeysActive ? 0 : 14));
     if (fnKeysActive)
       drawThing(Thing::Func, 7, 67);
 

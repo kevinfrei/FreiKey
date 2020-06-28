@@ -98,8 +98,6 @@ void Dongle::Configure() {
   }
   display.setRotation(3);
   display.clearDisplay();
-  drawing::drawThing(drawing::Thing::Apple, 0, 0);
-  display.display();
 #endif
 }
 
@@ -206,8 +204,6 @@ bool Dongle::black = true;
 
 // This updates the RGB LED to show something when the left & right sides
 // connect to the dongle
-drawing::Thing lastRight = drawing::Thing::Apple;
-drawing::Thing lastLeft = drawing::Thing::Apple;
 uint8_t lastLBat = 0xff;
 uint8_t lastRBat = 0xff;
 uint8_t vals[16] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5, 4, 3, 2, 1};

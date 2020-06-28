@@ -176,7 +176,7 @@ const action_t keymap[][MatrixBits::num_bits * 2 + MacroBits::num_bits] = {
      RROW6(CT_RET, CT_LEFT, CT_DN, CT_RIGHT),
 
      PROW1(___, ___, ___),
-     PROW2(LYR_MAC, LYR_LIN, LYR_FN)},
+     PROW2(LYR_WIN, LYR_WIN, LYR_FN)},
 
     {// LAYER_WIN_CTL (6)
      // This is magic to make Unix line editing controls to work like they do in
@@ -203,7 +203,7 @@ const action_t keymap[][MatrixBits::num_bits * 2 + MacroBits::num_bits] = {
 
      PROW1(___, ___, ___),
      PROW2(___, ___, ___)},
-     
+
     {// LAYER_LIN_CAP (7)
      LROW1(CTK(ESCAPE), CTK(1), CTK(2), CTK(3), CTK(4), CTK(5)),
      LROW2(CTK(TAB), ALK(F4), CTK(F4), CTK(E), CTK(R), CTK(T)),
@@ -220,5 +220,5 @@ const action_t keymap[][MatrixBits::num_bits * 2 + MacroBits::num_bits] = {
      RROW6(CT_RET, CT_LEFT, CT_DN, CT_RIGHT),
 
      PROW1(___, ___, ___),
-     PROW2(LYR_MAC, LYR_WIN, LYR_FN)},
+     PROW2(LYR_LIN, LYR_LIN, LYR_FN)},
 };
