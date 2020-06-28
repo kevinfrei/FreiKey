@@ -16,13 +16,7 @@
 #include "host-comm.h"
 
 #if defined(MACRO_PAD)
-/*#include "Button.h"
-#include "keyhelpers.h"
 
-// l/c/r/b/t => left, center, right, bottom, top
-Button rb(A0, 150), cb(A1, 150), lb(A2, 150), rt(A3), ct(A4), lt(A5);
-Button* buttons[6] = {&lb, &cb, &rb, &lt, &ct, &rt};
-*/
 constexpr std::array<uint8_t, 6> padPins = {A5, A4, A3, A2, A1, A0};
 Debouncer<MacroBits> debouncer{};
 #endif
