@@ -13,7 +13,7 @@
 #include "general.h"
 #include "globals.h"
 #include "hardware.h"
-#include "master-comm.h"
+#include "host-comm.h"
 
 #if defined(MACRO_PAD)
 /*#include "Button.h"

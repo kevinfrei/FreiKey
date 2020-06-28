@@ -1,7 +1,7 @@
 #include "sync.h"
 #include "dongle.h"
 #include "general.h"
-#include "master-comm.h"
+#include "host-comm.h"
 
 // I need to build a damn state machine for this
 // External inputs:
@@ -213,7 +213,7 @@ void Sync::UpdateLatency() {
 }
 
 void Sync::Delay(uint32_t now, state::hw& down, state::hw& prev) {
-  // We need to delay the master by a little bit to prevent mis-timing
+  // We need to delay the host by a little bit to prevent mis-timing
   // bool dataWaiting = false;
   // uint32_t dataTime;
   // uint64_t switchData;
@@ -222,7 +222,7 @@ void Sync::Delay(uint32_t now, state::hw& down, state::hw& prev) {
   // fast...
   // constexpr uint32_t DELAY = 8;
 
-  // This is the master-side buffering code
+  // This is the host-side buffering code
 
   if (down.switches != prev.switches) {
     // There's a change: put it in the delay buffer

@@ -8,7 +8,7 @@
 #include "kbreporter.h"
 #include "keymap.h"
 #include "keystate.h"
-#include "master-comm.h"
+#include "host-comm.h"
 #include "scanner.h"
 #include "sync.h"
 

@@ -39,10 +39,10 @@ USER_CPP_SRCS=\
 	dongle.cpp \
 	hardware.cpp \
 	kbreporter.cpp \
- 	master-comm.cpp \
+ 	host-comm.cpp \
 	scanner.cpp \
   sync.cpp \
-	usb-master.cpp
+	usb-host.cpp
 
 include af_nrf52.mk
 

@@ -11,8 +11,8 @@
 # DEBUG, LOTSA_BLINKING, STATUS_DUMP, TEST_MASTER
 
 # Necessary configuration stuff
-BUILD_PATH=out-mock-master
-PROJ_NAME=mock-master
+BUILD_PATH=out-mock-host
+PROJ_NAME=mock-host
 
 # This is how to add new flags
 # -DDEBUG=1/2
@@ -27,6 +27,6 @@ USER_CPP_SRCS=\
 	kbreporter.cpp \
 	scanner.cpp \
   sync.cpp \
-	usb-master.cpp
+	usb-host.cpp
 
 include mock.mk

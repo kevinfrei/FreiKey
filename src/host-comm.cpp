@@ -4,7 +4,7 @@
 #include "dongle.h"
 #include "general.h"
 #include "hardware.h"
-#include "master-comm.h"
+#include "host-comm.h"
 #include "sync.h"
 
 bool waiting;
