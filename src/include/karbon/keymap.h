@@ -215,7 +215,7 @@ const action_t keymap[][MatrixBits::num_bits * 2 + MacroBits::num_bits] = {
      RROW1(CTK(6), CTK(7), CTK(8), CTK(9), CTK(0), CTK(MINUS)),
      RROW2(CTK(Y), CTK(U), CTK(I), CTK(O), CTK(P), CTK(BACKSLASH)),
      RROW3(CTK(H), CTK(J), CTK(K), CTK(L), CT_SEMI, CT_QUOTE),
-     RROW4(CTK(N), CTK(M), CT_CMA, KEY(ESCAPE), CT_SLSH, RGUI),
+     RROW4(CTK(N), CTK(M), CT_CMA, CT_DOT, CT_SLSH, RGUI),
      RROW5(CT_SPC, CT_EQ, CT_UP, CT_OBRC, ___, CT_CBRC),
      RROW6(CT_RET, CT_LEFT, CT_DN, CT_RIGHT),
 
