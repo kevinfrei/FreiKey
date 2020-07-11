@@ -17,7 +17,7 @@ class Debouncer {
   // I still sometimes see a bounce or two, so I've increased it a bit.
   // 25ms translates to a typing speed of about 400 WPM, which seems plenty
   // fast...
-  static const uint8_t debounce_delay = 25;
+  static const uint8_t debounce_delay = 35;
 
  public:
   Debouncer() : last_reported_switches{}, last_reported_time{} {}

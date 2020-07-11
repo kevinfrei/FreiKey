@@ -47,7 +47,7 @@ void KBClient::setup(const char* name) {
   // when it was set at 0. If you spread your keyboards apart greater
   // distance, you may want to try higher power. Acceptable values are -40,
   // -30, -20, -16, -12, -8, -4, 0, 4
-  Bluefruit.setTxPower(0);
+  Bluefruit.setTxPower(-4);
   Bluefruit.setName(name);
 
   bledis.setManufacturer(MANUFACTURER);
@@ -74,7 +74,7 @@ void KBClient::setup(const char* name) {
   KBClient::lastDelta = millis();
   KBClient::interruptTriggered = false;
   KBClient::notified = true;
-  enableInterrupts();
+  KBClient::enableInterrupts();
 }
 
 // TODO: Add bidirectional communication, so the host can ask for info or set
@@ -99,12 +99,13 @@ void KBClient::loop() {
       comm::send::scan(KBClient::bleuart, lastRead.switches);
       KBClient::lastDelta = now;
     }
-  } else if (!KBClient::notified) {
-    DBG2(Serial.println("Halting Scans for now"));
-    KBClient::notified = true;
-    KBClient::enableInterrupts();
   } else {
-    delay(5);
+    if (!KBClient::notified) {
+      DBG2(Serial.println("Halting Scans for now"));
+      KBClient::notified = true;
+      KBClient::enableInterrupts();
+    }
+    delay(50);
   }
   waitForEvent(); // Request CPU enter low-power mode until an event occurs
 }
