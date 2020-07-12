@@ -36,7 +36,6 @@ USER_CPP_SRCS=\
 	dbgcfg.cpp \
  	client-comm.cpp \
 	hardware.cpp \
-  sleepstate.cpp \
   kbclient.cpp
 
 include af_nrf52.mk

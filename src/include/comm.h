@@ -54,11 +54,13 @@ void send_packet(UART& uart, const T& v) {
   h.size = comm::sizes[VAL];
   memcpy(&buffer[0], reinterpret_cast<char*>(&h), sizeof(h));
   memcpy(&buffer[sizeof(h)], reinterpret_cast<const char*>(&v), sizeof(T));
+#if defined(DEBUG) && DEBUG > 1
   for (int i = 0; i < sizeof(buffer); i++) {
-    DBG2(dumpHex((uint32_t)buffer[i], "S:"));
+    dumpHex((uint32_t)buffer[i], "S:");
   }
+  Serial.println("---");
+#endif
   uart.write(buffer, sizeof(buffer));
-  DBG2(Serial.println("---"));
 };
 
 template <uint8_t VAL, typename UART>

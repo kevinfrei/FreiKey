@@ -7,11 +7,9 @@
 
 BLEDis KBClient::bledis;
 uint32_t KBClient::stateTime = 0;
-SleepState KBClient::sleepState{0, false};
 state::hw KBClient::lastRead{};
 BLEUart KBClient::bleuart;
 bool KBClient::notified;
-uint32_t KBClient::lastDelta = 0;
 
 volatile bool KBClient::interruptsEnabled = false;
 volatile bool KBClient::interruptTriggered = false;
@@ -71,7 +69,6 @@ void KBClient::setup(const char* name) {
   Bluefruit.Advertising.start(0); // 0 = Don't stop advertising after n
                                   // seconds
   BoardIO::Configure();
-  KBClient::lastDelta = millis();
   KBClient::interruptTriggered = false;
   KBClient::notified = true;
   KBClient::enableInterrupts();
@@ -79,17 +76,15 @@ void KBClient::setup(const char* name) {
 
 // TODO: Add bidirectional communication, so the host can ask for info or set
 // TODO: an LED state somehow
-// TODO: Also make this thing use interrupts to 'wake from sleep' instead of the
-// TODO: current 'reduce scan speed and miss keystrokes until they're held down
-// TODO: for .25s' malarkey
 void KBClient::loop() {
-  uint32_t now = millis();
-  if (KBClient::interruptTriggered || ((now - KBClient::lastDelta) < 500) ||
-      KBClient::lastRead.switches.any()) {
+  // Scan the keymatrix if:
+
+  if (KBClient::interruptTriggered || KBClient::lastRead.switches.any()) {
     KBClient::disableInterrupts();
+    KBClient::interruptTriggered = false;
+    uint32_t now = millis();
     state::hw down{now, KBClient::lastRead};
     KBClient::notified = false;
-    KBClient::interruptTriggered = false;
     if (down != KBClient::lastRead) {
       if (KBClient::lastRead.battery_level != down.battery_level) {
         comm::send::battery(KBClient::bleuart, down.battery_level);
@@ -97,7 +92,6 @@ void KBClient::loop() {
       KBClient::lastRead = down;
       DBG2(down.dump());
       comm::send::scan(KBClient::bleuart, lastRead.switches);
-      KBClient::lastDelta = now;
     }
   } else {
     if (!KBClient::notified) {
@@ -105,7 +99,7 @@ void KBClient::loop() {
       KBClient::notified = true;
       KBClient::enableInterrupts();
     }
-    delay(50);
+    delay(1);
   }
   waitForEvent(); // Request CPU enter low-power mode until an event occurs
 }

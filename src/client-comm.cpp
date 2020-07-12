@@ -45,7 +45,6 @@ void comm::recv::data(uint16_t handle) {
   }
 }
 void comm::recv::sync() {
-  DBG2(Serial.println("Sync received"));
   comm::send::time(KBClient::bleuart, millis());
 }
 void comm::recv::set_led(uint8_t brightness) {
