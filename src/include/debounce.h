@@ -15,9 +15,9 @@ class Debouncer {
   // This is the # of msec to delay after reporting a change before reporting
   // another one. Rumor has it that Cherry claims a debounce period of 5ms, but
   // I still sometimes see a bounce or two, so I've increased it a bit.
-  // 25ms translates to a typing speed of about 400 WPM, which seems plenty
+  // 40ms translates to a typing speed of about 300 WPM, which seems plenty
   // fast...
-  static const uint8_t debounce_delay = 35;
+  static const uint8_t debounce_delay = 40;
 
  public:
   Debouncer() : last_reported_switches{}, last_reported_time{} {}
