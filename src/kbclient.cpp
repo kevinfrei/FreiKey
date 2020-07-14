@@ -71,35 +71,39 @@ void KBClient::setup(const char* name) {
   BoardIO::Configure();
   KBClient::interruptTriggered = false;
   KBClient::notified = true;
-  KBClient::enableInterrupts();
+  //  KBClient::enableInterrupts();
 }
 
-// TODO: Add bidirectional communication, so the host can ask for info or set
-// TODO: an LED state somehow
+//uint16_t lastDeltaCountdown = 0;
+
 void KBClient::loop() {
   // Scan the keymatrix if:
-
-  if (KBClient::interruptTriggered || KBClient::lastRead.switches.any()) {
-    KBClient::disableInterrupts();
-    KBClient::interruptTriggered = false;
-    uint32_t now = millis();
-    state::hw down{now, KBClient::lastRead};
-    KBClient::notified = false;
-    if (down != KBClient::lastRead) {
-      if (KBClient::lastRead.battery_level != down.battery_level) {
-        comm::send::battery(KBClient::bleuart, down.battery_level);
-      }
-      KBClient::lastRead = down;
-      DBG2(down.dump());
-      comm::send::scan(KBClient::bleuart, lastRead.switches);
+  // We got an interrupt
+  // There's a key being held down currently
+  // if we've seen something (key up, key down, etc...) in the past N scans
+  /*if (KBClient::interruptTriggered || KBClient::lastRead.switches.any() ||
+    lastDeltaCountdown) { KBClient::disableInterrupts();
+    KBClient::interruptTriggered = false;*/
+  uint32_t now = millis();
+  state::hw down{now, KBClient::lastRead};
+  KBClient::notified = false;
+  if (down != KBClient::lastRead) {
+    if (KBClient::lastRead.battery_level != down.battery_level) {
+      comm::send::battery(KBClient::bleuart, down.battery_level);
     }
-  } else {
-    if (!KBClient::notified) {
-      DBG2(Serial.println("Halting Scans for now"));
-      KBClient::notified = true;
-      KBClient::enableInterrupts();
-    }
-    delay(1);
+    KBClient::lastRead = down;
+    DBG2(down.dump());
+    comm::send::scan(KBClient::bleuart, lastRead.switches);
+    //      lastDeltaCountdown = 10000;
+    /*    }
+        lastDeltaCountdown = std::min(lastDeltaCountdown - 1, 0);
+      } else {
+        if (!KBClient::notified) {
+          DBG2(Serial.println("Halting Scans for now"));
+          KBClient::notified = true;
+          KBClient::enableInterrupts();
+        }
+        delay(1);*/
   }
   waitForEvent(); // Request CPU enter low-power mode until an event occurs
 }
