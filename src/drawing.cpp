@@ -295,7 +295,7 @@ void updateState() {
 
     for (int i = 0; i < 16; i++) {
       if (lastTime & (1 << i)) {
-        Dongle::display.fillRect(i * 2, 126, 2, 2, WHITE);
+        Dongle::display.drawFastHLine(i * 2, 127, 2, WHITE);
       }
     }
 

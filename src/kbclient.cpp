@@ -9,29 +9,30 @@ BLEDis KBClient::bledis;
 uint32_t KBClient::stateTime = 0;
 state::hw KBClient::lastRead{};
 BLEUart KBClient::bleuart;
-bool KBClient::notified;
 
+uint16_t KBClient::noChanges = 0;
 volatile bool KBClient::interruptsEnabled = false;
 volatile bool KBClient::interruptTriggered = false;
 
 void KBClient::enableInterrupts() {
   if (!KBClient::interruptsEnabled) {
-    DBG2(Serial.println("Enabling Interrupts"));
-    BoardIO::setInterrupts(KBClient::interruptHandler);
     KBClient::interruptsEnabled = true;
+    BoardIO::setInterrupts(KBClient::interruptHandler);
+    BoardIO::setRed(false);
   }
 }
 
 void KBClient::disableInterrupts() {
   if (KBClient::interruptsEnabled) {
-    DBG2(Serial.println("Disabling Interrupts"));
-    BoardIO::clearInterrupts();
     KBClient::interruptsEnabled = false;
+    BoardIO::clearInterrupts();
+    BoardIO::setRed(true);
   }
 }
 
 void KBClient::interruptHandler() {
   KBClient::interruptTriggered = true;
+  KBClient::disableInterrupts();
 }
 
 void KBClient::setup(const char* name) {
@@ -69,8 +70,6 @@ void KBClient::setup(const char* name) {
   Bluefruit.Advertising.start(0); // 0 = Don't stop advertising after n
                                   // seconds
   BoardIO::Configure();
-  KBClient::interruptTriggered = false;
-  KBClient::notified = true;
   KBClient::enableInterrupts();
 }
 
@@ -78,30 +77,31 @@ void KBClient::setup(const char* name) {
 // TODO: an LED state somehow
 void KBClient::loop() {
   // Scan the keymatrix if:
-
-  if (KBClient::interruptTriggered || KBClient::lastRead.switches.any()) {
-    KBClient::disableInterrupts();
+  // We've gotten an interrupt triggered, or if anything is down,
+  // or if we have seen changes in the past K scans
+  if (KBClient::interruptTriggered || KBClient::lastRead.switches.any() ||
+      KBClient::noChanges < KBClient::CHANGE_COUNT_BEFORE_SLEEP) {
+    // Acknowledge the interrupt (just in case...)
     KBClient::interruptTriggered = false;
-    uint32_t now = millis();
-    state::hw down{now, KBClient::lastRead};
-    KBClient::notified = false;
+    // Scan the key matrix, read the battery
+    state::hw down{millis(), KBClient::lastRead};
+    // If we observe changes, handle them
     if (down != KBClient::lastRead) {
+      KBClient::lastRead = down;
+      DBG2(down.dump());
+      comm::send::scan(KBClient::bleuart, KBClient::lastRead.switches);
+      KBClient::noChanges = 0;
+      // Send a battery update
       if (KBClient::lastRead.battery_level != down.battery_level) {
         comm::send::battery(KBClient::bleuart, down.battery_level);
       }
-      KBClient::lastRead = down;
-      DBG2(down.dump());
-      comm::send::scan(KBClient::bleuart, lastRead.switches);
+    } else {
+      KBClient::noChanges++;
     }
   } else {
-    if (!KBClient::notified) {
-      DBG2(Serial.println("Halting Scans for now"));
-      KBClient::notified = true;
-      KBClient::enableInterrupts();
-    }
-    delay(1);
+    KBClient::enableInterrupts();
+    waitForEvent(); // Request CPU enter low-power mode until an event occurs
   }
-  waitForEvent(); // Request CPU enter low-power mode until an event occurs
 }
 
 void setup() {
