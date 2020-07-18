@@ -859,7 +859,7 @@ flash: ${BUILD_PATH}/${PROJ_NAME}.flash
 # And finally, create the director
 # TODO: This no worky on Windows fer sure
 ${BUILD_PATH}:
-	test -d "$@" || mkdir "$@"
+	test -d "$@" || mkdir -p "$@"
 
 # Now, on to the actual rules
 

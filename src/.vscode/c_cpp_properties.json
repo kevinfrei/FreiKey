@@ -37,7 +37,7 @@
       "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
       "cStandard": "c11",
       "cppStandard": "c++20",
-      "compileCommands": "${workspaceRoot}/out-karbon/compile_commands.json",
+      "compileCommands": "${workspaceRoot}/out/karbon/compile_commands.json",
       "defines": ["KARBON", "BTLE_HOST", "MACRO_PAD", "HAS_DISPLAY", "DEBUG=2"],
       "includePath": [
         "${workspaceRoot}/include",
@@ -56,7 +56,7 @@
       "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
       "cStandard": "c11",
       "cppStandard": "c++20",
-      "compileCommands": "${workspaceRoot}/out-lkarbon/compile_commands.json"
+      "compileCommands": "${workspaceRoot}/out/l-karbon/compile_commands.json"
     },
     {
       "name": "Karbon-Right",
@@ -69,7 +69,7 @@
       "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
       "cStandard": "c11",
       "cppStandard": "c++20",
-      "compileCommands": "${workspaceRoot}/out-rkarbon/compile_commands.json"
+      "compileCommands": "${workspaceRoot}/out/r-karbon/compile_commands.json"
     },
     {
       "name": "Mock",
