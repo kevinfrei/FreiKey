@@ -12,7 +12,7 @@ struct AdafruitNRF52 {
   }
   static void prepPinForRead(uint8_t pin) {
     digitalWrite(pin, LOW);
-    delayMicroseconds(500);
+    delayMicroseconds(750);
   }
   static void completePin(uint8_t pin) {
     digitalWrite(pin, HIGH);
