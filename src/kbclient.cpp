@@ -91,12 +91,12 @@ void KBClient::loop() {
       DBG2(down.dump());
       comm::send::scan(KBClient::bleuart, KBClient::lastRead.switches);
       KBClient::noChanges = 0;
-      // Send a battery update
-      if (KBClient::lastRead.battery_level != down.battery_level) {
-        comm::send::battery(KBClient::bleuart, down.battery_level);
-      }
     } else {
       KBClient::noChanges++;
+    }
+    // Send a battery update
+    if (KBClient::lastRead.battery_level != down.battery_level) {
+      comm::send::battery(KBClient::bleuart, down.battery_level);
     }
   } else {
     KBClient::enableInterrupts();
