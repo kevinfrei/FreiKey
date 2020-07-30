@@ -38,12 +38,17 @@ void comm::recv::data(BLEClientUart& uart) {
   comm::header h;
   uint8_t buf[15];
   buf[0] = waitForByte(uart);
-  DBG2(dumpHex(buf[0], "R:"));
   memcpy(reinterpret_cast<char*>(&h), &buf, 1);
+  DBG2(Serial.printf("Received %02X (Side: %d  Type: %s  Size: %d)\nData: ",
+                     (int)buf[0],
+                     (int)h.side,
+                     comm::types::COMM_TYPE_NAME[h.type],
+                     (int)h.size));
   for (uint8_t i = 0; i < h.size; i++) {
     buf[i] = waitForByte(uart);
-    DBG2(dumpHex(buf[i], "RB:"));
+    DBG2(Serial.printf("%02X ", (int)buf[i]));
   }
+  DBG2(Serial.println(""));
   switch (h.type) {
     case comm::types::SCAN: {
       MatrixBits b;

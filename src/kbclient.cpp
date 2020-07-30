@@ -93,13 +93,15 @@ void KBClient::loop() {
       KBClient::noChanges = 0;
     } else {
       KBClient::noChanges++;
-    }
-    // Send a battery update
-    if (KBClient::lastRead.battery_level != down.battery_level) {
-      comm::send::battery(KBClient::bleuart, down.battery_level);
+      // Send a battery update just before we go to sleep
+      if (KBClient::noChanges == KBClient::CHANGE_COUNT_BEFORE_SLEEP) {
+        comm::send::battery(KBClient::bleuart, down.battery_level);
+      }
     }
   } else {
     KBClient::enableInterrupts();
+    sd_power_mode_set(NRF_POWER_MODE_LOWPWR);
+    // Why doesn't this actually reduce power? Booo!!!
     waitForEvent(); // Request CPU enter low-power mode until an event occurs
   }
 }
