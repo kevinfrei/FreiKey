@@ -1,0 +1,387 @@
+
+Left side Integer value: 0000000000
+
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+Right side Integer value: 0000000000
+
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+Received 50 (Side: 0  Type: Scan  Size: 5)
+Data: 00 00 80 00 00 
+Left Scan 0000800000
+Scan Code 17 was pressed
+ScanCode=32 down=0 lastChange=338393812 action=100F
+Layer position: 0
+Resolving scancode 23 on layer 0 to action 2002
+mods=2:  0 0 0 0 0 0
+=============================
+Left side Integer value: 0000800000
+
+- - - - - - 
+- - - - - - 
+- - - - - - 
+X - - - - - 
+- - - - - - 
+- - - - - - 
+Right side Integer value: 0000000000
+
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+Received 50 (Side: 0  Type: Scan  Size: 5)
+Data: 00 01 80 00 00 
+Left Scan 0001800000
+Scan Code 8 was pressed
+ScanCode=2D down=0 lastChange=338393852 action=100C
+Layer position: 0
+Resolving scancode 8 on layer 0 to action 1008
+mods=2:  8 0 0 0 0 0
+=============================
+Left side Integer value: 0001800000
+
+- - - - - - 
+- - - X - - 
+- - - - - - 
+X - - - - - 
+- - - - - - 
+- - - - - - 
+Right side Integer value: 0000000000
+
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+Received 50 (Side: 0  Type: Scan  Size: 5)
+Data: 00 00 80 00 00 
+Left Scan 0000800000
+Scan Code 8 was released
+ScanCode=8 down=1 lastChange=338460061 action=1008
+mods=2:  0 0 0 0 0 0
+=============================
+Left side Integer value: 0000800000
+
+- - - - - - 
+- - - - - - 
+- - - - - - 
+X - - - - - 
+- - - - - - 
+- - - - - - 
+Right side Integer value: 0000000000
+
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+Received 50 (Side: 0  Type: Scan  Size: 5)
+Data: 00 00 00 00 00 
+Left Scan 0000000000
+Scan Code 17 was released
+ScanCode=17 down=1 lastChange=338459921 action=2002
+mods=0:  0 0 0 0 0 0
+=============================
+Left side Integer value: 0000000000
+
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+Right side Integer value: 0000000000
+
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+Received 50 (Side: 0  Type: Scan  Size: 5)
+Data: 40 00 00 00 00 
+Left Scan 4000000000
+Scan Code 6 was pressed
+ScanCode=6 down=0 lastChange=338393921 action=1017
+Layer position: 0
+Resolving scancode 6 on layer 0 to action 1017
+mods=0:  17 0 0 0 0 0
+=============================
+Left side Integer value: 4000000000
+
+- - - - - - 
+- - - - - X 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+Right side Integer value: 0000000000
+
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+Received 50 (Side: 0  Type: Scan  Size: 5)
+Data: 00 00 00 00 00 
+Left Scan 0000000000
+Scan Code 6 was released
+ScanCode=6 down=1 lastChange=338460281 action=1017
+mods=0:  0 0 0 0 0 0
+=============================
+Left side Integer value: 0000000000
+
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+Right side Integer value: 0000000000
+
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+Received 50 (Side: 0  Type: Scan  Size: 5)
+Data: 00 01 00 00 00 
+Left Scan 0001000000
+Scan Code 8 was pressed
+ScanCode=8 down=0 lastChange=338460201 action=1008
+Layer position: 0
+Resolving scancode 8 on layer 0 to action 1008
+mods=0:  8 0 0 0 0 0
+=============================
+Left side Integer value: 0001000000
+
+- - - - - - 
+- - - X - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+Right side Integer value: 0000000000
+
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+Received 50 (Side: 0  Type: Scan  Size: 5)
+Data: 80 01 00 00 00 
+Left Scan 8001000000
+Scan Code 7 was pressed
+ScanCode=F down=0 lastChange=338393881 action=1016
+Layer position: 0
+Resolving scancode 7 on layer 0 to action 1015
+mods=0:  15 8 0 0 0 0
+=============================
+Left side Integer value: 8001000000
+
+- - - - - - 
+- - - X X - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+Right side Integer value: 0000000000
+
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+Received 50 (Side: 0  Type: Scan  Size: 5)
+Data: 80 00 00 00 00 
+Left Scan 8000000000
+Scan Code 8 was released
+ScanCode=8 down=1 lastChange=338460401 action=1008
+mods=0:  15 0 0 0 0 0
+=============================
+Left side Integer value: 8000000000
+
+- - - - - - 
+- - - - X - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+Right side Integer value: 0000000000
+
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+Received 50 (Side: 0  Type: Scan  Size: 5)
+Data: 00 00 00 00 00 
+Left Scan 0000000000
+Scan Code 7 was released
+ScanCode=7 down=1 lastChange=338460441 action=1015
+mods=0:  0 0 0 0 0 0
+=============================
+Left side Integer value: 0000000000
+
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+Right side Integer value: 0000000000
+
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+Received 51 (Side: 1  Type: Scan  Size: 5)
+Data: 00 00 FC 00 00 
+Right Scan 0000FC0000
+Scan Code 36 was pressed
+ScanCode=45 down=0 lastChange=338394392 action=1051
+Layer position: 0
+Resolving scancode 54 on layer 0 to action 2002
+Scan Code 37 was pressed
+ScanCode=47 down=0 lastChange=338395392 action=1028
+Layer position: 0
+Resolving scancode 55 on layer 0 to action 1038
+Scan Code 38 was pressed
+ScanCode=1B down=0 lastChange=338395561 action=2008
+Layer position: 0
+Resolving scancode 56 on layer 0 to action 1037
+Scan Code 39 was pressed
+ScanCode=9 down=0 lastChange=338411041 action=8501A
+Layer position: 0
+Resolving scancode 57 on layer 0 to action 1036
+Scan Code 3A was pressed
+ScanCode=D down=0 lastChange=338459741 action=85009
+Layer position: 0
+Resolving scancode 58 on layer 0 to action 1010
+Scan Code 3B was pressed
+ScanCode=11 down=0 lastChange=338459741 action=6004
+Layer position: 0
+Resolving scancode 59 on layer 0 to action 1011
+mods=2:  38 36 10 37 11 0
+=============================
+Left side Integer value: 0000000000
+
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+Right side Integer value: 0000FC0000
+
+- - - - - - 
+- - - - - - 
+- - - - - - 
+X X X X X X 
+- - - - - - 
+- - - - - - 
+Received 51 (Side: 1  Type: Scan  Size: 5)
+Data: 00 00 80 00 00 
+Right Scan 0000800000
+Scan Code 36 was released
+ScanCode=36 down=1 lastChange=338460733 action=2002
+Scan Code 37 was released
+ScanCode=37 down=1 lastChange=338460733 action=1038
+Scan Code 38 was released
+ScanCode=38 down=1 lastChange=338460733 action=1037
+Scan Code 39 was released
+ScanCode=39 down=1 lastChange=338460733 action=1036
+Scan Code 3A was released
+ScanCode=3A down=1 lastChange=338460733 action=1010
+mods=0:  11 0 0 0 0 0
+=============================
+Left side Integer value: 0000000000
+
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+Right side Integer value: 0000800000
+
+- - - - - - 
+- - - - - - 
+- - - - - - 
+X - - - - - 
+- - - - - - 
+- - - - - - 
+Received 50 (Side: 0  Type: Scan  Size: 5)
+Data: 00 00 01 00 00 
+Left Scan 0000010000
+Scan Code 10 was pressed
+ScanCode=17 down=0 lastChange=338460241 action=2002
+Layer position: 0
+Resolving scancode 16 on layer 0 to action 1004
+mods=0:  4 11 0 0 0 0
+=============================
+Left side Integer value: 0000010000
+
+- - - - - - 
+- - - - - - 
+- X - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+Right side Integer value: 0000800000
+
+- - - - - - 
+- - - - - - 
+- - - - - - 
+X - - - - - 
+- - - - - - 
+- - - - - - 
+Received 51 (Side: 1  Type: Scan  Size: 5)
+Data: 00 00 00 00 00 
+Right Scan 0000000000
+Scan Code 3B was released
+ScanCode=3B down=1 lastChange=338460733 action=1011
+mods=0:  4 0 0 0 0 0
+=============================
+Left side Integer value: 0000010000
+
+- - - - - - 
+- - - - - - 
+- X - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+Right side Integer value: 0000000000
+
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+- - - - - - 
+Received 50 (Side: 0  Type: Scan  Size: 5)
+Data: 00 00 00 00 00 
+Left Scan 0000000000
+Scan Code 10 was released
+ScanCode=10 down=1 lastChange=338460821 action=1004
+mods=0:  0 0 0 0 0 0
