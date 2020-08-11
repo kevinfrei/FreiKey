@@ -29,11 +29,12 @@ void KBClient::disableInterrupts() {
     BoardIO::setRed(true);
   }
 }
-
+#if !defined(NEW_HANDLER)
 void KBClient::interruptHandler() {
   KBClient::interruptTriggered = true;
   KBClient::disableInterrupts();
 }
+#endif
 
 void KBClient::setup(const char* name) {
   DBG(Serial.begin(115200));
@@ -71,6 +72,9 @@ void KBClient::setup(const char* name) {
                                   // seconds
   BoardIO::Configure();
   KBClient::enableInterrupts();
+#if defined(NEW_HANDLER)
+  suspendLoop();
+#endif
 }
 
 // TODO: Add bidirectional communication, so the host can ask for info or set
@@ -103,8 +107,43 @@ void KBClient::loop() {
     sd_power_mode_set(NRF_POWER_MODE_LOWPWR);
     // Why doesn't this actually reduce power? Booo!!!
     waitForEvent(); // Request CPU enter low-power mode until an event occurs
+    // To actually save power, I have to delay.
+    // TODO: What I think I should try to do is to eliminate the loop entirely
+    // TODO: suspendLoop() does the job, then I just move the above logic into
+    // TODO: the interrupt handler.
+    delay(5);
   }
 }
+
+// Loopless logic:
+// interruptHandler:
+// stop interrupts
+// run the loop body until interrupts are re-enabled
+// Once interrupts are re-enabled, exit the interrupt handler
+#if defined(NEW_HANDLER)
+void KBClient::interruptHandler() {
+  KBClient::disableInterrupts();
+  while (KBClient::lastRead.switches.any() ||
+         KBClient::noChanges < KBClient::CHANGE_COUNT_BEFORE_SLEEP) {
+    // Scan the key matrix, read the battery
+    state::hw down{millis(), KBClient::lastRead};
+    // If we observe changes, handle them
+    if (down != KBClient::lastRead) {
+      KBClient::lastRead = down;
+      DBG2(down.dump());
+      comm::send::scan(KBClient::bleuart, KBClient::lastRead.switches);
+      KBClient::noChanges = 0;
+    } else {
+      KBClient::noChanges++;
+      // Send a battery update just before we go to sleep
+      if (KBClient::noChanges == KBClient::CHANGE_COUNT_BEFORE_SLEEP) {
+        comm::send::battery(KBClient::bleuart, down.battery_level);
+      }
+    }
+  }
+  KBClient::enableInterrupts();
+}
+#endif
 
 void setup() {
   KBClient::setup(BTLE_CLIENT_NAME);
