@@ -33,10 +33,13 @@ void KBClient::disableInterrupts() {
 void KBClient::interruptHandler() {
   KBClient::interruptTriggered = true;
   KBClient::disableInterrupts();
+  // If we get an interrupt, we want to resume normal loop processing
+  resumeLoopFromISR();
 }
 
 void KBClient::setup(const char* name) {
   DBG(Serial.begin(115200));
+
   Bluefruit.begin(1, 0);
   // Don't use the Bluetooth LED
   Bluefruit.autoConnLed(false);
@@ -103,6 +106,8 @@ void KBClient::loop() {
     sd_power_mode_set(NRF_POWER_MODE_LOWPWR);
     // Why doesn't this actually reduce power? Booo!!!
     waitForEvent(); // Request CPU enter low-power mode until an event occurs
+    // Pause the "loop" task
+    suspendLoop();
   }
 }
 
