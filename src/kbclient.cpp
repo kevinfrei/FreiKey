@@ -46,6 +46,7 @@ void KBClient::connect_callback(uint16_t conn_hdl) {
 void KBClient::disconnect_callback(uint16_t conn_hdl, uint8_t reason) {
   // Turn off interrupt handling, and suspend the loop
   KBClient::disableInterrupts();
+  BoardIO::setRed(false);
   suspendLoop();
 }
 
