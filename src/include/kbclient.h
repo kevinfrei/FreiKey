@@ -19,6 +19,9 @@ class KBClient {
   static void disableInterrupts();
   static void interruptHandler();
 
+  static void connect_callback(uint16_t conn_hdl);
+  static void disconnect_callback(uint16_t conn_hdl, uint8_t reason);
+
  public:
   static BLEUart bleuart;
 

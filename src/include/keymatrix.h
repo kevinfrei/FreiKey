@@ -62,7 +62,9 @@ class KeyMatrix {
     // I hate this sort of crap, but it seems necessary...
     delay(1);
     for (uint8_t rowNum = 0; rowNum < numrows; rowNum++) {
-      attachInterrupt(digitalPinToInterrupt(rowPin(rowNum)), handler, CHANGE);
+      attachInterrupt(digitalPinToInterrupt(rowPin(rowNum)),
+                      handler,
+                      ISR_DEFERRED | CHANGE);
     }
   }
 
