@@ -33,4 +33,5 @@
 
 # Custom
 src/out-*
-src/out
+src/Makefile
+src/out*
