@@ -32,5 +32,6 @@
 *.app
 
 # Custom
+src/out-*
 src/Makefile
 src/out*

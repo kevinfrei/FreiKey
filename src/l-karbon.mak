@@ -18,13 +18,12 @@ IN_SOFTDEVICE=s132v6
 # anything else for no system debug logging
 IN_DEBUG=none
 BUILD_ARCH=nrf52
-BUILD_PATH=out-lkarbon
+BUILD_PATH=out/l-karbon
 PROJ_NAME=left-karbon
 RUNTIME_TOOLS_ARM_NONE_EABI_GCC_PATH=${TOOLS_PATH}
 
 # This is how to add new flags
 COMPILER_CPP_EXTRA_FLAGS=-DBTLE_CLIENT -DLEFT -DKARBON -DHAS_BATTERY
-# -DDEBUG=2
 
 # This is how to add libraries (They currently have to be defined to 1)
 LIB_BLUEFRUIT52LIB=1

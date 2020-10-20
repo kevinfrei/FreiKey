@@ -20,7 +20,7 @@ IN_SOFTDEVICE=s140v6
 IN_DEBUG=none
 BUILD_ARCH=nrf52
 RUNTIME_TOOLS_ARM_NONE_EABI_GCC_PATH=${TOOLS_PATH}
-BUILD_PATH=out-karbon
+BUILD_PATH=out/karbon
 PROJ_NAME=karbon
 
 # This is how to add new flags

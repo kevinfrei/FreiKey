@@ -16,6 +16,10 @@ constexpr uint8_t WHICH_SIDE = LEFT_SIDE;
 constexpr uint8_t WHICH_SIDE = RIGHT_SIDE;
 #endif
 namespace types {
+#if defined(DEBUG) && DEBUG > 1
+constexpr char* COMM_TYPE_NAME[] =
+    { "Scan", "Battery", "Time", "Sync", "SetLed", "SetRed", "SetBlue", "ERROR!" };
+#endif
 constexpr uint8_t SCAN = 0;
 constexpr uint8_t BATTERY = 1;
 constexpr uint8_t TIME = 2;

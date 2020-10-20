@@ -40,12 +40,14 @@ else
 endif
 RUNTIME_OS?=linux
 RUNTIME_PLATFORM_PATH=/Users/freik/src/FreiKey/src/libs/Adafruit
-RUNTIME_IDE_VERSION=10808
-IDE_VERSION=10808
+RUNTIME_IDE_VERSION=10812
+IDE_VERSION=10812
 BUILD_PROJECT_NAME=${PROJ_NAME}
 ifeq (${BOARD_NAME}, feather52832)
   BUILD_LDSCRIPT=nrf52832_s132_v6.ld
   BUILD_EXTRA_FLAGS=-DNRF52832_XXAA -DNRF52
+  BUILD_USB_PRODUCT="Feather nRF52832"
+  BUILD_USB_MANUFACTURER="Adafruit LLC"
   BUILD_VARIANT=feather_nrf52832
   BUILD_CORE=nRF5
   BUILD_BOARD=NRF52832_FEATHER
@@ -76,6 +78,16 @@ ifeq (${BOARD_NAME}, feather52832)
     BUILD_DEBUG_FLAGS=-DCFG_DEBUG=3
   endif
 else ifeq (${BOARD_NAME}, feather52840)
+  BUILD_PID=0x8029
+  BUILD_VID=0x239A
+  BUILD_LDSCRIPT=nrf52840_s140_v6.ld
+  BUILD_USB_PRODUCT="Feather nRF52840 Express"
+  BUILD_USB_MANUFACTURER="Adafruit LLC"
+  BUILD_VARIANT=feather_nrf52840_express
+  BUILD_CORE=nRF5
+  BUILD_BOARD=NRF52840_FEATHER
+  BUILD_F_CPU=64000000
+  BUILD_MCU=cortex-m4
   UPLOAD_MAXIMUM_DATA_SIZE=237568
   UPLOAD_MAXIMUM_SIZE=815104
   UPLOAD_WAIT_FOR_UPLOAD_PORT=true
@@ -92,16 +104,6 @@ else ifeq (${BOARD_NAME}, feather52840)
   VID_1=0x239A
   VID_0=0x239A
   NAME=Adafruit Feather nRF52840 Express
-  BUILD_PID=0x8029
-  BUILD_VID=0x239A
-  BUILD_LDSCRIPT=nrf52840_s140_v6.ld
-  BUILD_VARIANT=feather_nrf52840_express
-  BUILD_CORE=nRF5
-  BUILD_BOARD=NRF52840_FEATHER
-  BUILD_F_CPU=64000000
-  BUILD_MCU=cortex-m4
-  BUILD_USB_PRODUCT="Feather nRF52840 Express"
-  BUILD_USB_MANUFACTURER="Adafruit LLC"
   ifeq (${IN_SOFTDEVICE}, s140v6)
     BUILD_SD_FWID=0x00B6
     BUILD_SD_VERSION=6.1.1
@@ -471,7 +473,7 @@ else ifeq (${BOARD_NAME}, mdbt50qrx)
 endif
 BUILD_SYSVIEW_FLAGS=-DCFG_SYSVIEW=0
 BUILD_LOGGER_FLAGS=-DCFG_LOGGER=1
-BUILD_FLAGS_NRF= -DSOFTDEVICE_PRESENT -DARDUINO_NRF52_ADAFRUIT -DNRF52_SERIES -DLFS_NAME_MAX=64 -Ofast ${BUILD_DEBUG_FLAGS} ${BUILD_LOGGER_FLAGS} ${BUILD_SYSVIEW_FLAGS} "-I${BUILD_CORE_PATH}/cmsis/include" "-I${NORDIC_PATH}" "-I${NORDIC_PATH}/nrfx" "-I${NORDIC_PATH}/nrfx/hal" "-I${NORDIC_PATH}/nrfx/mdk" "-I${NORDIC_PATH}/nrfx/soc" "-I${NORDIC_PATH}/nrfx/drivers/include" "-I${NORDIC_PATH}/nrfx/drivers/src" "-I${NORDIC_PATH}/softdevice/${BUILD_SD_NAME}_nrf52_${BUILD_SD_VERSION}_API/include" "-I${RTOS_PATH}/Source/include" "-I${RTOS_PATH}/config" "-I${RTOS_PATH}/portable/GCC/nrf52" "-I${RTOS_PATH}/portable/CMSIS/nrf52" "-I${BUILD_CORE_PATH}/sysview/SEGGER" "-I${BUILD_CORE_PATH}/sysview/Config" "-I${BUILD_CORE_PATH}/TinyUSB" "-I${BUILD_CORE_PATH}/TinyUSB/Adafruit_TinyUSB_ArduinoCore" "-I${BUILD_CORE_PATH}/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src"
+BUILD_FLAGS_NRF= -DSOFTDEVICE_PRESENT -DARDUINO_NRF52_ADAFRUIT -DNRF52_SERIES -DLFS_NAME_MAX=64 -Ofast ${BUILD_DEBUG_FLAGS} ${BUILD_LOGGER_FLAGS} ${BUILD_SYSVIEW_FLAGS} "-I${BUILD_CORE_PATH}/cmsis/Core/Include" "-I${NORDIC_PATH}" "-I${NORDIC_PATH}/nrfx" "-I${NORDIC_PATH}/nrfx/hal" "-I${NORDIC_PATH}/nrfx/mdk" "-I${NORDIC_PATH}/nrfx/soc" "-I${NORDIC_PATH}/nrfx/drivers/include" "-I${NORDIC_PATH}/nrfx/drivers/src" "-I${NORDIC_PATH}/softdevice/${BUILD_SD_NAME}_nrf52_${BUILD_SD_VERSION}_API/include" "-I${RTOS_PATH}/Source/include" "-I${RTOS_PATH}/config" "-I${RTOS_PATH}/portable/GCC/nrf52" "-I${RTOS_PATH}/portable/CMSIS/nrf52" "-I${BUILD_CORE_PATH}/sysview/SEGGER" "-I${BUILD_CORE_PATH}/sysview/Config" "-I${BUILD_CORE_PATH}/TinyUSB" "-I${BUILD_CORE_PATH}/TinyUSB/Adafruit_TinyUSB_ArduinoCore" "-I${BUILD_CORE_PATH}/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src"
 BUILD_DEBUG_FLAGS=-DCFG_DEBUG=0
 BUILD_FLOAT_FLAGS=-mfloat-abi=hard -mfpu=fpv4-sp-d16 -u _printf_float
 COMPILER_SIZE_CMD=arm-none-eabi-size
@@ -497,7 +499,7 @@ COMPILER_C_FLAGS=-mcpu=${BUILD_MCU} -mthumb -c -g ${COMPILER_WARNING_FLAGS} ${BU
 COMPILER_WARNING_FLAGS_ALL=-Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wno-pointer-arith
 COMPILER_WARNING_FLAGS_MORE=-Wall
 COMPILER_WARNING_FLAGS_NONE=-w
-VERSION=0.20.1
+VERSION=0.20.5
 NAME=Adafruit nRF52 Boards
 ifeq (${RUNTIME_OS}, macosx)
   TOOLS_NRFUTIL_CMD=${RUNTIME_PLATFORM_PATH}/tools/adafruit-nrfutil/macos/adafruit-nrfutil
@@ -856,10 +858,10 @@ ${PROJ_NAME}: ${BUILD_PATH}/${PROJ_NAME}.zip
 # Add a 'flash' target
 flash: ${BUILD_PATH}/${PROJ_NAME}.flash
 
-# And finally, create the director
+# And finally, create the directory
 # TODO: This no worky on Windows fer sure
 ${BUILD_PATH}:
-	test -d "$@" || mkdir "$@"
+	test -d "$@" || mkdir -p "$@"
 
 # Now, on to the actual rules
 

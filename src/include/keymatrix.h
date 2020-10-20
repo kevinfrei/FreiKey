@@ -43,9 +43,9 @@ class KeyMatrix {
   // (at least in the betterfly config)
   static bits Read() {
     bits switches{};
-    for (uint64_t colNum = 0; colNum < numcols; ++colNum) {
+    for (uint8_t colNum = 0; colNum < numcols; ++colNum) {
       T::prepPinForRead(colPin(colNum));
-      for (uint64_t rowNum = 0; rowNum < numrows; ++rowNum) {
+      for (uint8_t rowNum = 0; rowNum < numrows; ++rowNum) {
         if (!digitalRead(rowPin(rowNum))) {
           switches.set_bit(rowNum * numcols + colNum);
         }
@@ -56,20 +56,19 @@ class KeyMatrix {
   }
 
   static void setInterrupts(void (*handler)()) {
-    DBG2(Serial.println("Enabling HW Interrupts"));
     for (uint8_t colNum = 0; colNum < numcols; colNum++) {
       T::prepForInterrupt(colPin(colNum));
     }
     // I hate this sort of crap, but it seems necessary...
     delay(1);
     for (uint8_t rowNum = 0; rowNum < numrows; rowNum++) {
-      attachInterrupt(digitalPinToInterrupt(rowPin(rowNum)), handler, CHANGE);
+      attachInterrupt(digitalPinToInterrupt(rowPin(rowNum)),
+                      handler,
+                      ISR_DEFERRED | CHANGE);
     }
-    DBG2(Serial.println("HW Interrupts Enabled"));
   }
 
   static void clearInterrupts() {
-    DBG2(Serial.println("Disabling HW Interrupts"));
     for (uint8_t rowNum = 0; rowNum < numrows; rowNum++) {
       detachInterrupt(digitalPinToInterrupt(rowPin(rowNum)));
     }
@@ -78,6 +77,5 @@ class KeyMatrix {
     for (uint8_t colNum = 0; colNum < numcols; colNum++) {
       T::restoreFromInterrupt(colPin(colNum));
     }
-    DBG2(Serial.println("HW Interrupts Disabled"));
   }
 };
