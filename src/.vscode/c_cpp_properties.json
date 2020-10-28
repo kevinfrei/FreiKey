@@ -41,7 +41,7 @@
             "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
             "cStandard": "c11",
             "cppStandard": "c++20",
-            "compileCommands": "${workspaceRoot}/out/karbon/compile_commands.json",
+            "compileCommands": "${workspaceFolder}/out/karbon/compile_commands.json",
             "defines": [
                 "KARBON",
                 "BTLE_HOST",
