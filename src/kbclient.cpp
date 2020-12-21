@@ -116,10 +116,12 @@ void KBClient::loop() {
       KBClient::noChanges = 0;
     } else {
       KBClient::noChanges++;
+      if (KBClient::noChanges == KBClient::CHANGE_COUNT_BEFORE_SLEEP) {
+        // Send a battery update just before we go to sleep
+        comm::send::battery(KBClient::bleuart, down.battery_level);
+      }
     }
   } else {
-    // Send a battery update just before we go to sleep
-    comm::send::battery(KBClient::bleuart, down.battery_level);
     KBClient::enableInterrupts();
     sd_power_mode_set(NRF_POWER_MODE_LOWPWR);
     // Why doesn't this actually reduce power? Booo!!!
