@@ -795,7 +795,8 @@ ifdef LIB_GFX
   VPATH_MORE+=libs/GFX/fontconvert:libs/GFX
 endif
 ifdef LIB_NEOPIXEL
-  C_SYS_SRCS+=libs/NeoPixel/esp8266.c
+  C_SYS_SRCS+=libs/NeoPixel/esp8266.c \
+    libs/NeoPixel/kendyte_k210.c
   CPP_SYS_SRCS+=libs/NeoPixel/Adafruit_NeoPixel.cpp
   SYS_INCLUDES+=-Ilibs/NeoPixel
   VPATH_MORE+=libs/NeoPixel
