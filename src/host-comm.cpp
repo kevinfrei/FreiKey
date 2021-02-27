@@ -42,7 +42,7 @@ void comm::recv::data(BLEClientUart& uart) {
   DBG2(Serial.printf("Received %02X (Side: %d  Type: %s  Size: %d)\nData: ",
                      (int)buf[0],
                      (int)h.side,
-                     comm::types::COMM_TYPE_NAME[h.type],
+                     comm::get_type_name(h.type),
                      (int)h.size));
   for (uint8_t i = 0; i < h.size; i++) {
     buf[i] = waitForByte(uart);
