@@ -7,9 +7,11 @@ else ifeq ($(shell uname -s), Darwin)
   ARD=${HOME}/Library
   SERIAL_PORT=/dev/cu.SLAB_USBtoUART
 	TOOLS_PATH=/usr/local/opt/gcc-arm-none-eabi
+	RUNTIME_TOOLS_CMSIS_5_7_0_PATH=${ARD}/Arduino15/packages/adafruit/tools/CMSIS/5.7.0
 else
   $(error No Linux support yet)
 endif
+COMPILER_LIBRARIES_LDFLAGS=-Wl,--cref
 
 # Necessary configuration stuff
 BOARD_NAME=feather52832
@@ -17,6 +19,7 @@ IN_SOFTDEVICE=s132v6
 # l0/l1/l2/l3 for system debug info
 # anything else for no system debug logging
 IN_DEBUG=none
+IN_DEBUG_OUTPUT=serial
 BUILD_ARCH=nrf52
 BUILD_PATH=out/r-karbon
 PROJ_NAME=right-karbon
@@ -29,6 +32,7 @@ COMPILER_CPP_EXTRA_FLAGS=-DBTLE_CLIENT -DRIGHT -DKARBON -DHAS_BATTERY
 LIB_BLUEFRUIT52LIB=1
 LIB_ADAFRUIT_LITTLEFS=1
 LIB_INTERNALFILESYTEM=1
+LIB_TINYUSB=1
 
 USER_INCLUDES=-Iinclude/karbon -Iinclude
 USER_CPP_SRCS=\

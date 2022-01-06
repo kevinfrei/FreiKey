@@ -12,7 +12,7 @@ else ifeq ($(shell uname -s), Darwin)
 else
   $(error No Linux support yet)
 endif
-COMPILER_LIBRARIES_LDFLAGS=' '
+COMPILER_LIBRARIES_LDFLAGS=-Wl,--cref
 
 # Necessary configuration stuff
 BOARD_NAME=feather52840
