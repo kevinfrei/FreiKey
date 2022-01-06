@@ -12,7 +12,8 @@ else ifeq ($(shell uname -s), Darwin)
 else
   $(error No Linux support yet)
 endif
-COMPILER_LIBRARIES_LDFLAGS=-Wl,--cref
+# The crypto stuff should actually be automatic from the makefile generator...
+COMPILER_LIBRARIES_LDFLAGS=-Wl,-lstdc++ -Llibs/nRFCrypto/src/cortex-m4/fpv4-sp-d16-hard/ -Wl,-lnrf_cc310_0.9.13-no-interrupts
 
 # Necessary configuration stuff
 BOARD_NAME=feather52840
