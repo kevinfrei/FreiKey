@@ -639,34 +639,7 @@ ifeq (${UPLOAD_TOOL}, nrfutil)
   UPLOAD_PATTERN="${TOOLS_NRFUTIL_CMD}" ${UPLOAD_VERBOSE} dfu serial -pkg "$(abspath ${BUILD_PATH})/${BUILD_PROJECT_NAME}.zip" -p ${SERIAL_PORT} -b 115200 --singlebank
 endif
 ifeq (${BUILD_CORE}, nRF5)
-  C_SYS_SRCS+=libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/class/cdc/cdc_device.c \
-    libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/class/hid/hid_device.c \
-    libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/class/midi/midi_device.c \
-    libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/class/msc/msc_device.c \
-    libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/class/usbtmc/usbtmc_device.c \
-    libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/class/vendor/vendor_device.c \
-    libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/common/tusb_fifo.c \
-    libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/device/usbd.c \
-    libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/device/usbd_control.c \
-    libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/espressif/esp32s2/dcd_esp32s2.c \
-    libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/microchip/samd/dcd_samd.c \
-    libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/microchip/samg/dcd_samg.c \
-    libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/nordic/nrf5x/dcd_nrf5x.c \
-    libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/nuvoton/nuc120/dcd_nuc120.c \
-    libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/nuvoton/nuc121/dcd_nuc121.c \
-    libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/nuvoton/nuc505/dcd_nuc505.c \
-    libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/nxp/lpc17_40/dcd_lpc17_40.c \
-    libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/nxp/lpc17_40/hcd_lpc17_40.c \
-    libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/nxp/lpc18_43/hcd_lpc18_43.c \
-    libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/nxp/lpc_ip3511/dcd_lpc_ip3511.c \
-    libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/nxp/transdimension/dcd_transdimension.c \
-    libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/sony/cxd56/dcd_cxd56.c \
-    libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/st/stm32_fsdev/dcd_stm32_fsdev.c \
-    libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/st/synopsys/dcd_synopsys.c \
-    libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/ti/msp430x5xx/dcd_msp430x5xx.c \
-    libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/valentyusb/eptri/dcd_eptri.c \
-    libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/tusb.c \
-    libs/Adafruit/cores/nRF5/WInterrupts.c \
+  C_SYS_SRCS+=libs/Adafruit/cores/nRF5/WInterrupts.c \
     libs/Adafruit/cores/nRF5/avr/dtostrf.c \
     libs/Adafruit/cores/nRF5/delay.c \
     libs/Adafruit/cores/nRF5/freertos/Source/croutine.c \
@@ -708,8 +681,6 @@ ifeq (${BUILD_CORE}, nRF5)
     libs/Adafruit/cores/nRF5/Print.cpp \
     libs/Adafruit/cores/nRF5/RingBuffer.cpp \
     libs/Adafruit/cores/nRF5/Stream.cpp \
-    libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/Adafruit_USBD_CDC.cpp \
-    libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/Adafruit_USBD_Device.cpp \
     libs/Adafruit/cores/nRF5/Tone.cpp \
     libs/Adafruit/cores/nRF5/Uart.cpp \
     libs/Adafruit/cores/nRF5/WMath.cpp \
@@ -727,7 +698,7 @@ ifeq (${BUILD_CORE}, nRF5)
     libs/Adafruit/cores/nRF5/pulse_asm.S \
     libs/Adafruit/cores/nRF5/sysview/SEGGER/SEGGER_RTT_ASM_ARMv7M.S
   SYS_INCLUDES+= -Ilibs/Adafruit/cores/nRF5
-  VPATH_CORE+=libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/class/cdc:libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/class/hid:libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/class/midi:libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/class/msc:libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/class/usbtmc:libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/class/vendor:libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/common:libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/device:libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/espressif/esp32s2:libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/microchip/samd:libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/microchip/samg:libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/nordic/nrf5x:libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/nuvoton/nuc120:libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/nuvoton/nuc121:libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/nuvoton/nuc505:libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/nxp/lpc17_40:libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/nxp/lpc18_43:libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/nxp/lpc_ip3511:libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/nxp/transdimension:libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/sony/cxd56:libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/st/stm32_fsdev:libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/st/synopsys:libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/ti/msp430x5xx:libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src/portable/valentyusb/eptri:libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src:libs/Adafruit/cores/nRF5:libs/Adafruit/cores/nRF5/avr:libs/Adafruit/cores/nRF5/freertos/Source:libs/Adafruit/cores/nRF5/freertos/Source/portable/MemMang:libs/Adafruit/cores/nRF5/freertos/portable/CMSIS/nrf52:libs/Adafruit/cores/nRF5/freertos/portable/GCC/nrf52:libs/Adafruit/cores/nRF5/nordic/nrfx/drivers/src:libs/Adafruit/cores/nRF5/nordic/nrfx/mdk:libs/Adafruit/cores/nRF5/sysview/Config:libs/Adafruit/cores/nRF5/sysview/SEGGER:libs/Adafruit/cores/nRF5/sysview:libs/Adafruit/cores/nRF5/utility:libs/Adafruit/cores/nRF5/TinyUSB/Adafruit_TinyUSB_ArduinoCore:libs/Adafruit/cores/nRF5/linker
+  VPATH_CORE+=libs/Adafruit/cores/nRF5:libs/Adafruit/cores/nRF5/avr:libs/Adafruit/cores/nRF5/freertos/Source:libs/Adafruit/cores/nRF5/freertos/Source/portable/MemMang:libs/Adafruit/cores/nRF5/freertos/portable/CMSIS/nrf52:libs/Adafruit/cores/nRF5/freertos/portable/GCC/nrf52:libs/Adafruit/cores/nRF5/nordic/nrfx/drivers/src:libs/Adafruit/cores/nRF5/nordic/nrfx/mdk:libs/Adafruit/cores/nRF5/sysview/Config:libs/Adafruit/cores/nRF5/sysview/SEGGER:libs/Adafruit/cores/nRF5/sysview:libs/Adafruit/cores/nRF5/utility:libs/Adafruit/cores/nRF5/linker
 endif
 ifeq (${BUILD_VARIANT}, feather_nrf52832)
   CPP_SYS_SRCS+=libs/Adafruit/variants/feather_nrf52832/variant.cpp
@@ -860,7 +831,7 @@ ifdef LIB_BLUEFRUIT52LIB
     libs/Adafruit/libraries/Bluefruit52Lib/src/services/EddyStone.cpp \
     libs/Adafruit/libraries/Bluefruit52Lib/src/utility/AdaMsg.cpp \
     libs/Adafruit/libraries/Bluefruit52Lib/src/utility/bonding.cpp
-#    libs/Adafruit/libraries/Bluefruit52Lib/src/services/BLEMidi.cpp
+#   libs/Adafruit/libraries/Bluefruit52Lib/src/services/BLEMidi.cpp
   SYS_INCLUDES+=-Ilibs/Adafruit/libraries/Bluefruit52Lib/src \
     -Ilibs/Adafruit/libraries/Bluefruit52Lib/src/clients \
     -Ilibs/Adafruit/libraries/Bluefruit52Lib/src/services \
