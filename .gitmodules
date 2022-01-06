@@ -23,3 +23,6 @@
 [submodule "src/libs/BusIO"]
 	path = src/libs/BusIO
 	url = https://github.com/adafruit/Adafruit_BusIO.git
+[submodule "src/libs/nRFCrypto"]
+	path = src/libs/nRFCrypto
+	url = https://github.com/adafruit/Adafruit_nRFCrypto.git

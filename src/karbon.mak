@@ -8,9 +8,11 @@ else ifeq ($(shell uname -s), Darwin)
 	ARD=${HOME}/Library
 	SERIAL_PORT=$(shell ls /dev/cu.usbmodem14*)
 	TOOLS_PATH=/usr/local/opt/gcc-arm-none-eabi
+	RUNTIME_TOOLS_CMSIS_5_7_0_PATH=${ARD}/Arduino15/packages/adafruit/tools/CMSIS/5.7.0
 else
   $(error No Linux support yet)
 endif
+COMPILER_LIBRARIES_LDFLAGS=' '
 
 # Necessary configuration stuff
 BOARD_NAME=feather52840
@@ -18,6 +20,7 @@ IN_SOFTDEVICE=s140v6
 # l0/l1/l2/l3 for system debug info
 # anything else for no system debug logging
 IN_DEBUG=none
+IN_DEBUG_OUTPUT=serial
 BUILD_ARCH=nrf52
 RUNTIME_TOOLS_ARM_NONE_EABI_GCC_PATH=${TOOLS_PATH}
 BUILD_PATH=out/karbon
@@ -38,6 +41,7 @@ LIB_BUSIO=1
 LIB_SSD1306=1
 LIB_WIRE=1
 LIB_SPI=1
+LIB_NRFCRYPTO=1
 
 USER_INCLUDES=-Iinclude/karbon -Iinclude
 USER_CPP_SRCS=\
