@@ -44,9 +44,11 @@ Adafruit_SSD1306 Dongle::display(Dongle::ScreenWidth,
                                  Dongle::OledResetPin);
 #endif
 
+/*
 namespace std {
 void __throw_bad_alloc() {}
-} // namespace std
+}
+*/
 
 // Configure all the non-BLE hardware
 void Dongle::Configure() {
