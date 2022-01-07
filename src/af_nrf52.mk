@@ -29,9 +29,6 @@ endif
 ifndef BUILD_ARCH
   $(error BUILD_ARCH is not defined!)
 endif
-ifndef COMPILER_LIBRARIES_LDFLAGS
-  $(error COMPILER_LIBRARIES_LDFLAGS is not defined!)
-endif
 
 # Check for some source files
 ifeq (${USER_C_SRCS}${USER_CPP_SRCS}${USER_S_SRCS},)
@@ -49,8 +46,8 @@ else
 endif
 RUNTIME_OS?=linux
 RUNTIME_PLATFORM_PATH=/Users/freik/src/FreiKey/src/libs/Adafruit
-RUNTIME_IDE_VERSION=10812
-IDE_VERSION=10812
+RUNTIME_IDE_VERSION=10816
+IDE_VERSION=10816
 BUILD_PROJECT_NAME=${PROJ_NAME}
 ifeq (${BOARD_NAME}, feather52832)
   BUILD_LDSCRIPT=nrf52832_s132_v6.ld
@@ -831,7 +828,6 @@ ifdef LIB_BLUEFRUIT52LIB
     libs/Adafruit/libraries/Bluefruit52Lib/src/services/EddyStone.cpp \
     libs/Adafruit/libraries/Bluefruit52Lib/src/utility/AdaMsg.cpp \
     libs/Adafruit/libraries/Bluefruit52Lib/src/utility/bonding.cpp
-#   libs/Adafruit/libraries/Bluefruit52Lib/src/services/BLEMidi.cpp
   SYS_INCLUDES+=-Ilibs/Adafruit/libraries/Bluefruit52Lib/src \
     -Ilibs/Adafruit/libraries/Bluefruit52Lib/src/clients \
     -Ilibs/Adafruit/libraries/Bluefruit52Lib/src/services \
@@ -983,6 +979,8 @@ ifdef LIB_NRFCRYPTO
     -Ilibs/nRFCrypto/src/ecc \
     -Ilibs/nRFCrypto/src/nrf_cc310/include
   VPATH_MORE+=libs/nRFCrypto/src:libs/nRFCrypto/src/ecc
+  COMPILER_LIBRARIES_LDFLAGS+=-lnrf_cc310_0.9.13-no-interrupts
+  COMPILER_LIBRARIES_LDFLAGS+=-Llibs/nRFCrypto/src/cortex-m4/fpv4-sp-d16-hard
 endif
 SYS_SRC=${C_SYS_SRCS} ${CPP_SYS_SRCS} ${S_SYS_SRCS}
 USER_SRC=${USER_C_SRCS} ${USER_CPP_SRCS} ${USER_S_SRCS}
