@@ -6,7 +6,7 @@ ifeq ($(OS),Windows_NT)
 	TOOLS_PATH=${ARD}/Arduino15/packages/arduino/tools/arm-none-eabi-gcc/7-2017q4
 else ifeq ($(shell uname -s), Darwin)
 	ARD=${HOME}/Library
-	SERIAL_PORT=$(shell ls /dev/cu.usbmodem14*)
+	SERIAL_PORT=$(shell ls /dev/cu.usbmodem1*)
 	TOOLS_PATH=/usr/local/opt/gcc-arm-none-eabi
 	RUNTIME_TOOLS_CMSIS_5_7_0_PATH=${ARD}/Arduino15/packages/adafruit/tools/CMSIS/5.7.0
 else
