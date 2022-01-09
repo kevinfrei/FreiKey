@@ -46,7 +46,7 @@ constexpr uint8_t types_size(types t) {
 
 #if defined(DEBUG) && DEBUG > 1
 // String name for diagnostics...
-constexpr char* get_type_name(types t) {
+constexpr const char* get_type_name(types t) {
   switch (t) {
     case types::SCAN:
       return "Scan";
@@ -63,6 +63,7 @@ constexpr char* get_type_name(types t) {
     case types::SYNC:
       return "Sync";
   }
+  return "";
 }
 #endif
 

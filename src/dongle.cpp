@@ -52,17 +52,6 @@ void __throw_bad_alloc() {}
 
 // Configure all the non-BLE hardware
 void Dongle::Configure() {
-  // This is the user switch
-  pinMode(7, INPUT_PULLUP);
-  // Blink the RGB light on the board
-  neopix.begin();
-  pinMode(LED_RED, OUTPUT);
-  pinMode(LED_BLUE, OUTPUT);
-  // Setup the USB stuff
-  usb_hid.setPollInterval(2);
-  usb_hid.setReportDescriptor(desc_hid_report, sizeof(desc_hid_report));
-  usb_hid.setReportCallback(NULL, Dongle::hid_report_callback);
-  usb_hid.begin();
 #if DEBUG
   // 5 seconds until we resume
   DBG(Serial.begin(115200));
@@ -72,10 +61,23 @@ void Dongle::Configure() {
     if (millis() - wait > 5000)
       break;
   }
+  Serial.println("Here we are");
   // Don't do this: it makes the thing wait until you're actively watching
   // data on the Serial port, which is *not* what I generally want...
   // DBG(while (!Serial) delay(10)); // for nrf52840 with native usb
 #endif
+
+  // This is the user switch
+  pinMode(7, INPUT_PULLUP);
+  // Blink the RGB light on the board
+  neopix.begin();
+  pinMode(LED_RED, OUTPUT);
+  pinMode(LED_BLUE, OUTPUT);
+  // Setup the USB stuff
+  usb_hid.setPollInterval(2);
+  usb_hid.setReportDescriptor(desc_hid_report, sizeof(desc_hid_report));
+  usb_hid.setReportCallback(nullptr, Dongle::hid_report_callback);
+  usb_hid.begin();
 
 #if defined(MACRO_PAD)
   for (auto pin : padPins) {
