@@ -615,12 +615,13 @@ COMPILER_OPTIMIZATION_FLAG=-Ofast
 BUILD_FLAGS_NRF= -DSOFTDEVICE_PRESENT -DARDUINO_NRF52_ADAFRUIT -DNRF52_SERIES -DDX_CC_TEE -DLFS_NAME_MAX=64 ${COMPILER_OPTIMIZATION_FLAG} ${BUILD_DEBUG_FLAGS} ${BUILD_LOGGER_FLAGS} ${BUILD_SYSVIEW_FLAGS} ${COMPILER_ARM_CMSIS_C_FLAGS} "-I${NORDIC_PATH}" "-I${NORDIC_PATH}/nrfx" "-I${NORDIC_PATH}/nrfx/hal" "-I${NORDIC_PATH}/nrfx/mdk" "-I${NORDIC_PATH}/nrfx/soc" "-I${NORDIC_PATH}/nrfx/drivers/include" "-I${NORDIC_PATH}/nrfx/drivers/src" "-I${NORDIC_PATH}/softdevice/${BUILD_SD_NAME}_nrf52_${BUILD_SD_VERSION}_API/include" "-I${NORDIC_PATH}/softdevice/${BUILD_SD_NAME}_nrf52_${BUILD_SD_VERSION}_API/include/nrf52" "-I${RTOS_PATH}/Source/include" "-I${RTOS_PATH}/config" "-I${RTOS_PATH}/portable/GCC/nrf52" "-I${RTOS_PATH}/portable/CMSIS/nrf52" "-I${BUILD_CORE_PATH}/sysview/SEGGER" "-I${BUILD_CORE_PATH}/sysview/Config" "-I${RUNTIME_PLATFORM_PATH}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 COMPILER_S_FLAGS=-mcpu=${BUILD_MCU} -mthumb -mabi=aapcs ${COMPILER_OPTIMIZATION_FLAG} -g -c ${BUILD_FLOAT_FLAGS} -x assembler-with-cpp
 COMPILER_C_ELF_FLAGS=${COMPILER_OPTIMIZATION_FLAG} -Wl,--gc-sections -save-temps
-COMPILER_WARNING_FLAGS=-w
+COMPILER_WARNING_FLAGS=-Werror=return-type
 COMPILER_CPP_FLAGS=-mcpu=${BUILD_MCU} -mthumb -c -g ${COMPILER_WARNING_FLAGS} ${BUILD_FLOAT_FLAGS} -std=gnu++17 -ffunction-sections -fdata-sections -fno-threadsafe-statics -nostdlib --param max-inline-insns-single=500 -fno-rtti -fno-exceptions -MMD
 COMPILER_C_FLAGS=-mcpu=${BUILD_MCU} -mthumb -c -g ${COMPILER_WARNING_FLAGS} ${BUILD_FLOAT_FLAGS} -std=gnu11 -ffunction-sections -fdata-sections -nostdlib --param max-inline-insns-single=500 -MMD
-COMPILER_WARNING_FLAGS_ALL=-Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wno-pointer-arith
-COMPILER_WARNING_FLAGS_MORE=-Wall
-COMPILER_WARNING_FLAGS_NONE=-w
+COMPILER_WARNING_FLAGS_ALL=-Wall -Wextra -Werror=return-type -Wno-unused-parameter -Wno-missing-field-initializers -Wno-pointer-arith
+COMPILER_WARNING_FLAGS_MORE=-Wall -Werror=return-type
+COMPILER_WARNING_FLAGS_DEFAULT=-Werror=return-type
+COMPILER_WARNING_FLAGS_NONE=-Werror=return-type
 VERSION=1.2.0
 NAME=Adafruit nRF52 Boards
 ifeq (${RUNTIME_OS}, macosx)
@@ -750,6 +751,81 @@ ifdef LIB_ADAFRUIT_LITTLEFS
   SYS_INCLUDES+=-Ilibs/Adafruit/libraries/Adafruit_LittleFS/src \
     -Ilibs/Adafruit/libraries/Adafruit_LittleFS/src/littlefs
   VPATH_MORE+=libs/Adafruit/libraries/Adafruit_LittleFS/src/littlefs:libs/Adafruit/libraries/Adafruit_LittleFS/src
+endif
+ifdef LIB_ADAFRUIT_TINYUSB_ARDUINO
+  C_SYS_SRCS+=libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/class/audio/audio_device.c \
+    libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/class/bth/bth_device.c \
+    libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/class/cdc/cdc_device.c \
+    libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/class/dfu/dfu_device.c \
+    libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/class/dfu/dfu_rt_device.c \
+    libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/class/hid/hid_device.c \
+    libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/class/midi/midi_device.c \
+    libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/class/msc/msc_device.c \
+    libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/class/net/ecm_rndis_device.c \
+    libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/class/net/ncm_device.c \
+    libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/class/usbtmc/usbtmc_device.c \
+    libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/class/vendor/vendor_device.c \
+    libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/common/tusb_fifo.c \
+    libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/device/usbd.c \
+    libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/device/usbd_control.c \
+    libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/portable/espressif/esp32sx/dcd_esp32sx.c \
+    libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/portable/microchip/samd/dcd_samd.c \
+    libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/portable/nordic/nrf5x/dcd_nrf5x.c \
+    libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/portable/nxp/transdimension/dcd_transdimension.c \
+    libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/portable/raspberrypi/rp2040/dcd_rp2040.c \
+    libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/portable/raspberrypi/rp2040/hcd_rp2040.c \
+    libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/portable/raspberrypi/rp2040/rp2040_usb.c \
+    libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/tusb.c
+  CPP_SYS_SRCS+=libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/arduino/Adafruit_TinyUSB_API.cpp \
+    libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/arduino/Adafruit_USBD_CDC.cpp \
+    libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/arduino/Adafruit_USBD_Device.cpp \
+    libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/arduino/hid/Adafruit_USBD_HID.cpp \
+    libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/arduino/midi/Adafruit_USBD_MIDI.cpp \
+    libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/arduino/msc/Adafruit_USBD_MSC.cpp \
+    libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/arduino/ports/esp32/Adafruit_TinyUSB_esp32.cpp \
+    libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/arduino/ports/nrf/Adafruit_TinyUSB_nrf.cpp \
+    libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/arduino/ports/rp2040/Adafruit_TinyUSB_rp2040.cpp \
+    libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/arduino/ports/samd/Adafruit_TinyUSB_samd.cpp \
+    libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/arduino/webusb/Adafruit_USBD_WebUSB.cpp
+  SYS_INCLUDES+=-Ilibs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src \
+    -Ilibs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/arduino \
+    -Ilibs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/arduino/hid \
+    -Ilibs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/arduino/midi \
+    -Ilibs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/arduino/msc \
+    -Ilibs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/arduino/ports/nrf \
+    -Ilibs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/arduino/ports/rp2040 \
+    -Ilibs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/arduino/ports/samd \
+    -Ilibs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/arduino/webusb \
+    -Ilibs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/class/audio \
+    -Ilibs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/class/bth \
+    -Ilibs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/class/cdc \
+    -Ilibs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/class/dfu \
+    -Ilibs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/class/hid \
+    -Ilibs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/class/midi \
+    -Ilibs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/class/msc \
+    -Ilibs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/class/net \
+    -Ilibs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/class/usbtmc \
+    -Ilibs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/class/vendor \
+    -Ilibs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/common \
+    -Ilibs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/device \
+    -Ilibs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/osal \
+    -Ilibs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/portable/nxp/transdimension \
+    -Ilibs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/portable/raspberrypi/rp2040
+  VPATH_MORE+=libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/class/audio:libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/class/bth:libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/class/cdc:libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/class/dfu:libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/class/hid:libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/class/midi:libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/class/msc:libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/class/net:libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/class/usbtmc:libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/class/vendor:libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/common:libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/device:libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/portable/espressif/esp32sx:libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/portable/microchip/samd:libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/portable/nordic/nrf5x:libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/portable/nxp/transdimension:libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/portable/raspberrypi/rp2040:libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src:libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/arduino:libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/arduino/hid:libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/arduino/midi:libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/arduino/msc:libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/arduino/ports/esp32:libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/arduino/ports/nrf:libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/arduino/ports/rp2040:libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/arduino/ports/samd:libs/Adafruit/libraries/Adafruit_TinyUSB_Arduino/src/arduino/webusb
+endif
+ifdef LIB_ADAFRUIT_NRFCRYPTO
+  CPP_SYS_SRCS+=libs/Adafruit/libraries/Adafruit_nRFCrypto/src/Adafruit_nRFCrypto.cpp \
+    libs/Adafruit/libraries/Adafruit_nRFCrypto/src/ecc/nRFCrypto_ECC.cpp \
+    libs/Adafruit/libraries/Adafruit_nRFCrypto/src/ecc/nRFCrypto_ECC_PrivateKey.cpp \
+    libs/Adafruit/libraries/Adafruit_nRFCrypto/src/ecc/nRFCrypto_ECC_PublicKey.cpp \
+    libs/Adafruit/libraries/Adafruit_nRFCrypto/src/nRFCrypto_Hash.cpp \
+    libs/Adafruit/libraries/Adafruit_nRFCrypto/src/nRFCrypto_Random.cpp
+  SYS_INCLUDES+=-Ilibs/Adafruit/libraries/Adafruit_nRFCrypto/src \
+    -Ilibs/Adafruit/libraries/Adafruit_nRFCrypto/src/ecc \
+    -Ilibs/Adafruit/libraries/Adafruit_nRFCrypto/src/nrf_cc310/include
+  VPATH_MORE+=libs/Adafruit/libraries/Adafruit_nRFCrypto/src:libs/Adafruit/libraries/Adafruit_nRFCrypto/src/ecc
+  COMPILER_LIBRARIES_LDFLAGS+=-lnrf_cc310_0.9.13-no-interrupts
+  COMPILER_LIBRARIES_LDFLAGS+=-Llibs/Adafruit/libraries/Adafruit_nRFCrypto/src/cortex-m4/fpv4-sp-d16-hard
 endif
 ifdef LIB_BLEADAFRUITSERVICE
   CPP_SYS_SRCS+=libs/Adafruit/libraries/BLEAdafruitService/src/services/BLEAdafruitAccel.cpp \
@@ -906,81 +982,6 @@ ifdef LIB_SSD1306
   CPP_SYS_SRCS+=libs/SSD1306/Adafruit_SSD1306.cpp
   SYS_INCLUDES+=-Ilibs/SSD1306
   VPATH_MORE+=libs/SSD1306
-endif
-ifdef LIB_TINYUSB
-  C_SYS_SRCS+=libs/TinyUSB/src/class/audio/audio_device.c \
-    libs/TinyUSB/src/class/bth/bth_device.c \
-    libs/TinyUSB/src/class/cdc/cdc_device.c \
-    libs/TinyUSB/src/class/dfu/dfu_device.c \
-    libs/TinyUSB/src/class/dfu/dfu_rt_device.c \
-    libs/TinyUSB/src/class/hid/hid_device.c \
-    libs/TinyUSB/src/class/midi/midi_device.c \
-    libs/TinyUSB/src/class/msc/msc_device.c \
-    libs/TinyUSB/src/class/net/ecm_rndis_device.c \
-    libs/TinyUSB/src/class/net/ncm_device.c \
-    libs/TinyUSB/src/class/usbtmc/usbtmc_device.c \
-    libs/TinyUSB/src/class/vendor/vendor_device.c \
-    libs/TinyUSB/src/common/tusb_fifo.c \
-    libs/TinyUSB/src/device/usbd.c \
-    libs/TinyUSB/src/device/usbd_control.c \
-    libs/TinyUSB/src/portable/espressif/esp32sx/dcd_esp32sx.c \
-    libs/TinyUSB/src/portable/microchip/samd/dcd_samd.c \
-    libs/TinyUSB/src/portable/nordic/nrf5x/dcd_nrf5x.c \
-    libs/TinyUSB/src/portable/nxp/transdimension/dcd_transdimension.c \
-    libs/TinyUSB/src/portable/raspberrypi/rp2040/dcd_rp2040.c \
-    libs/TinyUSB/src/portable/raspberrypi/rp2040/hcd_rp2040.c \
-    libs/TinyUSB/src/portable/raspberrypi/rp2040/rp2040_usb.c \
-    libs/TinyUSB/src/tusb.c
-  CPP_SYS_SRCS+=libs/TinyUSB/src/arduino/Adafruit_TinyUSB_API.cpp \
-    libs/TinyUSB/src/arduino/Adafruit_USBD_CDC.cpp \
-    libs/TinyUSB/src/arduino/Adafruit_USBD_Device.cpp \
-    libs/TinyUSB/src/arduino/hid/Adafruit_USBD_HID.cpp \
-    libs/TinyUSB/src/arduino/midi/Adafruit_USBD_MIDI.cpp \
-    libs/TinyUSB/src/arduino/msc/Adafruit_USBD_MSC.cpp \
-    libs/TinyUSB/src/arduino/ports/esp32/Adafruit_TinyUSB_esp32.cpp \
-    libs/TinyUSB/src/arduino/ports/nrf/Adafruit_TinyUSB_nrf.cpp \
-    libs/TinyUSB/src/arduino/ports/rp2040/Adafruit_TinyUSB_rp2040.cpp \
-    libs/TinyUSB/src/arduino/ports/samd/Adafruit_TinyUSB_samd.cpp \
-    libs/TinyUSB/src/arduino/webusb/Adafruit_USBD_WebUSB.cpp
-  SYS_INCLUDES+=-Ilibs/TinyUSB/src \
-    -Ilibs/TinyUSB/src/arduino \
-    -Ilibs/TinyUSB/src/arduino/hid \
-    -Ilibs/TinyUSB/src/arduino/midi \
-    -Ilibs/TinyUSB/src/arduino/msc \
-    -Ilibs/TinyUSB/src/arduino/ports/nrf \
-    -Ilibs/TinyUSB/src/arduino/ports/rp2040 \
-    -Ilibs/TinyUSB/src/arduino/ports/samd \
-    -Ilibs/TinyUSB/src/arduino/webusb \
-    -Ilibs/TinyUSB/src/class/audio \
-    -Ilibs/TinyUSB/src/class/bth \
-    -Ilibs/TinyUSB/src/class/cdc \
-    -Ilibs/TinyUSB/src/class/dfu \
-    -Ilibs/TinyUSB/src/class/hid \
-    -Ilibs/TinyUSB/src/class/midi \
-    -Ilibs/TinyUSB/src/class/msc \
-    -Ilibs/TinyUSB/src/class/net \
-    -Ilibs/TinyUSB/src/class/usbtmc \
-    -Ilibs/TinyUSB/src/class/vendor \
-    -Ilibs/TinyUSB/src/common \
-    -Ilibs/TinyUSB/src/device \
-    -Ilibs/TinyUSB/src/osal \
-    -Ilibs/TinyUSB/src/portable/nxp/transdimension \
-    -Ilibs/TinyUSB/src/portable/raspberrypi/rp2040
-  VPATH_MORE+=libs/TinyUSB/src/class/audio:libs/TinyUSB/src/class/bth:libs/TinyUSB/src/class/cdc:libs/TinyUSB/src/class/dfu:libs/TinyUSB/src/class/hid:libs/TinyUSB/src/class/midi:libs/TinyUSB/src/class/msc:libs/TinyUSB/src/class/net:libs/TinyUSB/src/class/usbtmc:libs/TinyUSB/src/class/vendor:libs/TinyUSB/src/common:libs/TinyUSB/src/device:libs/TinyUSB/src/portable/espressif/esp32sx:libs/TinyUSB/src/portable/microchip/samd:libs/TinyUSB/src/portable/nordic/nrf5x:libs/TinyUSB/src/portable/nxp/transdimension:libs/TinyUSB/src/portable/raspberrypi/rp2040:libs/TinyUSB/src:libs/TinyUSB/src/arduino:libs/TinyUSB/src/arduino/hid:libs/TinyUSB/src/arduino/midi:libs/TinyUSB/src/arduino/msc:libs/TinyUSB/src/arduino/ports/esp32:libs/TinyUSB/src/arduino/ports/nrf:libs/TinyUSB/src/arduino/ports/rp2040:libs/TinyUSB/src/arduino/ports/samd:libs/TinyUSB/src/arduino/webusb
-endif
-ifdef LIB_NRFCRYPTO
-  CPP_SYS_SRCS+=libs/nRFCrypto/src/Adafruit_nRFCrypto.cpp \
-    libs/nRFCrypto/src/ecc/nRFCrypto_ECC.cpp \
-    libs/nRFCrypto/src/ecc/nRFCrypto_ECC_PrivateKey.cpp \
-    libs/nRFCrypto/src/ecc/nRFCrypto_ECC_PublicKey.cpp \
-    libs/nRFCrypto/src/nRFCrypto_Hash.cpp \
-    libs/nRFCrypto/src/nRFCrypto_Random.cpp
-  SYS_INCLUDES+=-Ilibs/nRFCrypto/src \
-    -Ilibs/nRFCrypto/src/ecc \
-    -Ilibs/nRFCrypto/src/nrf_cc310/include
-  VPATH_MORE+=libs/nRFCrypto/src:libs/nRFCrypto/src/ecc
-  COMPILER_LIBRARIES_LDFLAGS+=-lnrf_cc310_0.9.13-no-interrupts
-  COMPILER_LIBRARIES_LDFLAGS+=-Llibs/nRFCrypto/src/cortex-m4/fpv4-sp-d16-hard
 endif
 SYS_SRC=${C_SYS_SRCS} ${CPP_SYS_SRCS} ${S_SYS_SRCS}
 USER_SRC=${USER_C_SRCS} ${USER_CPP_SRCS} ${USER_S_SRCS}
