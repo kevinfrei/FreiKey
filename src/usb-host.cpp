@@ -5,10 +5,10 @@
 #include "general.h"
 #include "hardware.h"
 #include "helpers.h"
+#include "host-comm.h"
 #include "kbreporter.h"
 #include "keymap.h"
 #include "keystate.h"
-#include "host-comm.h"
 #include "scanner.h"
 #include "sync.h"
 
@@ -64,13 +64,6 @@ void loop() {
       now, prevLeftSide.battery_level, prevRightSide.battery_level);
   if (!Dongle::Ready())
     return;
-  //  // Remote wakeup
-  //  if ( tud_suspended() && btn )
-  //  {
-  //    // Wake up host if we are in suspend mode
-  //    // and REMOTE_WAKEUP feature is enabled by host
-  //    tud_remote_wakeup();
-  //  }
 
   // Get the hardware state for the two sides...
   state::hw downRight{Dongle::rightUart, prevRightSide};
@@ -93,6 +86,13 @@ void loop() {
   MatrixBits deltaLeft = beforeLeft.delta(afterLeft);
   MatrixBits deltaRight = beforeRight.delta(afterRight);
   bool keysChanged = deltaLeft.any() || deltaRight.any() || deltaPad.any();
+
+  // Remote wakeup
+  if (TinyUSBDevice.suspended() && keysChanged) {
+    // Wake up host if we are in suspend mode
+    // and REMOTE_WAKEUP feature is enabled by host
+    TinyUSBDevice.remoteWakeup();
+  }
 
   while (deltaLeft.any() || deltaRight.any() || deltaPad.any()) {
     scancode_t sc = 0xFF;

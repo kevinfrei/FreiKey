@@ -20,7 +20,7 @@ BOARD_NAME=feather52840
 IN_SOFTDEVICE=s140v6
 # l0/l1/l2/l3 for system debug info
 # anything else for no system debug logging
-IN_DEBUG=none
+IN_DEBUG=l2
 IN_DEBUG_OUTPUT=serial
 BUILD_ARCH=nrf52
 RUNTIME_TOOLS_ARM_NONE_EABI_GCC_PATH=${TOOLS_PATH}
@@ -57,4 +57,3 @@ USER_CPP_SRCS=\
 	usb-host.cpp
 
 include af_nrf52.mk
-

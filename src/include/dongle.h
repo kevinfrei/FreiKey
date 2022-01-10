@@ -32,6 +32,7 @@ class Dongle {
   static BLEClientUart leftUart;
   static BLEClientUart rightUart;
 
+  static void blink(bool leaveOn = true);
   static void Configure();
   static void StartListening();
   static void Reset();
