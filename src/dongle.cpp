@@ -1,11 +1,5 @@
 #include "sysstuff.h"
 
-#if defined(HAS_DISPLAY)
-#include <Adafruit_SSD1306.h>
-#include <SPI.h>
-#include <Wire.h>
-#endif
-
 #include "dbgcfg.h"
 #include "debounce.h"
 #include "dongle.h"
@@ -36,7 +30,9 @@ BLEClientUart Dongle::leftUart;
 BLEClientUart Dongle::rightUart;
 uint16_t Dongle::leftHandle = BLE_CONN_HANDLE_INVALID;
 uint16_t Dongle::rightHandle = BLE_CONN_HANDLE_INVALID;
-Adafruit_USBD_HID Dongle::usb_hid;
+Adafruit_USBD_HID Dongle::usb_hid(
+    desc_hid_report, sizeof(desc_hid_report), HID_ITF_PROTOCOL_NONE, 2, false);
+
 #if defined(HAS_DISPLAY)
 Adafruit_SSD1306 Dongle::display(Dongle::ScreenWidth,
                                  Dongle::ScreenHeight,
@@ -44,29 +40,42 @@ Adafruit_SSD1306 Dongle::display(Dongle::ScreenWidth,
                                  Dongle::OledResetPin);
 #endif
 
-/*
-namespace std {
-void __throw_bad_alloc() {}
+void Dongle::blink(bool leaveOn) {
+  for (int i = 0; i < 10; i++) {
+    Dongle::setRed(true);
+    Dongle::setBlue(false);
+    delay(25);
+    Dongle::setRed(false);
+    Dongle::setBlue(true);
+    delay(25);
+  }
+  if (leaveOn) {
+    // Leave on:
+    Dongle::setRed(true);
+  } else {
+    // Leave off:
+    Dongle::setBlue(false);
+  }
 }
-*/
 
-// Configure all the non-BLE hardware
-void Dongle::Configure() {
-#if DEBUG
+void initSerial() {
   // 5 seconds until we resume
   DBG(Serial.begin(115200));
   uint32_t wait = millis();
   while (!Serial) {
-    delay(10);
-    if (millis() - wait > 5000)
+    delay(50);
+    if (millis() - wait > 1000)
       break;
   }
-  Serial.println("Here we are");
+  if (!!Serial) {
+    Serial.println("Here we are");
+  }
   // Don't do this: it makes the thing wait until you're actively watching
   // data on the Serial port, which is *not* what I generally want...
-  // DBG(while (!Serial) delay(10)); // for nrf52840 with native usb
-#endif
+}
 
+// Configure all the non-BLE hardware
+void Dongle::Configure() {
   // This is the user switch
   pinMode(7, INPUT_PULLUP);
   // Blink the RGB light on the board
@@ -74,11 +83,15 @@ void Dongle::Configure() {
   pinMode(LED_RED, OUTPUT);
   pinMode(LED_BLUE, OUTPUT);
   // Setup the USB stuff
-  usb_hid.setPollInterval(2);
-  usb_hid.setReportDescriptor(desc_hid_report, sizeof(desc_hid_report));
   usb_hid.setReportCallback(nullptr, Dongle::hid_report_callback);
   usb_hid.begin();
-
+  DBG(initSerial());
+  for (int j = 0; j < 50 && !TinyUSBDevice.mounted(); j++) {
+    blinkRGB(255, 255, 255, 25);
+    delay(25);
+  }
+  setRGB(0, 127, 127);
+  delay(250);
 #if defined(MACRO_PAD)
   for (auto pin : padPins) {
     pinMode(pin, INPUT_PULLUP);
@@ -141,8 +154,10 @@ bool Dongle::BothSides() {
 }
 
 void Dongle::Reset() {
+  /*
   usb_hid.keyboardRelease(RID_KEYBOARD);
   Dongle::ConsumerRelease();
+  */
 }
 
 void Dongle::ReportKeys(uint8_t mods, uint8_t* report) {
