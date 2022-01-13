@@ -1,3 +1,1 @@
-./libs/Arduino2Make/ar2mak.js /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr libs/GFX libs/SSD1306 > teensy.mk
-
-
+./libs/Arduino2Make/ar2mak.js /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr libs/GFX libs/SSD1306 libs/ST77XX libs/BusIO > teensy.mk
