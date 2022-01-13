@@ -20,7 +20,7 @@ constexpr layer_t kSwitchLayer = 4;
 #define PK_(a) PASTE(KEY_, a)
 #define PM_(a) PASTE(MODIFIERKEY_, a)
 
-#define xLEFTALT LEFT_ALT
+#define LEFTALT LEFT_ALT
 #define RIGHTALT RIGHT_ALT
 #define LEFTGUI LEFT_GUI
 #define RIGHTGUI RIGHT_GUI
@@ -214,7 +214,7 @@ DK(M_LOCK, 0xF9);
 #define LAYER_MAC_CAP 3
 #define LAYER_WIN_CAP 4
 #define LAYER_WIN_CTL 5
-#elif defined(KARBON)
+#elif defined(KARBON) || defined(LAPTYPE)
 #define LAYER_MAC_BASE 0
 #define LAYER_WIN_BASE 1
 #define LAYER_LIN_BASE 2
