@@ -1,0 +1,137 @@
+#pragma once
+
+/* USB Device descriptor parameter */
+#define VENDOR_ID 0xF231
+#define PRODUCT_ID 0xF00D
+#define DEVICE_VER 0x0002
+#define MANUFACTURER FreiK
+#define PRODUCT LapDisp
+#define DESCRIPTION LapDispV1
+
+/* key matrix size */
+#define MATRIX_ROWS 6
+#define MATRIX_COLS 12
+
+// Pins:
+/*
+
+TFT_RST 6
+TFT_CS 8
+MOSI 11 (DOUT)
+TFT_LIT 17
+DC 15
+SCK 13
+
+ R   L
+18  12
+12  14
+10  16
+16  18
+9   19
+7   20
+5   21
+4   22
+3   1
+2   23
+1   0
+0   5
+
+Right:
+Bottom to top:
+Row 6       Pin 0
+Row 5       Pin 1
+Col '9'     Pin 2
+Col '8'     Pin 3
+Col 'Bksp'  Pin 4
+Row 4       Pin 5
+Col '0'     Pin 7
+Col '6'     Pin 9
+Row 1       Pin 16
+Col '7'     Pin 10
+Row 2       Pin 12
+Row 3       Pin 18
+
+Left
+Bottom to top:
+Row 4       Pin 5
+Row 6       Pin 0
+Col '2'     Pin 23
+Row 5       Pin 1
+Col '4'     Pin 22
+Col '1'     Pin 21
+Col '5'     Pin 20
+Col 'esc'   Pin 19
+Row 3       Pin 18
+Row 1       Pin 16
+Col '3'     Pin 14
+Row 2       Pin 12
+
+*/
+
+// Teensy 4.0 pin to port assignments
+#define PIN_00 LINE_PIN0
+#define PIN_01 LINE_PIN1
+#define PIN_02 LINE_PIN2
+#define PIN_03 LINE_PIN3
+#define PIN_04 LINE_PIN4
+#define PIN_05 LINE_PIN5
+#define PIN_06 LINE_PIN6
+#define PIN_07 LINE_PIN7
+#define PIN_08 LINE_PIN8
+#define PIN_09 LINE_PIN9
+#define PIN_10 LINE_PIN10
+#define PIN_11 LINE_PIN11
+#define PIN_12 LINE_PIN12
+#define PIN_13 LINE_PIN13
+#define PIN_14 LINE_PIN14
+#define PIN_15 LINE_PIN15
+#define PIN_16 LINE_PIN16
+#define PIN_17 LINE_PIN17
+#define PIN_18 LINE_PIN18
+#define PIN_19 LINE_PIN19
+#define PIN_20 LINE_PIN20
+#define PIN_21 LINE_PIN21
+#define PIN_22 LINE_PIN22
+#define PIN_23 LINE_PIN23
+
+/* key matrix pins */
+#if defined(TEENSY_32)
+    #define MATRIX_ROW_PINS \
+    { B0, C7, B3, D7, B17, B16 }
+    #define MATRIX_COL_PINS \
+    { B2, D6, C2, D1, C1, D5, C3, C4, A12, D0, D2, A13 }
+#else // This is for TEENSY_40
+    #define MATRIX_ROW_PINS \
+    { PIN_16, PIN_12, PIN_18, PIN_05, PIN_01, PIN_00 }
+    #define MATRIX_COL_PINS \
+    { PIN_19, PIN_21, PIN_23, PIN_14, PIN_22, PIN_20, \
+      PIN_09, PIN_10, PIN_03, PIN_02, PIN_07, PIN_04 }
+#endif
+#define UNUSED_PINS
+
+/* COL2ROW or ROW2COL */
+#define DIODE_DIRECTION COL2ROW
+
+/* Set 0 if debouncing isn't needed */
+#define DEBOUNCING_DELAY 75
+
+/* key combination for command - Don't have commands right now */
+/*
+#define IS_COMMAND() ( \
+    keyboard_report->mods == (MOD_BIT(KC_LSHIFT) | MOD_BIT(KC_RSHIFT)) \
+)
+*/
+
+/* prevent stuck modifiers */
+#define PREVENT_STUCK_MODIFIERS
+
+#if defined(TEENSY_4_SPI)
+// Quantum Painter stuff
+#define SPI_DRIVER SPID1
+#define SPI_SCK_PIN C5
+#define SPI_SCK_PAL_MODE PAL_MODE_ALTERNATIVE_2
+#define SPI_MOSI_PIN C6
+#define SPI_MOSI_PAL_MODE PAL_MODE_ALTERNATIVE_2
+#define SPI_MISO_PIN A4
+#define SPI_MISO_PAL_MODE PAL_MODE_ALTERNATIVE_7
+#endif
