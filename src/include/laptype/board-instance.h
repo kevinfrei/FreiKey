@@ -17,4 +17,4 @@ struct LaptypeBoard: public LaptypeMatrix {
   static void Configure() {
     ConfigMatrix();
   }
-}
+};

@@ -10,9 +10,6 @@
 #include "led_states.h"
 #include "scanner.h"
 
-constexpr BoardIO Laptype = {{19, 21, 23, 14, 22, 20, 9, 10, 3, 2, 7, 4},
-                               {16, 12, 18, 5, 1, 0}};
-
 state::hw bfState;
 
 // This is called when the LHS connects, disconnects, and when the system is
@@ -27,19 +24,14 @@ void resetTheWorld() {
 extern "C" void setup() {
   DBG(Serial.begin(115200));
   DBG(Serial.println("SETUP!"));
-  // Blink a bit, just for funsies...
-  pinMode(13, OUTPUT);
-  for (int i = 0; i < 64; i++) {
-    digitalWrite(13, ((i & 7) == 7) ? HIGH : LOW);
-    delay(8);
-  }
-  Laptype.Configure();
+  Laptype::Configure();
   resetTheWorld();
 }
 
 extern "C" void loop() {
   uint32_t now = millis();
 
+if (!Laptype::Ready())
   // Get the hardware state for the two sides...
   state::hw down{now, bfState, Laptype};
 
