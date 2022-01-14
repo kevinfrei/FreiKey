@@ -25,7 +25,13 @@
 
 # if defined(HAS_DISPLAY)
 #  include <Adafruit_GFX.h>
-#  include <Adafruit_SSD1306.h>
+#  if defined(DISPLAY_OLED)
+#   include <Adafruit_SSD1306.h>
+#  elif defined(DISPLAY_ST7789)
+#   include <Adafruit_ST7789.h>
+#  else
+#    error Unrecognized display
+#  endif
 #  include <SPI.h>
 #  include <Wire.h>
 # endif
