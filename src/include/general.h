@@ -7,6 +7,7 @@
 #include "dbgcfg.h"
 #include "keyhelpers.h"
 
+#if defined(BTLE_HOST)
 struct ClientState {
   uint8_t battery;
   uint8_t latency;
@@ -19,29 +20,25 @@ struct ClientState {
            connected != cs.connected;
   }
 };
+#endif
 
-struct GeneralState {
+struct State {
   static constexpr uint8_t layer_max = 7;
-  ClientState left, right;
   char* debugString;
   uint8_t layer_pos;
   std::array<uint8_t, layer_max + 1> layer_stack;
-  GeneralState() : left(), right(), debugString(nullptr), layer_pos(0) {
+  State() : debugString(nullptr), layer_pos(0) {
     layer_stack.fill(0);
   }
-  GeneralState(const GeneralState& gs)
-      : left(gs.left),
-        right(gs.right),
-        debugString(gs.debugString),
+  State(const State& gs)
+      : debugString(gs.debugString),
         layer_pos(gs.layer_pos),
         layer_stack(gs.layer_stack) {}
   void reset() {
     layer_pos = 0;
     layer_stack[0] = 0;
   }
-  bool operator!=(const GeneralState& gs) const {
-    if (gs.left != left || gs.right != right)
-      return true;
+  bool operator!=(const State& gs) const {
     if (gs.layer_pos != layer_pos)
       return true;
     if (layer_stack != gs.layer_stack)
@@ -121,5 +118,22 @@ struct GeneralState {
   }
 #endif
 };
+
+#if defined(BTLE_HOST)
+class KarbonState : public State {
+  ClientState left, right;
+  public:
+  KarbonState() : left(), right(), State() {}
+  KarbonState(const KarbonState &ks) : left(ks.left), right(ks.right), State(ks) {}
+  bool operator !=(const KarbonState &ks) const {
+    if (gs.left != left || gs.right != right)
+      return true;
+    return State::operator!=(ks);
+  }
+};
+using GeneralState = KarbonState;
+#else
+using GeneralState = State;
+#endif
 
 extern GeneralState curState;
