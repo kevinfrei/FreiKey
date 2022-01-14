@@ -14,6 +14,7 @@ struct Teensy {
   static void prepPinForRead(uint8_t pin) {
     pinMode(pin, OUTPUT);
     digitalWrite(pin, LOW);
+    delayMicroseconds(200);
   }
   static void completePin(uint8_t pin) {
     pinMode(pin, INPUT);

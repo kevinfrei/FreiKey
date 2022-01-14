@@ -40,10 +40,11 @@ extern "C" void setup() {
   LaptypeBoard::Configure();
   tft.init(135, 240);
   tft.setSPISpeed(60000000);
-  tft.fillScreen(ST77XX_RED);
+  tft.fillScreen(0x1234);
   resetTheWorld();
 }
 
+uint32_t last = 0;
 extern "C" void loop() {
   uint32_t now = millis();
   // Get the before & after of each side into a 64 bit value
