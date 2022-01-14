@@ -17,7 +17,7 @@ class Debouncer {
   // I still sometimes see a bounce or two, so I've increased it a bit.
   // 25ms translates to a typing speed of about 400 WPM, which seems plenty
   // fast...
-  static const uint8_t debounce_delay = 35;
+  static const uint8_t debounce_delay = 15;
 
  public:
   Debouncer() : last_reported_switches{}, last_reported_time{} {}
@@ -40,7 +40,7 @@ class Debouncer {
         // If it's on, this will turn it off, if it's off, this will turn it on
         cur_switches.flip_bit(bit_num);
         DBG(dumpVal(bit_num, "Bounce ignored "));
-        DBG(dumpVal(now - last_reported_time[bit_num], "milleseconds since initial flip: "))
+        DBG(dumpVal(now - last_reported_time[bit_num], "milleseconds since initial flip: "));
       } else {
         // We're not in the debounce period: leave the change intact, and start
         // the timer
