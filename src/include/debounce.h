@@ -30,15 +30,17 @@ class Debouncer {
     // the current read
     BITS change = last_reported_switches.delta(cur_switches);
     while (change.any()) {
+      // pull_a_bit yoinks a bit number and clears it from the bit array
       uint8_t bit_num = change.pull_a_bit();
-      if (bit_num > 63)
+      if (bit_num >= BITS::num_bits)
         break;
       // For each change, check if we're in a debounce period for that switch
       if (now - last_reported_time[bit_num] < debounce_delay) {
         // Let's clear the change from cur_switches
         // If it's on, this will turn it off, if it's off, this will turn it on
-        cur_switches.clear_bit(bit_num);
+        cur_switches.flip_bit(bit_num);
         DBG(dumpVal(bit_num, "Bounce ignored "));
+        DBG(dumpVal(now - last_reported_time[bit_num], "milleseconds since initial flip: "))
       } else {
         // We're not in the debounce period: leave the change intact, and start
         // the timer
