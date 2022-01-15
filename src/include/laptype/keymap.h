@@ -17,27 +17,27 @@
 #define RROW5(r40, r41, r42, r43, r44, r45) r40, r41, r42, r43, r44, r45
 #define RROW6(rt50, r51, r52, r53) rt50, r51, r52, r53, ___, ___
 
-#if defined(STATUS_DUMP)
+#if defined(STATUS_DUMP) || defined(HAS_DISPLAY)
 // For the status dumper thingamajig
-const char* layer_names[] = {"Base/Mac",
-                             "Win",
-                             "Linux",
-                             "Fn",
-                             "MacCaps",
-                             "WinCaps",
-                             "LinuxCaps",
-                             "WinCtrl"};
+constexpr const char* layer_names[] = {"Base/Mac",
+                                       "Win",
+                                       "Linux",
+                                       "Fn",
+                                       "MacCaps",
+                                       "WinCaps",
+                                       "WinCtrl",
+                                       "LinuxCaps"};
 #endif
 
-const uint32_t layer_colors[] = {
-    0x000000, // Base/mac
-    0x040000, // Windows: Red
-    0x000404, // Linux:   Cyan
-    0x000400, // Fn:      Green
-    0x000004, // MacCaps: Blue
-    0x040004, // WinCaps: Purple
-    0x040400, // WinCtrl: Yellow
-    0x040404 // LinCaps: White
+const uint16_t layer_colors[] = {
+    ST77XX_BLUE, // Base/mac
+    ST77XX_MAGENTA, // Windows
+    ST77XX_CYAN, // Linux
+    ST77XX_GREEN, // Fn
+    ST77XX_ORANGE, // MacCaps
+    ST77XX_YELLOW, // WinCap
+    ST77XX_BLACK, // WinCtrl
+    ST77XX_WHITE // LinCaps
 };
 
 // TODO: I'm not happy that in order to override "modifier + key" it requires
@@ -94,8 +94,8 @@ LROW1(KEY(F12), KEY(F1), KEY(F2), KEY(F3), KEY(F4), KEY(F5)), RROW1(  KEY(F6), K
 LROW2(KEY(F11), ___,     ___,     ___,     ___,     ___),     RROW2(  ___,     ___,     ___,     ___,     ___,      KEY(F12)),
 LROW3(___,      ___,     ___,     ___,     ___,     ___),     RROW3(  ___,     ___,     ___,     ___,     ___,      ___),
 LROW4(___,      ___,     ___,     ___,     ___,     ___),     RROW4(  ___,     ___,     ___,     ___,     ___,      ___),
-LROW5(___, ___,  ___,      ___,             ___,     ___),    RROW5( ___,     ___,             ___,      ___,  LYR_WIN, LYR_LIN),
-LROW6(                ___, ___, ___,                  ___),   RROW6(___,                  ___, ___, ___),
+LROW5(___, ___,  ___,      ___,             ___,     ___),    RROW5( ___,     ___,          VOLUP_,      ___,  LYR_WIN, LYR_LIN),
+LROW6(                PRVT_, PLAY_, NXTT_,            ___),   RROW6(___,               ___, VOLDN_, ___),
 },
 {// LAYER_MAC_CAP (4)
 // Mostly just cmd + key (CMK(a)), with exceptions for some window

@@ -38,6 +38,9 @@ struct State {
     layer_pos = 0;
     layer_stack[0] = 0;
   }
+  uint8_t getLayer() const {
+    return layer_stack[layer_pos];
+  }
   bool operator!=(const State& gs) const {
     if (gs.layer_pos != layer_pos)
       return true;
