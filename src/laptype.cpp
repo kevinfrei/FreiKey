@@ -1,5 +1,6 @@
 #include "sysstuff.h"
 
+#include "Fonts/FreeSans12pt7b.h"
 #include "boardio.h"
 #include "dbgcfg.h"
 #include "general.h"
@@ -14,11 +15,11 @@
 GeneralState curState{};
 MatrixBits prevBits{0};
 Debouncer<MatrixBits> debouncer{};
-
 #if defined(DISPLAY_ST7789)
-constexpr uint8_t TFT_CS=8;
-constexpr uint8_t TFT_DC=15;
-constexpr uint8_t TFT_RST=6;
+const uint8_t BACKLIGHT_PIN = 17;
+constexpr uint8_t TFT_CS = 8;
+constexpr uint8_t TFT_DC = 15;
+constexpr uint8_t TFT_RST = 6;
 Adafruit_ST7789 tft = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_RST);
 #endif
 
@@ -34,13 +35,31 @@ void resetTheWorld() {
   memset(keyStates, null_scan_code, sizeof(keyStates));
 }
 
+uint32_t lastShownLayerTime = 0;
+uint32_t lastShownLayerVal = ST77XX_BLACK;
+
+void Backlight(bool on = true) {
+  static bool backlightOn = false;
+  if (backlightOn != on) {
+    digitalWrite(BACKLIGHT_PIN, on ? HIGH : LOW);
+    backlightOn = on;
+  }
+}
+
 extern "C" void setup() {
   DBG(Serial.begin(115200));
   DBG(Serial.println("SETUP!"));
   LaptypeBoard::Configure();
+  pinMode(BACKLIGHT_PIN, OUTPUT);
+  delay(1);
+  Backlight(true);
   tft.init(135, 240);
+  // This is the fastest speed that worked
+  // (72mhz also worked, but seemed to be the same speed)
   tft.setSPISpeed(60000000);
-  tft.fillScreen(0x1234);
+  tft.setRotation(1);
+  tft.fillScreen(ST77XX_BLACK);
+  tft.setFont(&FreeSans12pt7b);
   resetTheWorld();
 }
 
@@ -64,5 +83,27 @@ extern "C" void loop() {
     // Update the hardware previous state
     prevBits = after;
     DBG2(after.dumpHex("State: "));
+    uint32_t col = getColorForCurrentLayer();
+    if (col != lastShownLayerVal) {
+      Backlight(true);
+      tft.fillScreen(ST77XX_BLACK);
+      lastShownLayerVal = col;
+      lastShownLayerTime = now;
+      int16_t x, y;
+      uint16_t w, h;
+      tft.setCursor(0, 0);
+      const char * str = layer_names[curState.getLayer()];
+      tft.getTextBounds(str, 0, 0, &x, &y, &w, &h);
+      uint16_t l = 119 - w / 2;
+      uint16_t u = 67 - h / 2;
+      tft.setCursor(l, u);
+      tft.drawRect(l+x - 3, u+y - 3, w+5, h+5, col);
+      tft.fillRect(l+x - 1, u+y - 1, w+2, h+2, ST77XX_BLACK);
+      tft.setTextColor(ST77XX_WHITE);
+      tft.print(str);
+    }
+  }
+  if (now - lastShownLayerTime > 10000) {
+    Backlight(false);
   }
 }
