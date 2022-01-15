@@ -2,6 +2,8 @@
 ifeq ($(OS),Windows_NT)
 	ARD=${HOME}/AppData/Local
 	SERIAL_PORT=COM9
+	RUNTIME_HARDWARE_PATH="c:/program files (x86)/Arduino/hardware"
+	CMD_PATH=${RUNTIME_HARDWARE_PATH}/tools
 else ifeq ($(shell uname -s), Darwin)
 	ARD=/Applications/Teensyduino.app/Contents/Java/hardware
 	SERIAL_PORT=$(shell ls /dev/cu.usbmodem5*)
@@ -41,4 +43,8 @@ USER_CPP_SRCS=\
 	laptype.cpp \
 	scanner.cpp
 
+ifeq ($(OS),Windows_NT)
+include teensy.win
+else
 include teensy.mk
+endif
