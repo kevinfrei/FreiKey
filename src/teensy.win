@@ -54,7 +54,7 @@ else
   endif
 endif
 RUNTIME_OS?=linux
-RUNTIME_PLATFORM_PATH=C:\Program Files (x86)\Arduino\hardware\teensy\avr
+RUNTIME_PLATFORM_PATH=C:\PROGRA~2\Arduino\hardware\teensy\avr
 RUNTIME_IDE_VERSION=10816
 IDE_VERSION=10816
 BUILD_PROJECT_NAME=${PROJ_NAME}
@@ -1708,1117 +1708,1117 @@ ifeq (${UPLOAD_TOOL}, teensyloader)
   UPLOAD_PATTERN="${CMD_PATH}/teensy_post_compile" "-file=${BUILD_PROJECT_NAME}" "-path=$(abspath ${BUILD_PATH})" "-tools=${CMD_PATH}" "-board=${BUILD_BOARD}" -reboot "-port=${SERIAL_PORT}" "-portlabel=${SERIAL_PORT_LABEL}" "-portprotocol=${SERIAL_PORT_PROTOCOL}"
 endif
 ifeq (${BUILD_CORE}, teensy4)
-  C_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/analog.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/bootdata.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/clockspeed.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/debugprintf.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/delay.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/digital.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/eeprom.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/extmem.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/fuse.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/interrupt.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/keylayouts.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/nonstd.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/pwm.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/rtc.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/sm_alloc_valid.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/sm_calloc.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/sm_free.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/sm_hash.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/sm_malloc.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/sm_malloc_stats.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/sm_pool.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/sm_realloc.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/sm_realloc_i.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/sm_realloc_move.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/sm_szalloc.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/sm_util.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/sm_zalloc.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/startup.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/tempmon.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/usb.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/usb_desc.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/usb_joystick.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/usb_keyboard.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/usb_midi.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/usb_mouse.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/usb_mtp.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/usb_rawhid.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/usb_seremu.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/usb_serial.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/usb_serial2.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/usb_serial3.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/usb_touch.c"
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/AudioStream.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/CrashReport.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/DMAChannel.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/EventResponder.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/HardwareSerial.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/HardwareSerial1.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/HardwareSerial2.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/HardwareSerial3.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/HardwareSerial4.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/HardwareSerial5.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/HardwareSerial6.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/HardwareSerial7.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/HardwareSerial8.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/IntervalTimer.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/IPAddress.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/main.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/new.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/Print.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/serialEvent.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/serialEvent1.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/serialEvent2.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/serialEvent3.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/serialEvent4.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/serialEvent5.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/serialEvent6.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/serialEvent7.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/serialEvent8.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/serialEventUSB1.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/serialEventUSB2.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/Stream.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/Time.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/Tone.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/usb_audio.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/usb_flightsim.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/usb_inst.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/WMath.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/WString.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/yield.cpp"
-  S_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/memcpy-armv7m.S" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4/memset.S"
-  SYS_INCLUDES+= "-IC:\Program Files (x86)\Arduino\hardware\teensy\avr\cores\teensy4"
-  VPATH_CORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy4
+  C_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/analog.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/bootdata.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/clockspeed.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/debugprintf.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/delay.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/digital.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/eeprom.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/extmem.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/fuse.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/interrupt.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/keylayouts.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/nonstd.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/pwm.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/rtc.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/sm_alloc_valid.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/sm_calloc.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/sm_free.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/sm_hash.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/sm_malloc.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/sm_malloc_stats.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/sm_pool.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/sm_realloc.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/sm_realloc_i.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/sm_realloc_move.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/sm_szalloc.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/sm_util.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/sm_zalloc.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/startup.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/tempmon.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/usb.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/usb_desc.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/usb_joystick.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/usb_keyboard.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/usb_midi.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/usb_mouse.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/usb_mtp.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/usb_rawhid.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/usb_seremu.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/usb_serial.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/usb_serial2.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/usb_serial3.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/usb_touch.c
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/AudioStream.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/CrashReport.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/DMAChannel.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/EventResponder.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/HardwareSerial.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/HardwareSerial1.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/HardwareSerial2.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/HardwareSerial3.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/HardwareSerial4.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/HardwareSerial5.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/HardwareSerial6.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/HardwareSerial7.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/HardwareSerial8.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/IntervalTimer.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/IPAddress.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/main.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/new.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/Print.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/serialEvent.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/serialEvent1.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/serialEvent2.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/serialEvent3.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/serialEvent4.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/serialEvent5.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/serialEvent6.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/serialEvent7.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/serialEvent8.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/serialEventUSB1.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/serialEventUSB2.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/Stream.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/Time.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/Tone.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/usb_audio.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/usb_flightsim.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/usb_inst.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/WMath.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/WString.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/yield.cpp
+  S_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/memcpy-armv7m.S \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/memset.S
+  SYS_INCLUDES+= -IC:\PROGRA~2\Arduino\hardware\teensy\avr\cores\teensy4
+  VPATH_CORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4
 else ifeq (${BUILD_CORE}, teensy3)
-  C_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/analog.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/eeprom.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/keylayouts.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/math_helper.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/mk20dx128.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/nonstd.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/pins_teensy.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/serial1.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/serial2.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/serial3.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/serial4.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/serial5.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/serial6.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/serial6_lpuart.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/ser_print.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/touch.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/usb_desc.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/usb_dev.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/usb_joystick.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/usb_keyboard.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/usb_mem.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/usb_midi.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/usb_mouse.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/usb_mtp.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/usb_rawhid.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/usb_seremu.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/usb_serial.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/usb_serial2.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/usb_serial3.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/usb_touch.c"
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/AudioStream.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/avr_emulation.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/CrashReport.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/DMAChannel.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/EventResponder.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/HardwareSerial.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/HardwareSerial1.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/HardwareSerial2.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/HardwareSerial3.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/HardwareSerial4.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/HardwareSerial5.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/HardwareSerial6.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/IntervalTimer.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/IPAddress.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/main.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/new.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/Print.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/serialEvent.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/serialEvent1.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/serialEvent2.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/serialEvent3.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/serialEvent4.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/serialEvent5.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/serialEvent6.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/serialEventUSB1.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/serialEventUSB2.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/Stream.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/Time.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/Tone.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/usb_audio.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/usb_flightsim.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/usb_inst.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/WMath.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/WString.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/yield.cpp"
-  S_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/memcpy-armv7m.S" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3/memset.S"
-  SYS_INCLUDES+= "-IC:\Program Files (x86)\Arduino\hardware\teensy\avr\cores\teensy3"
-  VPATH_CORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3
+  C_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/analog.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/eeprom.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/keylayouts.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/math_helper.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/mk20dx128.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/nonstd.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/pins_teensy.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/serial1.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/serial2.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/serial3.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/serial4.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/serial5.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/serial6.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/serial6_lpuart.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/ser_print.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/touch.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/usb_desc.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/usb_dev.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/usb_joystick.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/usb_keyboard.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/usb_mem.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/usb_midi.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/usb_mouse.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/usb_mtp.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/usb_rawhid.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/usb_seremu.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/usb_serial.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/usb_serial2.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/usb_serial3.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/usb_touch.c
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/AudioStream.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/avr_emulation.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/CrashReport.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/DMAChannel.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/EventResponder.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/HardwareSerial.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/HardwareSerial1.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/HardwareSerial2.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/HardwareSerial3.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/HardwareSerial4.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/HardwareSerial5.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/HardwareSerial6.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/IntervalTimer.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/IPAddress.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/main.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/new.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/Print.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/serialEvent.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/serialEvent1.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/serialEvent2.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/serialEvent3.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/serialEvent4.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/serialEvent5.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/serialEvent6.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/serialEventUSB1.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/serialEventUSB2.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/Stream.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/Time.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/Tone.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/usb_audio.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/usb_flightsim.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/usb_inst.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/WMath.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/WString.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/yield.cpp
+  S_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/memcpy-armv7m.S \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/memset.S
+  SYS_INCLUDES+= -IC:\PROGRA~2\Arduino\hardware\teensy\avr\cores\teensy3
+  VPATH_CORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3
 else ifeq (${BUILD_CORE}, teensy)
-  C_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy/keylayouts.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy/malloc.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy/pins_teensy.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy/usb.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy/WInterrupts.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy/wiring.c"
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy/CrashReport.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy/HardwareSerial.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy/IPAddress.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy/main.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy/new.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy/Print.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy/Stream.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy/Time.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy/Tone.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy/usb_api.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy/WMath.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy/WString.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy/yield.cpp"
-  SYS_INCLUDES+= "-IC:\Program Files (x86)\Arduino\hardware\teensy\avr\cores\teensy"
-  VPATH_CORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy
+  C_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy/keylayouts.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy/malloc.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy/pins_teensy.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy/usb.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy/WInterrupts.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy/wiring.c
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy/CrashReport.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy/HardwareSerial.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy/IPAddress.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy/main.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy/new.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy/Print.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy/Stream.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy/Time.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy/Tone.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy/usb_api.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy/WMath.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy/WString.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy/yield.cpp
+  SYS_INCLUDES+= -IC:\PROGRA~2\Arduino\hardware\teensy\avr\cores\teensy
+  VPATH_CORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy
 endif
 ifdef LIB_ACCELSTEPPER
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/AccelStepper/src/AccelStepper.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/AccelStepper/src/MultiStepper.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/AccelStepper/src"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/AccelStepper/src
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/AccelStepper/src/AccelStepper.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/AccelStepper/src/MultiStepper.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/AccelStepper/src
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/AccelStepper/src
 endif
 ifdef LIB_ADAFRUIT_NEOPIXEL
-  C_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Adafruit_NeoPixel/esp8266.c"
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Adafruit_NeoPixel/Adafruit_NeoPixel.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Adafruit_NeoPixel"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Adafruit_NeoPixel
+  C_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Adafruit_NeoPixel/esp8266.c
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Adafruit_NeoPixel/Adafruit_NeoPixel.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Adafruit_NeoPixel
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Adafruit_NeoPixel
 endif
 ifdef LIB_ADAFRUIT_STMPE610
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Adafruit_STMPE610/Adafruit_STMPE610.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Adafruit_STMPE610"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Adafruit_STMPE610
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Adafruit_STMPE610/Adafruit_STMPE610.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Adafruit_STMPE610
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Adafruit_STMPE610
 endif
 ifdef LIB_ADC
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ADC/ADC.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ADC/ADC_Module.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ADC/AnalogBufferDMA.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ADC"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ADC
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ADC/ADC.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ADC/ADC_Module.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ADC/AnalogBufferDMA.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ADC
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ADC
 endif
 ifdef LIB_ALTSOFTSERIAL
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/AltSoftSerial/AltSoftSerial.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/AltSoftSerial" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/AltSoftSerial/config"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/AltSoftSerial
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/AltSoftSerial/AltSoftSerial.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/AltSoftSerial \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/AltSoftSerial/config
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/AltSoftSerial
 endif
 ifdef LIB_AUDIO
-  C_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/data_bandlimit_step.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/data_spdif.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/data_ulaw.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/data_waveforms.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/data_windows.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/extras/miditones/miditones.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/extras/wav2sketch/wav2sketch.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/utility/sqrt_integer.c"
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/analyze_fft1024.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/analyze_fft256.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/analyze_notefreq.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/analyze_peak.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/analyze_print.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/analyze_rms.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/analyze_tonedetect.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/async_input_spdif3.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/control_ak4558.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/control_cs42448.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/control_cs4272.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/control_sgtl5000.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/control_tlv320aic3206.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/control_wm8731.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/effect_bitcrusher.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/effect_chorus.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/effect_combine.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/effect_delay.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/effect_delay_ext.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/effect_envelope.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/effect_fade.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/effect_flange.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/effect_freeverb.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/effect_granular.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/effect_midside.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/effect_multiply.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/effect_rectifier.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/effect_reverb.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/effect_wavefolder.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/effect_waveshaper.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/filter_biquad.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/filter_fir.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/filter_ladder.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/filter_variable.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/input_adc.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/input_adcs.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/input_i2s.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/input_i2s2.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/input_i2s_hex.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/input_i2s_oct.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/input_i2s_quad.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/input_pdm.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/input_pdm_i2s2.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/input_spdif3.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/input_tdm.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/input_tdm2.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/mixer.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/output_adat.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/output_dac.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/output_dacs.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/output_i2s.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/output_i2s2.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/output_i2s_hex.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/output_i2s_oct.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/output_i2s_quad.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/output_mqs.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/output_pt8211.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/output_pt8211_2.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/output_pwm.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/output_spdif.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/output_spdif2.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/output_spdif3.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/output_tdm.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/output_tdm2.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/play_memory.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/play_queue.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/play_sd_raw.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/play_sd_wav.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/play_serialflash_raw.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/Quantizer.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/record_queue.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/Resampler.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/spi_interrupt.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/synth_dc.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/synth_karplusstrong.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/synth_pinknoise.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/synth_pwm.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/synth_simple_drum.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/synth_sine.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/synth_tonesweep.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/synth_waveform.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/synth_wavetable.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/synth_whitenoise.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/utility/imxrt_hw.cpp"
-  S_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/memcpy_audio.S"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/utility"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/extras/miditones:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/extras/wav2sketch:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Audio/utility
+  C_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/data_bandlimit_step.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/data_spdif.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/data_ulaw.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/data_waveforms.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/data_windows.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/extras/miditones/miditones.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/extras/wav2sketch/wav2sketch.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/utility/sqrt_integer.c
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/analyze_fft1024.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/analyze_fft256.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/analyze_notefreq.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/analyze_peak.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/analyze_print.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/analyze_rms.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/analyze_tonedetect.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/async_input_spdif3.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/control_ak4558.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/control_cs42448.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/control_cs4272.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/control_sgtl5000.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/control_tlv320aic3206.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/control_wm8731.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/effect_bitcrusher.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/effect_chorus.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/effect_combine.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/effect_delay.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/effect_delay_ext.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/effect_envelope.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/effect_fade.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/effect_flange.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/effect_freeverb.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/effect_granular.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/effect_midside.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/effect_multiply.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/effect_rectifier.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/effect_reverb.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/effect_wavefolder.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/effect_waveshaper.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/filter_biquad.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/filter_fir.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/filter_ladder.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/filter_variable.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/input_adc.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/input_adcs.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/input_i2s.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/input_i2s2.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/input_i2s_hex.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/input_i2s_oct.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/input_i2s_quad.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/input_pdm.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/input_pdm_i2s2.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/input_spdif3.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/input_tdm.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/input_tdm2.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/mixer.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/output_adat.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/output_dac.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/output_dacs.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/output_i2s.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/output_i2s2.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/output_i2s_hex.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/output_i2s_oct.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/output_i2s_quad.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/output_mqs.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/output_pt8211.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/output_pt8211_2.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/output_pwm.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/output_spdif.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/output_spdif2.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/output_spdif3.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/output_tdm.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/output_tdm2.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/play_memory.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/play_queue.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/play_sd_raw.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/play_sd_wav.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/play_serialflash_raw.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/Quantizer.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/record_queue.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/Resampler.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/spi_interrupt.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/synth_dc.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/synth_karplusstrong.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/synth_pinknoise.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/synth_pwm.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/synth_simple_drum.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/synth_sine.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/synth_tonesweep.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/synth_waveform.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/synth_wavetable.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/synth_whitenoise.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/utility/imxrt_hw.cpp
+  S_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/memcpy_audio.S
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/utility
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/extras/miditones C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/extras/wav2sketch C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Audio/utility
 endif
 ifdef LIB_BOUNCE2
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Bounce2/src/Bounce2.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Bounce2/src"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Bounce2/src
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Bounce2/src/Bounce2.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Bounce2/src
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Bounce2/src
 endif
 ifdef LIB_CAPACITIVESENSOR
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/CapacitiveSensor/CapacitiveSensor.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/CapacitiveSensor"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/CapacitiveSensor
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/CapacitiveSensor/CapacitiveSensor.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/CapacitiveSensor
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/CapacitiveSensor
 endif
 ifdef LIB_CRYPTOACCEL
-  S_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/CryptoAccel/src/mmcau_aes_functions.S" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/CryptoAccel/src/mmcau_des_functions.S" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/CryptoAccel/src/mmcau_md5_functions.S" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/CryptoAccel/src/mmcau_sha1_functions.S" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/CryptoAccel/src/mmcau_sha256_functions.S"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/CryptoAccel/src"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/CryptoAccel/src
+  S_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/CryptoAccel/src/mmcau_aes_functions.S \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/CryptoAccel/src/mmcau_des_functions.S \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/CryptoAccel/src/mmcau_md5_functions.S \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/CryptoAccel/src/mmcau_sha1_functions.S \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/CryptoAccel/src/mmcau_sha256_functions.S
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/CryptoAccel/src
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/CryptoAccel/src
 endif
 ifdef LIB_DMXSIMPLE
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/DmxSimple/DmxSimple.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/DmxSimple"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/DmxSimple
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/DmxSimple/DmxSimple.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/DmxSimple
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/DmxSimple
 endif
 ifdef LIB_DS1307RTC
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/DS1307RTC/DS1307RTC.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/DS1307RTC"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/DS1307RTC
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/DS1307RTC/DS1307RTC.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/DS1307RTC
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/DS1307RTC
 endif
 ifdef LIB_EEPROM
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/EEPROM/EEPROM.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/EEPROM"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/EEPROM
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EEPROM/EEPROM.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EEPROM
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EEPROM
 endif
 ifdef LIB_ENCODER
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Encoder/Encoder.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Encoder" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Encoder/utility"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Encoder
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Encoder/Encoder.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Encoder \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Encoder/utility
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Encoder
 endif
 ifdef LIB_ETHERNET
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Ethernet/src/Dhcp.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Ethernet/src/Dns.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Ethernet/src/Ethernet.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Ethernet/src/EthernetClient.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Ethernet/src/EthernetServer.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Ethernet/src/EthernetUdp.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Ethernet/src/socket.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Ethernet/src/utility/w5100.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Ethernet/src" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Ethernet/src/utility"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Ethernet/src:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Ethernet/src/utility
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Ethernet/src/Dhcp.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Ethernet/src/Dns.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Ethernet/src/Ethernet.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Ethernet/src/EthernetClient.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Ethernet/src/EthernetServer.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Ethernet/src/EthernetUdp.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Ethernet/src/socket.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Ethernet/src/utility/w5100.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Ethernet/src \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Ethernet/src/utility
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Ethernet/src C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Ethernet/src/utility
 endif
 ifdef LIB_FASTCRC
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastCRC/examples_PC/test.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastCRC/FastCRChw.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastCRC/FastCRCsw.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastCRC"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastCRC/examples_PC:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastCRC
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastCRC/examples_PC/test.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastCRC/FastCRChw.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastCRC/FastCRCsw.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastCRC
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastCRC/examples_PC C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastCRC
 endif
 ifdef LIB_FASTLED
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastLED/src/bitswap.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastLED/src/colorpalettes.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastLED/src/colorutils.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastLED/src/FastLED.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastLED/src/hsv2rgb.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastLED/src/lib8tion.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastLED/src/noise.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/esp/32/clockless_rmt_esp32.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastLED/src/power_mgt.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastLED/src/wiring.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastLED/src" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastLED/src/lib8tion" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/apollo3" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/common" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/d21" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/d51" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/k20" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/k66" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/kl26" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/mxrt1062" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/nrf51" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/nrf52" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/sam" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/stm32" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/avr" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/esp/32" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/esp/8266" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastLED/src:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/esp/32
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastLED/src/bitswap.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastLED/src/colorpalettes.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastLED/src/colorutils.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastLED/src/FastLED.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastLED/src/hsv2rgb.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastLED/src/lib8tion.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastLED/src/noise.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/esp/32/clockless_rmt_esp32.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastLED/src/power_mgt.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastLED/src/wiring.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastLED/src \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastLED/src/lib8tion \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/apollo3 \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/common \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/d21 \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/d51 \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/k20 \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/k66 \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/kl26 \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/mxrt1062 \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/nrf51 \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/nrf52 \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/sam \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/stm32 \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/avr \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/esp/32 \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/esp/8266 \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastLED/src C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FastLED/src/platforms/esp/32
 endif
 ifdef LIB_FLEXIO_T4
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FlexIO_t4/src/FlexIOSPI.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FlexIO_t4/src/FlexIO_t4.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FlexIO_t4/src/FlexSerial.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FlexIO_t4/src"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FlexIO_t4/src
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FlexIO_t4/src/FlexIOSPI.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FlexIO_t4/src/FlexIO_t4.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FlexIO_t4/src/FlexSerial.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FlexIO_t4/src
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FlexIO_t4/src
 endif
 ifdef LIB_FLEXITIMER2
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FlexiTimer2/FlexiTimer2.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FlexiTimer2"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FlexiTimer2
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FlexiTimer2/FlexiTimer2.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FlexiTimer2
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FlexiTimer2
 endif
 ifdef LIB_FNET
-  C_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/port/cpu/fnet_cpu.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/port/cpu/mimxrt/fnet_mimxrt.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/port/cpu/mimxrt/fnet_mimxrt_eth.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/port/cpu/mimxrt/fnet_mimxrt_isr.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/port/cpu/mimxrt/fnet_mimxrt_isr_inst.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/port/cpu/mimxrt/fnet_mimxrt_serial.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/port/fnet_usb.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/port/fnet_usb_config.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/port/netif/fec/fnet_fec.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/autoip/fnet_autoip.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/azure/fnet_azure_lock.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/azure/fnet_azure_platform.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/azure/fnet_azure_socketio.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/azure/fnet_azure_threadapi.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/azure/fnet_azure_tickcounter.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/azure/fnet_azure_tlsio.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/azure/fnet_azure_tlsio_socketio.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/bench/fnet_bench_cln.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/bench/fnet_bench_srv.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/dhcp/fnet_dhcp.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/dhcp/fnet_dhcp_cln.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/dhcp/fnet_dhcp_srv.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/dns/fnet_dns.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/flash/fnet_flash.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/fnet_service.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/fs/fnet_fs.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/fs/fnet_fs_rom.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/fs/fnet_fs_root.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/http/fnet_http_cln.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/http/fnet_http_srv.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/http/fnet_http_srv_auth.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/http/fnet_http_srv_cgi.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/http/fnet_http_srv_get.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/http/fnet_http_srv_post.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/http/fnet_http_srv_ssi.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/link/fnet_link.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/llmnr/fnet_llmnr.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/mdns/fnet_mdns.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/ping/fnet_ping.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/serial/fnet_serial.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/shell/fnet_shell.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/sntp/fnet_sntp.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/telnet/fnet_telnet.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/tftp/fnet_tftp_cln.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/tftp/fnet_tftp_srv.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/tls/fnet_tls.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_arp.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_checksum.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_error.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_eth.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_icmp4.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_icmp6.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_igmp.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_inet.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_ip.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_ip4.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_ip6.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_isr.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_loop.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_mempool.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_mld.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_nd6.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_netbuf.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_netif.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_prot.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_raw.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_socket.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_stack.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_stdlib.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_tcp.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_timer.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_udp.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_wifi.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/aes.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/aesni.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/arc4.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/aria.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/asn1parse.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/asn1write.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/base64.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/bignum.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/blowfish.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/camellia.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ccm.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/certs.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/chacha20.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/chachapoly.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/cipher.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/cipher_wrap.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/cmac.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ctr_drbg.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/debug.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/des.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/dhm.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ecdh.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ecdsa.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ecjpake.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ecp.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ecp_curves.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/entropy.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/entropy_poll.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/error.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/gcm.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/havege.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/hkdf.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/hmac_drbg.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/md.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/md2.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/md4.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/md5.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/md_wrap.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/memory_buffer_alloc.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/net_sockets.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/nist_kw.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/oid.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/padlock.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/pem.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/pk.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/pkcs11.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/pkcs12.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/pkcs5.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/pkparse.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/pkwrite.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/pk_wrap.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/platform.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/platform_util.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/poly1305.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ripemd160.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/rsa.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/rsa_internal.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/sha1.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/sha256.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/sha512.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ssl_cache.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ssl_ciphersuites.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ssl_cli.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ssl_cookie.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ssl_srv.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ssl_ticket.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ssl_tls.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/threading.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/timing.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/version.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/version_features.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/x509.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/x509write_crt.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/x509write_csr.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/x509_create.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/x509_crl.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/x509_crt.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/x509_csr.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/xtea.c"
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/port/cpu/mimxrt/fnet_mimxrt_serial.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/port/compiler" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/port/cpu" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/port/cpu/mimxrt" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/port" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/port/netif/fec" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/autoip" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/azure" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/bench" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/dhcp" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/dns" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/flash" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/fs" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/http" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/link" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/llmnr" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/mdns" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/ping" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/serial" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/shell" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/sntp" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/telnet" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/tftp" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/tls" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/stack" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/configs" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/doxygen/input" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/mbedtls"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/port/cpu:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/port/cpu/mimxrt:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/port:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/port/netif/fec:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/autoip:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/azure:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/bench:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/dhcp:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/dns:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/flash:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/fs:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/http:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/link:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/llmnr:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/mdns:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/ping:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/serial:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/shell:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/sntp:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/telnet:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/tftp:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/service/tls:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/stack:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src
+  C_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/port/cpu/fnet_cpu.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/port/cpu/mimxrt/fnet_mimxrt.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/port/cpu/mimxrt/fnet_mimxrt_eth.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/port/cpu/mimxrt/fnet_mimxrt_isr.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/port/cpu/mimxrt/fnet_mimxrt_isr_inst.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/port/cpu/mimxrt/fnet_mimxrt_serial.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/port/fnet_usb.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/port/fnet_usb_config.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/port/netif/fec/fnet_fec.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/autoip/fnet_autoip.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/azure/fnet_azure_lock.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/azure/fnet_azure_platform.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/azure/fnet_azure_socketio.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/azure/fnet_azure_threadapi.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/azure/fnet_azure_tickcounter.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/azure/fnet_azure_tlsio.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/azure/fnet_azure_tlsio_socketio.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/bench/fnet_bench_cln.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/bench/fnet_bench_srv.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/dhcp/fnet_dhcp.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/dhcp/fnet_dhcp_cln.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/dhcp/fnet_dhcp_srv.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/dns/fnet_dns.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/flash/fnet_flash.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/fnet_service.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/fs/fnet_fs.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/fs/fnet_fs_rom.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/fs/fnet_fs_root.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/http/fnet_http_cln.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/http/fnet_http_srv.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/http/fnet_http_srv_auth.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/http/fnet_http_srv_cgi.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/http/fnet_http_srv_get.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/http/fnet_http_srv_post.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/http/fnet_http_srv_ssi.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/link/fnet_link.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/llmnr/fnet_llmnr.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/mdns/fnet_mdns.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/ping/fnet_ping.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/serial/fnet_serial.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/shell/fnet_shell.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/sntp/fnet_sntp.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/telnet/fnet_telnet.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/tftp/fnet_tftp_cln.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/tftp/fnet_tftp_srv.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/tls/fnet_tls.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_arp.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_checksum.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_error.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_eth.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_icmp4.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_icmp6.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_igmp.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_inet.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_ip.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_ip4.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_ip6.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_isr.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_loop.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_mempool.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_mld.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_nd6.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_netbuf.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_netif.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_prot.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_raw.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_socket.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_stack.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_stdlib.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_tcp.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_timer.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_udp.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/stack/fnet_wifi.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/aes.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/aesni.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/arc4.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/aria.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/asn1parse.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/asn1write.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/base64.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/bignum.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/blowfish.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/camellia.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ccm.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/certs.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/chacha20.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/chachapoly.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/cipher.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/cipher_wrap.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/cmac.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ctr_drbg.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/debug.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/des.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/dhm.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ecdh.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ecdsa.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ecjpake.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ecp.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ecp_curves.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/entropy.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/entropy_poll.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/error.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/gcm.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/havege.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/hkdf.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/hmac_drbg.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/md.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/md2.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/md4.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/md5.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/md_wrap.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/memory_buffer_alloc.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/net_sockets.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/nist_kw.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/oid.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/padlock.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/pem.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/pk.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/pkcs11.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/pkcs12.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/pkcs5.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/pkparse.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/pkwrite.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/pk_wrap.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/platform.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/platform_util.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/poly1305.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ripemd160.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/rsa.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/rsa_internal.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/sha1.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/sha256.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/sha512.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ssl_cache.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ssl_ciphersuites.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ssl_cli.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ssl_cookie.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ssl_srv.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ssl_ticket.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ssl_tls.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/threading.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/timing.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/version.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/version_features.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/x509.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/x509write_crt.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/x509write_csr.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/x509_create.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/x509_crl.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/x509_crt.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/x509_csr.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/xtea.c
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/port/cpu/mimxrt/fnet_mimxrt_serial.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/port/compiler \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/port/cpu \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/port/cpu/mimxrt \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/port \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/port/netif/fec \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/autoip \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/azure \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/bench \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/dhcp \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/dns \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/flash \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/fs \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/http \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/link \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/llmnr \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/mdns \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/ping \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/serial \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/shell \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/sntp \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/telnet \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/tftp \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/tls \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/stack \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/configs \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/doxygen/input \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/mbedtls
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/port/cpu C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/port/cpu/mimxrt C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/port C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/port/netif/fec C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/autoip C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/azure C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/bench C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/dhcp C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/dns C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/flash C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/fs C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/http C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/link C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/llmnr C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/mdns C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/ping C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/serial C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/shell C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/sntp C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/telnet C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/tftp C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/service/tls C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/stack C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src
 endif
 ifdef LIB_FREQCOUNT
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FreqCount/FreqCount.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FreqCount" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FreqCount/util"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FreqCount
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FreqCount/FreqCount.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FreqCount \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FreqCount/util
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FreqCount
 endif
 ifdef LIB_FREQMEASURE
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FreqMeasure/FreqMeasure.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FreqMeasureMulti/FreqMeasureMulti.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FreqMeasureMulti/FreqMeasureMultiIMXRT.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FreqMeasure" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FreqMeasure/util" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FreqMeasureMulti"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FreqMeasure:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FreqMeasureMulti
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FreqMeasure/FreqMeasure.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FreqMeasureMulti/FreqMeasureMulti.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FreqMeasureMulti/FreqMeasureMultiIMXRT.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FreqMeasure \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FreqMeasure/util \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FreqMeasureMulti
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FreqMeasure C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FreqMeasureMulti
 endif
 ifdef LIB_FREQMEASUREMULTI
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FreqMeasureMulti/FreqMeasureMulti.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FreqMeasureMulti/FreqMeasureMultiIMXRT.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FreqMeasureMulti"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FreqMeasureMulti
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FreqMeasureMulti/FreqMeasureMulti.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FreqMeasureMulti/FreqMeasureMultiIMXRT.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FreqMeasureMulti
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FreqMeasureMulti
 endif
 ifdef LIB_FREQUENCYTIMER2
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FrequencyTimer2/FrequencyTimer2.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FrequencyTimer2"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/FrequencyTimer2
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FrequencyTimer2/FrequencyTimer2.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FrequencyTimer2
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/FrequencyTimer2
 endif
 ifdef LIB_ILI9341_T3
-  C_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ILI9341_t3/extras/bdf_to_ili9341.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ILI9341_t3/font_Arial.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ILI9341_t3/font_ArialBold.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ILI9341_t3/glcdfont.c"
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ILI9341_t3/ILI9341_t3.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ILI9341_t3"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ILI9341_t3/extras:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ILI9341_t3
+  C_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ILI9341_t3/extras/bdf_to_ili9341.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ILI9341_t3/font_Arial.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ILI9341_t3/font_ArialBold.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ILI9341_t3/glcdfont.c
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ILI9341_t3/ILI9341_t3.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ILI9341_t3
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ILI9341_t3/extras C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ILI9341_t3
 endif
 ifdef LIB_ILI9488_T3
-  C_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ILI9488_t3/src/glcdfont.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ILI9488_t3/src/ili9488_t3_font_Arial.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ILI9488_t3/src/ili9488_t3_font_ArialBold.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ILI9488_t3/src/ili9488_t3_font_ComicSansMS.c"
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ILI9488_t3/ILI9488_t3..cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ILI9488_t3/src/ILI9488_t3.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ILI9488_t3" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ILI9488_t3/src"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ILI9488_t3/src:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ILI9488_t3
+  C_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ILI9488_t3/src/glcdfont.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ILI9488_t3/src/ili9488_t3_font_Arial.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ILI9488_t3/src/ili9488_t3_font_ArialBold.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ILI9488_t3/src/ili9488_t3_font_ComicSansMS.c
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ILI9488_t3/ILI9488_t3..cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ILI9488_t3/src/ILI9488_t3.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ILI9488_t3 \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ILI9488_t3/src
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ILI9488_t3/src C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ILI9488_t3
 endif
 ifdef LIB_IRREMOTE
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/IRremote/src" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/IRremote/src/private"
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/IRremote/src \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/IRremote/src/private
   VPATH_MORE+=
 endif
 ifdef LIB_KEYPAD
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Keypad/src/Key.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Keypad/src/Keypad.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Keypad/src"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Keypad/src
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Keypad/src/Key.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Keypad/src/Keypad.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Keypad/src
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Keypad/src
 endif
 ifdef LIB_LEDCONTROL
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/LedControl/src/LedControl.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/LedControl/src"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/LedControl/src
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LedControl/src/LedControl.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LedControl/src
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LedControl/src
 endif
 ifdef LIB_LEDDISPLAY
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/LedDisplay/LedDisplay.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/LedDisplay"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/LedDisplay
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LedDisplay/LedDisplay.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LedDisplay
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LedDisplay
 endif
 ifdef LIB_LIQUIDCRYSTAL
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/LiquidCrystal/LiquidCrystal.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/LiquidCrystal/src/LiquidCrystal.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/LiquidCrystalFast/LiquidCrystalFast.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/LiquidCrystal" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/LiquidCrystal/src" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/LiquidCrystalFast"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/LiquidCrystal:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/LiquidCrystal/src:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/LiquidCrystalFast
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LiquidCrystal/LiquidCrystal.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LiquidCrystal/src/LiquidCrystal.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LiquidCrystalFast/LiquidCrystalFast.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LiquidCrystal \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LiquidCrystal/src \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LiquidCrystalFast
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LiquidCrystal C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LiquidCrystal/src C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LiquidCrystalFast
 endif
 ifdef LIB_LITTLEFS
-  C_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/LittleFS/src/littlefs/lfs.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/LittleFS/src/littlefs/lfs_util.c"
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/LittleFS/src/LittleFS.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/LittleFS/src/LittleFS_NAND.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/LittleFS/src/littlefs" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/LittleFS/src"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/LittleFS/src/littlefs:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/LittleFS/src
+  C_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LittleFS/src/littlefs/lfs.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LittleFS/src/littlefs/lfs_util.c
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LittleFS/src/LittleFS.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LittleFS/src/LittleFS_NAND.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LittleFS/src/littlefs \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LittleFS/src
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LittleFS/src/littlefs C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LittleFS/src
 endif
 ifdef LIB_MFRC522
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/MFRC522/src/MFRC522.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/MFRC522/src/MFRC522Debug.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/MFRC522/src/MFRC522Extended.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/MFRC522/src/MFRC522Hack.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/MFRC522/src"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/MFRC522/src
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MFRC522/src/MFRC522.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MFRC522/src/MFRC522Debug.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MFRC522/src/MFRC522Extended.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MFRC522/src/MFRC522Hack.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MFRC522/src
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MFRC522/src
 endif
 ifdef LIB_MIDI
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/MIDI/src/MIDI.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/MIDI/test/mocks/test-mocks.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/MIDI/test/mocks/test-mocks_SerialMock.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests/unit-tests_MidiInput.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests/unit-tests_MidiInputCallbacks.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests/unit-tests_MidiMessage.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests/unit-tests_MidiOutput.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests/unit-tests_MidiThru.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests/unit-tests_Settings.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests/unit-tests_SysExCodec.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests/unit-tests.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/MIDI/doc" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/MIDI/src" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/MIDI/test/mocks" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/MIDI/src:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/MIDI/test/mocks:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/src/MIDI.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/test/mocks/test-mocks.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/test/mocks/test-mocks_SerialMock.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests/unit-tests_MidiInput.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests/unit-tests_MidiInputCallbacks.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests/unit-tests_MidiMessage.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests/unit-tests_MidiOutput.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests/unit-tests_MidiThru.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests/unit-tests_Settings.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests/unit-tests_SysExCodec.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests/unit-tests.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/doc \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/src \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/test/mocks \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/src C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/test/mocks C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests
 endif
 ifdef LIB_MSTIMER2
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/MsTimer2/MsTimer2.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/MsTimer2"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/MsTimer2
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MsTimer2/MsTimer2.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MsTimer2
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MsTimer2
 endif
 ifdef LIB_NATIVEETHERNET
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/NativeEthernet/src/NativeDns.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/NativeEthernet/src/NativeEthernet.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/NativeEthernet/src/NativeEthernetClient.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/NativeEthernet/src/NativeEthernetServer.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/NativeEthernet/src/NativeEthernetUdp.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/NativeEthernet/src/NativeMdns.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/NativeEthernet/src/Nativesocket.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/NativeEthernet/src" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/NativeEthernet/src/utility"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/NativeEthernet/src
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/NativeEthernet/src/NativeDns.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/NativeEthernet/src/NativeEthernet.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/NativeEthernet/src/NativeEthernetClient.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/NativeEthernet/src/NativeEthernetServer.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/NativeEthernet/src/NativeEthernetUdp.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/NativeEthernet/src/NativeMdns.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/NativeEthernet/src/Nativesocket.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/NativeEthernet/src \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/NativeEthernet/src/utility
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/NativeEthernet/src
 endif
 ifdef LIB_NXPMOTIONSENSE
-  C_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/NXPMotionSense/matrix.c"
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/NXPMotionSense/NXPMotionSense.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/NXPMotionSense/SensorFusion.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/NXPMotionSense" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/NXPMotionSense/utility"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/NXPMotionSense
+  C_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/NXPMotionSense/matrix.c
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/NXPMotionSense/NXPMotionSense.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/NXPMotionSense/SensorFusion.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/NXPMotionSense \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/NXPMotionSense/utility
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/NXPMotionSense
 endif
 ifdef LIB_OCTOWS2811
-  C_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/OctoWS2811/extras/VideoSDcard/addaudio/addaudio.c"
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/OctoWS2811/OctoWS2811.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/OctoWS2811/OctoWS2811_imxrt.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/OctoWS2811"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/OctoWS2811/extras/VideoSDcard/addaudio:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/OctoWS2811
+  C_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/OctoWS2811/extras/VideoSDcard/addaudio/addaudio.c
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/OctoWS2811/OctoWS2811.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/OctoWS2811/OctoWS2811_imxrt.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/OctoWS2811
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/OctoWS2811/extras/VideoSDcard/addaudio C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/OctoWS2811
 endif
 ifdef LIB_ONEWIRE
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/OneWire/OneWire.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/OneWire" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/OneWire/util"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/OneWire
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/OneWire/OneWire.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/OneWire \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/OneWire/util
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/OneWire
 endif
 ifdef LIB_OSC
-  C_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/OSC/OSCMatch.c"
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/OSC/OSCBundle.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/OSC/OSCData.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/OSC/OSCMessage.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/OSC/OSCTiming.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/OSC/SLIPEncodedSerial.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/OSC/SLIPEncodedUSBSerial.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/OSC" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/OSC/test/OSCBundle_test" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/OSC/test/OSCMessage_encode_decode_test"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/OSC
+  C_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/OSC/OSCMatch.c
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/OSC/OSCBundle.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/OSC/OSCData.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/OSC/OSCMessage.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/OSC/OSCTiming.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/OSC/SLIPEncodedSerial.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/OSC/SLIPEncodedUSBSerial.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/OSC \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/OSC/test/OSCBundle_test \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/OSC/test/OSCMessage_encode_decode_test
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/OSC
 endif
 ifdef LIB_PS2KEYBOARD
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/PS2Keyboard/PS2Keyboard.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/PS2Keyboard" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/PS2Keyboard/utility"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/PS2Keyboard
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/PS2Keyboard/PS2Keyboard.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/PS2Keyboard \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/PS2Keyboard/utility
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/PS2Keyboard
 endif
 ifdef LIB_PULSEPOSITION
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/PulsePosition/PulsePosition.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/PulsePosition/PulsePositionIMXRT.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/PulsePosition"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/PulsePosition
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/PulsePosition/PulsePosition.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/PulsePosition/PulsePositionIMXRT.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/PulsePosition
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/PulsePosition
 endif
 ifdef LIB_PWMSERVO
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/PWMServo/PWMServo.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/PWMServo"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/PWMServo
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/PWMServo/PWMServo.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/PWMServo
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/PWMServo
 endif
 ifdef LIB_QUADENCODER
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/QuadEncoder/QuadEncoder.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/QuadEncoder"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/QuadEncoder
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/QuadEncoder/QuadEncoder.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/QuadEncoder
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/QuadEncoder
 endif
 ifdef LIB_RA8875
-  C_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/aerial_22.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/aerial_48.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/akashiSquared_36.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/akashi_36.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/bin_22.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/block_22.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/designerBlock_36.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/dubstreptix_14.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/genow_22.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/heydings_36.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/indieutka_22.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/minipixel_24.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/modo_36.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/orbitron_16.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/Rubic_36.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/squarefont_14.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/squarefuture_20.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/SquareOne_14.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/SquareOne_24.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RA8875/glcdfont.c"
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RA8875/RA8875.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RA8875" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RA8875/_includes" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RA8875/_settings"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RA8875/fonts:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RA8875
+  C_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/aerial_22.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/aerial_48.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/akashiSquared_36.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/akashi_36.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/bin_22.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/block_22.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/designerBlock_36.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/dubstreptix_14.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/genow_22.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/heydings_36.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/indieutka_22.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/minipixel_24.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/modo_36.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/orbitron_16.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/Rubic_36.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/squarefont_14.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/squarefuture_20.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/SquareOne_14.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RA8875/fonts/SquareOne_24.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RA8875/glcdfont.c
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RA8875/RA8875.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RA8875 \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RA8875/_includes \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RA8875/_settings
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RA8875/fonts C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RA8875
 endif
 ifdef LIB_RADIOHEAD
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RHCRC.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RHDatagram.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RHEncryptedDriver.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RHGenericDriver.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RHGenericSPI.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RHHardwareSP12.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RHHardwareSP1I.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RHHardwareSPI.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RHMesh.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RHNRFSPIDriver.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RHReliableDatagram.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RHRouter.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RHSoftwareSPI.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RHSPIDriver.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RHutil/HardwareSerial.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RHutil/RasPi.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RHutil_pigpio/RasPi.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RH_ABZ.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RH_ASK.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RH_CC110.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RH_E32.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RH_MRF89.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RH_NRF24.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RH_NRF51.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RH_NRF905.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RH_RF22.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RH_RF24.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RH_RF69.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RH_RF95.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RH_Serial.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RH_TCP.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/STM32ArduinoCompat/HardwareSerial.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/STM32ArduinoCompat/HardwareSPI.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/STM32ArduinoCompat/wirish.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/tools/simMain.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RF24configs" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RHutil" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RHutil_pigpio" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/STM32ArduinoCompat"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RHutil:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/RHutil_pigpio:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/STM32ArduinoCompat:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/RadioHead/tools
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RHCRC.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RHDatagram.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RHEncryptedDriver.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RHGenericDriver.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RHGenericSPI.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RHHardwareSP12.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RHHardwareSP1I.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RHHardwareSPI.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RHMesh.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RHNRFSPIDriver.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RHReliableDatagram.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RHRouter.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RHSoftwareSPI.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RHSPIDriver.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RHutil/HardwareSerial.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RHutil/RasPi.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RHutil_pigpio/RasPi.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RH_ABZ.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RH_ASK.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RH_CC110.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RH_E32.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RH_MRF89.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RH_NRF24.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RH_NRF51.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RH_NRF905.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RH_RF22.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RH_RF24.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RH_RF69.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RH_RF95.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RH_Serial.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RH_TCP.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/STM32ArduinoCompat/HardwareSerial.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/STM32ArduinoCompat/HardwareSPI.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/STM32ArduinoCompat/wirish.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/tools/simMain.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RF24configs \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RHutil \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RHutil_pigpio \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/STM32ArduinoCompat
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RHutil C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/RHutil_pigpio C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/STM32ArduinoCompat C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/RadioHead/tools
 endif
 ifdef LIB_RESPONSIVEANALOGREAD
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ResponsiveAnalogRead/src/ResponsiveAnalogRead.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ResponsiveAnalogRead/src"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ResponsiveAnalogRead/src
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ResponsiveAnalogRead/src/ResponsiveAnalogRead.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ResponsiveAnalogRead/src
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ResponsiveAnalogRead/src
 endif
 ifdef LIB_SD
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SD/src/SD.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SD/src"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SD/src
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SD/src/SD.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SD/src
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SD/src
 endif
 ifdef LIB_SDFAT
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/extras/attic/PrintBasic.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/extras/attic/SysCallBareUno.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/common/FmtNumber.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/common/FsCache.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/common/FsDateTime.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/common/FsGetPartitionInfo.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/common/FsName.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/common/FsStructs.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/common/FsUtf.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/common/upcase.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/ExFatLib/ExFatDbg.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/ExFatLib/ExFatFile.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/ExFatLib/ExFatFilePrint.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/ExFatLib/ExFatFileWrite.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/ExFatLib/ExFatFormatter.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/ExFatLib/ExFatName.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/ExFatLib/ExFatPartition.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/ExFatLib/ExFatVolume.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/ExFatLib/upcase.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/FatLib/FatDbg.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/FatLib/FatFile.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/FatLib/FatFileLFN.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/FatLib/FatFilePrint.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/FatLib/FatFileSFN.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/FatLib/FatFormatter.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/FatLib/FatName.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/FatLib/FatPartition.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/FatLib/FatVolume.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/FreeStack.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/FsLib/FsFile.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/FsLib/FsNew.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/FsLib/FsVolume.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/iostream/istream.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/iostream/ostream.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/iostream/StdioStream.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/iostream/StreamBaseClass.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/MinimumSerial.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/SdCard/SdCardInfo.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/SdCard/SdioTeensy.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/SdCard/SdSpiCard.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/SpiDriver/SdSpiArtemis.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/SpiDriver/SdSpiChipSelect.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/SpiDriver/SdSpiDue.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/SpiDriver/SdSpiESP.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/SpiDriver/SdSpiParticle.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/SpiDriver/SdSpiSTM32.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/SpiDriver/SdSpiSTM32Core.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/SpiDriver/SdSpiTeensy3.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/doc" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/extras/attic" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/common" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/DigitalIO/boards" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/DigitalIO" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/ExFatLib" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/FatLib" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/FsLib" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/iostream" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/SdCard" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/SpiDriver"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/extras/attic:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/common:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/ExFatLib:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/FatLib:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/FsLib:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/iostream:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/SdCard:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SdFat/src/SpiDriver
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/extras/attic/PrintBasic.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/extras/attic/SysCallBareUno.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/common/FmtNumber.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/common/FsCache.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/common/FsDateTime.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/common/FsGetPartitionInfo.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/common/FsName.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/common/FsStructs.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/common/FsUtf.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/common/upcase.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/ExFatLib/ExFatDbg.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/ExFatLib/ExFatFile.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/ExFatLib/ExFatFilePrint.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/ExFatLib/ExFatFileWrite.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/ExFatLib/ExFatFormatter.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/ExFatLib/ExFatName.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/ExFatLib/ExFatPartition.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/ExFatLib/ExFatVolume.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/ExFatLib/upcase.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/FatLib/FatDbg.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/FatLib/FatFile.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/FatLib/FatFileLFN.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/FatLib/FatFilePrint.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/FatLib/FatFileSFN.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/FatLib/FatFormatter.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/FatLib/FatName.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/FatLib/FatPartition.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/FatLib/FatVolume.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/FreeStack.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/FsLib/FsFile.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/FsLib/FsNew.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/FsLib/FsVolume.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/iostream/istream.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/iostream/ostream.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/iostream/StdioStream.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/iostream/StreamBaseClass.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/MinimumSerial.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/SdCard/SdCardInfo.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/SdCard/SdioTeensy.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/SdCard/SdSpiCard.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/SpiDriver/SdSpiArtemis.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/SpiDriver/SdSpiChipSelect.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/SpiDriver/SdSpiDue.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/SpiDriver/SdSpiESP.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/SpiDriver/SdSpiParticle.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/SpiDriver/SdSpiSTM32.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/SpiDriver/SdSpiSTM32Core.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/SpiDriver/SdSpiTeensy3.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/doc \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/extras/attic \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/common \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/DigitalIO/boards \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/DigitalIO \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/ExFatLib \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/FatLib \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/FsLib \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/iostream \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/SdCard \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/SpiDriver
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/extras/attic C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/common C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/ExFatLib C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/FatLib C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/FsLib C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/iostream C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/SdCard C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/SpiDriver
 endif
 ifdef LIB_SERIALFLASH
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SerialFlash/SerialFlashChip.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SerialFlash/SerialFlashDirectory.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SerialFlash" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SerialFlash/util"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SerialFlash
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SerialFlash/SerialFlashChip.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SerialFlash/SerialFlashDirectory.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SerialFlash \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SerialFlash/util
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SerialFlash
 endif
 ifdef LIB_SERVO
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Servo/Servo.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Servo"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Servo
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Servo/Servo.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Servo
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Servo
 endif
 ifdef LIB_SNOOZE
-  C_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32/hal.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_35/hal.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_36/hal.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_40/hal.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC/hal.c"
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32/SnoozeAlarm.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32/SnoozeAudio.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32/SnoozeCompare.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32/SnoozeDigital.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32/SnoozeSPI.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32/SnoozeTimer.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32/SnoozeTouch.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32/SnoozeUSBSerial.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_35/SnoozeAlarm.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_35/SnoozeAudio.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_35/SnoozeCompare.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_35/SnoozeDigital.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_35/SnoozeSPI.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_35/SnoozeTimer.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_35/SnoozeUSBSerial.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_36/SnoozeAlarm.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_36/SnoozeAudio.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_36/SnoozeCompare.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_36/SnoozeDigital.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_36/SnoozeSPI.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_36/SnoozeTimer.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_36/SnoozeTouch.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_36/SnoozeUSBSerial.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_40/SnoozeAlarm.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_40/SnoozeCompare.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_40/SnoozeDigital.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_40/SnoozeSPI.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_40/SnoozeTimer.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_40/SnoozeUSBSerial.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC/SnoozeAlarm.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC/SnoozeCompare.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC/SnoozeDigital.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC/Snoozelc5vBuffer.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC/SnoozeSPI.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC/SnoozeTimer.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC/SnoozeTouch.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC/SnoozeUSBSerial.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/Snooze.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/SnoozeBlock.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_35" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_36" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_40" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_35:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_36:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_40:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Snooze/src
+  C_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32/hal.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_35/hal.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_36/hal.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_40/hal.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC/hal.c
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32/SnoozeAlarm.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32/SnoozeAudio.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32/SnoozeCompare.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32/SnoozeDigital.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32/SnoozeSPI.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32/SnoozeTimer.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32/SnoozeTouch.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32/SnoozeUSBSerial.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_35/SnoozeAlarm.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_35/SnoozeAudio.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_35/SnoozeCompare.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_35/SnoozeDigital.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_35/SnoozeSPI.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_35/SnoozeTimer.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_35/SnoozeUSBSerial.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_36/SnoozeAlarm.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_36/SnoozeAudio.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_36/SnoozeCompare.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_36/SnoozeDigital.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_36/SnoozeSPI.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_36/SnoozeTimer.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_36/SnoozeTouch.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_36/SnoozeUSBSerial.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_40/SnoozeAlarm.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_40/SnoozeCompare.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_40/SnoozeDigital.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_40/SnoozeSPI.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_40/SnoozeTimer.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_40/SnoozeUSBSerial.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC/SnoozeAlarm.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC/SnoozeCompare.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC/SnoozeDigital.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC/Snoozelc5vBuffer.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC/SnoozeSPI.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC/SnoozeTimer.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC/SnoozeTouch.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC/SnoozeUSBSerial.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/Snooze.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/SnoozeBlock.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32 \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_35 \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_36 \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_40 \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32 C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_35 C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_36 C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_40 C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Snooze/src
 endif
 ifdef LIB_SOFTPWM
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SoftPWM/SoftPWM.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SoftPWM"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SoftPWM
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SoftPWM/SoftPWM.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SoftPWM
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SoftPWM
 endif
 ifdef LIB_SOFTWARESERIAL
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SoftwareSerial/SoftwareSerial.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SoftwareSerial"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SoftwareSerial
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SoftwareSerial/SoftwareSerial.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SoftwareSerial
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SoftwareSerial
 endif
 ifdef LIB_SPI
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SPI/SPI.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SPIFlash/SPIFlash.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SPI" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SPIFlash"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SPI:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/SPIFlash
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SPI/SPI.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SPIFlash/SPIFlash.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SPI \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SPIFlash
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SPI C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SPIFlash
 endif
 ifdef LIB_SSD1351
-  C_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ssd1351/fontconvert/fontconvert.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ssd1351/glcdfont.c"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ssd1351" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ssd1351/Fonts"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ssd1351/fontconvert:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ssd1351
+  C_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ssd1351/fontconvert/fontconvert.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ssd1351/glcdfont.c
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ssd1351 \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ssd1351/Fonts
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ssd1351/fontconvert C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ssd1351
 endif
 ifdef LIB_ST7735_T3
-  C_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ST7735_t3/glcdfont.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ST7735_t3/st7735_t3_font_Arial.c" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ST7735_t3/st7735_t3_font_ComicSansMS.c"
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ST7735_t3/ST7735_t3.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ST7735_t3/ST7789_t3.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ST7735_t3"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/ST7735_t3
+  C_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ST7735_t3/glcdfont.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ST7735_t3/st7735_t3_font_Arial.c \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ST7735_t3/st7735_t3_font_ComicSansMS.c
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ST7735_t3/ST7735_t3.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ST7735_t3/ST7789_t3.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ST7735_t3
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ST7735_t3
 endif
 ifdef LIB_TALKIE
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Talkie/Talkie.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Talkie"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Talkie
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Talkie/Talkie.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Talkie
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Talkie
 endif
 ifdef LIB_TEENSYTHREADS
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/TeensyThreads/TeensyThreads.cpp"
-  S_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/TeensyThreads/TeensyThreads-asm.S"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/TeensyThreads"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/TeensyThreads
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/TeensyThreads/TeensyThreads.cpp
+  S_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/TeensyThreads/TeensyThreads-asm.S
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/TeensyThreads
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/TeensyThreads
 endif
 ifdef LIB_TFT_ILI9163C
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/TFT_ILI9163C/TFT_ILI9163C.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/TFT_ILI9163C" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/TFT_ILI9163C/_settings"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/TFT_ILI9163C
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/TFT_ILI9163C/TFT_ILI9163C.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/TFT_ILI9163C \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/TFT_ILI9163C/_settings
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/TFT_ILI9163C
 endif
 ifdef LIB_TIME
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Time/DateStrings.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Time/Time.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/TimeAlarms/TimeAlarms.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/TimerOne/TimerOne.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/TimerThree/TimerThree.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Time" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/TimeAlarms" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/TimerOne/config" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/TimerOne" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/TimerThree/config" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/TimerThree"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Time:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/TimeAlarms:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/TimerOne:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/TimerThree
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Time/DateStrings.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Time/Time.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/TimeAlarms/TimeAlarms.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/TimerOne/TimerOne.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/TimerThree/TimerThree.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Time \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/TimeAlarms \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/TimerOne/config \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/TimerOne \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/TimerThree/config \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/TimerThree
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Time C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/TimeAlarms C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/TimerOne C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/TimerThree
 endif
 ifdef LIB_TIMEALARMS
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/TimeAlarms/TimeAlarms.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/TimeAlarms"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/TimeAlarms
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/TimeAlarms/TimeAlarms.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/TimeAlarms
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/TimeAlarms
 endif
 ifdef LIB_TIMERONE
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/TimerOne/TimerOne.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/TimerOne/config" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/TimerOne"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/TimerOne
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/TimerOne/TimerOne.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/TimerOne/config \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/TimerOne
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/TimerOne
 endif
 ifdef LIB_TIMERTHREE
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/TimerThree/TimerThree.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/TimerThree/config" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/TimerThree"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/TimerThree
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/TimerThree/TimerThree.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/TimerThree/config \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/TimerThree
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/TimerThree
 endif
 ifdef LIB_TLC5940
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Tlc5940/Tlc5940.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Tlc5940/pinouts" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Tlc5940"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Tlc5940
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Tlc5940/Tlc5940.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Tlc5940/pinouts \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Tlc5940
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Tlc5940
 endif
 ifdef LIB_USBHOST_T36
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/USBHost_t36/adk.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/USBHost_t36/antplus.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/USBHost_t36/bluetooth.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/USBHost_t36/digitizer.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/USBHost_t36/ehci.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/USBHost_t36/enumeration.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/USBHost_t36/hid.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/USBHost_t36/hub.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/USBHost_t36/joystick.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/USBHost_t36/keyboard.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/USBHost_t36/keyboardHIDExtras.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/USBHost_t36/MassStorageDriver.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/USBHost_t36/memory.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/USBHost_t36/midi.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/USBHost_t36/mouse.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/USBHost_t36/print.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/USBHost_t36/rawhid.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/USBHost_t36/SerEMU.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/USBHost_t36/serial.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/USBHost_t36" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/USBHost_t36/utility"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/USBHost_t36
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/USBHost_t36/adk.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/USBHost_t36/antplus.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/USBHost_t36/bluetooth.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/USBHost_t36/digitizer.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/USBHost_t36/ehci.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/USBHost_t36/enumeration.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/USBHost_t36/hid.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/USBHost_t36/hub.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/USBHost_t36/joystick.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/USBHost_t36/keyboard.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/USBHost_t36/keyboardHIDExtras.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/USBHost_t36/MassStorageDriver.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/USBHost_t36/memory.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/USBHost_t36/midi.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/USBHost_t36/mouse.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/USBHost_t36/print.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/USBHost_t36/rawhid.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/USBHost_t36/SerEMU.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/USBHost_t36/serial.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/USBHost_t36 \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/USBHost_t36/utility
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/USBHost_t36
 endif
 ifdef LIB_WIRE
-  C_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Wire/utility/twi.c"
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Wire/Wire.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Wire/WireIMXRT.cpp" \
-    "C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Wire/WireKinetis.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Wire/utility" \
-    "-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Wire"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Wire/utility:"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/Wire
+  C_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Wire/utility/twi.c
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Wire/Wire.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Wire/WireIMXRT.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Wire/WireKinetis.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Wire/utility \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Wire
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Wire/utility C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/Wire
 endif
 ifdef LIB_XPT2046_TOUCHSCREEN
-  CPP_SYS_SRCS+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/XPT2046_Touchscreen/XPT2046_Touchscreen.cpp"
-  SYS_INCLUDES+="-I"C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/XPT2046_Touchscreen"
-  VPATH_MORE+="C:/Program Files (x86)/Arduino/hardware/teensy/avr/libraries/XPT2046_Touchscreen
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/XPT2046_Touchscreen/XPT2046_Touchscreen.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/XPT2046_Touchscreen
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/XPT2046_Touchscreen
 endif
 ifdef LIB_GFX
   C_SYS_SRCS+=libs/GFX/fontconvert/fontconvert.c \
@@ -2828,7 +2828,7 @@ ifdef LIB_GFX
     libs/GFX/Adafruit_SPITFT.cpp
   SYS_INCLUDES+=-Ilibs/GFX \
     -Ilibs/GFX/Fonts
-  VPATH_MORE+=libs/GFX/fontconvert:libs/GFX
+  VPATH_MORE+=libs/GFX/fontconvert libs/GFX
 endif
 ifdef LIB_SSD1306
   CPP_SYS_SRCS+=libs/SSD1306/Adafruit_SSD1306.cpp
@@ -2907,31 +2907,55 @@ ${BUILD_PATH}/%.S.o : %.S
 	"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_GCC}" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_S} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_S_EXTRA_FLAGS} "$<" -o "$@"
 
 ${BUILD_PATH}/s_compile_commands.json: $(USER_S_SRCS) $(S_SYS_SRCS)
+ifeq ($(OS),Windows_NT)
+	echo > $@
+	for %I in ($^)  do (
+	echo { "directory": "${PWD}","file":"%~I", "command": >> $@
+	echo \\\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_GCC}\\\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_S} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_S_EXTRA_FLAGS} \\\"%~I\\\" -o \\\"%~I.o\\\"}, >> $@ 
+	)
+else
 	echo > $@
 	for i in $^ ; do \
 	echo "{ \"directory\": \"${PWD}\",\"file\":\"$$i\",\"command\":" >> $@ ; \
-	echo "\"\\\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_GCC}\\\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_S} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_S_EXTRA_FLAGS} \\\"$$i\\\" -o \\\"$$i.o\\\"\"}," >> $@ ;\
+	echo "\"\\\\\\\\\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_GCC}\\\\\\\\\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_S} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_S_EXTRA_FLAGS} \\\\\\\\\"%~I\\\\\\\\\" -o \\\\\\\\\"%~I.o\\\\\\\\\"\"}," >> $@ ;\
 	done
+endif
 
 ${BUILD_PATH}/%.c.o : %.c
 	"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_GCC}" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_C} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_C_EXTRA_FLAGS} "$<" -o "$@"
 
 ${BUILD_PATH}/c_compile_commands.json: $(USER_C_SRCS) $(C_SYS_SRCS)
+ifeq ($(OS),Windows_NT)
+	echo > $@
+	for %I in ($^)  do (
+	echo { "directory": "${PWD}","file":"%~I", "command": >> $@
+	echo \\\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_GCC}\\\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_C} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_C_EXTRA_FLAGS} \\\"%~I\\\" -o \\\"%~I.o\\\"}, >> $@ 
+	)
+else
 	echo > $@
 	for i in $^ ; do \
 	echo "{ \"directory\": \"${PWD}\",\"file\":\"$$i\",\"command\":" >> $@ ; \
-	echo "\"\\\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_GCC}\\\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_C} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_C_EXTRA_FLAGS} \\\"$$i\\\" -o \\\"$$i.o\\\"\"}," >> $@ ;\
+	echo "\"\\\\\\\\\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_GCC}\\\\\\\\\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_C} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_C_EXTRA_FLAGS} \\\\\\\\\"%~I\\\\\\\\\" -o \\\\\\\\\"%~I.o\\\\\\\\\"\"}," >> $@ ;\
 	done
+endif
 
 ${BUILD_PATH}/%.cpp.o : %.cpp
 	"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_G__}" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_CPP} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} "-I${BUILD_PATH}/pch" ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_CPP_EXTRA_FLAGS} "$<" -o "$@"
 
 ${BUILD_PATH}/cpp_compile_commands.json: $(USER_CPP_SRCS) $(CPP_SYS_SRCS)
+ifeq ($(OS),Windows_NT)
+	echo > $@
+	for %I in ($^)  do (
+	echo { "directory": "${PWD}","file":"%~I", "command": >> $@
+	echo \\\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_G__}\\\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_CPP} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} \\\"-I${BUILD_PATH}/pch\\\" ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_CPP_EXTRA_FLAGS} \\\"%~I\\\" -o \\\"%~I.o\\\"}, >> $@ 
+	)
+else
 	echo > $@
 	for i in $^ ; do \
 	echo "{ \"directory\": \"${PWD}\",\"file\":\"$$i\",\"command\":" >> $@ ; \
-	echo "\"\\\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_G__}\\\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_CPP} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} \\\"-I${BUILD_PATH}/pch\\\" ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_CPP_EXTRA_FLAGS} \\\"$$i\\\" -o \\\"$$i.o\\\"\"}," >> $@ ;\
+	echo "\"\\\\\\\\\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_G__}\\\\\\\\\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_CPP} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} \\\\\\\\\"-I${BUILD_PATH}/pch\\\\\\\\\" ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_CPP_EXTRA_FLAGS} \\\\\\\\\"%~I\\\\\\\\\" -o \\\\\\\\\"%~I.o\\\\\\\\\"\"}," >> $@ ;\
 	done
+endif
 
 ${BUILD_PATH}/system.a : ${SYS_OBJS}
 	"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_AR}" rcs "$@" $^

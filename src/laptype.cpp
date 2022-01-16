@@ -57,8 +57,8 @@ extern "C" void setup() {
   // This is the fastest speed that worked
   // (72mhz also worked, but seemed to be the same speed)
   tft.setSPISpeed(60000000);
-  tft.setRotation(1);
   tft.fillScreen(ST77XX_BLACK);
+  tft.setRotation(1);
   tft.setFont(&FreeSans12pt7b);
   resetTheWorld();
 }
@@ -92,15 +92,17 @@ extern "C" void loop() {
       int16_t x, y;
       uint16_t w, h;
       tft.setCursor(0, 0);
-      const char * str = layer_names[curState.getLayer()];
+      const char* str = layer_names[curState.getLayer()];
       tft.getTextBounds(str, 0, 0, &x, &y, &w, &h);
-      uint16_t l = 119 - w / 2;
-      uint16_t u = 67 - h / 2;
-      tft.setCursor(l, u);
-      tft.drawRect(l+x - 3, u+y - 3, w+5, h+5, col);
-      tft.fillRect(l+x - 1, u+y - 1, w+2, h+2, ST77XX_BLACK);
+      uint16_t xx = (tft.width() - w) / 2;
+      uint16_t yy = (tft.height() + h) / 2;
+      tft.setCursor(xx, yy);
+      tft.fillRoundRect(xx + x - 10, yy + y - 10, w + 21, h + 21, 5, col);
+      tft.fillRoundRect(xx + x - 3, yy + y - 3, w + 6, h + 6, 2, ST77XX_BLACK);
       tft.setTextColor(ST77XX_WHITE);
       tft.print(str);
+      // tft.setCursor(10,120);
+      // tft.printf("%d,%d,%d,%d, [%d,%d]", x, y, w, h, xx, yy);
     }
   }
   if (now - lastShownLayerTime > 10000) {

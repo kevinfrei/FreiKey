@@ -2,7 +2,7 @@
 # it's just, perhaps, better than a shell script
 
 # phony rules cust there are no dependencies
-.PHONY: allclean karbon lk rk freikey lf rf betterfly kflash lkflash rkflash fflash lfflash rfflash allk allf kf k lkf rkf laptype lt l
+.PHONY: allclean karbon lk rk freikey lkf rkf betterfly kflash lkflash rkflash fflash lfflash rfflash allk allf kf k lkf rkf laptype lt l ltf lf flaptype laptypef
 
 # TODO: Need to turn this off for Windows GNUmake :(
 # TODO: Make instead, use WSL for build, then Windows for flashing maybe?
@@ -20,7 +20,10 @@ karbon:
 	make ${flags} -f karbon.mak all compile_commands
 
 laptype lt l:
-	make ${flags} -f laptype.mak all compile_commands
+	make ${flags} -f laptype.mak all
+
+flaptype laptypef lf ltf:
+	make ${flags} -f laptype.mak flash
 
 lk:
 	make ${flags} -f l-karbon.mak all compile_commands

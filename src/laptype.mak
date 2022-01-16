@@ -1,9 +1,9 @@
 # Some simple details
 ifeq ($(OS),Windows_NT)
 	ARD=${HOME}/AppData/Local
-	SERIAL_PORT=COM9
-	RUNTIME_HARDWARE_PATH="c:/program files (x86)/Arduino/hardware"
-	CMD_PATH=${RUNTIME_HARDWARE_PATH}/tools
+	SERIAL_PORT=COM8
+	RUNTIME_HARDWARE_PATH=c:/PROGRA~2/Arduino/hardware/tools
+	CMD_PATH=${RUNTIME_HARDWARE_PATH}
 else ifeq ($(shell uname -s), Darwin)
 	ARD=/Applications/Teensyduino.app/Contents/Java/hardware
 	SERIAL_PORT=$(shell ls /dev/cu.usbmodem5*)
