@@ -11,9 +11,9 @@ class KeyMatrix {
   static constexpr uint8_t numcols = nCols;
   static constexpr uint8_t numrows = nRows;
   static constexpr uint8_t matrix_size = numcols * numrows;
+  typedef bit_array<matrix_size> bits;
 
  private:
-  typedef bit_array<matrix_size> bits;
   static constexpr uint8_t byte_size = bits::num_bytes;
   typedef std::array<uint8_t, nCols + nRows> ColsRows;
 

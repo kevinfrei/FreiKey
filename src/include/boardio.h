@@ -37,4 +37,4 @@ using BoardIO = LaptypeBoard;
 
 #endif
 
-using MatrixBits = bit_array<BoardIO::numcols * BoardIO::numrows>;
+using MatrixBits = BoardIO::bits;

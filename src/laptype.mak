@@ -41,7 +41,8 @@ USER_CPP_SRCS=\
 	hardware.cpp \
 	kbreporter.cpp \
 	laptype.cpp \
-	scanner.cpp
+	scanner.cpp \
+	laptype-board.cpp
 
 ifeq ($(OS),Windows_NT)
 include teensy.win
