@@ -2,14 +2,14 @@
 # it's just, perhaps, better than a shell script
 
 # phony rules cust there are no dependencies
-.PHONY: allclean karbon lk rk freikey lkf rkf betterfly kflash lkflash rkflash fflash lfflash rfflash allk allf kf k lkf rkf laptype lt l ltf lf flaptype laptypef
+.PHONY: allclean karbon lk rk freikey lkf rkf kflash lkflash rkflash fflash lfflash rfflash allk allf kf k lkf rkf laptype lt l ltf lf flaptype laptypef
 
 # TODO: Need to turn this off for Windows GNUmake :(
 # TODO: Make instead, use WSL for build, then Windows for flashing maybe?
 flags=-j
 
 # Now the default target
-all: allk allf betterfly laptype
+all: allk allf laptype
 
 allclean:
 	-rm -rf out

@@ -202,12 +202,7 @@ DK(M_LOCK, 0xF9);
 #define WIN_WNR GU(RIGHT_)
 #define WIN_WNMX GU(UP_)
 
-#if defined(BETTERFLY)
-// For Betterfly, there's no need for windows anything...
-#define LAYER_MAC_BASE 0
-#define LAYER_FUNC 1
-#define LAYER_MAC_CAP 2
-#elif defined(FREIKEY)
+#if defined(FREIKEY)
 #define LAYER_MAC_BASE 0
 #define LAYER_WIN_BASE 1
 #define LAYER_FUNC 2

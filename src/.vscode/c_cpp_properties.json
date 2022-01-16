@@ -112,27 +112,6 @@
             "cStandard": "c11",
             "cppStandard": "c++17",
             "compileCommands": "${workspaceRoot}/out-rfreikeys/compile_commands.json"
-        },
-        {
-            "name": "Betterfly",
-            "intelliSenseMode": "gcc-arm",
-            "browse": {
-                "path": [],
-                "limitSymbolsToIncludedHeaders": true,
-                "databaseFilename": ""
-            },
-            "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
-            "cStandard": "c11",
-            "cppStandard": "c++17",
-            "compileCommands": "${workspaceRoot}/out-betterfly/compile_commands.json"
-        },
-        {
-            "name": "Mac",
-            "includePath": [
-                "/Users/freik/Library/Arduino15/packages/adafruit/tools/**",
-                "/Users/freik/Library/Arduino15/packages/adafruit/hardware/nrf52/0.20.5/**"
-            ],
-            "forcedInclude": []
         }
     ],
     "version": 4

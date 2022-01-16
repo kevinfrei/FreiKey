@@ -51,8 +51,7 @@ class KeyMatrix {
 #endif
   };
 
-  // This is the core place to simulate the keyboard for mocking
-  // (at least in the betterfly config)
+  // This is the core place to simulate the keyboard for mocking, 
   static bits Read() {
     bits switches{};
 #if !defined(ROWOUT)

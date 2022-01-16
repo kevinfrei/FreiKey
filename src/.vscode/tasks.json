@@ -21,20 +21,6 @@
       "group": "build"
     },
     {
-      "label": "Flash Betterfly",
-      "type": "shell",
-      "command": "make -j -f betterfly.mak flash",
-      "problemMatcher": "$gcc",
-      "group": "build"
-    },
-    {
-      "label": "Set to Betterfly",
-      "type": "shell",
-      "command": "rm Makefile ; ln -s betterfly.mak Makefile",
-      "problemMatcher": [],
-      "group": "none"
-    },
-    {
       "label": "Set to Karbon",
       "type": "shell",
       "command": "rm Makefile ; ln -s karbon.mak Makefile",
