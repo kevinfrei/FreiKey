@@ -11,12 +11,13 @@
 #include "led_states.h"
 #include "scanner.h"
 
+
 GeneralState curState{};
 MatrixBits prevBits{0};
 Debouncer<MatrixBits> debouncer{};
 
 MatrixBits key_scan(uint32_t now) {
-  auto res = LaptypeBoard::Read();
+  auto res = BoardIO::Read();
   return debouncer.update(res, now);
 }
 
@@ -30,7 +31,7 @@ void resetTheWorld() {
 extern "C" void setup() {
   DBG(Serial.begin(115200));
   DBG(Serial.println("SETUP!"));
-  LaptypeBoard::Configure();
+  BoardIO::Configure();
   resetTheWorld();
 }
 
@@ -53,7 +54,7 @@ extern "C" void loop() {
     // Update the hardware previous state
     prevBits = after;
     DBG2(after.dumpHex("State: "));
-    LaptypeBoard::Changed(now);
+    BoardIO::Changed(now);
   }
-  LaptypeBoard::Tick(now);
+  BoardIO::Tick(now);
 }
