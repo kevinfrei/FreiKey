@@ -1,9 +1,11 @@
 #pragma once
 
 #include "action.h"
-#include "hardware.h"
 #include "keyhelpers.h"
 
+using scancode_t = uint8_t;
+constexpr scancode_t null_scan_code = 0xff;
+constexpr uint16_t null_consumer_code = 0x8000;
 action_t resolveActionForScanCodeOnActiveLayer(uint8_t scanCode);
 
 struct keystate {

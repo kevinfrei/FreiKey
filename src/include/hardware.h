@@ -7,10 +7,6 @@
 #include "dbgcfg.h"
 #include "debounce.h"
 
-using scancode_t = uint8_t;
-constexpr scancode_t null_scan_code = 0xff;
-constexpr uint16_t null_consumer_code = 0x8000;
-
 #if !defined(TEENSY)
 constexpr const char* MANUFACTURER = "FreikyStuff";
 

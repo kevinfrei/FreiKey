@@ -1,13 +1,8 @@
 #pragma once
 
 #include "sysstuff.h"
-#include <vector>
 
-#include "boardio.h"
-#include "dbgcfg.h"
-#include "hardware.h"
 #include "kbreporter.h"
-#include "keyhelpers.h"
 #include "keystate.h"
 
 // variable declarations

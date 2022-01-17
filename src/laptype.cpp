@@ -2,15 +2,9 @@
 
 #include "boardio.h"
 #include "dbgcfg.h"
+#include "debounce.h"
 #include "general.h"
-#include "globals.h"
-#include "hardware.h"
-#include "helpers.h"
-#include "keymap.h"
-#include "keystate.h"
-#include "led_states.h"
 #include "scanner.h"
-
 
 GeneralState curState{};
 MatrixBits prevBits{0};

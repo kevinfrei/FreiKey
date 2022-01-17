@@ -38,7 +38,6 @@ USER_INCLUDES=-Iinclude/laptype -Iinclude/teensy -Iinclude
 
 USER_CPP_SRCS=\
 	dbgcfg.cpp \
-	hardware.cpp \
 	kbreporter.cpp \
 	laptype.cpp \
 	scanner.cpp \
