@@ -28,8 +28,21 @@
     },
     {
       "name": "Laptype-win",
-      "intelliSenseMode": "gcc-arm",
-      "compileCommands": "${workspaceFolder}/out/laptype/compile_commands.json"
+      "intelliSenseMode": "windows-gcc-arm",
+      "compileCommands": "${workspaceFolder}/out/laptype/compile_commands.json",
+      "browse": {
+        "path": ["${workspaceFolder}"],
+        "databaseFilename": ""
+      }
+    },
+    {
+      "name": "Laptype-mac",
+      "intelliSenseMode": "macos-gcc-arm",
+      "compileCommands": "${workspaceFolder}/out/laptype/compile_commands.json",
+      "browse": {
+        "path": ["${workspaceFolder}"],
+        "databaseFilename": ""
+      }
     },
     {
       "name": "Karbon",
