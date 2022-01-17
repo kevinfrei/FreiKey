@@ -26,7 +26,7 @@ PROJ_NAME=laptype
 BUILD_PATH=out/laptype
 
 # My custom flags
-COMPILER_CPP_EXTRA_FLAGS=-DDEBUG=1 -DLAPTYPE -DTEENSY -DHAS_DISPLAY -DDISPLAY_ST7789 -DROWOUT
+COMPILER_CPP_EXTRA_FLAGS=-DDEBUG=1 -DNEW_CONFIG
 
 # Libraries to use:
 LIB_BUSIO=1
@@ -34,9 +34,11 @@ LIB_SPI=1
 LIB_GFX=1
 LIB_ST77XX=1
 LIB_WIRE=1
+# With NEW_CONFIG, this is where the configuration stuff lives
+# No more changing the makefile :)
 USER_INCLUDES=-Iinclude/laptype -Iinclude/teensy -Iinclude
 
-USER_CPP_SRCS=
+USER_CPP_SRCS=\
 	dbgcfg.cpp \
 	kbreporter.cpp \
 	mainloop.cpp \

@@ -1,5 +1,9 @@
 #pragma once
 
+#if defined(NEW_CONFIG)
+#include "mpusys.h"
+#include "hwconfig.h"
+#else
 #if defined(MOCKING)
 # include "mock.h"
 #else 
@@ -35,5 +39,7 @@
 #  include <SPI.h>
 #  include <Wire.h>
 # endif
+
+#endif
 
 #endif

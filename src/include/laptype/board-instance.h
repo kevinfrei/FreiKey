@@ -1,8 +1,7 @@
 #pragma once
 
-#include "Adafruit_ST7789.h"
 #include "keymatrix.h"
-#include "teensy/mpu.h"
+#include "mpu.h"
 
 // clang-format off
 using LaptypeMatrix = KeyMatrix<Teensy, 
