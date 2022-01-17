@@ -36,12 +36,12 @@ LIB_ST77XX=1
 LIB_WIRE=1
 USER_INCLUDES=-Iinclude/laptype -Iinclude/teensy -Iinclude
 
-USER_CPP_SRCS=\
+USER_CPP_SRCS=
 	dbgcfg.cpp \
 	kbreporter.cpp \
-	laptype.cpp \
+	mainloop.cpp \
 	scanner.cpp \
-	laptype-board.cpp
+	laptype.cpp
 
 ifeq ($(OS),Windows_NT)
 include teensy.win
