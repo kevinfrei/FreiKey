@@ -1790,7 +1790,7 @@ ifeq (${BUILD_CORE}, teensy4)
     C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/yield.cpp
   S_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/memcpy-armv7m.S \
     C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4/memset.S
-  SYS_INCLUDES+= -IC:\PROGRA~2\Arduino\hardware\teensy\avr\cores\teensy4
+  SYS_INCLUDES+= -IC:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4
   VPATH_CORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4
 else ifeq (${BUILD_CORE}, teensy3)
   C_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/analog.c \
@@ -1860,7 +1860,7 @@ else ifeq (${BUILD_CORE}, teensy3)
     C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/yield.cpp
   S_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/memcpy-armv7m.S \
     C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3/memset.S
-  SYS_INCLUDES+= -IC:\PROGRA~2\Arduino\hardware\teensy\avr\cores\teensy3
+  SYS_INCLUDES+= -IC:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3
   VPATH_CORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy3
 else ifeq (${BUILD_CORE}, teensy)
   C_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy/keylayouts.c \
@@ -1882,7 +1882,7 @@ else ifeq (${BUILD_CORE}, teensy)
     C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy/WMath.cpp \
     C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy/WString.cpp \
     C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy/yield.cpp
-  SYS_INCLUDES+= -IC:\PROGRA~2\Arduino\hardware\teensy\avr\cores\teensy
+  SYS_INCLUDES+= -IC:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy
   VPATH_CORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy
 endif
 ifdef LIB_ACCELSTEPPER
@@ -2920,10 +2920,10 @@ ${BUILD_PATH}/%.S.json : %.S
 ifeq ($(OS),Windows_NT)
 	@echo { "directory":"$(<D)", "file":"$(<F)", "command": > $@
 	@echo "\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_GCC}\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_S} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_S_EXTRA_FLAGS} \"$<\" -o \"$@\"" >> $@
-	@echo }, >> $@ 
+	@echo }, >> $@
 else
-	@echo "{ \"directory\": \"${PWD}\",\"file\":\"$\",\"command\":" > $@
-	@echo "\"\\\\\\\\\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_GCC}\\\\\\\\\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_S} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_S_EXTRA_FLAGS} \\\\\\\\\"%~I\\\\\\\\\" -o \\\\\\\\\"%~I.o\\\\\\\\\"\"}," >> $@
+	@echo "{ \"directory\": \"$(<D)\",\"file\":\"$(<F)\","
+	@echo "\"command\":\"\\\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_GCC}\\\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_S} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_S_EXTRA_FLAGS} \\\"$<\\\" -o \\\"$@\\\"\"}," >> $@
 endif
 
 ${BUILD_PATH}/%.c.o : %.c
@@ -2932,11 +2932,11 @@ ${BUILD_PATH}/%.c.o : %.c
 ${BUILD_PATH}/%.c.json : %.c
 ifeq ($(OS),Windows_NT)
 	@echo { "directory":"$(<D)", "file":"$(<F)", "command": > $@
-	@echo "\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_GCC}\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_C} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_C_EXTRA_FLAGS} \"$<\" -o \"$@\"" >> $@ 
-	@echo }, >> $@ 
+	@echo "\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_GCC}\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_C} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_C_EXTRA_FLAGS} \"$<\" -o \"$@\"" >> $@
+	@echo }, >> $@
 else
-	@echo "{ \"directory\": \"${PWD}\",\"file\":\"$\",\"command\":" >> $@
-	@echo "\"\\\\\\\\\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_GCC}\\\\\\\\\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_C} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_C_EXTRA_FLAGS} \\\\\\\\\"%~I\\\\\\\\\" -o \\\\\\\\\"%~I.o\\\\\\\\\"\"}," >> $@
+	@echo "{ \"directory\": \"$(<D)\",\"file\":\"$(<F)\","
+	@echo "\"command\":\"\\\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_GCC}\\\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_C} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_C_EXTRA_FLAGS} \\\"$<\\\" -o \\\"$@\\\"\"}," >> $@
 endif
 
 ${BUILD_PATH}/%.cpp.o : %.cpp
@@ -2945,11 +2945,11 @@ ${BUILD_PATH}/%.cpp.o : %.cpp
 ${BUILD_PATH}/%.cpp.json : %.cpp
 ifeq ($(OS),Windows_NT)
 	@echo { "directory":"$(<D)", "file":"$(<F)", "command": > $@
-	@echo "\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_G__}\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_CPP} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} \"-I${BUILD_PATH}/pch\" ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_CPP_EXTRA_FLAGS} \"$<\" -o \"$<.o\"" >> $@ 
-	@echo }, >> $@ 
+	@echo "\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_G__}\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_CPP} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} \"-I${BUILD_PATH}/pch\" ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_CPP_EXTRA_FLAGS} \"$<\" -o \"$@\"" >> $@
+	@echo }, >> $@
 else
-	@echo "{ \"directory\": \"${PWD}\",\"file\":\"$<\",\"command\":" >> $@
-	@echo "\"\\\\\\\\\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_G__}\\\\\\\\\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_CPP} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} \\\\\\\\\"-I${BUILD_PATH}/pch\\\\\\\\\" ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_CPP_EXTRA_FLAGS} \\\\\\\\\"$<\\\\\\\\\" -o \\\\\\\\\"$<.o\\\\\\\\\"\"}," >> $@
+	@echo "{ \"directory\": \"$(<D)\",\"file\":\"$(<F)\","
+	@echo "\"command\":\"\\\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_G__}\\\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_CPP} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} \\\"-I${BUILD_PATH}/pch\\\" ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_CPP_EXTRA_FLAGS} \\\"$<\\\" -o \\\"$@\\\"\"}," >> $@
 endif
 
 ${BUILD_PATH}/system.a : ${SYS_OBJS}
@@ -2963,6 +2963,7 @@ ${BUILD_PATH}/${BUILD_PROJECT_NAME}.hex : ${BUILD_PATH}/${BUILD_PROJECT_NAME}.el
 
 ${BUILD_PATH}/${BUILD_PROJECT_NAME}.flash : ${BUILD_PATH}/${BUILD_PROJECT_NAME}.hex
 	${UPLOAD_PATTERN} ${UPLOAD_EXTRA_FLAGS}
+
 
 ${BUILD_PATH}/compile_commands.json: ${USER_JSON} ${SYS_JSON}
 ifeq ($(OS),Windows_NT)
