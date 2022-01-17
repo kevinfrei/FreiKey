@@ -1,118 +1,113 @@
 {
-    "env": {
-        "gccRoot": "/usr/local/opt/gcc-arm-none-eabi",
-        "gccVer": "8.3.2",
-        "srcRoot": "${workspaceRoot}",
-        "variableReference": "https://code.visualstudio.com/docs/editor/variables-reference",
-        "fileReference": "https://github.com/Microsoft/vscode-cpptools/blob/master/Documentation/LanguageServer/c_cpp_properties.json.md"
+  "env": {
+    "gccRoot": "/usr/local/opt/gcc-arm-none-eabi",
+    "gccVer": "8.3.2",
+    "srcRoot": "${workspaceFolder}",
+    "variableReference": "https://code.visualstudio.com/docs/editor/variables-reference",
+    "fileReference": "https://github.com/Microsoft/vscode-cpptools/blob/master/Documentation/LanguageServer/c_cpp_properties.json.md"
+  },
+  "configurations": [
+    {
+      "name": "FreiKeys",
+      "intelliSenseMode": "gcc-arm",
+      "browse": {
+        "path": [],
+        "limitSymbolsToIncludedHeaders": true,
+        "databaseFilename": ""
+      },
+      "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
+      "cStandard": "c11",
+      "cppStandard": "c++20",
+      "compileCommands": "${workspaceFolder}/out-freikeys/compile_commands.json",
+      "defines": ["FREIKEYS", "BTLE_HOST", "DEBUG=2"],
+      "includePath": [
+        "${workspaceFolder}/include",
+        "${workspaceFolder}/include/freikeys",
+        "${workspaceFolder}/include/adafruit_nrf52"
+      ]
     },
-    "configurations": [
-        {
-            "name": "FreiKeys",
-            "intelliSenseMode": "gcc-arm",
-            "browse": {
-                "path": [],
-                "limitSymbolsToIncludedHeaders": true,
-                "databaseFilename": ""
-            },
-            "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
-            "cStandard": "c11",
-            "cppStandard": "c++20",
-            "compileCommands": "${workspaceRoot}/out-freikeys/compile_commands.json",
-            "defines": [
-                "FREIKEYS",
-                "BTLE_HOST",
-                "DEBUG=2"
-            ],
-            "includePath": [
-                "${workspaceRoot}/include",
-                "${workspaceRoot}/include/freikeys",
-                "${workspaceRoot}/include/adafruit_nrf52"
-            ]
-        },
-        {
-            "name": "Karbon",
-            "intelliSenseMode": "gcc-arm",
-            "browse": {
-                "path": [],
-                "limitSymbolsToIncludedHeaders": true,
-                "databaseFilename": ""
-            },
-            "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
-            "cStandard": "c11",
-            "cppStandard": "c++20",
-            "compileCommands": "${workspaceFolder}/out/karbon/compile_commands.json",
-            "defines": [
-                "KARBON",
-                "BTLE_HOST",
-                "MACRO_PAD",
-                "HAS_DISPLAY",
-                "DEBUG=2"
-            ],
-            "includePath": [
-                "${workspaceRoot}/include",
-                "${workspaceRoot}/include/karbon",
-                "${workspaceRoot}/include/adafruit_nrf52"
-            ]
-        },
-        {
-            "name": "Karbon-Left",
-            "intelliSenseMode": "gcc-arm",
-            "browse": {
-                "path": [],
-                "limitSymbolsToIncludedHeaders": true,
-                "databaseFilename": ""
-            },
-            "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
-            "cStandard": "c11",
-            "cppStandard": "c++20",
-            "compileCommands": "${workspaceRoot}/out/l-karbon/compile_commands.json"
-        },
-        {
-            "name": "Karbon-Right",
-            "intelliSenseMode": "gcc-arm",
-            "browse": {
-                "path": [],
-                "limitSymbolsToIncludedHeaders": true,
-                "databaseFilename": ""
-            },
-            "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
-            "cStandard": "c11",
-            "cppStandard": "c++20",
-            "compileCommands": "${workspaceRoot}/out/r-karbon/compile_commands.json"
-        },
-        {
-            "name": "Mock",
-            "intelliSenseMode": "clang-x64",
-            "cppStandard": "c++20",
-            "compileCommands": "${workspaceRoot}/out-mock-master/compile_commands.json"
-        },
-        {
-            "name": "Left FreiKeys",
-            "intelliSenseMode": "gcc-arm",
-            "browse": {
-                "path": [],
-                "limitSymbolsToIncludedHeaders": true,
-                "databaseFilename": ""
-            },
-            "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
-            "cStandard": "c11",
-            "cppStandard": "c++17",
-            "compileCommands": "${workspaceRoot}/out-lfreikeys/compile_commands.json"
-        },
-        {
-            "name": "Right FreiKeys",
-            "intelliSenseMode": "gcc-arm",
-            "browse": {
-                "path": [],
-                "limitSymbolsToIncludedHeaders": true,
-                "databaseFilename": ""
-            },
-            "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
-            "cStandard": "c11",
-            "cppStandard": "c++17",
-            "compileCommands": "${workspaceRoot}/out-rfreikeys/compile_commands.json"
-        }
-    ],
-    "version": 4
+    {
+      "name": "Laptype-win",
+      "intelliSenseMode": "gcc-arm",
+      "compileCommands": "${workspaceFolder}/out/laptype/compile_commands.json"
+    },
+    {
+      "name": "Karbon",
+      "intelliSenseMode": "gcc-arm",
+      "browse": {
+        "path": [],
+        "limitSymbolsToIncludedHeaders": true,
+        "databaseFilename": ""
+      },
+      "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
+      "cStandard": "c11",
+      "cppStandard": "c++20",
+      "compileCommands": "${workspaceFolder}/out/karbon/compile_commands.json",
+      "defines": ["KARBON", "BTLE_HOST", "MACRO_PAD", "HAS_DISPLAY", "DEBUG=2"],
+      "includePath": [
+        "${workspaceFolder}/include",
+        "${workspaceFolder}/include/karbon",
+        "${workspaceFolder}/include/adafruit_nrf52"
+      ]
+    },
+    {
+      "name": "Karbon-Left",
+      "intelliSenseMode": "gcc-arm",
+      "browse": {
+        "path": [],
+        "limitSymbolsToIncludedHeaders": true,
+        "databaseFilename": ""
+      },
+      "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
+      "cStandard": "c11",
+      "cppStandard": "c++20",
+      "compileCommands": "${workspaceFolder}/out/l-karbon/compile_commands.json"
+    },
+    {
+      "name": "Karbon-Right",
+      "intelliSenseMode": "gcc-arm",
+      "browse": {
+        "path": [],
+        "limitSymbolsToIncludedHeaders": true,
+        "databaseFilename": ""
+      },
+      "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
+      "cStandard": "c11",
+      "cppStandard": "c++20",
+      "compileCommands": "${workspaceFolder}/out/r-karbon/compile_commands.json"
+    },
+    {
+      "name": "Mock",
+      "intelliSenseMode": "clang-x64",
+      "cppStandard": "c++20",
+      "compileCommands": "${workspaceFolder}/out-mock-master/compile_commands.json"
+    },
+    {
+      "name": "Left FreiKeys",
+      "intelliSenseMode": "gcc-arm",
+      "browse": {
+        "path": [],
+        "limitSymbolsToIncludedHeaders": true,
+        "databaseFilename": ""
+      },
+      "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
+      "cStandard": "c11",
+      "cppStandard": "c++17",
+      "compileCommands": "${workspaceFolder}/out-lfreikeys/compile_commands.json"
+    },
+    {
+      "name": "Right FreiKeys",
+      "intelliSenseMode": "gcc-arm",
+      "browse": {
+        "path": [],
+        "limitSymbolsToIncludedHeaders": true,
+        "databaseFilename": ""
+      },
+      "compilerPath": "${gccRoot}/bin/arm-none-eabi-gcc",
+      "cStandard": "c11",
+      "cppStandard": "c++17",
+      "compileCommands": "${workspaceFolder}/out-rfreikeys/compile_commands.json"
+    }
+  ],
+  "version": 4
 }
