@@ -1,11 +1,10 @@
 # FreiKey: Firmware for fully self-designed & manufactured keyboards
 
-My fully custom ergonomic two piece Bluetooth keyboard. This is forked from the
-[ErgoBlue](https://github.com/kevinfrei/ErgoBlue) repository, which is now
-effectively dead, since I'm not using the ErgoDox/ErgoBlue layout any longer.
+Firmware for my fully custom orthogonal, ergonomic keyboards:
 
 ![FreiKeys](docs/FinalCanvasXDA.jpg)
 ![Karbon](docs/KarbonCanvasXDA.jpg)
+![LapType](docs/LapType.jpg)
 
 ## Software
 
@@ -13,10 +12,12 @@ I have been refactoring this stuff a bit, and it's cleaner, but still not quite
 where I want it to be. Once I'm happy with it, I'll probably write more about
 how to use the software. For now, you'll just have to stare at it. You need to
 install the arm-none-eabi version of GCC, as I hate the Arduino IDE and have
-been using a tool I built (https://github.com/kevinfrei/Arduino2Make) to
-just use `make` to build & flash the firmware.
+been using a [tool I built](https://github.com/kevinfrei/Arduino2Make) to
+just use `make -j <...>` to build & flash the firmware.
 
 ## Quick Summary
+
+(A little out of date)
 
 I designed & manufactured these keyboards all myself. They're using a pair of
 AdaFruit Feather nRF52's, same as the ErgoBlue keyboard I wired together
@@ -88,3 +89,5 @@ keyplate](https://a360.co/2L1pxVX) is the same for both the left & right hand.
 ### Karbon
  * Everything for this keyboard is in a single project,
 [here](https://a360.co/2ZAojex)
+### LapType
+* I should get the project up here, but right now, I haven't bothered... 
