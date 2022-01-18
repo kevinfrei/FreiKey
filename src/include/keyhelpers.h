@@ -8,7 +8,7 @@ using layer_t = uint8_t;
 constexpr layer_t kPushLayer = 1;
 constexpr layer_t kPopLayer = 2;
 constexpr layer_t kToggleLayer = 3;
-constexpr layer_t kSwitchLayer = 4;
+constexpr layer_t kRotateLayer = 4;
 
 #define ___ 0
 #define PASTE(a, b) a##b
@@ -65,7 +65,7 @@ constexpr layer_t kSwitchLayer = 4;
 
 #define LYR_TOG(n) layerToggle(n)
 #define LYR_SHIFT(n) layerShift(n)
-#define LYR_SET(n) layerSwitch(n)
+#define LYR_ROTATE(i, j, k) layerRotate(i, j, k)
 
 // Some missing keycodes from the Arduino/AdaFruit API's that I need. You can
 // find these from the QMK firmware HIDClassCommon.h file. I also find them in
@@ -222,8 +222,6 @@ DK(M_LOCK, 0xF9);
 #error You probably want to define your keymap here...
 #endif
 
-#define LYR_WIN LYR_TOG(LAYER_WIN_BASE)
-#define LYR_LIN LYR_TOG(LAYER_LIN_BASE)
 #define LYR_MAC LYR_TOG(LAYER_WIN_BASE)
 #define LYR_FN LYR_TOG(LAYER_FUNC)
 #define MAC_CAP LYR_SHIFT(LAYER_MAC_CAP)
@@ -231,3 +229,4 @@ DK(M_LOCK, 0xF9);
 #define LIN_CAP LYR_SHIFT(LAYER_LIN_CAP)
 #define WIN_CTL LYR_SHIFT(LAYER_WIN_CTL)
 #define SHFT_FN LYR_SHIFT(LAYER_FUNC)
+#define LYR_MWL LYR_ROTATE(LAYER_MAC_BASE, LAYER_WIN_BASE, LAYER_LIN_BASE)

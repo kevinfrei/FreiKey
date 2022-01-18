@@ -23,14 +23,14 @@ struct keystate {
     return action & 0xff;
   }
 
-  layer_t update(scancode_t sc, bool pressed, uint32_t now) {
+  action_t update(scancode_t sc, bool pressed, uint32_t now) {
     if (scanCode == sc) {
       // Update the transition time, if any
       if (down != pressed) {
         lastChange = now;
         down = pressed;
         if (pressed) {
-          action = resolveActionForScanCodeOnActiveLayer(scanCode);
+          return resolveActionForScanCodeOnActiveLayer(scanCode);
         }
       }
     } else {
@@ -40,18 +40,8 @@ struct keystate {
       scanCode = sc;
       lastChange = now;
       if (pressed) {
-        action = resolveActionForScanCodeOnActiveLayer(scanCode);
-      } else {
-        action = 0;
-      }
-    }
-    switch (getActions(action)) {
-      case kLayerShift:
-        return down ? kPushLayer : kPopLayer;
-      case kLayerToggle:
-        return down ? kToggleLayer : 0;
-      case kLayerSwitch:
-        return down ? kLayerSwitch : 0;
+        return resolveActionForScanCodeOnActiveLayer(scanCode);
+      } 
     }
     return 0;
   };

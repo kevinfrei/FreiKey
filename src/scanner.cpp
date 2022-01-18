@@ -67,7 +67,7 @@ action_t resolveActionForScanCodeOnActiveLayer(uint8_t scanCode) {
 }
 
 #if defined(BTLE_HOST) || defined(DISPLAY_ST7789)
-// For no good reason, I only have 2 bits per color...
+// For no good Freason, I only have 2 bits per color...
 uint32_t getColorForCurrentLayer() {
   return layer_colors[curState.layer_stack[curState.layer_pos]];
 }
@@ -89,19 +89,25 @@ void preprocessScanCode(scancode_t sc, bool pressed, uint32_t now) {
   }
   DBG2(state->dump());
   // State update returns a layer action to perform...
-  switch (state->update(sc, pressed, now)) {
-    case kPushLayer:
-      curState.push_layer(state->get_layer());
+  action_t action = state->update(sc, pressed, now);
+  switch (getActions(action)) {
+    case kLayerShift:
+      if (pressed) {
+        curState.push_layer(state->get_layer());
+      } else {
+        curState.pop_layer(state->get_layer());
+      }
       break;
-    case kPopLayer:
-      curState.pop_layer(state->get_layer());
+    case kLayerToggle:
+      if (pressed) {
+        curState.toggle_layer(state->get_layer());
+      }
       break;
-    case kToggleLayer:
-      curState.toggle_layer(state->get_layer());
+    case kLayerRotate:
+      curState.rotate_layer(state->get_layer());
       break;
-    case kSwitchLayer:
-      curState.switch_layer(state->get_layer());
-      break;
+    default:
+      return;
   }
 }
 

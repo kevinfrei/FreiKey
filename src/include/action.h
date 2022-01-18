@@ -13,9 +13,8 @@ constexpr action_t kKeyAndMod = 0x5000;
 constexpr action_t kLayerShift = 0x6000;
 // This turns the layer on or off
 constexpr action_t kLayerToggle = 0x7000;
-
-// This switches the current layer to the new one
-constexpr action_t kLayerSwitch = 0x8000;
+// This Rotates through 3 'base' layers (if base is one, it only gets overlaid)
+constexpr action_t kLayerRotate = 0x8000;
 
 // This is for flagging consumer keycodes, as I have to handle them differently
 constexpr action_t kConsumer = 0x800;
@@ -43,10 +42,10 @@ inline constexpr action_t tapAndHold(action_t tap, action_t hold) {
 }
 
 inline constexpr action_t keyAndModifiers(action_t key,
-                                           action_t mod1,
-                                           action_t mod2 = 0,
-                                           action_t mod3 = 0,
-                                           action_t mod4 = 0) {
+                                          action_t mod1,
+                                          action_t mod2 = 0,
+                                          action_t mod3 = 0,
+                                          action_t mod4 = 0) {
   return combineKeys(kKeyAndMod | key, mod1 | mod2 | mod3 | mod4);
 }
 
@@ -58,8 +57,20 @@ inline constexpr action_t layerShift(uint8_t n) {
   return kLayerShift | n;
 }
 
-inline constexpr action_t layerSwitch(uint8_t n) {
-  return kLayerSwitch | n;
+inline constexpr action_t layerRotate(uint8_t i, uint8_t j, uint8_t k) {
+  return kLayerRotate | (i & 0xF) << 8 | (j & 0xF) << 4 | (k & 0xF);
+}
+
+inline constexpr uint8_t getRot0(action_t a) {
+  return (a >> 8) & 0xF;
+}
+
+inline constexpr uint8_t getRot1(action_t a) {
+  return (a >> 4) & 0XF;
+}
+
+inline constexpr uint8_t getRot2(action_t a) {
+  return a & 0XF;
 }
 
 inline constexpr action_t keyPress(action_t a) {
