@@ -135,3 +135,19 @@ Row 2       Pin 12
 #define SPI_MISO_PIN A4
 #define SPI_MISO_PAL_MODE PAL_MODE_ALTERNATIVE_7
 #endif
+
+
+For the screen:
+
+Mode indicator (Mac, Windows, Linux)
+Layers show up in a list across the bottom over the top of the displayed photo
+
+After 10 seconds of no mode activity, put up photo
+
+After 5 minutes of no activity at all, disable the backlight
+
+Upon wakeup, first display mode indicator (and display it whenever a base layer change occurs?)
+Layer stack should be displayed over the top of either the mode or the photo
+
+Any other info I want on the board?
+Eventually, I want to add a calculator :)

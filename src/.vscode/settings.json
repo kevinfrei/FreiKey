@@ -1,6 +1,8 @@
 {
   "editor.tabSize": 2,
   "files.associations": {
+    "*.cps": "javascript",
+    "*.h": "cpp",
     "*.mak": "makefile",
     "__functional_03": "cpp",
     "functional": "cpp",
@@ -36,7 +38,6 @@
     "tuple": "cpp",
     "utility": "cpp",
     "map": "cpp",
-    "*.cps": "javascript",
     "__tree": "cpp",
     "__debug": "cpp",
     "__node_handle": "cpp",
@@ -63,6 +64,7 @@
     "ostream": "cpp",
     "sstream": "cpp",
     "streambuf": "cpp",
-    "cinttypes": "cpp"
+    "cinttypes": "cpp",
+    "random": "cpp"
   }
 }

@@ -43,7 +43,16 @@ USER_CPP_SRCS=\
 	kbreporter.cpp \
 	mainloop.cpp \
 	scanner.cpp \
-	laptype.cpp
+	laptype.cpp \
+	image.cpp \
+	bitmap.cpp \
+	bitmaps/amy.cpp \
+	bitmaps/batman.cpp \
+	bitmaps/win.cpp \
+	bitmaps/linux.cpp \
+	bitmaps/mac.cpp
+
+VPATH:=bitmaps
 
 ifeq ($(OS),Windows_NT)
 include teensy.win
