@@ -6,8 +6,11 @@
 
 # TODO: Need to turn this off for Windows GNUmake :(
 # TODO: Make instead, use WSL for build, then Windows for flashing maybe?
+ifeq ($(OS),Windows_NT)
+flags=
+else
 flags=-j
-
+endif
 # Now the default target
 all: allk allf laptype
 
