@@ -1,19 +1,19 @@
 # Some simple details
 ifeq ($(OS),Windows_NT)
-	ARD=${HOME}/AppData/Local
+	ARD=${LOCALAPPDATA}
 	SERIAL_PORT=COM9
 	# This should be windows/mac/linux specific, I imagine
-	TOOLS_PATH=${ARD}/Arduino15/packages/arduino/tools/arm-none-eabi-gcc/7-2017q4
+	TOOLS_PATH=${ARD}/Arduino15/packages/adafruit/tools/arm-none-eabi-gcc/9-2019q4
 else ifeq ($(shell uname -s), Darwin)
 	ARD=${HOME}/Library
 	SERIAL_PORT=$(shell ls /dev/cu.usbmodem1*)
 	TOOLS_PATH=/usr/local/opt/gcc-arm-none-eabi
-	RUNTIME_TOOLS_CMSIS_5_7_0_PATH=${ARD}/Arduino15/packages/adafruit/tools/CMSIS/5.7.0
 else
   $(error No Linux support yet)
 endif
+RUNTIME_TOOLS_CMSIS_5_7_0_PATH=libs/CMSIS5
 # The crypto stuff should actually be automatic from the makefile generator...
-COMPILER_LIBRARIES_LDFLAGS=-Wl,-lstdc++ -Llibs/nRFCrypto/src/cortex-m4/fpv4-sp-d16-hard/ -Wl,-lnrf_cc310_0.9.13-no-interrupts
+# COMPILER_LIBRARIES_LDFLAGS=-Wl,-lstdc++ -Llibs/nRFCrypto/src/cortex-m4/fpv4-sp-d16-hard/ -Wl,-lnrf_cc310_0.9.13-no-interrupts
 
 # Necessary configuration stuff
 BOARD_NAME=feather52840
@@ -56,4 +56,8 @@ USER_CPP_SRCS=\
   sync.cpp \
 	usb-host.cpp
 
+ifeq ($(OS),Windows_NT)
+include af_nrf52.win
+else
 include af_nrf52.mk
+endif
