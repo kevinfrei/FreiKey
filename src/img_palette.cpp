@@ -1,8 +1,9 @@
-#if !defined(COMPRESSOR)
+#if defined(COMPRESSOR)
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <vector>
 #endif
 
 #include "bitmap.h"
@@ -113,9 +114,30 @@ It's designed to run on a PC, so it's a memory hog (relatively speaking),
 because why not?
 */
 
+uint16_t writeBits(uint16_t value,
+                   uint8_t numBits,
+                   uint16_t info,
+                   void (*print)(uint8_t byte)) {
+  uint8_t curBitPos = info & 0xff;
+  uint8_t curValue = info >> 8;
+  while (numBits) {
+    if (value & 1) {
+      curValue |= 1 << curBitPos;
+    }
+    curBitPos++;
+    if (curBitPos == 8) {
+      print(curValue);
+      curBitPos = 0;
+      curValue = 0;
+    }
+  }
+  return curValue << 8 | curBitPos;
+}
+
 uint16_t getVal(uint8_t* data, uint32_t pos) {
   return (data[pos] << 8) | data[pos + 1];
 }
+
 uint16_t countBits(const uint64_t* bits) {
   uint16_t count = 0;
   for (uint16_t pos = 0; pos < 1024; pos++) {
@@ -159,10 +181,11 @@ bool compress_palette(uint8_t* data,
   print(paletteSize & 0xFF);
   print(paletteSize >> 8);
   // Next, encode and build the palette (at the same time...)
-  uint16_t* palette = new uint16_t[paletteSize];
-  // Efficient! :D
-  uint16_t* reverse = new uint16_t[65536];
-  memset(reverse, 0, sizeof(reverse) * 2);
+  // This is just to check correctness...
+  std::vector<uint16_t> palette(paletteSize, 0);
+  // Efficient! :D Initialize it to FFFF for error detection
+  std::vector<uint16_t> reverse(65536,0xFFFF);
+
   uint16_t curBit = 0xFFFF;
   uint16_t palOfs = 0;
   // encode the bit numbers that are set in a list
@@ -181,10 +204,19 @@ bool compress_palette(uint8_t* data,
     return false;
   }
   // Okay, now walk the pixels, reading the values and finding their palette
-  // index
-
-  // TODO!
-
+  // index, then write the index in numBits number of bits
+  uint16_t info = 0;
+  for (uint32_t pos = 0; pos < cbytes; pos++) {
+    uint16_t color = colors[pos];
+    uint16_t pIndex = reverse[color];
+    if (pIndex > paletteSize || palette[pIndex] != color) {
+      fprintf(stderr, "Derpy\n");
+      return false;
+    }
+    info = writeBits(pIndex, numBits, info, print);
+  }
+  delete[] reverse;
+  delete[] palette;
   return true;
 }
 
