@@ -1,7 +1,7 @@
 #pragma once
 
-#include <stdint.h>
 #include <avr/pgmspace.h>
+#include <stdint.h>
 
 enum class image_compression : uint8_t {
   RAW = 0,
@@ -17,8 +17,8 @@ An odd value means N / 2 bytes to repeat the next single encoded value
 An even value means N / 2 bytes to read in as unique string of pixels
 
 PAL_RAW: (NYI)
-First two bytes: little endian palette size (always less than 32768, or it's dumb) (palette_size)
-Next palette_size * 2 bytes: the palette entries
+First two bytes: little endian palette size (always less than 32768, or it's
+dumb) (palette_size) Next palette_size * 2 bytes: the palette entries
 log(palette_size) * width * height bits: pixel data
 
 PAL_NQRLE: (NYI)
@@ -36,3 +36,11 @@ struct image_descriptor {
 void decode_nqrle16(const uint8_t* compressedStream,
                     uint32_t streamLength,
                     void (*send)(const uint8_t* buf, uint16_t len));
+
+void decode_palette(const uint8_t compressedStream,
+                    uint32_t streamLength,
+                    void (*send)(const uint8_t* buf, uint16_t len));
+
+void decode_palnqrle(const uint8_t compressedStream,
+                     uint32_t streamLength,
+                     void (*send)(const uint8_t* buf, uint16_t len));
