@@ -62,7 +62,7 @@ void decode_raw(const uint8_t* data,
                 uint32_t len,
                 void (*send)(const uint8_t* b, uint16_t l)) {
   while (len) {
-    uint16_t l = std::min(0x8000, len);
+    uint16_t l = std::min(0x8000u, len);
     send(data, l);
     data += l;
     len -= l;
@@ -96,91 +96,151 @@ int decode(int number, const char* filename) {
 
 #define MAX_SIZE 1048576
 
-image_compression getCompType(const std::string& name) {
-  if (name.find("rle") == 0) {
-    return image_compression::NQRLE;
-  }
-  if (name.find("rpal") == 0) {
-    return image_compression::PAL_NQRLE;
-  }
-  if (name.find("pal") == 0) {
-    return image_compression::PAL_RAW;
-  }
-  if (name.find("raw") == 0) {
-    return image_compression::RAW;
-  }
-  return image_compression::INVALID;
-}
-
 struct cmdLine {
   image_compression cmpType;
   uint8_t imageToDecode;
   std::string filename;
-  uint16_t raw_width;
-  uint16_t raw_height;
+  uint16_t width;
+  uint16_t height;
 };
 
+int parseCodec(const std::string& name, cmdLine* ln) {
+  if (name.find("rle") == 0) {
+    ln->cmpType = image_compression::NQRLE;
+  } else if (name.find("prle") == 0) {
+    ln->cmpType = image_compression::PAL_NQRLE;
+  } else if (name.find("pal") == 0) {
+    ln->cmpType = image_compression::PAL_RAW;
+  } else if (name.find("raw") == 0) {
+    ln->cmpType = image_compression::RAW;
+  } else
+    return 1;
+  return 0;
+}
+
+int32_t readPosNumber(const std::string& maybeNum) {
+  int32_t res = 0;
+  for (auto ci = maybeNum.rbegin(); ci != maybeNum.rend(); ci++) {
+    char c = *ci;
+    if (!isdigit(c)) {
+      return -1;
+    }
+    res = res * 10 + c - '0';
+  }
+  return res;
+}
+
+int parseHeight(const std::string& height, cmdLine* ln) {
+  int val = readPosNumber(height);
+  if (val < 0) {
+    return 1;
+  } else {
+    ln->height = val;
+    return 0;
+  }
+}
+
+int parseWidth(const std::string& width, cmdLine* ln) {
+  int val = readPosNumber(width);
+  if (val < 0) {
+    return 1;
+  } else {
+    ln->width = val;
+    return 0;
+  }
+}
+
+int parseImageNum(const std::string& num, cmdLine* ln) {
+  int val = readPosNumber(num);
+  if (val < 0) {
+    return 1;
+  } else {
+    ln->imageToDecode = val;
+    return 0;
+  }
+}
+
 int usage(const char* name) {
-  fprintf(
-    stderr,
-    "Usage:\n%s <flags> <filename>\nWhere <filename> is (probably) a file "
-    "produced from https://lvgl.io/tools/imageconverter in the 565 "
-    "format\n<flags> are:\n\t-d:/--decode:<num> to decode from the internal "
-    "image <num> and spit it into <filename>\n\t-c:/--codec:<id> force output "
-    "of that codec (don't find best): raw, pal, rle, rpal\n",
-    name);
+  fprintf(stderr,
+          "Usage:\n%s <flags> <--codec:XXX> <filename>\n"
+          "Where <filename> is (probably) a file produced from "
+          "https://lvgl.io/tools/imageconverter in the 565 format\n"
+          "and XXX is optionally raw, rle, pal, or prle\n"
+          "OR\n"
+          "%s --decode:# <filename>\n"
+          "Spit out the internal image # into <filename>\n"
+          "OR\n"
+          "%s --width:# --height:# <filename.raw>\n"
+          /*
+          "<flags> are:\n\t-d:/--decode:<num> to decode from the internal "
+          "image <num> and spit it into <filename>\n\t-c:/--codec:<id> force
+          output " "of that codec (don't find best): raw, pal, rle, rpal\n"*/
+          ,
+          name,
+          name,
+          name);
   return 1;
 }
 
-int parseArgs(int argc, const char *argv[], cmdLine *ln){
-    // Argument parsing really does suck...
-  if (argc > 3 || argc < 2 || argc == 2 && argv[1][0] == '-') {
-    return -1;
-  }
-  if (argc == 3) {
-    std::string flag{argv[1]};
-    if (flag.size() < 3 || flag[0] != '-') {
-      return -1;
-    }
-    if (flag[1] == '-') {
-      if (flag.size() == 10) {
-        if (flag.substr(0, 9) != std::string("--decode:") ||
-            !isdigit(flag[9]) || flag[9] >= '0' + builtin_count) {
-          return -1;
+struct flags {
+  std::string name;
+  int (*parser)(const std::string&, cmdLine*);
+};
+
+flags parser[] = {
+  {.name = std::string("--decode:"), .parser = parseImageNum},
+  {.name = std::string("--codec:"), .parser = parseCodec},
+  {.name = std::string("--width:"), .parser = parseWidth},
+  {.name = std::string("--height:"), .parser = parseHeight},
+};
+
+int parseArgs(int argc, const char* argv[], cmdLine* ln) {
+  // Argument parsing really does suck...
+  for (int curArg = 1; curArg < argc; curArg++) {
+    std::string arg{argv[curArg]};
+    if (arg[0] != '-') {
+      if (curArg != argc - 1) {
+        return -1;
+      }
+      ln->filename = arg;
+    } else {
+      for (auto& flag : parser) {
+        if (arg.size() > flag.name.size() &&
+            arg.substr(0, flag.name.size()) == flag.name) {
+          int res = flag.parser(arg.substr(flag.name.size()), ln);
+          if (res != 0)
+            return res;
+          else
+            break;
         }
-        return decode(flag[9] - '0', argv[2]);
       }
-      if (flag[1] == '-' && flag.size() > 9 &&
-          flag.substr(0, 8) == std::string("--codec:")) {
-        cmpType = getCompType(flag.substr(8));
-      } else {
-        return -1;
-      }
-    } else if (flag.size() == 4) {
-      if (flag[1] != 'd' || flag[2] != ':' || !isdigit(flag[3]) ||
-          flag[3] >= '0' + builtin_count) {
-        return -1;
-      }
-      return decode(flag[3] - '0', argv[2]);
-    } else if (flag.size() > 3 && flag.substr(0, 3) == std::string("-c:")) {
-      cmpType = getCompType(flag.substr(3));
     }
   }
   return 0;
 }
+
+bool validateArgs(cmdLine &ln) {
+  if (!!ln.height != !!ln.width) {
+    return false;
+  }
+  if (ln.imageToDecode > builtin_count) {
+    return false;
+  }
+  return true;
+}
+
 // I used https://lvgl.io/tools/imageconverter to convert to 565 format
 // This takes .bin files and spits out the list of bytes
 int main(int argc, const char* argv[]) {
-  image_compression cmpType = image_compression::FIND_BEST;
-  int res = parseArgs(argc, argv, &cmpType)
-  if (cmpType == image_compression::INVALID) {
+  cmdLine ln;
+  if (parseArgs(argc, argv, &ln) || !validateArgs(ln)) {
     return usage(argv[0]);
   }
-
+// Resume here
   std::ifstream stream(argv[argc - 1], std::ios::in | std::ios::binary);
   std::vector<uint8_t> contents((std::istreambuf_iterator<char>(stream)),
                                 std::istreambuf_iterator<char>());
-  // contents.data();
+
   uint8_t* buf = contents.data();
   uint32_t sz = contents.size();
   uint8_t* inBuf = &buf[4];
