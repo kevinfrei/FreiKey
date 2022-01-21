@@ -235,10 +235,10 @@ static const uint8_t gfx_batman_data[7314] PROGMEM = {
 // clang-format on
 
 static const image_descriptor gfx_batman_raw = {
-  .compression = image_compression::NQRLE,
   .width = 240,
   .height = 135,
   .byte_count = 7314,
+  .compression = image_compression::NQRLE,
   .image_data = gfx_batman_data,
 }; // 8.86 compression ratio
 

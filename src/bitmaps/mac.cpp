@@ -233,10 +233,10 @@ static const uint8_t gfx_mac_data[7256] PROGMEM = {
 // clang-format on
 
 static const image_descriptor gfx_mac_raw = {
-  .compression = image_compression::NQRLE,
   .width = 78,
   .height = 96,
   .byte_count = 7256,
+  .compression = image_compression::NQRLE,
   .image_data = gfx_mac_data,
 }; // 2.06 compression ratio
 

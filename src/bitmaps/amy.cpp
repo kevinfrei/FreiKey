@@ -1904,10 +1904,10 @@ static const uint8_t gfx_amy_data[60716] PROGMEM = {
 // clang-format on
 
 static const image_descriptor gfx_amy_raw = {
-  .compression = image_compression::NQRLE,
   .width = 240,
   .height = 135,
   .byte_count = 60716,
+  .compression = image_compression::NQRLE,
   .image_data = gfx_amy_data,
 }; // 1.07 compression ratio
 

@@ -43,13 +43,16 @@ void decode_nqrle16(const uint8_t* compressedStream,
                     uint32_t streamLength,
                     void (*send)(const uint8_t* buf, uint16_t len));
 
-void decode_palette(const uint8_t compressedStream,
+void decode_palette(const uint8_t* compressedStream,
                     uint32_t streamLength,
                     void (*send)(const uint8_t* buf, uint16_t len));
 
-void decode_palnqrle(const uint8_t compressedStream,
+void decode_palnqrle(const uint8_t* compressedStream,
                      uint32_t streamLength,
                      void (*send)(const uint8_t* buf, uint16_t len));
+
+using sender = void (*)(const uint8_t*, uint16_t);
+using decoder = void (*)(const uint8_t*, uint32_t, sender);
 
 // Helpers
 uint8_t log2ish(uint16_t n);

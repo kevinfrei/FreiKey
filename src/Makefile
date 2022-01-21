@@ -47,7 +47,17 @@ lkflash lkf:
 rkflash rkf:
 	make ${flags} -f r-karbon.mak flash
 
-comp cmp img imgcomp: out/imagecomp
+ifeq ($(OS),Windows_NT)
+CXX=clang
+SFX=.exe
+else
+SFX=
+endif
+
+comp cmp img imgcomp: out out/imagecomp${SFX}
+
+out:
+	-mkdir out
 
 # Set up rules for local binaries
 out/%.o: bitmaps/%.cpp
@@ -56,5 +66,5 @@ out/%.o: bitmaps/%.cpp
 out/%.o : %.cpp
 	${CXX} -g -O0 -c -DCOMPRESSOR -Iinclude -std=c++17 $< -o $@
 
-out/imagecomp: out/imgencoder.o out/imgenc_nqrle16.o out/imgenc_palette.o out/imgdec_nqrle16.o out/imgdec_palette.o out/amy.o out/batman.o out/win.o out/mac.o out/linux.o
+out/imagecomp${SFX}: out/imgencoder.o out/imgenc_nqrle16.o out/imgenc_palette.o out/imgdec_nqrle16.o out/imgdec_palette.o out/amy.o out/batman.o out/win.o out/mac.o out/linux.o
 	${CXX} -g -o $@ $^

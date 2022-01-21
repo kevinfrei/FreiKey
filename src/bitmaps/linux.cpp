@@ -168,10 +168,10 @@ static const uint8_t gfx_linux_data[5183] PROGMEM = {
 // clang-format on
 
 static const image_descriptor gfx_linux_raw = {
-  .compression = image_compression::NQRLE,
   .width = 79,
   .height = 96,
   .byte_count = 5183,
+  .compression = image_compression::NQRLE,
   .image_data = gfx_linux_data,
 }; // 2.93 compression ratio
 
