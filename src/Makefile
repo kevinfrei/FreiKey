@@ -2,7 +2,7 @@
 # it's just, perhaps, better than a shell script
 
 # phony rules cust there are no dependencies
-.PHONY: allclean karbon lk rk lkf rkf kflash lkflash rkflash fflash lfflash rfflash allk allf kf k lkf rkf laptype lt l ltf lf flaptype laptypef
+.PHONY: allclean karbon lk rk lkf rkf kflash lkflash rkflash fflash lfflash rfflash allk allf kf k lkf rkf laptype lt l ltf lf flaptype laptypef imgcomp img cmp comp
 
 # TODO: Need to turn this off for Windows GNUmake :(
 # TODO: Make instead, use WSL for build, then Windows for flashing maybe?
@@ -46,3 +46,15 @@ lkflash lkf:
 
 rkflash rkf:
 	make ${flags} -f r-karbon.mak flash
+
+comp cmp img imgcomp: out/imagecomp
+
+# Set up rules for local binaries
+out/%.o: bitmaps/%.cpp
+	${CXX} -c -DCOMPRESSOR -Iinclude -DPROGMEM=" " -std=c++17 $< -o $@
+
+out/%.o : %.cpp
+	${CXX} -g -O0 -c -DCOMPRESSOR -Iinclude -std=c++17 $< -o $@
+
+out/imagecomp: out/imgencoder.o out/imgenc_nqrle16.o out/imgenc_palette.o out/imgdec_nqrle16.o out/imgdec_palette.o out/amy.o out/batman.o out/win.o out/mac.o out/linux.o
+	${CXX} -g -o $@ $^

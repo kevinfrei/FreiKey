@@ -1,6 +1,8 @@
 #pragma once
 
+#if !defined(COMPRESSOR)
 #include <avr/pgmspace.h>
+#endif
 #include <stdint.h>
 
 enum class image_compression : uint8_t {
@@ -8,6 +10,10 @@ enum class image_compression : uint8_t {
   NQRLE, // 16 bit NQRLE encoding
   PAL_RAW, // Palette encoding
   PAL_NQRLE, // Palette encoded as NQRLE data
+#if defined(COMPRESSOR)
+  FIND_BEST, 
+  INVALID
+#endif
 };
 
 /*
@@ -27,9 +33,9 @@ where data is log(palette_size) bits, with the end trimmed
 */
 
 struct image_descriptor {
-  image_compression compression;
   uint16_t width, height;
-  uint32_t byte_count;
+  uint32_t byte_count: 24;
+  image_compression compression: 8;
   const uint8_t* image_data;
 };
 
@@ -44,3 +50,6 @@ void decode_palette(const uint8_t compressedStream,
 void decode_palnqrle(const uint8_t compressedStream,
                      uint32_t streamLength,
                      void (*send)(const uint8_t* buf, uint16_t len));
+
+// Helpers
+uint8_t log2ish(uint16_t n);
