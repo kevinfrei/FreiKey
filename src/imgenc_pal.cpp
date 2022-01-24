@@ -1,3 +1,4 @@
+#include <bitset>
 #include <ctype.h>
 #include <iostream>
 #include <utility>
@@ -33,44 +34,19 @@ uint16_t writeBits(uint16_t value,
   return curValue << 8 | curBitPos;
 }
 
-uint16_t getVal(uint8_t* data, uint32_t pos) {
-  return (data[pos] << 8) | data[pos + 1];
-}
-
-uint16_t countBits(const uint64_t* bits) {
-  uint16_t count = 0;
-  for (uint16_t pos = 0; pos < 1024; pos++) {
-    uint64_t val = bits[pos];
-    while (val) {
-      count++;
-      val &= (val - 1);
-    }
-  }
-  return count;
-}
-
-constexpr uint8_t bpl = sizeof(uint64_t) * 8;
-
-uint64_t getBitMask(uint8_t val) {
-  return static_cast<uint64_t>(1) << static_cast<uint64_t>(val);
-}
-
 std::pair<std::vector<uint16_t>, std::vector<uint16_t>> calculate_palette(
   const uint16_t* colors, uint32_t cbytes) {
   // Lazy man's set: it's just bits :D
-  uint64_t which[0x10000 / bpl];
-  memset(&which[0], 0, sizeof(uint64_t) * (0x10000 / bpl));
+  std::bitset<65536> which;
   uint16_t paletteSize = 0;
   for (uint32_t pos = 0; pos < cbytes; pos++) {
     uint16_t color = colors[pos];
-    uint64_t bitSet = getBitMask(color & 63);
-    ;
-    if (!(which[color / 64] & bitSet)) {
-      which[color / 64] |= bitSet;
+    if (!which.test(color)) {
+      which.set(color);
       paletteSize++;
     }
   }
-  const uint32_t bitCount = countBits(which);
+  const uint32_t bitCount = which.count();
   if (paletteSize != bitCount) {
     std::cerr << "Derpy: " << paletteSize << " but " << bitCount << " counted"
               << std::endl;
@@ -96,7 +72,7 @@ std::pair<std::vector<uint16_t>, std::vector<uint16_t>> calculate_palette(
     curBit++;
     // If this bit number is set, add it to the palette
 
-    if (which[curBit / 64] & getBitMask(curBit & 63)) {
+    if (which.test(curBit)) {
       pal_and_rev.second[curBit] = palOfs;
       pal_and_rev.first[palOfs++] = curBit;
       // print(curBit & 0xFF);

@@ -23,7 +23,7 @@ std::vector<uint8_t> outBuf;
 std::vector<uint8_t> chkBuf;
 
 int linePos = 0;
-int lineWidth = 120;
+int lineWidth = 100;
 
 void appendToOut(uint8_t val) {
   int width = val < 10 ? 2 : (val < 100) ? 3 : 4;
