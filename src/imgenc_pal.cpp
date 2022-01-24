@@ -13,12 +13,14 @@ It's designed to run on a PC, so it's a memory hog (relatively speaking),
 because why not?
 */
 
+// This writes values of width "numBits", while maintaining any partially
+// written bytes (returning the partially written blobs)
 uint16_t writeBits(uint16_t value,
                    uint8_t numBits,
-                   uint16_t info,
+                   uint16_t bitWriterBuffer,
                    void (*print)(uint8_t byte)) {
-  uint8_t curBitPos = info & 0xff;
-  uint8_t curValue = info >> 8;
+  uint8_t curBitPos = bitWriterBuffer & 0xff;
+  uint8_t curValue = bitWriterBuffer >> 8;
   while (numBits--) {
     if (value & 1) {
       curValue |= 1 << curBitPos;
@@ -54,10 +56,10 @@ std::pair<std::vector<uint16_t>, std::vector<uint16_t>> calculate_palette(
   }
   uint8_t numBits = log2ish(paletteSize);
   // This is the size of the thing, when we're done.
-  if (numBits * cbytes / 8 + paletteSize + 1 >= cbytes) {
-    // Don't 'compress' it if it's going to be larger, right?
-    // return false;
-  }
+  // if (numBits * cbytes / 8 + paletteSize + 1 >= cbytes) {
+  // Don't 'compress' it if it's going to be larger, right?
+  // return false;
+  // }
   // Next, encode and build the palette (at the same time...)
   // This is just to check correctness...
   std::pair<std::vector<uint16_t>, std::vector<uint16_t>> pal_and_rev =
@@ -116,7 +118,7 @@ bool encode_pal(const uint8_t* data,
   uint8_t numBits = log2ish(pal_and_rev.first.size());
   // Okay, now walk the pixels, reading the values and finding their palette
   // index, then write the index in numBits number of bits
-  uint16_t info = 0;
+  uint16_t bitWriterBuffer = 0;
   for (uint32_t pos = 0; pos < cbytes; pos++) {
     uint16_t color = colors[pos];
     uint16_t pIndex = pal_and_rev.second[color];
@@ -124,11 +126,11 @@ bool encode_pal(const uint8_t* data,
       std::cerr << "Derpy" << std::endl;
       return false;
     }
-    info = writeBits(pIndex, numBits, info, print);
+    bitWriterBuffer = writeBits(pIndex, numBits, bitWriterBuffer, print);
   }
   // Make sure we get the last few bits
-  if (info) {
-    print(info >> 8);
+  if (bitWriterBuffer) {
+    print((bitWriterBuffer >> 8) & 0xFF);
   }
   return true;
 }
