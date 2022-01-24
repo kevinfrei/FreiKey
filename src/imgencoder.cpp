@@ -23,9 +23,11 @@ std::vector<uint8_t> outBuf;
 std::vector<uint8_t> chkBuf;
 
 int linePos = 0;
+int lineWidth = 120;
+
 void appendToOut(uint8_t val) {
   int width = val < 10 ? 2 : (val < 100) ? 3 : 4;
-  if (linePos + width > 80) {
+  if (linePos + width > lineWidth) {
     std::cout << std::endl;
     linePos = 0;
   }
@@ -34,7 +36,7 @@ void appendToOut(uint8_t val) {
   std::cout << static_cast<uint32_t>(val) << ",";
 }
 
-void appendToOut(const uint8_t *buf, uint16_t len) {
+void appendToOut(const uint8_t* buf, uint16_t len) {
   while (len--) {
     appendToOut(*buf++);
   }
@@ -235,21 +237,24 @@ int main(int argc, const char* argv[]) {
 
   std::cout << "#include \"bitmap.h\"" << std::endl
             << std::endl
+            << "// clang-format off" << std::endl
             << "uint8_t " << varName << "_data[] PROGMEM = {" << std::endl;
   // TODO: Spit out the actual encoding
-  switch(cmp) {
+  switch (cmp) {
     case image_compression::NQRLE:
-    encode_rle(inBuf, sz, &appendToOut);
-    break;
+      encode_rle(inBuf, sz, &appendToOut);
+      break;
     case image_compression::PAL_RAW:
-    encode_pal(inBuf, sz, &appendToOut);
-    break;
+      encode_pal(inBuf, sz, &appendToOut);
+      break;
     default:
-    std::cout << "UNSUPPORTED TARGET FORMAT!" << std::endl;
+      std::cout << "UNSUPPORTED TARGET FORMAT!" << std::endl;
   }
   std::cout
     << std::endl
     << "};" << std::endl
+    << "// clang-format on" << std::endl
+    << std::endl
     << "image_descriptor " << varName << " = {" << std::endl
     << "  .width = " << width << "," << std::endl
     << "  .height = " << height << "," << std::endl

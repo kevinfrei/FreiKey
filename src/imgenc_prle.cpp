@@ -14,5 +14,6 @@ because why not?
 // it should work better for stuff that has strings of unique stuff along with
 // strings of repeated stuff
 bool encode_prle(uint8_t* data, uint32_t bytes, void (*print)(uint8_t byte)) {
+  // First, encode the palette, then encode an RLE encoded set of palette indices
   return false;
 }
