@@ -34,6 +34,10 @@ void appendToOut(uint8_t val) {
   std::cout << static_cast<uint32_t>(val) << ",";
 }
 
+void appendToChk(uint8_t val) {
+  chkBuf.push_back(val);
+}
+
 void appendToChk(const uint8_t* buf, uint16_t len) {
   while (len--) {
     chkBuf.push_back(*buf++);
@@ -226,6 +230,16 @@ int main(int argc, const char* argv[]) {
             << std::endl
             << "uint8_t " << varName << "_data[] PROGMEM = {" << std::endl;
   // TODO: Spit out the actual encoding
+  switch(cmp) {
+    case image_compression::NQRLE:
+    encode_rle(inBuf, sz, &appendToOut);
+    break;
+    case image_compression::PAL_RAW:
+    encode_pal(inBuf, sz, &appendToOut);
+    break;
+    default:
+    std::cout << "UNSUPPORTED TARGET FORMAT!" << std::endl;
+  }
   std::cout
     << std::endl
     << "};" << std::endl
