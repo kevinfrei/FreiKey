@@ -34,6 +34,12 @@ void appendToOut(uint8_t val) {
   std::cout << static_cast<uint32_t>(val) << ",";
 }
 
+void appendToOut(const uint8_t *buf, uint16_t len) {
+  while (len--) {
+    appendToOut(*buf++);
+  }
+}
+
 void appendToChk(uint8_t val) {
   chkBuf.push_back(val);
 }
@@ -123,7 +129,7 @@ image_compression enc_and_dec(uint8_t* inBuf, uint32_t sz) {
   std::vector<uint8_t> outputCopy{chkBuf};
   chkBuf.clear();
   decode_rle(
-    outputCopy.data(), static_cast<uint32_t>(outBuf.size()), &appendToChk);
+    outputCopy.data(), static_cast<uint32_t>(outputCopy.size()), &appendToChk);
   const uint32_t rleSize = outputCopy.size();
   outputCopy.clear();
   if (chkBuf.size() != sz) {
@@ -145,8 +151,9 @@ image_compression enc_and_dec(uint8_t* inBuf, uint32_t sz) {
     return image_compression::INVALID;
   }
   outputCopy = chkBuf;
+  chkBuf.clear();
   decode_pal(
-    outputCopy.data(), static_cast<uint32_t>(outBuf.size()), &appendToChk);
+    outputCopy.data(), static_cast<uint32_t>(outputCopy.size()), &appendToChk);
   const uint32_t palSize = outputCopy.size();
   if (chkBuf.size() != sz) {
     std::cerr << "PAL sizes are wrong " << chkBuf.size() << " decoded, " << sz
