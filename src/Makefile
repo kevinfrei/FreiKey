@@ -66,5 +66,21 @@ out/%.o: bitmaps/%.cpp
 out/%.o : %.cpp
 	${CXX} -g -O0 -c -DCOMPRESSOR -Iinclude -std=c++17 $< -o $@
 
-out/imagecomp${SFX}: out/imgencoder.o out/imgenc_nqrle16.o out/imgenc_palette.o out/imgdec_nqrle16.o out/imgdec_palette.o out/amy.o out/batman.o out/win.o out/mac.o out/linux.o
+IMGSRC = imgencoder.cpp \
+ img_cmdln.cpp \
+ imgenc_rle.cpp \
+ imgdec_rle.cpp \
+ imgenc_pal.cpp \
+ imgdec_pal.cpp \
+ imgenc_prle.cpp \
+ imgdec_prle.cpp \
+ amy.cpp \
+ batman.cpp \
+ win.cpp \
+ mac.cpp \
+ linux.cpp
+ 
+OBJS = $(addprefix out/, $(patsubst %.cpp, %.o, ${IMGSRC}))
+
+out/imagecomp${SFX}: ${OBJS}
 	${CXX} -g -o $@ $^

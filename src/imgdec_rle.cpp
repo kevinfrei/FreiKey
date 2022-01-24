@@ -1,4 +1,6 @@
 #include <stdint.h>
+#include <stdio.h>
+
 #include "bitmap.h"
 
 // Not-Quite-Run-Length-Encoding 16 bit decoder, with byte swapping
@@ -20,9 +22,9 @@ uint32_t readStopBitNumber(const uint8_t* compressedStream, uint32_t* i) {
   return val;
 }
 
-void decode_nqrle16(const uint8_t* compressedStream,
-                    uint32_t streamLength,
-                    void (*send)(const uint8_t* buf, uint16_t len)) {
+void decode_rle(const uint8_t* compressedStream,
+                uint32_t streamLength,
+                void (*send)(const uint8_t* buf, uint16_t len)) {
   const uint16_t bufSize = 1024;
   uint8_t buffer[1024];
   uint32_t offs = 0;
@@ -30,17 +32,19 @@ void decode_nqrle16(const uint8_t* compressedStream,
     uint32_t length = readStopBitNumber(compressedStream, &i);
     uint8_t repeat = length % 2 == 1;
     length /= 2;
+    // fprintf(stderr, ">> %d (%s)\n", length, repeat ? "repeat" : "unique");
     if (repeat) {
       // repeat the next pair of bytes N times
       uint8_t byte1 = compressedStream[i++];
       uint8_t byte2 = compressedStream[i++];
+      // fprintf(stderr, ">>> %02x %02x\n", (uint32_t)byte1, (uint32_t)byte2);
       for (uint32_t j = 0; j < length; j++) {
         if (offs + j * 2 == bufSize) {
           send(buffer, offs + j * 2);
           offs = -(j * 2);
         }
-        buffer[offs + j * 2] = byte2;
-        buffer[offs + j * 2 + 1] = byte1;
+        buffer[offs + j * 2] = byte1;
+        buffer[offs + j * 2 + 1] = byte2;
       }
       offs += length * 2;
     } else {
@@ -50,8 +54,14 @@ void decode_nqrle16(const uint8_t* compressedStream,
           send(buffer, offs + j * 2);
           offs = -(j * 2);
         }
-        buffer[offs + j * 2 + 1] = compressedStream[i++];
+        /*
+        fprintf(stderr,
+                ">>> %02x %02x\n",
+                (uint32_t)compressedStream[i],
+                (uint32_t)compressedStream[i + 1]);
+        */
         buffer[offs + j * 2] = compressedStream[i++];
+        buffer[offs + j * 2 + 1] = compressedStream[i++];
       }
       offs += length * 2;
     }

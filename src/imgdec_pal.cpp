@@ -1,6 +1,9 @@
-#include "bitmap.h"
 #include <stdint.h>
 
+#include "bitmap.h"
+
+// This file must compile both for Arduino and for Windows/Mac.
+// That means be careful with the C++, unfortunately...
 
 uint8_t log2ish(uint16_t n) {
   uint8_t count = 0;
@@ -19,7 +22,7 @@ bool rdbit(const uint8_t* const strm, uint32_t* ofs, uint8_t* bit) {
   bool res = (strm[*ofs] & mask) != 0;
   if (*bit == 7) {
     *bit = 0;
-    ofs++;
+    (*ofs)++;
   } else {
     (*bit)++;
   }
@@ -32,7 +35,7 @@ uint16_t readBits(uint8_t numBits,
                   uint8_t* curBit) {
   uint16_t res = 0;
   uint16_t val = 1;
-  while (numBits) {
+  while (numBits--) {
     if (rdbit(compressedStream, i, curBit)) {
       res |= val;
     }
@@ -42,7 +45,7 @@ uint16_t readBits(uint8_t numBits,
 }
 
 uint16_t read16b(const uint8_t* const stream, uint32_t* ofs) {
-  ofs += 2;
+  *ofs += 2;
   return stream[*ofs - 2] + (stream[*ofs - 1] << 8);
 }
 
@@ -62,9 +65,9 @@ uint16_t read16b(const uint8_t* const stream, uint32_t* ofs) {
 // clang-format on
 // the first number is 0.1101.0110, next number is 0.0101.0100
 
-void decode_palette(const uint8_t* compressedStream,
-                    uint32_t streamLength,
-                    void (*send)(const uint8_t* buf, uint16_t len)) {
+void decode_pal(const uint8_t* compressedStream,
+                uint32_t streamLength,
+                void (*send)(const uint8_t* buf, uint16_t len)) {
   const uint16_t bufSize = 1024;
   uint8_t buffer[1024];
   uint32_t offs = 0;
@@ -82,7 +85,7 @@ void decode_palette(const uint8_t* compressedStream,
   // Now read the pixel data
   uint8_t bit = 0;
   uint8_t numBits = log2ish(paletteSize);
-  for (uint32_t i = 0; i < streamLength;) {
+  while (i < streamLength) {
     uint16_t paletteIndex = readBits(numBits, compressedStream, &i, &bit);
     uint16_t color = palette[paletteIndex];
     if (offs == bufSize) {

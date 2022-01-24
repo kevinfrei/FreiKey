@@ -1,14 +1,16 @@
-#include <stdint.h>
+#include <ctype.h>
+#include <iostream>
 #include <stdio.h>
 
 /*
 This should spit out the encoded source array
 */
 void dumpCount(bool repeat, uint32_t count, void (*print)(uint8_t byte)) {
-  if (count == 0 || count > UINT32_MAX / 2) {
-    fprintf(stderr, "Derp\n");
+  if (count == 0 || count > 0x800000) {
+    std::cerr << "Derp" << std::endl;
     return;
   }
+  // fprintf(stderr, ">> %d (%s)\n", count, repeat ? "repeat": "unique");
   // A count instruction is a number encoded with a high stop bit
   // The low bit is true if it's a repeat
   count = count * 2 + !!repeat;
@@ -25,9 +27,9 @@ uint16_t getVal(const uint8_t* data, uint32_t pos) {
 
 // it should work better for stuff that has strings of unique stuff along with
 // strings of repeated stuff
-bool encode_nqrle16(const uint8_t* data,
-                       uint32_t bytes,
-                       void (*print)(uint8_t byte)) {
+bool encode_rle(const uint8_t* data,
+                uint32_t bytes,
+                void (*print)(uint8_t byte)) {
   if (bytes & 1) {
     return false;
   }
@@ -37,6 +39,7 @@ bool encode_nqrle16(const uint8_t* data,
     if (pos + 2 == bytes) {
       // Special case last unique word
       dumpCount(false, 1, print);
+      // fprintf(stderr, ">>> %02x %02x\n", (uint32_t)data[pos], (uint32_t)data[pos+1]);
       print(data[pos++]);
       print(data[pos++]);
       break;
@@ -55,6 +58,7 @@ bool encode_nqrle16(const uint8_t* data,
       }
       // We've got the count, dump the sequence
       dumpCount(true, count, print);
+      // fprintf(stderr, ">>> %02x %02x\n", (uint32_t)data[pos], (uint32_t)data[pos+1]);
       print(data[pos]);
       print(data[pos + 1]);
       pos += count * 2;
@@ -72,6 +76,7 @@ bool encode_nqrle16(const uint8_t* data,
       }
       dumpCount(false, count, print);
       while (count--) {
+        // fprintf(stderr, ">>> %02x %02x\n", (uint32_t)data[pos], (uint32_t)data[pos+1]);
         print(data[pos++]);
         print(data[pos++]);
       }

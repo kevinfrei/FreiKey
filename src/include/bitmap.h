@@ -5,17 +5,6 @@
 #endif
 #include <stdint.h>
 
-enum class image_compression : uint8_t {
-  RAW = 0,
-  NQRLE, // 16 bit NQRLE encoding
-  PAL_RAW, // Palette encoding
-  PAL_NQRLE, // Palette encoded as NQRLE data
-#if defined(COMPRESSOR)
-  FIND_BEST, 
-  INVALID
-#endif
-};
-
 /*
 NQRLE:
 A list of stop-bit encoded values (Thus 0 - 2M in range), followed by data:
@@ -32,27 +21,38 @@ Same as PAL_RAW, but the pixel data is encoded as NQRLE,
 where data is log(palette_size) bits, with the end trimmed
 */
 
+enum class image_compression : uint8_t {
+  RAW = 0,
+  NQRLE, // 16 bit NQRLE encoding
+  PAL_RAW, // Palette encoding
+  PAL_NQRLE, // Palette encoded as NQRLE data
+#if defined(COMPRESSOR)
+  FIND_BEST,
+  INVALID
+#endif
+};
+
 struct image_descriptor {
   uint16_t width, height;
-  uint32_t byte_count: 24;
-  image_compression compression: 8;
+  uint32_t byte_count : 24;
+  image_compression compression : 8;
   const uint8_t* image_data;
 };
 
-void decode_nqrle16(const uint8_t* compressedStream,
-                    uint32_t streamLength,
-                    void (*send)(const uint8_t* buf, uint16_t len));
-
-void decode_palette(const uint8_t* compressedStream,
-                    uint32_t streamLength,
-                    void (*send)(const uint8_t* buf, uint16_t len));
-
-void decode_palnqrle(const uint8_t* compressedStream,
-                     uint32_t streamLength,
-                     void (*send)(const uint8_t* buf, uint16_t len));
-
 using sender = void (*)(const uint8_t*, uint16_t);
 using decoder = void (*)(const uint8_t*, uint32_t, sender);
+
+void decode_rle(const uint8_t* compressedStream,
+                uint32_t streamLength,
+                sender send);
+
+void decode_pal(const uint8_t* compressedStream,
+                uint32_t streamLength,
+                sender send);
+
+void decode_prle(const uint8_t* compressedStream,
+                 uint32_t streamLength,
+                 sender send);
 
 // Helpers
 uint8_t log2ish(uint16_t n);

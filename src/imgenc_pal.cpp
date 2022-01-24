@@ -1,8 +1,5 @@
 #include <ctype.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <iostream>
 #include <vector>
 
 #include "bitmap.h"
@@ -20,10 +17,11 @@ uint16_t writeBits(uint16_t value,
                    void (*print)(uint8_t byte)) {
   uint8_t curBitPos = info & 0xff;
   uint8_t curValue = info >> 8;
-  while (numBits) {
+  while (numBits--) {
     if (value & 1) {
       curValue |= 1 << curBitPos;
     }
+    value /= 2;
     curBitPos++;
     if (curBitPos == 8) {
       print(curValue);
@@ -50,29 +48,47 @@ uint16_t countBits(const uint64_t* bits) {
   return count;
 }
 
+uint64_t getBitMask(uint8_t val) {
+  return static_cast<uint64_t>(static_cast<uint64_t>(1)
+                               << static_cast<uint64_t>(val));
+}
+
+constexpr uint8_t bpl = sizeof(uint64_t) * 8;
+
 // it should work better for stuff that has strings of unique stuff along with
 // strings of repeated stuff
-bool compress_palette(uint8_t* data,
-                      uint32_t bytes,
-                      void (*print)(uint8_t byte)) {
+bool encode_pal(const uint8_t* data,
+                uint32_t bytes,
+                void (*print)(uint8_t byte)) {
   if (bytes & 1) {
     // It must be 16 bit values, yeah?
     return false;
   }
   // First, build the palette
-  uint16_t* colors = reinterpret_cast<uint16_t*>(data);
+  const uint16_t* colors = reinterpret_cast<const uint16_t*>(data);
   uint32_t cbytes = bytes / 2;
   // Lazy man's set: it's just bits :D
-  uint64_t which[1024];
-  memset(&which[0], 0, 8192);
+  uint64_t which[0x10000 / bpl];
+  memset(&which[0], 0, sizeof(uint64_t) * (0x10000 / bpl));
+  uint16_t paletteSize = 0;
   for (uint32_t pos = 0; pos < cbytes; pos++) {
     uint16_t color = colors[pos];
-    which[color / 64] |= (1 << (color & 63));
+    uint64_t bitSet = getBitMask(color & 63);
+    ;
+    if (!(which[color / 64] & bitSet)) {
+      which[color / 64] |= bitSet;
+      paletteSize++;
+    }
   }
-  uint16_t paletteSize = countBits(which);
+  const uint32_t bitCount = countBits(which);
+  if (paletteSize != bitCount) {
+    std::cerr << "Derpy: " << paletteSize << " but " << bitCount << " counted"
+              << std::endl;
+    return false;
+  }
   uint8_t numBits = log2ish(paletteSize);
   // This is the size of the thing, when we're done.
-  if (numBits * bytes / 2 + paletteSize * 2 + 2 >= bytes) {
+  if (numBits * bytes / (2 * 8) + paletteSize * 2 + 2 >= bytes) {
     // Don't 'compress' it if it's going to be larger...
     return false;
   }
@@ -92,7 +108,8 @@ bool compress_palette(uint8_t* data,
   do {
     curBit++;
     // If this bit number is set, add it to the palette
-    if (which[curBit / 64] & (1 << (curBit & 63))) {
+
+    if (which[curBit / 64] & getBitMask(curBit & 63)) {
       reverse[curBit] = palOfs;
       palette[palOfs++] = curBit;
       print(curBit & 0xFF);
@@ -100,7 +117,7 @@ bool compress_palette(uint8_t* data,
     }
   } while (curBit != 0xFFFF);
   if (palOfs != paletteSize) {
-    fprintf(stderr, "Derp\n");
+    std::cerr << "Derp" << std::endl;
     return false;
   }
   // Okay, now walk the pixels, reading the values and finding their palette
@@ -109,11 +126,15 @@ bool compress_palette(uint8_t* data,
   for (uint32_t pos = 0; pos < cbytes; pos++) {
     uint16_t color = colors[pos];
     uint16_t pIndex = reverse[color];
-    if (pIndex > paletteSize || palette[pIndex] != color) {
-      fprintf(stderr, "Derpy\n");
+    if (pIndex >= paletteSize || palette[pIndex] != color) {
+      std::cerr << "Derpy" << std::endl;
       return false;
     }
     info = writeBits(pIndex, numBits, info, print);
+  }
+  // Make sure we get the last few bits
+  if (info) {
+    print(info >> 8);
   }
   return true;
 }
