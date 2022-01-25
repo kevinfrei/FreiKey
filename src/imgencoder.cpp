@@ -25,7 +25,7 @@ std::vector<uint8_t> chkBuf;
 int linePos = 0;
 int lineWidth = 100;
 
-void appendToOut(uint8_t val) {
+void appendByteToOut(uint8_t val) {
   int width = val < 10 ? 2 : (val < 100) ? 3 : 4;
   if (linePos + width > lineWidth) {
     std::cout << std::endl;
@@ -38,11 +38,11 @@ void appendToOut(uint8_t val) {
 
 void appendToOut(const uint8_t* buf, uint16_t len) {
   while (len--) {
-    appendToOut(*buf++);
+    appendByteToOut(*buf++);
   }
 }
 
-void appendToChk(uint8_t val) {
+void appendByteToChk(uint8_t val) {
   chkBuf.push_back(val);
 }
 
@@ -101,7 +101,7 @@ int decode(int number, const std::string& filename) {
       std::cerr << "Format unrecognized!" << std::endl;
       return 1;
   }
-  func(id->image_data, id->byte_count, &appendToChk);
+  func(id->image_data, id->byte_count, appendToChk);
   std::ofstream file{filename, std::ios_base::out | std::ios_base::binary};
   std::copy(
     chkBuf.cbegin(), chkBuf.cend(), std::ostream_iterator<uint8_t>{file});
@@ -125,13 +125,13 @@ std::string name(image_compression c) {
 
 image_compression enc_and_dec(uint8_t* inBuf, uint32_t sz) {
   // First, do the "simple" RLE encoding
-  if (!encode_rle(inBuf, sz, &appendToChk)) {
+  if (!encode_rle(inBuf, sz, appendByteToChk)) {
     return image_compression::INVALID;
   }
   std::vector<uint8_t> outputCopy{chkBuf};
   chkBuf.clear();
   decode_rle(
-    outputCopy.data(), static_cast<uint32_t>(outputCopy.size()), &appendToChk);
+    outputCopy.data(), static_cast<uint32_t>(outputCopy.size()), appendToChk);
   const uint32_t rleSize = outputCopy.size();
   outputCopy.clear();
   if (chkBuf.size() != sz) {
@@ -149,7 +149,7 @@ image_compression enc_and_dec(uint8_t* inBuf, uint32_t sz) {
   chkBuf.clear();
   std::cout << std::endl << std::endl;
   // Okay, now try the palette encoding
-  if (!encode_pal(inBuf, sz, &appendToChk)) {
+  if (!encode_pal(inBuf, sz, appendByteToChk)) {
     return image_compression::INVALID;
   }
   outputCopy = chkBuf;
@@ -242,10 +242,10 @@ int main(int argc, const char* argv[]) {
   // TODO: Spit out the actual encoding
   switch (cmp) {
     case image_compression::NQRLE:
-      encode_rle(inBuf, sz, &appendToOut);
+      encode_rle(inBuf, sz, appendByteToOut);
       break;
     case image_compression::PAL_RAW:
-      encode_pal(inBuf, sz, &appendToOut);
+      encode_pal(inBuf, sz, appendByteToOut);
       break;
     default:
       std::cout << "UNSUPPORTED TARGET FORMAT!" << std::endl;

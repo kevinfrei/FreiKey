@@ -2,7 +2,6 @@
 #include <iostream>
 #include <string>
 
-
 #include "bitmap.h"
 #include "imgencoder.h"
 

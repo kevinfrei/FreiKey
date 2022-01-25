@@ -2,15 +2,17 @@
 #include <iostream>
 #include <stdio.h>
 
+#include "imgencoder.h"
+
 /*
 This should spit out the encoded source array
 */
-void dumpCount(bool repeat, uint32_t count, void (*print)(uint8_t byte)) {
+
+void dumpRLECount(bool repeat, uint32_t count, byte_printer print) {
   if (count == 0 || count > 0x800000) {
     std::cerr << "Derp" << std::endl;
     return;
   }
-  // fprintf(stderr, ">> %d (%s)\n", count, repeat ? "repeat": "unique");
   // A count instruction is a number encoded with a high stop bit
   // The low bit is true if it's a repeat
   count = count * 2 + !!repeat;
@@ -21,35 +23,40 @@ void dumpCount(bool repeat, uint32_t count, void (*print)(uint8_t byte)) {
   }
 }
 
-uint16_t getVal(const uint8_t* data, uint32_t pos) {
-  return (data[pos] << 8) | data[pos + 1];
-}
-
 // it should work better for stuff that has strings of unique stuff along with
 // strings of repeated stuff
-bool encode_rle(const uint8_t* data,
-                uint32_t bytes,
-                void (*print)(uint8_t byte)) {
+bool encode_rle(const uint8_t* data, uint32_t bytes, byte_printer print) {
+  std::function<void(uint16_t)> print2 = [&](uint16_t val) {
+    print(val & 0xFF);
+    print((val >> 8) & 0xFF);
+  };
+  return dump_rle(data, bytes, print, print2);
+}
+
+bool dump_rle(const uint8_t* data,
+              uint32_t bytes,
+              byte_printer print,
+              word_printer print2) {
   if (bytes & 1) {
     return false;
   }
-  for (uint32_t pos = 0; pos < bytes;) {
+  const uint16_t* colors = reinterpret_cast<const uint16_t*>(data);
+  const uint32_t cbytes = bytes / 2;
+  for (uint32_t pos = 0; pos < cbytes;) {
     // First, check to see if this is unique, or dupe:
-    uint16_t val = getVal(data, pos);
-    if (pos + 2 == bytes) {
+    uint16_t val = colors[pos];
+    if (pos + 1 == bytes) {
       // Special case last unique word
-      dumpCount(false, 1, print);
-      // fprintf(stderr, ">>> %02x %02x\n", (uint32_t)data[pos], (uint32_t)data[pos+1]);
-      print(data[pos++]);
-      print(data[pos++]);
+      dumpRLECount(false, 1, print);
+      print2(colors[pos]);
       break;
     }
-    uint16_t nxt = getVal(data, pos + 2);
+    uint16_t nxt = colors[pos + 1];
     if (val == nxt) {
       // Scan forward to see how long the repeat goes
-      uint32_t count = 2;
-      while (pos + count * 2 < bytes) {
-        nxt = getVal(data, pos + 2 * count);
+      uint32_t count = 1;
+      while (pos + count < cbytes) {
+        nxt = colors[pos + count];
         if (nxt != val) {
           break;
         } else {
@@ -57,28 +64,24 @@ bool encode_rle(const uint8_t* data,
         }
       }
       // We've got the count, dump the sequence
-      dumpCount(true, count, print);
-      // fprintf(stderr, ">>> %02x %02x\n", (uint32_t)data[pos], (uint32_t)data[pos+1]);
-      print(data[pos]);
-      print(data[pos + 1]);
-      pos += count * 2;
+      dumpRLECount(true, count, print);
+      print2(colors[pos]);
+      pos += count;
     } else {
       // Scan forward to see how long the uniqueness goes
       uint32_t count = 1;
       val = nxt;
-      while (pos + count * 2 < bytes) {
-        nxt = getVal(data, pos + 2 * count + 2);
+      while (pos + count < cbytes) {
+        nxt = colors[pos + count + 1];
         if (nxt == val) {
           break;
         }
         count++;
         val = nxt;
       }
-      dumpCount(false, count, print);
+      dumpRLECount(false, count, print);
       while (count--) {
-        // fprintf(stderr, ">>> %02x %02x\n", (uint32_t)data[pos], (uint32_t)data[pos+1]);
-        print(data[pos++]);
-        print(data[pos++]);
+        print2(colors[pos++]);
       }
     }
   }
