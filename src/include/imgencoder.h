@@ -24,8 +24,9 @@ struct cmdLine {
 
 uint16_t writeBits(uint16_t value,
                    uint8_t numBits,
-                   uint16_t bitWriterBuffer,
+                   uint16_t bitBuffer,
                    byte_printer print);
+void flushBits(uint16_t bitBuffer, byte_printer print);
 void dumpRLECount(bool repeat, uint32_t count, byte_printer print);
 bool dump_rle(const uint8_t* data,
               uint32_t bytes,

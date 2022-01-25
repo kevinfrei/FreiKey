@@ -18,10 +18,10 @@ because why not?
 // written bytes (returning the partially written blobs)
 uint16_t writeBits(uint16_t value,
                    uint8_t numBits,
-                   uint16_t bitWriterBuffer,
+                   uint16_t bitBuffer,
                    byte_printer print) {
-  uint8_t curBitPos = bitWriterBuffer & 0xff;
-  uint8_t curValue = bitWriterBuffer >> 8;
+  uint8_t curBitPos = bitBuffer & 0xff;
+  uint8_t curValue = bitBuffer >> 8;
   while (numBits--) {
     if (value & 1) {
       curValue |= 1 << curBitPos;
@@ -35,6 +35,12 @@ uint16_t writeBits(uint16_t value,
     }
   }
   return curValue << 8 | curBitPos;
+}
+
+void flushBits(uint16_t bitBuffer, byte_printer print) {
+  if (bitBuffer) {
+    print((bitBuffer >> 8) & 0xFF);
+  }
 }
 
 std::pair<std::vector<uint16_t>, std::vector<uint16_t>> calculate_palette(
@@ -117,7 +123,7 @@ bool encode_pal(const uint8_t* data, uint32_t bytes, byte_printer print) {
   uint8_t numBits = log2ish(pal_and_rev.first.size());
   // Okay, now walk the pixels, reading the values and finding their palette
   // index, then write the index in numBits number of bits
-  uint16_t bitWriterBuffer = 0;
+  uint16_t bitBuffer = 0;
   for (uint32_t pos = 0; pos < cbytes; pos++) {
     uint16_t color = colors[pos];
     uint16_t pIndex = pal_and_rev.second[color];
@@ -125,11 +131,9 @@ bool encode_pal(const uint8_t* data, uint32_t bytes, byte_printer print) {
       std::cerr << "Derpy" << std::endl;
       return false;
     }
-    bitWriterBuffer = writeBits(pIndex, numBits, bitWriterBuffer, print);
+    bitBuffer = writeBits(pIndex, numBits, bitBuffer, print);
   }
   // Make sure we get the last few bits
-  if (bitWriterBuffer) {
-    print((bitWriterBuffer >> 8) & 0xFF);
-  }
+  flushBits(bitBuffer, print);
   return true;
 }

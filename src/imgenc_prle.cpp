@@ -31,7 +31,33 @@ bool encode_prle(uint8_t* data, uint32_t bytes, byte_printer print) {
   print(paletteSize & 0xFF);
   print((paletteSize >> 8) & 0xFF);
 
+  uint8_t numBits = log2ish(pal_and_rev.first.size());
+
+  bool success = true;
+  uint16_t bitBuffer = 0;
+  // This is used to print the RLE counts, so it shows up between
+  // groups of palette encoded numbers
+  byte_printer printheader = [&](uint8_t val) {
+    flushBits(bitBuffer, print);
+    bitBuffer = 0;
+    print(val);
+  };
+  // This is called to emit a palette encoded value
+  // So, in here, we have to look up the value and emit just the bits
+  // bitBuffer is updated to contain anything that hasn't been finished
+  word_printer printblobs = [&](uint16_t val) {
+    uint16_t palIndex = pal_and_rev.second[val];
+    if (palIndex >(1 << numBits))
+    {
+      std::cerr << "Bad bad bad" << std::endl;
+      success = false;
+    } 
+    bitBuffer = writeBits(palIndex, numBits, bitBuffer, print);
+  };
   // Now we use the rle engine, but use bit emission instead of word emission
   // to try to buy back more savings
-  return false;
+  success = dump_rle(data, bytes, printheader, printblobs) && success;
+  // Pick up any final blob of data
+  flushBits(bitBuffer, print);
+  return success;
 }
