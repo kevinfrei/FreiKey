@@ -59,12 +59,19 @@ comp cmp img imgcomp: out out/imagecomp${SFX}
 out:
 	-mkdir out
 
+# Size is larger than -O3 lame lame lame, clang
+# OPTFLAGS=-flto -Oz
+# Speed:
+# OPTFLAGS=-flto -O3
+# Debug:
+OPTFLAGS=-g
+
 # Set up rules for local binaries
 out/%.o: bitmaps/%.cpp
-	${CXX} -c -DCOMPRESSOR -Iinclude -DPROGMEM=" " -std=c++17 $< -o $@
+	${CXX} ${OPTFLAGS} -c -DCOMPRESSOR -Iinclude -DPROGMEM=" " -std=c++17 $< -o $@
 
 out/%.o : %.cpp
-	${CXX} -g -O0 -c -DCOMPRESSOR -Iinclude -std=c++17 $< -o $@
+	${CXX} ${OPTFLAGS} -c -DCOMPRESSOR -Iinclude -std=c++17 $< -o $@
 
 IMGSRC = imgencoder.cpp \
  img_cmdln.cpp \
@@ -83,4 +90,4 @@ IMGSRC = imgencoder.cpp \
 OBJS = $(addprefix out/, $(patsubst %.cpp, %.o, ${IMGSRC}))
 
 out/imagecomp${SFX}: ${OBJS}
-	${CXX} -g -o $@ $^
+	${CXX} ${OPTFLAGS} -o $@ $^
