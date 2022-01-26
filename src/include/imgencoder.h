@@ -35,7 +35,7 @@ bool dump_rle(const uint8_t* data,
 std::pair<std::vector<uint16_t>, std::vector<uint16_t>> calculate_palette(
   const uint16_t* colors, uint32_t cbytes);
 
-extern uint32_t builtin_count;
+extern const uint32_t builtin_count;
 bool validateArgs(cmdLine& ln);
 int usage(const std::string& name);
 int parseArgs(int argc, const char* argv[], cmdLine* ln);

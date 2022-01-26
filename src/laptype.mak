@@ -14,7 +14,9 @@ else
   $(error No Linux support yet)
 endif
 
-IN_SPEED=600
+# At only 24MHz, the screen is dramatically slower, but at 150MHz
+# things are buttery smooth, so not running at 600MHz helps overheating, right?
+IN_SPEED=150
 IN_USB=serialhid
 IN_OPT=osstd
 IN_KEYS=en-us

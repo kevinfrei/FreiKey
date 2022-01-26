@@ -89,5 +89,14 @@
     "stack": "cpp",
     "memory_resource": "cpp",
     "stop_token": "cpp"
+  },
+  "files.exclude": {
+    "out": true,
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true
   }
 }

@@ -17,7 +17,7 @@
 
 const image_descriptor* builtins[] = {
   gfx_amy, gfx_batman, gfx_mac, gfx_win, gfx_linux};
-uint32_t builtin_count = sizeof(builtins) / sizeof(*builtins);
+constexpr uint32_t builtin_count = static_cast<uint32_t>(std::size(builtins));
 
 std::vector<uint8_t> outBuf;
 std::vector<uint8_t> chkBuf;
