@@ -17,7 +17,7 @@ uint8_t log2ish(uint16_t n) {
   return count - rounded;
 }
 
-bool rdbit(const uint8_t* const strm, uint32_t* ofs, uint8_t* bit) {
+bool rdbit(bytestream strm, uint32_t* ofs, uint8_t* bit) {
   uint8_t mask = 1 << *bit;
   bool res = (strm[*ofs] & mask) != 0;
   if (*bit == 7) {
@@ -30,13 +30,13 @@ bool rdbit(const uint8_t* const strm, uint32_t* ofs, uint8_t* bit) {
 }
 
 uint16_t readBits(uint8_t numBits,
-                  const uint8_t* const compressedStream,
+                  bytestream cmpStrm,
                   uint32_t* i,
                   uint8_t* curBit) {
   uint16_t res = 0;
   uint16_t val = 1;
   while (numBits--) {
-    if (rdbit(compressedStream, i, curBit)) {
+    if (rdbit(cmpStrm, i, curBit)) {
       res |= val;
     }
     val <<= 1;
@@ -44,7 +44,7 @@ uint16_t readBits(uint8_t numBits,
   return res;
 }
 
-uint16_t read16b(const uint8_t* const stream, uint32_t* ofs) {
+uint16_t read16b(bytestream stream, uint32_t* ofs) {
   *ofs += 2;
   return stream[*ofs - 2] + (stream[*ofs - 1] << 8);
 }
@@ -65,28 +65,28 @@ uint16_t read16b(const uint8_t* const stream, uint32_t* ofs) {
 // clang-format on
 // the first number is 0.1101.0110, next number is 0.0101.0100
 
-void decode_pal(const uint8_t* compressedStream,
-                uint32_t streamLength,
+void decode_pal(bytestream cmpStrm,
+                uint32_t strmLen,
                 void (*send)(const uint8_t* buf, uint16_t len)) {
   const uint16_t bufSize = 1024;
   uint8_t buffer[1024];
   uint32_t offs = 0;
   uint32_t i = 0;
   // Read the size of the palette
-  uint16_t paletteSize = read16b(compressedStream, &i);
+  uint16_t paletteSize = read16b(cmpStrm, &i);
   uint16_t* palette = new uint16_t[paletteSize];
   // Read the palette
   for (uint16_t j = 0; j < paletteSize; j++) {
-    palette[j] = read16b(compressedStream, &i);
-    if (i > streamLength) {
+    palette[j] = read16b(cmpStrm, &i);
+    if (i > strmLen) {
       // ARG!
     }
   }
   // Now read the pixel data
   uint8_t bit = 0;
   uint8_t numBits = log2ish(paletteSize);
-  while (i < streamLength) {
-    uint16_t paletteIndex = readBits(numBits, compressedStream, &i, &bit);
+  while (i < strmLen) {
+    uint16_t paletteIndex = readBits(numBits, cmpStrm, &i, &bit);
     uint16_t color = palette[paletteIndex];
     if (offs == bufSize) {
       send(buffer, offs);

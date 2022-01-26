@@ -36,9 +36,9 @@ void appendByteToOut(uint8_t val) {
   std::cout << static_cast<uint32_t>(val) << ",";
 }
 
-void appendToOut(const uint8_t* buf, uint16_t len) {
-  while (len--) {
-    appendByteToOut(*buf++);
+void appendToOut(bytestream buf, uint16_t len) {
+  for (uint16_t i = 0; i < len; i++) {
+    appendByteToOut(buf[i]);
   }
 }
 
@@ -46,9 +46,9 @@ void appendByteToChk(uint8_t val) {
   chkBuf.push_back(val);
 }
 
-void appendToChk(const uint8_t* buf, uint16_t len) {
-  while (len--) {
-    chkBuf.push_back(*buf++);
+void appendToChk(bytestream buf, uint16_t len) {
+  for (uint16_t i = 0; i < len; i++) {
+    chkBuf.push_back(buf[i]);
   }
 }
 
@@ -68,14 +68,11 @@ std::string makeVarName(const std::string& name) {
   return res;
 }
 
-void decode_raw(const uint8_t* data,
-                uint32_t len,
-                void (*send)(const uint8_t* b, uint16_t l)) {
-  while (len) {
+void decode_raw(bytestream data, uint32_t len, sender send) {
+  for (uint32_t i = 0; i < len;) {
     uint16_t l = std::min(0x8000u, len);
-    send(data, l);
-    data += l;
-    len -= l;
+    send(&data[i], l);
+    i += l;
   }
 }
 
@@ -123,51 +120,38 @@ std::string name(image_compression c) {
   }
 }
 
-image_compression enc_and_dec(uint8_t* inBuf, uint32_t sz) {
-  // First, do the "simple" RLE encoding
-  if (!encode_rle(inBuf, sz, appendByteToChk)) {
-    return image_compression::INVALID;
+uint32_t check_roundtrip(
+  const char* name, encoder enc, decoder dec, uint8_t* inBuf, uint32_t sz) {
+  if (!enc(inBuf, sz, appendByteToChk)) {
+    return 0;
   }
   std::vector<uint8_t> outputCopy{chkBuf};
   chkBuf.clear();
-  decode_rle(
-    outputCopy.data(), static_cast<uint32_t>(outputCopy.size()), appendToChk);
-  const uint32_t rleSize = outputCopy.size();
+  dec(outputCopy.data(), static_cast<uint32_t>(outputCopy.size()), appendToChk);
+  const uint32_t encSize = outputCopy.size();
   outputCopy.clear();
   if (chkBuf.size() != sz) {
-    std::cerr << "RLE sizes are wrong " << chkBuf.size() << " decoded, " << sz
-              << " original" << std::endl;
-    return image_compression::INVALID;
+    std::cerr << name << " sizes are wrong " << chkBuf.size() << " decoded, "
+              << sz << " original" << std::endl;
+    return 0;
   }
   for (int i = 0; i < chkBuf.size(); i += 2) {
     if (chkBuf[i] != inBuf[i] || chkBuf[i + 1] != inBuf[i + 1]) {
-      std::cerr << "RLE different at offset " << i << std::endl;
-      return image_compression::INVALID;
+      std::cerr << name << " different at offset " << i << std::endl;
+      return 0;
     }
   }
+  chkBuf.clear();
+  return encSize;
+}
 
-  chkBuf.clear();
-  std::cout << std::endl << std::endl;
+image_compression enc_and_dec(uint8_t* inBuf, uint32_t sz) {
+  // First, do the "simple" RLE encoding
+  const uint32_t rleSize =
+    check_roundtrip("rle", encode_rle, decode_rle, inBuf, sz);
   // Okay, now try the palette encoding
-  if (!encode_pal(inBuf, sz, appendByteToChk)) {
-    return image_compression::INVALID;
-  }
-  outputCopy = chkBuf;
-  chkBuf.clear();
-  decode_pal(
-    outputCopy.data(), static_cast<uint32_t>(outputCopy.size()), &appendToChk);
-  const uint32_t palSize = outputCopy.size();
-  if (chkBuf.size() != sz) {
-    std::cerr << "PAL sizes are wrong " << chkBuf.size() << " decoded, " << sz
-              << " original" << std::endl;
-    return image_compression::INVALID;
-  }
-  for (int i = 0; i < chkBuf.size(); i += 2) {
-    if (chkBuf[i] != inBuf[i] || chkBuf[i + 1] != inBuf[i + 1]) {
-      std::cerr << "PAL different at offset " << i << std::endl;
-      return image_compression::INVALID;
-    }
-  }
+  const uint32_t palSize =
+    check_roundtrip("pal", encode_pal, decode_pal, inBuf, sz);
   return (palSize < rleSize) ? image_compression::PAL_RAW
                              : image_compression::NQRLE;
 }
@@ -250,21 +234,20 @@ int main(int argc, const char* argv[]) {
     default:
       std::cout << "UNSUPPORTED TARGET FORMAT!" << std::endl;
   }
-  std::cout
-    << std::endl
-    << "};" << std::endl
-    << "// clang-format on" << std::endl
-    << std::endl
-    << "image_descriptor " << varName << " = {" << std::endl
-    << "  .width = " << width << "," << std::endl
-    << "  .height = " << height << "," << std::endl
-    << "  .byte_count = " << outBuf.size() << "," << std::endl
-    << "  .compression = image_compression::" << name(cmp)
-    << ", " // TODO Update
-    << std::endl
-    << "  .image_data = " << varName << "_data" << std::endl
-    << "}; // "
-    << static_cast<float>(chkBuf.size()) / static_cast<float>(outBuf.size())
-    << " compression rate" << std::endl;
+  std::cout << std::endl
+            << "};" << std::endl
+            << "// clang-format on" << std::endl
+            << std::endl
+            << "image_descriptor " << varName << " = {" << std::endl
+            << "  .width = " << width << "," << std::endl
+            << "  .height = " << height << "," << std::endl
+            << "  .byte_count = " << outBuf.size() << "," << std::endl
+            << "  .compression = image_compression::" << name(cmp)
+            << ", " // TODO Update
+            << std::endl
+            << "  .image_data = " << varName << "_data" << std::endl
+            << "}; // "
+            << static_cast<float>(sz) / static_cast<float>(outBuf.size())
+            << " compression rate" << std::endl;
   return 0;
 }

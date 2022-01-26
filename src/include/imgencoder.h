@@ -13,6 +13,7 @@ using word_printer = std::function<void(uint16_t)>;
 bool encode_rle(const uint8_t* data, uint32_t bytes, byte_printer print);
 bool encode_prle(const uint8_t* data, uint32_t bytes, byte_printer print);
 bool encode_pal(const uint8_t* data, uint32_t bytes, byte_printer print);
+using encoder = bool (*)(const uint8_t*, uint32_t, byte_printer);
 
 struct cmdLine {
   image_compression cmpType;

@@ -39,20 +39,19 @@ struct image_descriptor {
   const uint8_t* image_data;
 };
 
-using sender = void (*)(const uint8_t*, uint16_t);
-using decoder = void (*)(const uint8_t*, uint32_t, sender);
+using bytestream = const uint8_t*;
+using sender = void (*)(bytestream, uint16_t);
+using decoder = void (*)(bytestream, uint32_t, sender);
 
-void decode_rle(const uint8_t* compressedStream,
-                uint32_t streamLength,
-                sender send);
-
-void decode_pal(const uint8_t* compressedStream,
-                uint32_t streamLength,
-                sender send);
-
-void decode_prle(const uint8_t* compressedStream,
-                 uint32_t streamLength,
-                 sender send);
+void decode_rle(bytestream cmpStrm, uint32_t len, sender send);
+void decode_pal(bytestream cmpStrm, uint32_t len, sender send);
+void decode_prle(bytestream cmpStrm, uint32_t len, sender send);
 
 // Helpers
 uint8_t log2ish(uint16_t n);
+uint16_t readBits(uint8_t numBits,
+                  bytestream cmpStrm,
+                  uint32_t* i,
+                  uint8_t* curBit);
+uint16_t read16b(bytestream stream, uint32_t* ofs);
+uint32_t readStopBitNumber(bytestream cmpStrm, uint32_t* i);
