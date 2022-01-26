@@ -6,7 +6,7 @@
 uint8_t* buffer = nullptr;
 uint32_t curOffset = 0;
 
-void append_bytes(const uint8_t* buf, uint16_t bytes) {
+void append_bytes(bytestream buf, uint16_t bytes) {
   memcpy(&buffer[curOffset], buf, bytes);
   curOffset += bytes;
 }
@@ -18,7 +18,7 @@ void drawImage(image_descriptor* id,
   uint32_t size = id->width * id->height * sizeof(uint16_t);
   buffer = (uint8_t*)malloc(size);
   curOffset = 0;
-  decode_nqrle16(id->image_data, id->byte_count, append_bytes);
+  decode_rle(id->image_data, id->byte_count, append_bytes);
   if (curOffset != size) {
     DBG(Serial.printf("Invalid output: Erp %d bytes instead of %d (from %d)\n",
                       curOffset,

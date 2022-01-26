@@ -10,10 +10,10 @@
 
 using byte_printer = std::function<void(uint8_t)>;
 using word_printer = std::function<void(uint16_t)>;
-bool encode_rle(const uint8_t* data, uint32_t bytes, byte_printer print);
-bool encode_prle(const uint8_t* data, uint32_t bytes, byte_printer print);
-bool encode_pal(const uint8_t* data, uint32_t bytes, byte_printer print);
-using encoder = bool (*)(const uint8_t*, uint32_t, byte_printer);
+bool encode_rle(bytestream data, uint32_t bytes, byte_printer print);
+bool encode_prle(bytestream data, uint32_t bytes, byte_printer print);
+bool encode_pal(bytestream data, uint32_t bytes, byte_printer print);
+using encoder = bool (*)(bytestream, uint32_t, byte_printer);
 
 struct cmdLine {
   image_compression cmpType;
@@ -29,7 +29,7 @@ uint16_t writeBits(uint16_t value,
                    byte_printer print);
 void flushBits(uint16_t bitBuffer, byte_printer print);
 void dumpRLECount(bool repeat, uint32_t count, byte_printer print);
-bool dump_rle(const uint8_t* data,
+bool dump_rle(bytestream data,
               uint32_t bytes,
               byte_printer print,
               word_printer print2);

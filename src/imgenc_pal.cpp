@@ -97,7 +97,7 @@ std::pair<std::vector<uint16_t>, std::vector<uint16_t>> calculate_palette(
 
 // it should work better for stuff that has strings of unique stuff along with
 // strings of repeated stuff
-bool encode_pal(const uint8_t* data, uint32_t bytes, byte_printer print) {
+bool encode_pal(bytestream data, uint32_t bytes, byte_printer print) {
   if (bytes & 1) {
     // It must be 16 bit values, yeah?
     return false;

@@ -25,7 +25,7 @@ void dumpRLECount(bool repeat, uint32_t count, byte_printer print) {
 
 // it should work better for stuff that has strings of unique stuff along with
 // strings of repeated stuff
-bool encode_rle(const uint8_t* data, uint32_t bytes, byte_printer print) {
+bool encode_rle(bytestream data, uint32_t bytes, byte_printer print) {
   std::function<void(uint16_t)> print2 = [&](uint16_t val) {
     print(val & 0xFF);
     print((val >> 8) & 0xFF);
@@ -33,7 +33,7 @@ bool encode_rle(const uint8_t* data, uint32_t bytes, byte_printer print) {
   return dump_rle(data, bytes, print, print2);
 }
 
-bool dump_rle(const uint8_t* data,
+bool dump_rle(bytestream data,
               uint32_t bytes,
               byte_printer print,
               word_printer print2) {

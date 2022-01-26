@@ -22,9 +22,7 @@ uint32_t readStopBitNumber(bytestream cmpStrm, uint32_t* i) {
   return val;
 }
 
-void decode_rle(bytestream cmpStrm,
-                uint32_t strmLen,
-                void (*send)(bytestream buf, uint16_t len)) {
+void decode_rle(bytestream cmpStrm, uint32_t strmLen, sender send) {
   const uint16_t bufSize = 1024;
   uint8_t buffer[1024];
   uint32_t offs = 0;

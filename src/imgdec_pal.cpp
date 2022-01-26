@@ -65,9 +65,7 @@ uint16_t read16b(bytestream stream, uint32_t* ofs) {
 // clang-format on
 // the first number is 0.1101.0110, next number is 0.0101.0100
 
-void decode_pal(bytestream cmpStrm,
-                uint32_t strmLen,
-                void (*send)(const uint8_t* buf, uint16_t len)) {
+void decode_pal(bytestream cmpStrm, uint32_t strmLen, sender send) {
   const uint16_t bufSize = 1024;
   uint8_t buffer[1024];
   uint32_t offs = 0;
