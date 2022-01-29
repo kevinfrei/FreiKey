@@ -49,15 +49,16 @@ void decode_prle(bytestream cmpStrm, uint32_t strmLen, sender send) {
           send(buffer, bufSize);
           offs = -(j * 2);
         }
-        // Do I need to byte-swap here?
+        // I need to byte-swap here, apparently
         buffer[offs + j * 2] = color & 0xFF;
-        buffer[offs + j * 1 + 1] = (color >> 8) & 0xFF;
+        buffer[offs + j * 2 + 1] = (color >> 8) & 0xFF;
       }
       offs += length * 2;
     }
     // Increment i if we had any bits left to read in the current byte
     if (bit > 0) {
       i++;
+      bit = 0;
     }
   }
   if (offs) {

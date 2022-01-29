@@ -170,7 +170,6 @@ image_compression enc_and_dec(uint8_t* inBuf, uint32_t sz) {
   const uint32_t palSize =
     check_roundtrip("pal", encode_pal, decode_pal, inBuf, sz);
   // Finish what is *probably* smallest: Palette RLE encoding
-  dump = true;
   const uint32_t prleSize =
     check_roundtrip("prle", encode_prle, decode_prle, inBuf, sz);
   const uint32_t smallest = std::min({rleSize, palSize, prleSize});
@@ -257,6 +256,9 @@ int main(int argc, const char* argv[]) {
       break;
     case image_compression::PAL_RAW:
       encode_pal(inBuf, sz, appendByteToOut);
+      break;
+    case image_compression::PAL_NQRLE:
+      encode_prle(inBuf, sz, appendByteToOut);
       break;
     default:
       std::cout << "UNSUPPORTED TARGET FORMAT!" << std::endl;

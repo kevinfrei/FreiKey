@@ -49,12 +49,10 @@ rkflash rkf:
 
 ifeq ($(OS),Windows_NT)
 # Decide if we've got VC++ around, which on Windows is preferred
-ifeq ($(DevEnvDir),)
-ifeq ($(VSAPPIDNAME),)
+ifeq ($(VisualStudioVersion),)
 CXX=clang
 else
 CXX=cl.exe
-endif
 endif
 SFX=.exe
 else
@@ -72,8 +70,8 @@ out:
 # OPTFLAGS=-flto -O3
 # Debug:
 ifeq (${CXX},cl.exe)
-OBJFLAG=/Fo
-IMGFLAG=/Fe
+OBJFLAG=/FS /Fo
+IMGFLAG=/FS /Fe
 OPTFLAGS=/Od /ZI /EHsc
 STDNUM=/std:c++20
 OSUFFIX=obj
