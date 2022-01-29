@@ -1,1 +1,1 @@
-extern struct image_descriptor *gfx_batman;
+extern const struct image_descriptor *gfx_batman;
