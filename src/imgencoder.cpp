@@ -17,13 +17,14 @@
 
 const image_descriptor* builtins[] = {
   gfx_amy, gfx_batman, gfx_mac, gfx_win, gfx_linux};
-constexpr uint32_t builtin_count = static_cast<uint32_t>(std::size(builtins));
+const uint32_t builtin_count = static_cast<uint32_t>(std::size(builtins));
 
 std::vector<uint8_t> outBuf;
 std::vector<uint8_t> chkBuf;
 
 int linePos = 0;
 int lineWidth = 100;
+bool dump = false;
 
 void appendByteToOut(uint8_t val) {
   int width = val < 10 ? 2 : (val < 100) ? 3 : 4;
@@ -42,13 +43,29 @@ void appendToOut(bytestream buf, uint16_t len) {
   }
 }
 
+int nums = 0;
+void show(uint8_t val) {
+  if (dump) {
+    std::cout << static_cast<uint32_t>(val);
+    if (nums == 16) {
+      std::cout << std::endl;
+      nums = 0;
+    } else {
+      std::cout << ",";
+      nums = 0;
+    }
+  }
+}
+
 void appendByteToChk(uint8_t val) {
   chkBuf.push_back(val);
+  show(val);
 }
 
 void appendToChk(bytestream buf, uint16_t len) {
   for (uint16_t i = 0; i < len; i++) {
     chkBuf.push_back(buf[i]);
+    show(buf[i]);
   }
 }
 
@@ -128,7 +145,7 @@ uint32_t check_roundtrip(
   std::vector<uint8_t> outputCopy{chkBuf};
   chkBuf.clear();
   dec(outputCopy.data(), static_cast<uint32_t>(outputCopy.size()), appendToChk);
-  const uint32_t encSize = outputCopy.size();
+  const uint32_t encSize = static_cast<uint32_t>(outputCopy.size());
   outputCopy.clear();
   if (chkBuf.size() != sz) {
     std::cerr << name << " sizes are wrong " << chkBuf.size() << " decoded, "
@@ -152,8 +169,18 @@ image_compression enc_and_dec(uint8_t* inBuf, uint32_t sz) {
   // Okay, now try the palette encoding
   const uint32_t palSize =
     check_roundtrip("pal", encode_pal, decode_pal, inBuf, sz);
-  return (palSize < rleSize) ? image_compression::PAL_RAW
-                             : image_compression::NQRLE;
+  // Finish what is *probably* smallest: Palette RLE encoding
+  dump = true;
+  const uint32_t prleSize =
+    check_roundtrip("prle", encode_prle, decode_prle, inBuf, sz);
+  const uint32_t smallest = std::min({rleSize, palSize, prleSize});
+  if (smallest == rleSize) {
+    return image_compression::NQRLE;
+  }
+  if (smallest == palSize) {
+    return image_compression::PAL_RAW;
+  }
+  return image_compression::PAL_NQRLE;
 }
 
 // I used https://lvgl.io/tools/imageconverter to convert to 565 format
@@ -172,7 +199,7 @@ int main(int argc, const char* argv[]) {
                                 std::istreambuf_iterator<char>());
 
   uint8_t* buf = contents.data();
-  uint32_t sz = contents.size(), width, height;
+  uint32_t sz = static_cast<uint32_t>(contents.size()), width, height;
   uint8_t* inBuf;
   if (ln.width) {
     // Raw image: get the data from the command line
@@ -206,7 +233,7 @@ int main(int argc, const char* argv[]) {
   std::string varName = makeVarName(ln.filename);
   // Byte swap the buffer
   // TODO: make this optional
-  for (int i = 0; i < sz; i += 2) {
+  for (uint32_t i = 0; i < sz; i += 2) {
     uint8_t n1 = inBuf[i];
     uint8_t n0 = inBuf[i + 1];
     inBuf[i] = n0;

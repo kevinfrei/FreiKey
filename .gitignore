@@ -6,6 +6,8 @@
 *.lo
 *.o
 *.obj
+*.idb
+*.pdb
 
 # Precompiled Headers
 *.gch
@@ -35,3 +37,5 @@
 src/out-*
 src/Makefile
 src/out*
+src/.vs
+src/*.bin

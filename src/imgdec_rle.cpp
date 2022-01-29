@@ -25,10 +25,10 @@ uint32_t readStopBitNumber(bytestream cmpStrm, uint32_t* i) {
 void decode_rle(bytestream cmpStrm, uint32_t strmLen, sender send) {
   const uint16_t bufSize = 1024;
   uint8_t buffer[1024];
-  uint32_t offs = 0;
+  int32_t offs = 0;
   for (uint32_t i = 0; i < strmLen;) {
     uint32_t length = readStopBitNumber(cmpStrm, &i);
-    uint8_t repeat = length % 2 == 1;
+    bool repeat = length % 2 == 1;
     length /= 2;
     // fprintf(stderr, ">> %d (%s)\n", length, repeat ? "repeat" : "unique");
     if (repeat) {
@@ -36,7 +36,7 @@ void decode_rle(bytestream cmpStrm, uint32_t strmLen, sender send) {
       uint8_t byte1 = cmpStrm[i++];
       uint8_t byte2 = cmpStrm[i++];
       // fprintf(stderr, ">>> %02x %02x\n", (uint32_t)byte1, (uint32_t)byte2);
-      for (uint32_t j = 0; j < length; j++) {
+      for (int32_t j = 0; j < length; j++) {
         if (offs + j * 2 == bufSize) {
           send(buffer, offs + j * 2);
           offs = -(j * 2);
@@ -47,7 +47,7 @@ void decode_rle(bytestream cmpStrm, uint32_t strmLen, sender send) {
       offs += length * 2;
     } else {
       // copy the next N pair of bytes
-      for (uint32_t j = 0; j < length; j++) {
+      for (int32_t j = 0; j < length; j++) {
         if (offs + j * 2 == bufSize) {
           send(buffer, offs + j * 2);
           offs = -(j * 2);

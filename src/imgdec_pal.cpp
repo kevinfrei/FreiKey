@@ -8,7 +8,7 @@
 uint8_t log2ish(uint16_t n) {
   uint8_t count = 0;
   // This handles 2 ^ n exactly.
-  uint8_t rounded = !!((n > 1) & !(n & (n - 1)));
+  uint8_t rounded = !!((n > 1) && !(n & (n - 1)));
   while (n != 0) {
     n >>= 1;
     count += 1;

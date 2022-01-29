@@ -48,7 +48,14 @@ rkflash rkf:
 	make ${flags} -f r-karbon.mak flash
 
 ifeq ($(OS),Windows_NT)
+# Decide if we've got VC++ around, which on Windows is preferred
+ifeq ($(DevEnvDir),)
+ifeq ($(VSAPPIDNAME),)
 CXX=clang
+else
+CXX=cl.exe
+endif
+endif
 SFX=.exe
 else
 SFX=
@@ -64,14 +71,26 @@ out:
 # Speed:
 # OPTFLAGS=-flto -O3
 # Debug:
+ifeq (${CXX},cl.exe)
+OBJFLAG=/Fo
+IMGFLAG=/Fe
+OPTFLAGS=/Od /ZI /EHsc
+STDNUM=/std:c++20
+OSUFFIX=obj
+else
+OBJFLAG="-o "
+IMGFLAG="-o "
 OPTFLAGS=-g
+STDNUM=-std=c++20
+OSUFFIX=o
+endif
 
 # Set up rules for local binaries
-out/%.o: bitmaps/%.cpp
-	${CXX} ${OPTFLAGS} -c -DCOMPRESSOR -Iinclude -DPROGMEM=" " -std=c++17 $< -o $@
+out/%.${OSUFFIX}: bitmaps/%.cpp
+	${CXX} ${OPTFLAGS} -c -DCOMPRESSOR -Iinclude ${STDNUM} $< ${OBJFLAG}$@
 
-out/%.o : %.cpp
-	${CXX} ${OPTFLAGS} -c -DCOMPRESSOR -Iinclude -std=c++17 $< -o $@
+out/%.${OSUFFIX} : %.cpp
+	${CXX} ${OPTFLAGS} -c -DCOMPRESSOR -Iinclude ${STDNUM} $< ${OBJFLAG}$@
 
 IMGSRC = imgencoder.cpp \
  img_cmdln.cpp \
@@ -87,7 +106,7 @@ IMGSRC = imgencoder.cpp \
  mac.cpp \
  linux.cpp
  
-OBJS = $(addprefix out/, $(patsubst %.cpp, %.o, ${IMGSRC}))
+OBJS = $(addprefix out/, $(patsubst %.cpp, %.${OSUFFIX}, ${IMGSRC}))
 
 out/imagecomp${SFX}: ${OBJS}
-	${CXX} ${OPTFLAGS} -o $@ $^
+	${CXX} ${OPTFLAGS} ${IMGFLAG}$@ $^
