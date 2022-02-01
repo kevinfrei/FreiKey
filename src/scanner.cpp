@@ -104,7 +104,9 @@ void preprocessScanCode(scancode_t sc, bool pressed, uint32_t now) {
       }
       break;
     case kLayerRotate:
-      curState.rotate_layer(state->get_layer());
+      if (pressed) {
+        curState.rotate_layer(action);
+      }
       break;
     default:
       return;

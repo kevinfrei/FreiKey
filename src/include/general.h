@@ -14,7 +14,7 @@ struct ClientState {
   bool connected;
   ClientState() : battery(0xff), latency(0), connected(false) {}
   ClientState(const ClientState& cs)
-      : battery(cs.battery), latency(cs.latency), connected(cs.connected) {}
+    : battery(cs.battery), latency(cs.latency), connected(cs.connected) {}
   bool operator!=(const ClientState& cs) const {
     return battery != cs.battery || latency != cs.latency ||
            connected != cs.connected;
@@ -31,9 +31,9 @@ struct State {
     layer_stack.fill(0);
   }
   State(const State& gs)
-      : debugString(gs.debugString),
-        layer_pos(gs.layer_pos),
-        layer_stack(gs.layer_stack) {}
+    : debugString(gs.debugString),
+      layer_pos(gs.layer_pos),
+      layer_stack(gs.layer_stack) {}
   void reset() {
     layer_pos = 0;
     layer_stack[0] = 0;
@@ -104,11 +104,29 @@ struct State {
     }
     DBG(dumpLayers());
   }
+  uint8_t find_layer(layer_t l) {
+    for (int8_t l = layer_pos; l >= 0; l--){
+      if (layer_stack[l] == l) {
+        return static_cast<uint8_t>(l);
+      }
+    }
+    return -1;
+  }
   void switch_layer(layer_t layer) {
     DBG(dumpVal(layer_stack[layer_pos], "Switching layer "));
     DBG(dumpVal(layer, "to layer "));
     layer_stack[layer_pos] = layer;
     DBG(dumpLayers());
+  }
+  void rotate_layer(action_t action) {
+    // Check to see if any of the layers specified (except base?)
+    layer_t lyr0 = getRot0(action);
+    layer_t lyr1 = getRot1(action);
+    layer_t lyr2 = getRot2(action);
+    uint8_t lp0 = find_layer(lyr0);
+    uint8_t lp1 = find_layer(lyr1);
+    uint8_t lp2 = find_layer(lyr2);
+    uint8_t top = std::max(std::max(lp0, lp1), lp2);
   }
 #if defined(DEBUG)
   void dumpLayers() {
@@ -125,10 +143,12 @@ struct State {
 #if defined(BTLE_HOST)
 class KarbonState : public State {
   ClientState left, right;
-  public:
+
+ public:
   KarbonState() : left(), right(), State() {}
-  KarbonState(const KarbonState &ks) : left(ks.left), right(ks.right), State(ks) {}
-  bool operator !=(const KarbonState &ks) const {
+  KarbonState(const KarbonState& ks)
+    : left(ks.left), right(ks.right), State(ks) {}
+  bool operator!=(const KarbonState& ks) const {
     if (gs.left != left || gs.right != right)
       return true;
     return State::operator!=(ks);

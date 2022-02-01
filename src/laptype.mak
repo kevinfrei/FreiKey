@@ -47,9 +47,9 @@ USER_CPP_SRCS=\
 	scanner.cpp \
 	laptype.cpp \
 	image.cpp \
-	img_nqrle16.cpp \
-	img_palette.cpp \
-	img_palnqrle.cpp \
+	imgdec_rle.cpp \
+	imgdec_pal.cpp \
+	imgdec_prle.cpp \
 	bitmaps/amy.cpp \
 	bitmaps/batman.cpp \
 	bitmaps/win.cpp \

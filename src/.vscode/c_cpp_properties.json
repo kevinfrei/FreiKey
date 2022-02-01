@@ -39,7 +39,9 @@
                     "${workspaceFolder}"
                 ],
                 "databaseFilename": ""
-            }
+            },
+            "cStandard": "c89",
+            "cppStandard": "c++17"
         },
         {
             "name": "Laptype-mac",
