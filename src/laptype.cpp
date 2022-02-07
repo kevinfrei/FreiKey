@@ -21,7 +21,7 @@ Adafruit_ST7789* LaptypeBoard::tft = nullptr;
 boolean LaptypeBoard::backlightOn = false;
 uint32_t LaptypeBoard::lastShownLayerTime = 0;
 uint32_t LaptypeBoard::lastShownLayerVal = 0;
-image_descriptor *images[5] = {
+const image_descriptor *images[5] = {
   gfx_amy,
   gfx_batman,
   gfx_mac,

@@ -104,7 +104,7 @@ struct State {
     }
     DBG(dumpLayers());
   }
-  uint8_t find_layer(layer_t l) {
+  int8_t find_layer(layer_t l) {
     for (int8_t l = layer_pos; l >= 0; l--){
       if (layer_stack[l] == l) {
         return static_cast<uint8_t>(l);
@@ -123,10 +123,25 @@ struct State {
     layer_t lyr0 = getRot0(action);
     layer_t lyr1 = getRot1(action);
     layer_t lyr2 = getRot2(action);
-    uint8_t lp0 = find_layer(lyr0);
-    uint8_t lp1 = find_layer(lyr1);
-    uint8_t lp2 = find_layer(lyr2);
-    uint8_t top = std::max(std::max(lp0, lp1), lp2);
+    int8_t lp0 = find_layer(lyr0);
+    int8_t lp1 = find_layer(lyr1);
+    int8_t lp2 = find_layer(lyr2);
+    int8_t top = std::max(std::max(lp0, lp1), lp2);
+    layer_t active = layer_stack[top];
+    pop_layer(active);
+    if (active == lp2) {
+      if (lp0 < 0) {
+        push_layer(lp0);
+      }
+    } else if (active == lp1) {
+      if (lp2 < 0) {
+        push_layer(lp2);
+      }
+    } else if (active == lp0) {
+      if (lp1 < 0) {
+        push_layer(lp1);
+      }
+    }
   }
 #if defined(DEBUG)
   void dumpLayers() {
