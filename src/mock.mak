@@ -11,22 +11,20 @@
 # DEBUG, LOTSA_BLINKING, STATUS_DUMP, TEST_MASTER
 
 # Necessary configuration stuff
-BUILD_PATH=out-mock-host
+BUILD_PATH=out/mock-host
 PROJ_NAME=mock-host
 
 # This is how to add new flags
 # -DDEBUG=1/2
-COMPILER_CPP_EXTRA_FLAGS=-DUSB_MASTER -DADAFRUIT -DHAS_LED -DDEBUG=1
+COMPILER_CPP_EXTRA_FLAGS=-DDEBUG=1
 
 USER_INCLUDES=-Iinclude/mock -Iinclude
+
 USER_CPP_SRCS=\
- 	comm.cpp \
 	dbgcfg.cpp \
-	dongle.cpp \
-	hardware.cpp \
 	kbreporter.cpp \
+	mainloop.cpp \
 	scanner.cpp \
-  sync.cpp \
-	usb-host.cpp
+	mock.cpp
 
 include mock.mk

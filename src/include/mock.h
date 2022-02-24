@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cstdint>
+#include <stdint.h>
 #include <stdio.h>
 #include <memory.h>
 
@@ -15,16 +15,19 @@ class SerialMock {
   void begin(uint32_t bps);
   operator bool();
 };
-constexpr int HEX = 1;
+constexpr int HEX = 16;
 
 extern SerialMock Serial;
 
-void delayMicroseconds(uint64_t s);
+void delayMicroseconds(uint32_t s);
+void delay(uint32_t);
+uint32_t millis();
+uint32_t micros();
+
 void digitalWrite(uint16_t pin, uint32_t val);
 uint8_t digitalRead(uint16_t pin);
 void pinMode(uint16_t pin, uint8_t mode);
-uint32_t millis();
-void delay(uint32_t);
+
 void waitForEvent();
 
 constexpr uint32_t HIGH = 255;

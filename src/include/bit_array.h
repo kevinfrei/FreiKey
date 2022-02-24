@@ -8,6 +8,7 @@
 #include "dbgcfg.h"
 #include "helpers.h"
 
+// TODO: Probably switch to using std::bitset, right?
 template <int T>
 struct bit_array {
   constexpr static uint32_t num_bits = T;

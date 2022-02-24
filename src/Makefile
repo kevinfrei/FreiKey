@@ -12,7 +12,7 @@ else
 flags=-j
 endif
 # Now the default target
-all: allk allf laptype
+all: allk allf laptype mock
 
 allclean:
 ifeq ($(OS),Windows_NT)
@@ -31,6 +31,9 @@ laptype lt l:
 
 flaptype laptypef lf ltf:
 	make ${flags} -f laptype.mak flash
+
+mock m:
+	make ${flags} -f mock.mak all compile_commands
 
 lk:
 	make ${flags} -f l-karbon.mak all compile_commands

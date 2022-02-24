@@ -31,7 +31,7 @@ void kb_reporter::send_keys() {
   Dongle::ReportKeys(mods, &report[0]);
 }
 
-#elif defined(TEENSY)
+#elif defined(TEENSY) || defined(MOCK)
 
 kb_reporter::kb_reporter() : mods(0), repsize(0) {
   memset(report, 0, 6);

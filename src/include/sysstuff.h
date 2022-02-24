@@ -1,44 +1,48 @@
 #pragma once
 
 #if defined(NEW_CONFIG)
-#include "mpusys.h"
 #include "hwconfig.h"
+#include "mpusys.h"
 #else
-#if defined(MOCKING)
-# include "mock.h"
-#else 
-# if defined(ARDUINO_NRF52_ADAFRUIT)
+#if defined(MOCK)
+#include <memory.h>
+#include <stdint.h>
+#include <stdio.h>
 
-#  if defined(BTLE_HOST)
-#   include "Adafruit_TinyUSB.h"
-#   include "Adafruit_NeoPixel.h"
-#  endif
+#include "mock.h"
+#else
+#if defined(ARDUINO_NRF52_ADAFRUIT)
 
-#  define ADAFRUIT
-#  include <bluefruit.h>
+#if defined(BTLE_HOST)
+#include "Adafruit_NeoPixel.h"
+#include "Adafruit_TinyUSB.h"
+#endif
 
-#  undef min
-#  undef max
+#define ADAFRUIT
+#include <bluefruit.h>
 
-# elif defined(TEENSY)
-#  include "core_pins.h"
-#  include "usb_keyboard.h"
-#  include "usb_serial.h"
-#  include <stddef.h>
-# endif
+#undef min
+#undef max
 
-# if defined(HAS_DISPLAY)
-#  include <Adafruit_GFX.h>
-#  if defined(DISPLAY_OLED)
-#   include <Adafruit_SSD1306.h>
-#  elif defined(DISPLAY_ST7789)
-#   include <Adafruit_ST7789.h>
-#  else
-#    error Unrecognized display
-#  endif
-#  include <SPI.h>
-#  include <Wire.h>
-# endif
+#elif defined(TEENSY)
+#include "core_pins.h"
+#include "usb_keyboard.h"
+#include "usb_serial.h"
+#include <stddef.h>
+#endif
+
+#if defined(HAS_DISPLAY)
+#include <Adafruit_GFX.h>
+#if defined(DISPLAY_OLED)
+#include <Adafruit_SSD1306.h>
+#elif defined(DISPLAY_ST7789)
+#include <Adafruit_ST7789.h>
+#else
+#error Unrecognized display
+#endif
+#include <SPI.h>
+#include <Wire.h>
+#endif
 
 #endif
 
