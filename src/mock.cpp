@@ -14,10 +14,16 @@ void loop();
 }
 
 std::bitset<72> switches{};
+std::vector<uint8_t> pinStatus{24};
 
 void pinMode(uint16_t pin, uint8_t mode) {
   // TODO: Check to make sure we're using the pins right in
   // digital/analog/read/write
+  if (pin > 23) {
+    printf("Pin out of range\n");
+  } else {
+    pinStatus[pin] = mode;
+  }
 }
 
 void digitalWrite(uint16_t pin, uint32_t val) {
