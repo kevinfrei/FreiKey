@@ -58,12 +58,12 @@ class KeyMatrix {
     for (uint8_t colNum = 0; colNum < numcols; ++colNum) {
       T::prepPinForRead(colPin(colNum));
       for (uint8_t rowNum = 0; rowNum < numrows; ++rowNum) {
-        if (!digitalRead(rowPin(rowNum))) {
+        if (digitalRead(rowPin(rowNum)) == LOW) {
 #else
     for (uint8_t rowNum = 0; rowNum < numrows; ++rowNum) {
       T::prepPinForRead(rowPin(rowNum));
       for (uint8_t colNum = 0; colNum < numcols; ++colNum) {
-        if (!digitalRead(colPin(colNum))) {
+        if (digitalRead(colPin(colNum)) == LOW) {
 #endif
           switches.set_bit(rowNum * numcols + colNum);
         }

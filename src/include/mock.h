@@ -24,17 +24,28 @@ void delay(uint32_t);
 uint32_t millis();
 uint32_t micros();
 
-void digitalWrite(uint16_t pin, uint32_t val);
-uint8_t digitalRead(uint16_t pin);
-void pinMode(uint16_t pin, uint8_t mode);
-
 void waitForEvent();
 
-constexpr uint32_t HIGH = 255;
-constexpr uint32_t LOW = 0;
-constexpr uint8_t OUTPUT = 1;
-constexpr uint8_t INPUT = 2;
-constexpr uint8_t INPUT_PULLUP = 3;
+enum class pin_status {
+  low = 0,
+  invalid = 1, 
+  high = 2
+};
+enum class pin_mode {
+  invalid = 0,
+  output = 1,
+  input = 2,
+  input_pullup = 3
+};
+#define HIGH pin_status::high
+#define LOW pin_status::low
+#define OUTPUT pin_mode::output
+#define INPUT pin_mode::input
+#define INPUT_PULLUP pin_mode::input_pullup
+
+void digitalWrite(uint16_t pin, pin_status val);
+pin_status digitalRead(uint16_t pin);
+void pinMode(uint16_t pin, pin_mode mode);
 
 // Board specific stuff (should eventually be moved)
 constexpr uint16_t LED_BLUE = 1;
@@ -42,7 +53,7 @@ constexpr uint16_t LED_RED = 2;
 constexpr uint16_t PIN_NEOPIXEL = 3;
 constexpr uint16_t LED_BUILTIN = 4;
 constexpr uint8_t KEYBOARD_LED_CAPSLOCK = 0x1;
-
+#if 0
 // BluetoothLE/Bluefruit stuff
 class ble_gap_evt_adv_report_t {};
 
@@ -136,6 +147,7 @@ class Adafruit_SSD1306 {
 };
 constexpr uint32_t SSD1306_SWITCHCAPVCC = 0;
 #define SSD1306_LCDHEIGHT 32
+#endif
 
 // Teensy stuff
 class KeyboardMock {

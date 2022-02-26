@@ -1,6 +1,7 @@
 #include "sysstuff.h"
-#include <stdarg.h>
 #include <bitset>
+#include <stdarg.h>
+#include <vector>
 
 #include "boardio.h"
 #include "general.h"
@@ -13,26 +14,54 @@ void setup();
 void loop();
 }
 
-std::bitset<72> switches{};
-std::vector<uint8_t> pinStatus{24};
+std::bitset<BoardIO::numcols * BoardIO::numrows> switches;
+std::vector<pin_mode> pinModes;
+std::vector<pin_status> pinValue;
 
-void pinMode(uint16_t pin, uint8_t mode) {
+const char* pmName[4] = {"invalid", "ouput", "input", "pullup"};
+
+void pinMode(uint16_t pin, pin_mode mode) {
   // TODO: Check to make sure we're using the pins right in
   // digital/analog/read/write
-  if (pin > 23) {
+  if (pin > pinModes.size() || pin > pinValue.size()) {
     printf("Pin out of range\n");
   } else {
-    pinStatus[pin] = mode;
+    if (pinModes[pin] == pin_mode::invalid) {
+      printf("Configure pin %d to state %d (%s)\n",
+             pin,
+             mode,
+             pmName[static_cast<int>(mode)]);
+    }
+    pinModes[pin] = mode;
   }
 }
 
-void digitalWrite(uint16_t pin, uint32_t val) {
-  // TODO: check, record, report?
+void digitalWrite(uint16_t pin, pin_status val) {
+  if (pin > 23) {
+    printf("Pin out of range\n");
+  } else if (pinModes[pin] != OUTPUT) {
+    printf("Trying to write %d to pin #%d\n", val, pin);
+  } else {
+    pinValue[pin] = val;
+  }
 }
 
-uint8_t digitalRead(uint16_t pin) {
-  // TODO: Make this do some stuff?
-  return 0;
+pin_status digitalRead(uint16_t pin) {
+  uint8_t col = pinToCol[pin];
+  if (col == BAD_PIN) {
+    return LOW;
+  }
+  for (uint8_t row = 0; row < BoardIO::numrows; row++) {
+    uint8_t rowOfs = row * BoardIO::numcols;
+    if (switches[rowOfs + col]) {
+      if (pinModes[pin] == INPUT_PULLUP) {
+        return pinValue[rowOfs];
+      } else {
+        return pinValue[rowOfs] == LOW ? HIGH : LOW;
+      }
+    }
+  }
+  return (pinModes[pin] == INPUT_PULLUP) ? HIGH : LOW;
 }
 
 void waitForEvent() {}
@@ -58,6 +87,7 @@ uint32_t micros() {
 }
 
 SerialMock Serial;
+
 void SerialMock::begin(uint32_t) {}
 void SerialMock::print(const char* str) {
   printf(str);
@@ -104,15 +134,14 @@ void KeyboardMock::set_key6(uint8_t) {}
 void KeyboardMock::set_modifier(uint8_t) {}
 void KeyboardMock::send_now() {}
 
-/*
-BoardIO::bits BoardIO::Read() const {
-  BoardIO::bits switches{};
-  return switches;
-}
-*/
-
 void MockBoard::Configure() {
-  // Do nothing for now...
+  switches.reset();
+  // printf("%zu switches\n", switches.size());
+  for (uint8_t i = 0; i < 24; i++) {
+    pinModes.push_back(pin_mode::invalid);
+    pinValue.push_back(pin_status::invalid);
+  }
+  ConfigMatrix();
 }
 void MockBoard::Changed(uint32_t) {
   // Do nothing for now...
