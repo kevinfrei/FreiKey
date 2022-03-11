@@ -1,7 +1,7 @@
 # Some simple details
 ifeq ($(OS),Windows_NT)
 	ARD=/PROGRA~2/Arduino/hardware
-	SERIAL_PORT=COM16
+	SERIAL_PORT=COM22
   TOOLS_PATH=${ARD}/tools/arm
 	RUNTIME_TOOLS_CMSIS_5_7_0_PATH=${LOCALAPPDATA}/Arduino15/packages/adafruit/tools/CMSIS/5.7.0
 else ifeq ($(shell uname -s), Darwin)
@@ -31,9 +31,12 @@ COMPILER_CPP_EXTRA_FLAGS=-DWIREDRIGHT
 
 # This is how to add libraries (They currently have to be defined to 1)
 LIB_BLUEFRUIT52LIB=1
+LIB_ADAFRUIT_NRFCRYPTO=1
 LIB_ADAFRUIT_TINYUSB_ARDUINO=1
+LIB_ADAFRUIT_LITTLEFS=1
+LIB_INTERNALFILESYTEM=1
 
-USER_INCLUDES=-Iinclude/modules -Iinclude
+USER_INCLUDES=-Iinclude/modules -Iinclude/adafruit_nrf52 -Iinclude
 USER_CPP_SRCS=\
 	dbgcfg.cpp \
   wired-r.cpp
