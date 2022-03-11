@@ -960,16 +960,6 @@ ifdef LIB_BUSIO
   SYS_INCLUDES+=-Ilibs/BusIO
   VPATH_MORE+=libs/BusIO
 endif
-ifdef LIB_GFX
-  C_SYS_SRCS+=libs/GFX/fontconvert/fontconvert.c \
-    libs/GFX/glcdfont.c
-  CPP_SYS_SRCS+=libs/GFX/Adafruit_GFX.cpp \
-    libs/GFX/Adafruit_GrayOLED.cpp \
-    libs/GFX/Adafruit_SPITFT.cpp
-  SYS_INCLUDES+=-Ilibs/GFX \
-    -Ilibs/GFX/Fonts
-  VPATH_MORE+=libs/GFX/fontconvert libs/GFX
-endif
 ifdef LIB_NEOPIXEL
   C_SYS_SRCS+=libs/NeoPixel/esp.c \
     libs/NeoPixel/esp8266.c \
@@ -977,11 +967,6 @@ ifdef LIB_NEOPIXEL
   CPP_SYS_SRCS+=libs/NeoPixel/Adafruit_NeoPixel.cpp
   SYS_INCLUDES+=-Ilibs/NeoPixel
   VPATH_MORE+=libs/NeoPixel
-endif
-ifdef LIB_SSD1306
-  CPP_SYS_SRCS+=libs/SSD1306/Adafruit_SSD1306.cpp
-  SYS_INCLUDES+=-Ilibs/SSD1306
-  VPATH_MORE+=libs/SSD1306
 endif
 SYS_SRC=${C_SYS_SRCS} ${CPP_SYS_SRCS} ${S_SYS_SRCS}
 USER_SRC=${USER_C_SRCS} ${USER_CPP_SRCS} ${USER_S_SRCS}

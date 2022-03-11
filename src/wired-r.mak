@@ -1,9 +1,9 @@
 # Some simple details
 ifeq ($(OS),Windows_NT)
-	ARD=${HOME}/AppData/Local
+	ARD=/PROGRA~2/Arduino/hardware
 	SERIAL_PORT=COM16
-  TOOLS_PATH=${ARD}/Arduino15/packages/arduino/tools/arm-none-eabi-gcc/7-2017q4
-	RUNTIME_TOOLS_CMSIS_5_7_0_PATH=${ARD}/Arduino15/packages/adafruit/tools/CMSIS/5.7.0
+  TOOLS_PATH=${ARD}/tools/arm
+	RUNTIME_TOOLS_CMSIS_5_7_0_PATH=${LOCALAPPDATA}/Arduino15/packages/adafruit/tools/CMSIS/5.7.0
 else ifeq ($(shell uname -s), Darwin)
   ARD=${HOME}/Library
   SERIAL_PORT=/dev/cu.SLAB_USBtoUART
