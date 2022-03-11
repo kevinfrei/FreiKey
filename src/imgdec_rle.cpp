@@ -30,12 +30,10 @@ void decode_rle(bytestream cmpStrm, uint32_t strmLen, sender send) {
     uint32_t length = readStopBitNumber(cmpStrm, &i);
     bool repeat = length % 2 == 1;
     length /= 2;
-    // fprintf(stderr, ">> %d (%s)\n", length, repeat ? "repeat" : "unique");
     if (repeat) {
       // repeat the next pair of bytes N times
       uint8_t byte1 = cmpStrm[i++];
       uint8_t byte2 = cmpStrm[i++];
-      // fprintf(stderr, ">>> %02x %02x\n", (uint32_t)byte1, (uint32_t)byte2);
       for (int32_t j = 0; j < length; j++) {
         if (offs + j * 2 == bufSize) {
           send(buffer, offs + j * 2);
@@ -52,12 +50,6 @@ void decode_rle(bytestream cmpStrm, uint32_t strmLen, sender send) {
           send(buffer, offs + j * 2);
           offs = -(j * 2);
         }
-        /*
-        fprintf(stderr,
-                ">>> %02x %02x\n",
-                (uint32_t)cmpStrm[i],
-                (uint32_t)cmpStrm[i + 1]);
-        */
         buffer[offs + j * 2] = cmpStrm[i++];
         buffer[offs + j * 2 + 1] = cmpStrm[i++];
       }

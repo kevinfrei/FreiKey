@@ -29,6 +29,17 @@ const image_descriptor *images[5] = {
   gfx_linux
 };
 
+const int layer_to_image[8] = {
+  2, // "Base/Mac",
+  3, // "Win"
+  4, // "Linux",
+  1, // "Fn",
+  0, // "MacCaps",
+  0, // "WinCaps",
+  1, // "WinCtrl",
+  0 // "LinuxCaps"};
+}
+
 void LaptypeBoard::Backlight(bool turnOn) {
   if (backlightOn != turnOn) {
     digitalWrite(BACKLIGHT_PIN, turnOn ? HIGH : LOW);

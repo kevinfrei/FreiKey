@@ -17,17 +17,20 @@ void drawImage(const image_descriptor* id,
                Adafruit_ST7789* tft) {
   uint32_t size = id->width * id->height * sizeof(uint16_t);
   buffer = (uint8_t*)malloc(size);
-  curOffset = 0;
-  decode_rle(id->image_data, id->byte_count, append_bytes);
-  if (curOffset != size) {
-    DBG(Serial.printf("Invalid output: Erp %d bytes instead of %d (from %d)\n",
+  if (buffer) {
+    curOffset = 0;
+    decode_rle(id->image_data, id->byte_count, append_bytes);
+    if (curOffset != size) {
+      DBG(
+        Serial.printf("Invalid output: Erp %d bytes instead of %d (from %d)\n",
                       curOffset,
                       size,
                       id->byte_count));
-  } else {
-    tft->drawRGBBitmap(x, y, (uint16_t*)buffer, id->width, id->height);
+    } else {
+      tft->drawRGBBitmap(x, y, (uint16_t*)buffer, id->width, id->height);
+    }
+    free(buffer);
   }
-  free(buffer);
   buffer = nullptr;
   curOffset = 0;
 }
