@@ -17,10 +17,12 @@ struct AdafruitNRF52 {
   static void completePin(uint8_t pin) {
     digitalWrite(pin, HIGH);
   }
+#if defined(USE_INTERRUPT)
   static void prepForInterrupt(uint8_t pin) {
     digitalWrite(pin, LOW);
   }
   static void restoreFromInterrupt(uint8_t pin) {
     digitalWrite(pin, HIGH);
   }
+#endif
 };

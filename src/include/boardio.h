@@ -27,6 +27,10 @@ struct RemoteBoard {
   static constexpr uint8_t numrows = 6;
 };
 using BoardIO = RemoteBoard;
+#elif defined(WIREDLEFT)
+using BoardIO = LeftModule;
+#elif defined(WIREDRIGHT)
+using BoardID = RightModule;
 #elif defined(BETTERFLY)
 using BoardIO = BoardIOBase<12>;
 #elif defined(LAPTYPE)

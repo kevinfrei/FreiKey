@@ -79,7 +79,7 @@ class KeyMatrix {
     return switches;
   }
 
-#if defined(ADAFRUIT_NRF52_ARDUINO)
+#if defined(ADAFRUIT_NRF52_ARDUINO) && defined(USE_INTERRUPTS)
   static void setInterrupts(void (*handler)()) {
     for (uint8_t colNum = 0; colNum < numcols; colNum++) {
       T::prepForInterrupt(colPin(colNum));
