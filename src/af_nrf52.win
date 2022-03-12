@@ -605,7 +605,7 @@ COMPILER_ELF2BIN_FLAGS=-O binary
 COMPILER_OBJCOPY_EEP_FLAGS=-O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0
 COMPILER_OBJCOPY_CMD=arm-none-eabi-objcopy
 COMPILER_AR_FLAGS=rcs
-COMPILER_AR_CMD=arm-none-eabi-gcc-ar
+COMPILER_AR_CMD=arm-none-eabi-ar
 COMPILER_CPP_CMD=arm-none-eabi-g++
 COMPILER_S_CMD=arm-none-eabi-gcc
 COMPILER_C_ELF_CMD=arm-none-eabi-gcc
