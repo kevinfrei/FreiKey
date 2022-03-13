@@ -48,7 +48,9 @@ USER_CPP_SRCS=\
 	scanner.cpp \
 	threepiece.cpp \
 	image.cpp \
-	bitmap.cpp \
+	imgdec_rle.cpp \
+	imgdec_pal.cpp \
+	imgdec_prle.cpp \
 	bitmaps/amy.cpp \
 	bitmaps/batman.cpp \
 	bitmaps/win.cpp \
