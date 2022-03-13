@@ -27,3 +27,33 @@ scancode_t getNextScanCode(T& delta, T& curState, bool& pressed) {
   pressed = curState.get_bit(sc);
   return sc;
 }
+
+inline scancode_t validate(uint8_t b, bool &pressed) {
+    b--;
+    uint8_t sc = b / 3;
+    uint8_t chk = b % 3;
+    if (sc % 3 != chk) {
+      // Error!
+      return 0xFF;
+    } else {
+      pressed = (sc > 35); // TODO: Encode all this shit somewhere?
+      if (pressed) {
+        sc -= 36;
+      }
+      return sc + 1;
+    }
+}
+
+// Template specialization for remote modules
+template<>
+inline scancode_t getNextScanCode<HardwareSerial>(HardwareSerial& left,
+                                           HardwareSerial& right,
+                                           bool &pressed) {
+  if (left.available()) {
+    return validate(left.read(), pressed);
+  } else if (right.available()) {
+    scancode_t sc = validate(right.read(), pressed);
+    return (sc != 0 && sc != 0xFF) ? sc + 36 : sc;
+  }
+  return 0;
+}

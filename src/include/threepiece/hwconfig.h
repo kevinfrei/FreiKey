@@ -4,9 +4,9 @@
 #include <Adafruit_ST7789.h>
 #include <SPI.h>
 #include <Wire.h>
+#include <HardwareSerial.h>
 
 #define HAS_DISPLAY 1
 #define DISPLAY_ST7789 1
-#define DISPLAY_240_135 1
-#define ROWOUT 1
-#define LAPTYPE 1
+#define DISPLAY_320_240 1
+#define THREEPIECE 1

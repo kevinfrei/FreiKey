@@ -31,6 +31,10 @@ using BoardIO = RemoteBoard;
 using BoardIO = BoardIOBase<12>;
 #elif defined(LAPTYPE)
 using BoardIO = LaptypeBoard;
+#elif defined(THREEPIECE)
+using BoardIO = ThreePieceBoard;
+#elif defined(MOCK)
+using BoardIO = MockBoard;
 #else
 #error You must define a target for the number of columns on the board
 #endif

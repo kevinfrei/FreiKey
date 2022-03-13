@@ -209,7 +209,7 @@ DK(M_LOCK, 0xF9);
 #define LAYER_MAC_CAP 3
 #define LAYER_WIN_CAP 4
 #define LAYER_WIN_CTL 5
-#elif defined(KARBON) || defined(LAPTYPE)
+#elif defined(KARBON) || defined(LAPTYPE) || defined(THREEPIECE)
 #define LAYER_MAC_BASE 0
 #define LAYER_WIN_BASE 1
 #define LAYER_LIN_BASE 2
@@ -218,6 +218,8 @@ DK(M_LOCK, 0xF9);
 #define LAYER_WIN_CAP 5
 #define LAYER_WIN_CTL 6
 #define LAYER_LIN_CAP 7
+#else
+#error You probably want to define your keymap here...
 #endif
 
 #define LYR_WIN LYR_TOG(LAYER_WIN_BASE)
