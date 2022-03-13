@@ -14,13 +14,18 @@ GeneralState curState{};
 // This is called when the system is initialized.
 // The idea is that it should just wipe everything clean.
 void resetTheWorld() {
+  DBG2(Serial.println("Resetting the world!"));
   curState.reset();
   // memset(keyStates, null_scan_code, sizeof(keyStates));
+  DBG2(Serial.println("World reset!"));
 }
 
 extern "C" void setup() {
   DBG(Serial.begin(115200));
   DBG(Serial.println("SETUP!"));
+  DBG2(dumpVal(115200, "Debugging Serial port configured to "));
+  right.begin(1 << 20);
+  left.begin(1 << 20);
   BoardIO::Configure();
   resetTheWorld();
 }
@@ -30,10 +35,11 @@ extern "C" void loop() {
   bool keysChanged = false;
   bool pressed = false;
   for (scancode_t sc = getNextScanCode(left, right, pressed);
-       sc != 0 && sc != 0xFF;
+       sc != 0xFF;
        sc = getNextScanCode(left, right, pressed)) {
-    preprocessScanCode(sc - 1, pressed, now);
-    keysChanged ||= sc != 0 && sc != 0xff;
+    DBG2(dumpHex(sc, "Got scan code 0x"));
+    preprocessScanCode(sc, pressed, now);
+    keysChanged = true;
   }
   if (keysChanged) {
     kb_reporter rpt;

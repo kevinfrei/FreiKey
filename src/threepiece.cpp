@@ -12,10 +12,10 @@
 #include "bitmaps/mac.h"
 #include "image.h"
 
-constexpr uint8_t BACKLIGHT_PIN = 17;
-constexpr uint8_t TFT_CS = 8;
-constexpr uint8_t TFT_DC = 15;
-constexpr uint8_t TFT_RST = 6;
+constexpr uint8_t BACKLIGHT_PIN = 18;
+constexpr uint8_t TFT_CS = 10;
+constexpr uint8_t TFT_DC = 20;
+constexpr uint8_t TFT_RST = 21;
 
 Adafruit_ST7789* ThreePieceBoard::tft = nullptr;
 boolean ThreePieceBoard::backlightOn = false;
