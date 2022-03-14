@@ -119,8 +119,8 @@ void Adafruit_USBD_HID::keyboardRelease(uint8_t) {}
 void Adafruit_USBD_HID::keyboardReport(uint8_t, uint8_t, uint8_t*) {}
 void Adafruit_USBD_HID::sendReport(uint8_t, uint16_t*, size_t) {}
 void Adafruit_USBD_HID::setReportCallback(
-    const char*,
-    void (*func)(uint8_t, hid_report_type_t, const uint8_t*, uint16_t)) {}
+  const char*,
+  void (*func)(uint8_t, hid_report_type_t, const uint8_t*, uint16_t)) {}
 // Adafruit graphics stuff
 
 WireMock Wire;

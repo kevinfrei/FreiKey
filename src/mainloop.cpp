@@ -8,7 +8,7 @@
 
 GeneralState curState{};
 MatrixBits prevBits{0};
-Debouncer<MatrixBits> debouncer{};
+Debouncer<BoardIO::matrix_size> debouncer{};
 
 MatrixBits key_scan(uint32_t now) {
   auto res = BoardIO::Read();
@@ -34,7 +34,7 @@ extern "C" void loop() {
   // Get the before & after of each side into a 64 bit value
   MatrixBits before = prevBits;
   MatrixBits after = key_scan(now);
-  MatrixBits delta = before.delta(after);
+  MatrixBits delta = before ^ after;
   bool keysChanged = delta.any();
   // Pseudo-code for what I'm looking to clean up:
   while (delta.any()) {

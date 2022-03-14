@@ -1,16 +1,16 @@
 #include "sysstuff.h"
 
 #include "Fonts/FreeSans12pt7b.h"
+#include "bitmaps/amy.h"
+#include "bitmaps/batman.h"
+#include "bitmaps/linux.h"
+#include "bitmaps/mac.h"
+#include "bitmaps/win.h"
 #include "boardio.h"
 #include "general.h"
+#include "image.h"
 #include "keymap.h"
 #include "scanner.h"
-#include "bitmaps/amy.h"
-#include "bitmaps/linux.h"
-#include "bitmaps/win.h"
-#include "bitmaps/batman.h"
-#include "bitmaps/mac.h"
-#include "image.h"
 
 constexpr uint8_t BACKLIGHT_PIN = 17;
 constexpr uint8_t TFT_CS = 8;
@@ -21,13 +21,8 @@ Adafruit_ST7789* LaptypeBoard::tft = nullptr;
 boolean LaptypeBoard::backlightOn = false;
 uint32_t LaptypeBoard::lastShownLayerTime = 0;
 uint32_t LaptypeBoard::lastShownLayerVal = 0;
-image_descriptor *images[5] = {
-  gfx_amy,
-  gfx_batman,
-  gfx_mac,
-  gfx_win,
-  gfx_linux
-};
+image_descriptor* images[5] = {
+  gfx_amy, gfx_batman, gfx_mac, gfx_win, gfx_linux};
 
 void LaptypeBoard::Backlight(bool turnOn) {
   if (backlightOn != turnOn) {

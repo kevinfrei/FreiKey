@@ -7,10 +7,9 @@
 #endif
 
 #include <array>
+#include <bitset>
 
-#include "bit_array.h"
-
-using MacroBits = bit_array<6>;
+using MacroBits = std::bitset<6>;
 
 class Dongle {
 

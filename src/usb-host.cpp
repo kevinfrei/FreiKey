@@ -61,7 +61,7 @@ Sync timeSync{};
 void loop() {
   uint32_t now = millis();
   Dongle::updateClientStatus(
-      now, prevLeftSide.battery_level, prevRightSide.battery_level);
+    now, prevLeftSide.battery_level, prevRightSide.battery_level);
   if (!Dongle::Ready())
     return;
 
@@ -101,8 +101,8 @@ void loop() {
       sc = getNextScanCode(deltaLeft, afterLeft, pressed);
     } else if (deltaRight.any()) {
       // Add offset to the right scan code...
-      sc = getNextScanCode(deltaRight, afterRight, pressed) +
-           MatrixBits::num_bits;
+      sc =
+        getNextScanCode(deltaRight, afterRight, pressed) + MatrixBits::num_bits;
     } else if (deltaPad.any()) {
       sc = getNextScanCode(deltaPad, macro, pressed) + MatrixBits::num_bits * 2;
     } else {

@@ -34,8 +34,7 @@ extern "C" void loop() {
   uint32_t now = millis();
   bool keysChanged = false;
   bool pressed = false;
-  for (scancode_t sc = getNextScanCode(left, right, pressed);
-       sc != 0xFF;
+  for (scancode_t sc = getNextScanCode(left, right, pressed); sc != 0xFF;
        sc = getNextScanCode(left, right, pressed)) {
     DBG2(dumpHex(sc, "Got scan code 0x"));
     preprocessScanCode(sc, pressed, now);

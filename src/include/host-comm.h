@@ -12,7 +12,7 @@ void set_blue(BLEClientUart& uart, bool on);
 
 namespace recv {
 void data(BLEClientUart& uart);
-void scan(uint8_t which, const MatrixBits &);
+void scan(uint8_t which, const MatrixBits&);
 void battery(uint8_t which, uint8_t pct);
 void time(uint8_t which, uint32_t time);
 } // namespace recv

@@ -43,10 +43,10 @@ inline constexpr action_t tapAndHold(action_t tap, action_t hold) {
 }
 
 inline constexpr action_t keyAndModifiers(action_t key,
-                                           action_t mod1,
-                                           action_t mod2 = 0,
-                                           action_t mod3 = 0,
-                                           action_t mod4 = 0) {
+                                          action_t mod1,
+                                          action_t mod2 = 0,
+                                          action_t mod3 = 0,
+                                          action_t mod4 = 0) {
   return combineKeys(kKeyAndMod | key, mod1 | mod2 | mod3 | mod4);
 }
 

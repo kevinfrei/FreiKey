@@ -1,6 +1,5 @@
 #pragma once
 
-#include "bit_array.h"
 #include "board-instance.h"
 
 #if defined(BTLE_CLIENT)

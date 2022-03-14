@@ -29,7 +29,7 @@ void drawBattery(uint8_t rate, uint8_t x, uint8_t y) {
       // Draw the little charge icon
       for (uint32_t i = 0; i < 4; i++) {
         Dongle::display.drawFastHLine(
-            x + 15 - i * 3, y + i + 3, i * 3 + 2, INVERSE);
+          x + 15 - i * 3, y + i + 3, i * 3 + 2, INVERSE);
         Dongle::display.drawFastHLine(x + 14, y - i + 11, i * 3 + 2, INVERSE);
       }
       // Draw the middle line
@@ -186,10 +186,10 @@ struct layer {
   uint8_t w, h, xo, yo;
 
   layer(void (*r)(uint8_t x, uint8_t o))
-      : render(r), w(0), h(0), xo(0), yo(0) {}
+    : render(r), w(0), h(0), xo(0), yo(0) {}
   layer(
-      const uint8_t* buf, uint8_t w, uint8_t h, uint8_t xo = 0, uint8_t yo = 0)
-      : buffer(buf), w(w), h(h), xo(xo), yo(yo) {}
+    const uint8_t* buf, uint8_t w, uint8_t h, uint8_t xo = 0, uint8_t yo = 0)
+    : buffer(buf), w(w), h(h), xo(xo), yo(yo) {}
   void draw(uint8_t x, uint8_t y) {
     if (w) {
       Dongle::display.drawBitmap(x + xo, y + yo, buffer, w, h, WHITE, BLACK);

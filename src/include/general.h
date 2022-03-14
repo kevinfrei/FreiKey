@@ -14,7 +14,7 @@ struct ClientState {
   bool connected;
   ClientState() : battery(0xff), latency(0), connected(false) {}
   ClientState(const ClientState& cs)
-      : battery(cs.battery), latency(cs.latency), connected(cs.connected) {}
+    : battery(cs.battery), latency(cs.latency), connected(cs.connected) {}
   bool operator!=(const ClientState& cs) const {
     return battery != cs.battery || latency != cs.latency ||
            connected != cs.connected;
@@ -31,9 +31,9 @@ struct State {
     layer_stack.fill(0);
   }
   State(const State& gs)
-      : debugString(gs.debugString),
-        layer_pos(gs.layer_pos),
-        layer_stack(gs.layer_stack) {}
+    : debugString(gs.debugString),
+      layer_pos(gs.layer_pos),
+      layer_stack(gs.layer_stack) {}
   void reset() {
     layer_pos = 0;
     layer_stack[0] = 0;
@@ -125,10 +125,12 @@ struct State {
 #if defined(BTLE_HOST)
 class KarbonState : public State {
   ClientState left, right;
-  public:
+
+ public:
   KarbonState() : left(), right(), State() {}
-  KarbonState(const KarbonState &ks) : left(ks.left), right(ks.right), State(ks) {}
-  bool operator !=(const KarbonState &ks) const {
+  KarbonState(const KarbonState& ks)
+    : left(ks.left), right(ks.right), State(ks) {}
+  bool operator!=(const KarbonState& ks) const {
     if (gs.left != left || gs.right != right)
       return true;
     return State::operator!=(ks);

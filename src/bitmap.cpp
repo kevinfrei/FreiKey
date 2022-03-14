@@ -5,8 +5,8 @@
 #include <string.h>
 #endif
 
-#include <stdint.h>
 #include "bitmap.h"
+#include <stdint.h>
 
 // Not-Quite-Run-Length-Encoding 16 bit decoder, with byte swapping
 
