@@ -41,7 +41,7 @@ struct keystate {
       lastChange = now;
       if (pressed) {
         return resolveActionForScanCodeOnActiveLayer(scanCode);
-      } 
+      }
     }
     return 0;
   };

@@ -46,11 +46,10 @@ bool encode_prle(bytestream data, uint32_t bytes, byte_printer print) {
   // bitBuffer is updated to contain anything that hasn't been finished
   word_printer printblobs = [&](uint16_t val) {
     uint16_t palIndex = pal_and_rev.second[val];
-    if (palIndex >(1 << numBits))
-    {
+    if (palIndex > (1 << numBits)) {
       std::cerr << "Bad bad bad" << std::endl;
       success = false;
-    } 
+    }
     bitBuffer = writeBits(palIndex, numBits, bitBuffer, print);
   };
   // Now we use the rle engine, but use bit emission instead of word emission

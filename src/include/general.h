@@ -105,7 +105,7 @@ struct State {
     DBG(dumpLayers());
   }
   int8_t find_layer(layer_t l) {
-    for (int8_t l = layer_pos; l >= 0; l--){
+    for (int8_t l = layer_pos; l >= 0; l--) {
       if (layer_stack[l] == l) {
         return static_cast<uint8_t>(l);
       }

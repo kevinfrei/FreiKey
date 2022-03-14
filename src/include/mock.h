@@ -1,8 +1,7 @@
 #pragma once
 
-#include <stdint.h>
-#include <stdio.h>
 #include <memory.h>
+#include <stdint.h>
 #include <stdio.h>
 
 // General Arduino stuff
@@ -27,17 +26,8 @@ uint32_t micros();
 
 void waitForEvent();
 
-enum class pin_status {
-  low = 0,
-  invalid = 1, 
-  high = 2
-};
-enum class pin_mode {
-  invalid = 0,
-  output = 1,
-  input = 2,
-  input_pullup = 3
-};
+enum class pin_status { low = 0, invalid = 1, high = 2 };
+enum class pin_mode { invalid = 0, output = 1, input = 2, input_pullup = 3 };
 #define HIGH pin_status::high
 #define LOW pin_status::low
 #define OUTPUT pin_mode::output
