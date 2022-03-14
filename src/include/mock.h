@@ -1,11 +1,7 @@
 #pragma once
 
-<<<<<<< HEAD
 #include <stdint.h>
 #include <stdio.h>
-=======
-#include <cstdint>
->>>>>>> main
 #include <memory.h>
 #include <stdio.h>
 

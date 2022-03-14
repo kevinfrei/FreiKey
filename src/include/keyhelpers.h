@@ -209,7 +209,7 @@ DK(M_LOCK, 0xF9);
 #define LAYER_MAC_CAP 3
 #define LAYER_WIN_CAP 4
 #define LAYER_WIN_CTL 5
-#elif defined(KARBON) || defined(LAPTYPE) || defined(THREEPIECE)
+#elif defined(KARBON) || defined(LAPTYPE) || defined(THREEPIECE) || defined(MOCK)
 #define LAYER_MAC_BASE 0
 #define LAYER_WIN_BASE 1
 #define LAYER_LIN_BASE 2
