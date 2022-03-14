@@ -32,22 +32,22 @@
 #define PROW2(b1, b2, b3) KEY(b1), KEY(b2), KEY(b3)
 
 constexpr uint8_t base_keys[MatrixBits::num_bits * 2 + MacroBits::num_bits] = {
-    LROW1(ESCAPE, 1, 2, 3, 4, 5),
-    LROW2(TAB, Q, W, E, R, T),
-    LROW3(CAPS_LOCK, A, S, D, F, G),
-    LROW4(SHIFT_LEFT, Z, X, C, V, B),
-    LROW5(CONTROL_LEFT, GUI_LEFT, ALT_LEFT, PAGE_UP, GRAVE, BKSP),
-    LROW6(HOME, PGDN, END, DEL),
+  LROW1(ESCAPE, 1, 2, 3, 4, 5),
+  LROW2(TAB, Q, W, E, R, T),
+  LROW3(CAPS_LOCK, A, S, D, F, G),
+  LROW4(SHIFT_LEFT, Z, X, C, V, B),
+  LROW5(CONTROL_LEFT, GUI_LEFT, ALT_LEFT, PAGE_UP, GRAVE, BKSP),
+  LROW6(HOME, PGDN, END, DEL),
 
-    RROW1(6, 7, 8, 9, 0, MINUS),
-    RROW2(Y, U, I, O, P, BACKSLASH),
-    RROW3(H, J, K, L, SEMICOLON, APOSTROPHE),
-    RROW4(N, M, COMMA, PERIOD, SLASH, SHIFT_RIGHT),
-    RROW5(SPACE, EQUAL, ARROW_UP, BRACKET_LEFT, GUI_RIGHT, BRACKET_RIGHT),
-    RROW6(RETURN, ARROW_LEFT, ARROW_DOWN, ARROW_RIGHT),
+  RROW1(6, 7, 8, 9, 0, MINUS),
+  RROW2(Y, U, I, O, P, BACKSLASH),
+  RROW3(H, J, K, L, SEMICOLON, APOSTROPHE),
+  RROW4(N, M, COMMA, PERIOD, SLASH, SHIFT_RIGHT),
+  RROW5(SPACE, EQUAL, ARROW_UP, BRACKET_LEFT, GUI_RIGHT, BRACKET_RIGHT),
+  RROW6(RETURN, ARROW_LEFT, ARROW_DOWN, ARROW_RIGHT),
 
-    PROW1(F1, F2, F3),
-    PROW2(F4, F5, F6)};
+  PROW1(F1, F2, F3),
+  PROW2(F4, F5, F6)};
 
 constexpr inline uint8_t scanCodeOf(uint8_t keyCode, uint8_t index = 0) {
   if (index >= sizeof(base_keys)) {

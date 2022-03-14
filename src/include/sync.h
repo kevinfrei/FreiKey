@@ -43,14 +43,14 @@ class Sync {
 
  public:
   Sync()
-      : lLoc(0),
-        rLoc(0),
-        state(State::BothNotConnected),
-        rightPacketReceived(false),
-        leftPacketReceived(false),
-        lastTapOrPing(0),
-        DELAY(0),
-        dataWaiting(false) {}
+    : lLoc(0),
+      rLoc(0),
+      state(State::BothNotConnected),
+      rightPacketReceived(false),
+      leftPacketReceived(false),
+      lastTapOrPing(0),
+      DELAY(0),
+      dataWaiting(false) {}
   void ReportSync(bool isLeft);
   void UpdateLatency();
   void Process(uint32_t time,

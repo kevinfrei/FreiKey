@@ -5,6 +5,4 @@
 
 using LayerMap = std::array<ScanAction, scanCodeCount>;
 
-ScanAction processLayer(uint8_t keyCode, bool pressed, LayerMap lm) {
-
-}
+ScanAction processLayer(uint8_t keyCode, bool pressed, LayerMap lm) {}

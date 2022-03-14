@@ -1,16 +1,16 @@
 #include "sysstuff.h"
 
 #include "Fonts/FreeSans12pt7b.h"
+#include "bitmaps/amy.h"
+#include "bitmaps/batman.h"
+#include "bitmaps/linux.h"
+#include "bitmaps/mac.h"
+#include "bitmaps/win.h"
 #include "boardio.h"
 #include "general.h"
+#include "image.h"
 #include "keymap.h"
 #include "scanner.h"
-#include "bitmaps/amy.h"
-#include "bitmaps/linux.h"
-#include "bitmaps/win.h"
-#include "bitmaps/batman.h"
-#include "bitmaps/mac.h"
-#include "image.h"
 
 constexpr uint8_t BACKLIGHT_PIN = 17;
 constexpr uint8_t TFT_CS = 8;
@@ -38,7 +38,7 @@ const int layer_to_image[8] = {
   0, // "WinCaps",
   1, // "WinCtrl",
   0 // "LinuxCaps"};
-}
+};
 
 void LaptypeBoard::Backlight(bool turnOn) {
   if (backlightOn != turnOn) {

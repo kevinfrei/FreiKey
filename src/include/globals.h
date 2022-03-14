@@ -2,8 +2,8 @@
 
 #include "sysstuff.h"
 
-#include "sleepstate.h"
 #include "hardware.h"
+#include "sleepstate.h"
 
 void resetTheWorld();
 extern state::hw leftSide;

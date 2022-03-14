@@ -49,20 +49,20 @@ hw::hw(uint8_t bl) : switches {}
 {
 }
 hw::hw(const hw& c)
-    : switches(c.switches)
+  : switches(c.switches)
 #if defined(HAS_BATTERY)
-      ,
-      battery_level(c.battery_level)
+    ,
+    battery_level(c.battery_level)
 #endif
 {
 }
 
 #if !defined(BTLE_HOST)
 hw::hw(uint32_t now, const hw& prev)
-    : switches(prev.switches)
+  : switches(prev.switches)
 #if defined(HAS_BATTERY)
-      ,
-      battery_level(readBattery(now, prev.battery_level))
+    ,
+    battery_level(readBattery(now, prev.battery_level))
 #endif
 {
   readSwitches(now);
@@ -156,7 +156,7 @@ bool hw::receive(BLEClientUart& clientUart, const hw& prev) {
 #else
   if (!data_queue.empty() && data_queue.front().which == &clientUart) {
     memcpy(
-        reinterpret_cast<uint8_t*>(this), data_queue.front().what, data_size);
+      reinterpret_cast<uint8_t*>(this), data_queue.front().what, data_size);
     delete data_queue.front().what;
     data_queue.pop();
     return true;
@@ -170,9 +170,9 @@ bool hw::receive(BLEClientUart& clientUart, const hw& prev) {
 bool hw::operator==(const hw& o) const {
   return
 #if defined(HAS_BATTERY)
-      o.battery_level == battery_level &&
+    o.battery_level == battery_level &&
 #endif
-      o.switches == switches;
+    o.switches == switches;
 }
 
 bool hw::operator!=(const hw& o) const {

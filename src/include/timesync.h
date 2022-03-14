@@ -31,5 +31,4 @@ class TimeSync {
       registerTime(tse, right, rightCount);
     }
   }
-
 };

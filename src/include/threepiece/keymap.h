@@ -30,14 +30,14 @@ constexpr const char* layer_names[] = {"Base/Mac",
 #endif
 
 const uint16_t layer_colors[] = {
-    ST77XX_BLUE, // Base/mac
-    ST77XX_MAGENTA, // Windows
-    ST77XX_CYAN, // Linux
-    ST77XX_GREEN, // Fn
-    ST77XX_ORANGE, // MacCaps
-    ST77XX_YELLOW, // WinCap
-    ST77XX_BLACK, // WinCtrl
-    ST77XX_WHITE // LinCaps
+  ST77XX_BLUE, // Base/mac
+  ST77XX_MAGENTA, // Windows
+  ST77XX_CYAN, // Linux
+  ST77XX_GREEN, // Fn
+  ST77XX_ORANGE, // MacCaps
+  ST77XX_YELLOW, // WinCap
+  ST77XX_BLACK, // WinCtrl
+  ST77XX_WHITE // LinCaps
 };
 
 // TODO: I'm not happy that in order to override "modifier + key" it requires

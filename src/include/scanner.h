@@ -4,6 +4,7 @@
 
 #include "kbreporter.h"
 #include "keystate.h"
+#include "pullbit.h"
 
 // variable declarations
 constexpr uint8_t num_keystates = 10;
@@ -23,8 +24,8 @@ void ProcessKeys(uint32_t now, kb_reporter& rpt);
 // while we're at it.
 template <typename T>
 scancode_t getNextScanCode(T& delta, T& curState, bool& pressed) {
-  scancode_t sc = delta.pull_a_bit();
-  pressed = curState.get_bit(sc);
+  scancode_t sc = pull_a_bit(delta);
+  pressed = curState.test(sc);
   return sc;
 }
 

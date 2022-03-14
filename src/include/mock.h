@@ -1,8 +1,13 @@
 #pragma once
 
+<<<<<<< HEAD
 #include <stdint.h>
 #include <stdio.h>
+=======
+#include <cstdint>
+>>>>>>> main
 #include <memory.h>
+#include <stdio.h>
 
 // General Arduino stuff
 class SerialMock {
@@ -74,8 +79,8 @@ class ScannerMock {
 };
 class ConnectionMock {
  public:
- void getPeerName(char *, size_t);
- void disconnect();
+  void getPeerName(char*, size_t);
+  void disconnect();
 };
 class BluefruitMock {
  public:
@@ -129,8 +134,8 @@ struct Adafruit_USBD_HID {
   void keyboardReport(uint8_t, uint8_t, uint8_t*);
   void sendReport(uint8_t, uint16_t*, size_t);
   void setReportCallback(
-      const char*,
-      void (*func)(uint8_t, hid_report_type_t, const uint8_t*, uint16_t));
+    const char*,
+    void (*func)(uint8_t, hid_report_type_t, const uint8_t*, uint16_t));
 };
 #define HID_REPORT_ID(a) a
 #define TUD_HID_REPORT_DESC_KEYBOARD(...) __VA_ARGS__ '0'
@@ -140,8 +145,8 @@ struct Adafruit_USBD_HID {
 class WireMock {};
 extern WireMock Wire;
 class Adafruit_SSD1306 {
-  public:
-  Adafruit_SSD1306(uint16_t width, uint16_t height, void *, uint8_t resetPin);
+ public:
+  Adafruit_SSD1306(uint16_t width, uint16_t height, void*, uint8_t resetPin);
   void begin(uint32_t, uint8_t);
   void display();
 };
@@ -151,7 +156,7 @@ constexpr uint32_t SSD1306_SWITCHCAPVCC = 0;
 
 // Teensy stuff
 class KeyboardMock {
-  public:
+ public:
   void press(uint16_t);
   void release(uint16_t);
   void set_key1(uint8_t);

@@ -1,16 +1,16 @@
 #include "sysstuff.h"
 
 #include "Fonts/FreeSans12pt7b.h"
+#include "bitmaps/amy.h"
+#include "bitmaps/batman.h"
+#include "bitmaps/linux.h"
+#include "bitmaps/mac.h"
+#include "bitmaps/win.h"
 #include "boardio.h"
 #include "general.h"
+#include "image.h"
 #include "keymap.h"
 #include "scanner.h"
-#include "bitmaps/amy.h"
-#include "bitmaps/linux.h"
-#include "bitmaps/win.h"
-#include "bitmaps/batman.h"
-#include "bitmaps/mac.h"
-#include "image.h"
 
 constexpr uint8_t BACKLIGHT_PIN = 18;
 constexpr uint8_t TFT_CS = 10;
@@ -21,13 +21,8 @@ Adafruit_ST7789* ThreePieceBoard::tft = nullptr;
 boolean ThreePieceBoard::backlightOn = false;
 uint32_t ThreePieceBoard::lastShownLayerTime = 0;
 uint32_t ThreePieceBoard::lastShownLayerVal = 0;
-const image_descriptor *images[5] = {
-  gfx_amy,
-  gfx_batman,
-  gfx_mac,
-  gfx_win,
-  gfx_linux
-};
+const image_descriptor* images[5] = {
+  gfx_amy, gfx_batman, gfx_mac, gfx_win, gfx_linux};
 
 const int layer_to_image[8] = {
   2, // "Base/Mac",

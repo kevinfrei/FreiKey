@@ -180,9 +180,8 @@ void Sync::ReportSync(bool isReportLeft) {
 #if defined(DEBUG) && DEBUG > 2
   Serial.println("Sample Recevied:");
   for (int i = 0; i < sampleSize; i++) {
-    Serial.printf("Left: %3d\t Right %3d\n",
-                  (uint32_t)lsamples[i],
-                  (uint32_t)rsamples[i]);
+    Serial.printf(
+      "Left: %3d\t Right %3d\n", (uint32_t)lsamples[i], (uint32_t)rsamples[i]);
   }
 #endif
 }

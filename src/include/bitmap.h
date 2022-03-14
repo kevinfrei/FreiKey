@@ -1,10 +1,6 @@
 #pragma once
 
-#if !defined(COMPRESSOR)
 #include <avr/pgmspace.h>
-#else
-#define PROGMEM 
-#endif
 #include <stdint.h>
 
 /*

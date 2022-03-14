@@ -2,8 +2,10 @@
 
 #include "sysstuff.h"
 
-#include "bit_array.h"
 #include <array>
+#include <bitset>
+
+#include "dbgcfg.h"
 
 template <typename T, uint8_t nCols, uint8_t nRows, uint8_t... cols_then_rows>
 class KeyMatrix {
@@ -11,10 +13,12 @@ class KeyMatrix {
   static constexpr uint8_t numcols = nCols;
   static constexpr uint8_t numrows = nRows;
   static constexpr uint8_t matrix_size = numcols * numrows;
-  typedef bit_array<matrix_size> bits;
+
+  typedef std::bitset<matrix_size> bits;
+
+  static constexpr uint8_t byte_size = (bits::size() + 7) / 8;
 
  private:
-  static constexpr uint8_t byte_size = bits::num_bytes;
   typedef std::array<uint8_t, nCols + nRows> ColsRows;
 
   static inline uint8_t colPin(uint8_t col) {
@@ -51,7 +55,7 @@ class KeyMatrix {
 #endif
   };
 
-  // This is the core place to simulate the keyboard for mocking, 
+  // This is the core place to simulate the keyboard for mocking,
   static bits Read() {
     bits switches{};
 #if !defined(ROWOUT)
@@ -65,7 +69,7 @@ class KeyMatrix {
       for (uint8_t colNum = 0; colNum < numcols; ++colNum) {
         if (digitalRead(colPin(colNum)) == LOW) {
 #endif
-          switches.set_bit(rowNum * numcols + colNum);
+          switches.set(rowNum * numcols + colNum);
         }
       }
       T::completePin(
@@ -74,7 +78,7 @@ class KeyMatrix {
 #else
         rowPin(rowNum)
 #endif
-        );
+      );
     }
     return switches;
   }
@@ -87,9 +91,8 @@ class KeyMatrix {
     // I hate this sort of crap, but it seems necessary...
     delay(1);
     for (uint8_t rowNum = 0; rowNum < numrows; rowNum++) {
-      attachInterrupt(digitalPinToInterrupt(rowPin(rowNum)),
-                      handler,
-                      ISR_DEFERRED | CHANGE);
+      attachInterrupt(
+        digitalPinToInterrupt(rowPin(rowNum)), handler, ISR_DEFERRED | CHANGE);
     }
   }
 

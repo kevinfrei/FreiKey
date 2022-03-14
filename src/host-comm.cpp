@@ -76,9 +76,9 @@ void comm::recv::scan(uint8_t which, const MatrixBits& b) {
   DBG2(b.dumpHex(isLeft ? "Left Scan " : "Right Scan "));
   newData->switches = b;
   newData->battery_level =
-      isLeft ? curState.left.battery : curState.right.battery;
+    isLeft ? curState.left.battery : curState.right.battery;
   state::data_queue.push(
-      {isLeft ? &Dongle::leftUart : &Dongle::rightUart, newData});
+    {isLeft ? &Dongle::leftUart : &Dongle::rightUart, newData});
 }
 
 void comm::recv::battery(uint8_t which, uint8_t pct) {
