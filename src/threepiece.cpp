@@ -12,10 +12,15 @@
 #include "keymap.h"
 #include "scanner.h"
 
+// Display stuff
 constexpr uint8_t BACKLIGHT_PIN = 18;
 constexpr uint8_t TFT_CS = 10;
 constexpr uint8_t TFT_DC = 20;
 constexpr uint8_t TFT_RST = 21;
+
+// And, I now have a speaker :D
+constexpr uint8_t SPKR_GND = 0;
+constexpr uint8_t SPKR_SIGNAL = 4;
 
 Adafruit_ST7789* ThreePieceBoard::tft = nullptr;
 boolean ThreePieceBoard::backlightOn = false;
@@ -55,6 +60,11 @@ void ThreePieceBoard::Configure() {
   tft->fillScreen(ST77XX_BLACK);
   tft->setFont(&FreeSans12pt7b);
   drawImage(images[0], 0, 0, tft);
+  Backlight(false);
+  pinMode(SPKR_GND, OUTPUT);
+  pinMode(SPKR_SIGNAL, OUTPUT);
+  digitalWrite(SPKR_GND, LOW);
+  digitalWrite(SPKR_SIGNAL, LOW);
 }
 
 void ThreePieceBoard::Changed(uint32_t now) {
@@ -82,6 +92,9 @@ void ThreePieceBoard::Changed(uint32_t now) {
 }
 
 void ThreePieceBoard::Tick(uint32_t now) {
+  if (now & 0x10) {
+    digitalWrite(SPKR_SIGNAL, (now & 0x20) ? HIGH : LOW);
+  }
   if (now - lastShownLayerTime > 10000) {
     Backlight(false);
   }
