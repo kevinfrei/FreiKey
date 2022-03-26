@@ -1,1 +1,1 @@
-extern const struct image_descriptor *gfx_mac;
+extern const struct image_descriptor* gfx_mac;

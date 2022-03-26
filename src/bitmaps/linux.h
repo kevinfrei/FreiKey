@@ -1,1 +1,1 @@
-extern const struct image_descriptor *gfx_linux;
+extern const struct image_descriptor* gfx_linux;

@@ -176,8 +176,7 @@ static const image_descriptor gfx_mac_raw = {
   .width = 78,
   .height = 96,
   .byte_count = 4757,
-  .compression = image_compression::PAL_NQRLE, 
-  .image_data = gfx_mac_data
-}; // 3.1482 compression rate
+  .compression = image_compression::PAL_NQRLE,
+  .image_data = gfx_mac_data}; // 3.1482 compression rate
 
-const image_descriptor *gfx_mac = &gfx_mac_raw;
+const image_descriptor* gfx_mac = &gfx_mac_raw;

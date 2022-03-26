@@ -179,8 +179,7 @@ static const image_descriptor gfx_linux_raw = {
   .width = 79,
   .height = 96,
   .byte_count = 5103,
-  .compression = image_compression::PAL_NQRLE, 
-  .image_data = gfx_linux_data
-}; // 2.97237 compression rate
+  .compression = image_compression::PAL_NQRLE,
+  .image_data = gfx_linux_data}; // 2.97237 compression rate
 
-const image_descriptor *gfx_linux = &gfx_linux_raw;
+const image_descriptor* gfx_linux = &gfx_linux_raw;

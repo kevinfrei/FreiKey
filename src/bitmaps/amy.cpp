@@ -1963,8 +1963,7 @@ static const image_descriptor gfx_amy_raw = {
   .width = 240,
   .height = 135,
   .byte_count = 55158,
-  .compression = image_compression::PAL_RAW, 
-  .image_data = gfx_amy_data
-}; // 1.17 compression rate
+  .compression = image_compression::PAL_RAW,
+  .image_data = gfx_amy_data}; // 1.17 compression rate
 
 const image_descriptor* gfx_amy = &gfx_amy_raw;

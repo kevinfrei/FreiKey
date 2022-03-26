@@ -53,8 +53,7 @@ static const image_descriptor gfx_win_raw = {
   .width = 96,
   .height = 96,
   .byte_count = 1326,
-  .compression = image_compression::PAL_NQRLE, 
-  .image_data = gfx_win_data
-}; // 13.9005 compression rate
+  .compression = image_compression::PAL_NQRLE,
+  .image_data = gfx_win_data}; // 13.9005 compression rate
 
-const image_descriptor *gfx_win = &gfx_win_raw;
+const image_descriptor* gfx_win = &gfx_win_raw;

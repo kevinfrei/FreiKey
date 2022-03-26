@@ -248,8 +248,7 @@ static const image_descriptor gfx_batman_raw = {
   .width = 240,
   .height = 135,
   .byte_count = 7267,
-  .compression = image_compression::PAL_NQRLE, 
-  .image_data = gfx_batman_data
-}; // 8.91702 compression rate
+  .compression = image_compression::PAL_NQRLE,
+  .image_data = gfx_batman_data}; // 8.91702 compression rate
 
-const image_descriptor *gfx_batman = &gfx_batman_raw;
+const image_descriptor* gfx_batman = &gfx_batman_raw;
