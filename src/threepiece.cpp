@@ -125,8 +125,8 @@ void ThreePieceBoard::ShowScanCode(uint16_t scancode) {
     yo = 4;
     xo = xloffs[x];
   }
-  uint16_t c = (scancode > 0xFF) ? ST77XX_RED : ST77XX_GREEN;
-  tft->fillRect(112 + xo + x * 8 + (left ? -8 : 8), y * 8 + yo, w, 7, c);
+  uint16_t c = (scancode > 0xFF) ? 0xC000 : 0x200;
+  tft->fillRect(112 + xo + x * 8 + (left ? -8 : 8), y * 7 + yo + 2, w, 6, c);
 #if defined(DISPLAY_CODE)
   tft->fillRect(0, 0, 50, 25, ST77XX_BLACK);
   tft->setCursor(0, 25);

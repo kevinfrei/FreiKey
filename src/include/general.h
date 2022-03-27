@@ -118,6 +118,8 @@ struct State {
     layer_stack[layer_pos] = layer;
     DBG(dumpLayers());
   }
+  
+  /*
   void rotate_layer(action_t action) {
     // Check to see if any of the layers specified (except base?)
     layer_t lyr0 = getRot0(action);
@@ -143,6 +145,7 @@ struct State {
       }
     }
   }
+  */
 #if defined(DEBUG)
   void dumpLayers() {
     Serial.print("Layer stack: ");
