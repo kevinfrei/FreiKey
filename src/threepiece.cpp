@@ -96,16 +96,40 @@ void ThreePieceBoard::Tick(uint32_t now) {
   }
 }
 
+int8_t yoffs[12] = {3, 2, 1, 0, 2, 3, 3, 2, 0, 1, 2, 3};
+int8_t yloffs[12] = {3, 3, 2, 4, 3, 3, 3, 3, 4, 2, 3, 3};
+int8_t xoffs[12] = {-4, -4, -4, -3, 0, 1, -2, -1, 2, 3, 3, 3};
+int8_t xloffs[12] = {0, 0, -3, -3, -3, 3, -5, 2, 2, 2, 0, 0};
 void ThreePieceBoard::ShowScanCode(uint16_t scancode) {
   Backlight(true);
-  uint16_t x = ((scancode & 0xFF) % 12) * 8;
-  uint16_t y = ((scancode & 0xFF) / 12) * 8;
   lastShownLayerTime = millis();
-  tft->fillRect(
-    160 - 8 * 6 + x, y, 7, 7, (scancode > 0xFF) ? ST77XX_RED : ST77XX_GREEN);
+  uint16_t x = (scancode & 0xFF) % 12;
+  uint16_t y = (scancode & 0xFF) / 12;
+  uint16_t w = 7;
+  int8_t yo = 0;
+  int8_t xo = 0;
+  bool left = x < 6;
+  if (y < 4) {
+    // Rows 1 through 4
+    yo = yoffs[x];
+    if (x == 0 || x == 11) {
+      w = 11;
+      xo = x ? 0 : -4;
+    }
+  } else if (y == 4) {
+    // Row 5
+    yo = yloffs[x];
+    xo = xoffs[x];
+  } else {
+    // Row 6
+    yo = 4;
+    xo = xloffs[x];
+  }
+  uint16_t c = (scancode > 0xFF) ? ST77XX_RED : ST77XX_GREEN;
+  tft->fillRect(112 + xo + x * 8 + (left ? -8 : 8), y * 8 + yo, w, 7, c);
 #if defined(DISPLAY_CODE)
-  tft->fillRect(0,0,50,25, ST77XX_BLACK);
-  tft->setCursor(0,25);
+  tft->fillRect(0, 0, 50, 25, ST77XX_BLACK);
+  tft->setCursor(0, 25);
   tft->setTextColor(ST77XX_WHITE, ST77XX_BLACK);
   tft->print(scancode & 0xFF, HEX);
   tft->fillRect(5, 26, 5, 5, (scancode > 0xFF) ? ST77XX_RED : ST77XX_GREEN);
