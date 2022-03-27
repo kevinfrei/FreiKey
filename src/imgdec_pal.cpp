@@ -90,9 +90,9 @@ void decode_pal(bytestream cmpStrm, uint32_t strmLen, sender send) {
       send(buffer, offs);
       offs = 0;
     }
-    // Do I need to byte-swap here?
-    buffer[offs++] = color & 0xFF;
+    // I need to byte-swap here
     buffer[offs++] = color >> 8;
+    buffer[offs++] = color & 0xFF;
   }
   if (offs) {
     send(buffer, offs);

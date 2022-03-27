@@ -50,17 +50,22 @@ void ThreePieceBoard::Backlight(bool turnOn) {
 void ThreePieceBoard::Configure() {
   tft = new Adafruit_ST7789(TFT_CS, TFT_DC, TFT_RST);
   pinMode(BACKLIGHT_PIN, OUTPUT);
-
   Backlight(true);
   tft->init(240, 320);
+  DBG2(Serial.println("TFT init complete"));
   // This is the fastest speed that worked
   // (72mhz also worked, but seemed to be the same speed)
   tft->setSPISpeed(60000000);
   tft->setRotation(1);
-  tft->fillScreen(ST77XX_BLACK);
   tft->setFont(&FreeSans12pt7b);
-  drawImage(images[0], 0, 0, tft);
-  Backlight(false);
+  DBG2(Serial.println("Attempting first image render"));
+  tft->fillScreen(ST77XX_BLACK);
+  drawImage(images[0],
+            (320 - images[0]->width) / 2,
+            (240 - images[0]->height) / 2,
+            tft);
+  DBG2(Serial.println("Screen Initialized"));
+  //      Backlight(false);
   pinMode(SPKR_GND, OUTPUT);
   pinMode(SPKR_SIGNAL, OUTPUT);
   digitalWrite(SPKR_GND, LOW);
@@ -68,34 +73,41 @@ void ThreePieceBoard::Configure() {
 }
 
 void ThreePieceBoard::Changed(uint32_t now) {
-  uint32_t col = getColorForCurrentLayer();
-  if (col != lastShownLayerVal) {
+  uint8_t lyr = getCurrentLayer();
+  if (lyr != lastShownLayerVal && false) {
     Backlight(true);
     tft->fillScreen(ST77XX_BLACK);
-    lastShownLayerVal = col;
+    lastShownLayerVal = lyr;
     lastShownLayerTime = now;
-    int16_t x, y;
-    uint16_t w, h;
-    tft->setCursor(0, 0);
-    const char* str = layer_names[curState.getLayer()];
-    tft->getTextBounds(str, 0, 0, &x, &y, &w, &h);
-    uint16_t xx = (tft->width() - w) / 2;
-    uint16_t yy = (tft->height() + h) / 2;
-    tft->setCursor(xx, yy);
-    tft->fillRoundRect(xx + x - 10, yy + y - 10, w + 21, h + 21, 5, col);
-    tft->fillRoundRect(xx + x - 3, yy + y - 3, w + 6, h + 6, 2, ST77XX_BLACK);
-    tft->setTextColor(ST77XX_WHITE);
-    tft->print(str);
-    // tft->setCursor(10,120);
-    // tft->printf("%d,%d,%d,%d, [%d,%d]", x, y, w, h, xx, yy);
+    uint8_t imageNum = layer_to_image[lyr];
+    drawImage(images[imageNum],
+              (320 - images[imageNum]->width) / 2,
+              (240 - images[imageNum]->height) / 2,
+              tft);
   }
 }
 
 void ThreePieceBoard::Tick(uint32_t now) {
   if (now & 0x10) {
-    digitalWrite(SPKR_SIGNAL, (now & 0x20) ? HIGH : LOW);
+    // digitalWrite(SPKR_SIGNAL, (now & 0x20) ? HIGH : LOW);
   }
   if (now - lastShownLayerTime > 10000) {
     Backlight(false);
   }
+}
+
+void ThreePieceBoard::ShowScanCode(uint16_t scancode) {
+  Backlight(true);
+  uint16_t x = ((scancode & 0xFF) % 12) * 8;
+  uint16_t y = ((scancode & 0xFF) / 12) * 8;
+  lastShownLayerTime = millis();
+  tft->fillRect(
+    160 - 8 * 6 + x, y, 7, 7, (scancode > 0xFF) ? ST77XX_RED : ST77XX_GREEN);
+#if defined(DISPLAY_CODE)
+  tft->fillRect(0,0,50,25, ST77XX_BLACK);
+  tft->setCursor(0,25);
+  tft->setTextColor(ST77XX_WHITE, ST77XX_BLACK);
+  tft->print(scancode & 0xFF, HEX);
+  tft->fillRect(5, 26, 5, 5, (scancode > 0xFF) ? ST77XX_RED : ST77XX_GREEN);
+#endif
 }

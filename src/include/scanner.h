@@ -16,6 +16,7 @@ void layer_toggle(layer_t layer);
 void layer_pop(layer_t layer);
 void layer_push(layer_t layer);
 uint32_t getColorForCurrentLayer();
+uint8_t getCurrentLayer();
 keystate* findStateSlot(scancode_t scanCode);
 void preprocessScanCode(scancode_t sc, bool pressed, uint32_t now);
 void ProcessKeys(uint32_t now, kb_reporter& rpt);

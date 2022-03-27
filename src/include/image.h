@@ -4,6 +4,6 @@
 #include <Adafruit_ST7789.h>
 
 void drawImage(const image_descriptor* id,
-               uint8_t x,
-               uint8_t y,
+               uint16_t x,
+               uint16_t y,
                Adafruit_ST7789* tft);

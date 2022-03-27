@@ -36,8 +36,8 @@ void decode_prle(bytestream cmpStrm, uint32_t strmLen, sender send) {
           send(buffer, bufSize);
           offs = -(j * 2);
         }
-        buffer[offs + j * 2] = color & 0xFF;
-        buffer[offs + j * 2 + 1] = (color >> 8) & 0xFF;
+        buffer[offs + j * 2] = (color >> 8) & 0xFF;
+        buffer[offs + j * 2 + 1] = color & 0xFF;
       }
       offs += length * 2;
     } else {
@@ -50,8 +50,8 @@ void decode_prle(bytestream cmpStrm, uint32_t strmLen, sender send) {
           offs = -(j * 2);
         }
         // I need to byte-swap here, apparently
-        buffer[offs + j * 2] = color & 0xFF;
-        buffer[offs + j * 2 + 1] = (color >> 8) & 0xFF;
+        buffer[offs + j * 2] = (color >> 8) & 0xFF;
+        buffer[offs + j * 2 + 1] = color & 0xFF;
       }
       offs += length * 2;
     }

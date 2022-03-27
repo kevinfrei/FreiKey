@@ -2,7 +2,7 @@
 # it's just, perhaps, better than a shell script
 
 # phony rules cust there are no dependencies
-.PHONY: allclean karbon lk rk lkf rkf kflash lkflash rkflash fflash lfflash rfflash allk allf kf k lkf rkf laptype lt l ltf lf flaptype laptypef imgcomp img cmp comp
+.PHONY: allclean karbon lk rk lkf rkf kflash lkflash rkflash fflash lfflash rfflash allk allf kf k lkf rkf laptype lt l ltf lf flaptype laptypef 3 3p three threepiece 3f 3pf threef threepiecef f3 f3p fthree fthreepiece imgcomp img cmp comp
 
 # TODO: Need to turn this off for Windows GNUmake :(
 # TODO: Make instead, use WSL for build, then Windows for flashing maybe?
@@ -31,6 +31,12 @@ laptype lt l:
 
 flaptype laptypef lf ltf:
 	make ${flags} -f laptype.mak flash
+
+threepiece three 3 3p:
+	make ${flags} -f threepiece.mak all compile_commands
+
+fthreepiece fthree f3 f3p threepiecef threef 3f 3pf:
+	make ${flags} -f threepiece.mak flash
 
 mock m:
 	make ${flags} -f mock.mak all compile_commands

@@ -16,8 +16,10 @@ void dumpScanCode(uint8_t sc, bool pressed) {
   Serial.print("Scan Code ");
   Serial.print(sc, HEX);
   Serial.println(pressed ? " was pressed" : " was released");
+#if defined(DISPLAY)
+  BoardIO::ShowScanCode(sc + (pressed ? 0xFF00 : 0));
+#endif
 }
-
 #endif
 
 // Look for a slot that is either already in use for this scan code, or vacant.
@@ -72,6 +74,10 @@ uint32_t getColorForCurrentLayer() {
   return layer_colors[curState.layer_stack[curState.layer_pos]];
 }
 #endif
+
+uint8_t getCurrentLayer() {
+  return curState.layer_stack[curState.layer_pos];
+}
 
 // Called immediately after seeing the scan code:
 // Find a slot for the key, and deal with layer "stuff"
