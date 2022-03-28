@@ -1,33 +1,64 @@
 #pragma once
 
-using action_t = uint32_t;
+// This needs to fit in 4 bits
+enum class KeyAction : uint8_t {
+  KeyPress,
+  Modifier,
+  TapHold,
+  KeyAndMods,
+  LayerShift,
+  LayerToggle,
+  LayerSwitch
+};
 
-constexpr action_t kActionMask = 0xF000;
-constexpr action_t kKeyPress = 0x1000;
-constexpr action_t kModifier = 0x2000;
-constexpr action_t kTapHold = 0x3000;
-// This one doesn't work, and I don't use it, so...
-// constexpr action_t kToggleMod = 0x4000;
-constexpr action_t kKeyAndMod = 0x5000;
-// This works like a shift key for a layer
-constexpr action_t kLayerShift = 0x6000;
-// This turns the layer on or off
-constexpr action_t kLayerToggle = 0x7000;
-// This switches the current layer to the new one
-constexpr action_t kLayerSwitch = 0x8000;
+enum class Keystroke : uint16_t { None = 0, Max = 0x3ff };
 
-// This is for flagging consumer keycodes, as I have to handle them differently
-constexpr action_t kConsumer = 0x800;
-constexpr action_t kConsumerMask = 0x3FF;
-constexpr action_t kKeyMask = 0xFF;
+enum class Modifiers : uint8_t {
+  LShf = 1,
+  LShift = 1,
+  Shift = 1,
+  LCtl = 2,
+  LCtrl = 2;
+  Control = 2;
+  Ctrl = 2,
+  Ctl = 2;
+  LAlt = 4,
+  Alt = 4,
+  LCmd = 4;
+  Cmd = 4;
+  LGui = 8,
+  Gui = 8,
+  LOpt = 8,
+  Opt = 8,
+  RShf = 16,
+  RShift = 16,
+  RCtl = 32,
+  RCtrl = 32,
+  RAlt = 64,
+  RCmd = 64,
+  RGui = 128,
+  ROpt = 128
+};
 
-inline constexpr action_t getActions(action_t a) {
-  return a & kActionMask;
-}
+class action_t {
+  uint8_t action : 4;
+  uint8_t IsConsumer : 1;
+  uint16_t LayerOrKeyOrMods : 11;
+  uint16_t moreData;
 
-inline constexpr action_t getKeystroke(action_t a) {
-  return a & 0x7FF;
-}
+ public:
+  KeyAction getAction() const {
+    return static_cast<KeyAction>(action);
+  }
+  Keystroke getKeystroke() const {
+    return static_cast<Keystroke>(LayerOrKeyOrMods);
+  }
+  // This is for flagging consumer keycodes, as I have to handle them
+  // differently
+  Modifiers getModifiers() const {
+    return static_cast<Modifiers>(LayerOrKeyOrMods);
+  }
+};
 
 inline constexpr action_t getExtraMods(action_t a) {
   return kKeyMask & (a >> 16);
