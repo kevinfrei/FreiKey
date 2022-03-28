@@ -28,12 +28,31 @@ const int layer_to_image[8] = {
   2, // "Base/Mac",
   3, // "Win"
   4, // "Linux",
-  1, // "Fn",
-  0, // "MacCaps",
-  0, // "WinCaps",
+  0, // "Fn",
+  1, // "MacCaps",
+  1, // "WinCaps",
   1, // "WinCtrl",
-  0 // "LinuxCaps"};
+  1 // "LinuxCaps"};
 };
+
+uint16_t prevWidth = 0;
+uint16_t prevHeight = 0;
+void ShowImage(Adafruit_ST7789* tft, uint8_t num) {
+  uint16_t h = images[num]->height;
+  uint16_t w = images[num]->width;
+  uint16_t sw = tft->width();
+  uint16_t sh = tft->height();
+  if (h < prevHeight || w < prevWidth) {
+    tft->fillRect((sw - prevWidth) / 2,
+                  (sh - prevHeight) / 2,
+                  prevWidth,
+                  prevHeight,
+                  ST77XX_BLACK);
+  }
+  drawImage(images[num], (sw - w) / 2, (sh - h) / 2, tft);
+  prevHeight = h;
+  prevWidth = w;
+}
 
 void LaptypeBoard::Backlight(bool turnOn) {
   if (backlightOn != turnOn) {
@@ -55,30 +74,21 @@ void LaptypeBoard::Configure() {
   tft->setRotation(1);
   tft->fillScreen(ST77XX_BLACK);
   tft->setFont(&FreeSans12pt7b);
-  drawImage(images[0], 0, 0, tft);
+  ShowImage(tft, 0);
 }
 
 void LaptypeBoard::Changed(uint32_t now) {
-  uint32_t col = getColorForCurrentLayer();
-  if (col != lastShownLayerVal) {
+  uint8_t lyr = getCurrentLayer();
+  if (lyr != lastShownLayerVal) {
     Backlight(true);
     tft->fillScreen(ST77XX_BLACK);
-    lastShownLayerVal = col;
+    lastShownLayerVal = lyr;
     lastShownLayerTime = now;
-    int16_t x, y;
-    uint16_t w, h;
-    tft->setCursor(0, 0);
-    const char* str = layer_names[curState.getLayer()];
-    tft->getTextBounds(str, 0, 0, &x, &y, &w, &h);
-    uint16_t xx = (tft->width() - w) / 2;
-    uint16_t yy = (tft->height() + h) / 2;
-    tft->setCursor(xx, yy);
-    tft->fillRoundRect(xx + x - 10, yy + y - 10, w + 21, h + 21, 5, col);
-    tft->fillRoundRect(xx + x - 3, yy + y - 3, w + 6, h + 6, 2, ST77XX_BLACK);
-    tft->setTextColor(ST77XX_WHITE);
-    tft->print(str);
-    // tft->setCursor(10,120);
-    // tft->printf("%d,%d,%d,%d, [%d,%d]", x, y, w, h, xx, yy);
+    uint8_t imageNum = layer_to_image[lyr];
+    drawImage(images[imageNum],
+              (tft->width() - images[imageNum]->width) / 2,
+              (tft->height() - images[imageNum]->height) / 2,
+              tft);
   }
 }
 
@@ -87,3 +97,5 @@ void LaptypeBoard::Tick(uint32_t now) {
     Backlight(false);
   }
 }
+
+void LaptypeBoard::ShowScanCode(uint16_t sc) {}

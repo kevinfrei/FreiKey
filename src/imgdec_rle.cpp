@@ -34,7 +34,7 @@ void decode_rle(bytestream cmpStrm, uint32_t strmLen, sender send) {
       // repeat the next pair of bytes N times
       uint8_t byte1 = cmpStrm[i++];
       uint8_t byte2 = cmpStrm[i++];
-      for (int32_t j = 0; j < length; j++) {
+      for (uint32_t j = 0; j < length; j++) {
         if (offs + j * 2 == bufSize) {
           send(buffer, offs + j * 2);
           offs = -(j * 2);
@@ -45,7 +45,7 @@ void decode_rle(bytestream cmpStrm, uint32_t strmLen, sender send) {
       offs += length * 2;
     } else {
       // copy the next N pair of bytes
-      for (int32_t j = 0; j < length; j++) {
+      for (uint32_t j = 0; j < length; j++) {
         if (offs + j * 2 == bufSize) {
           send(buffer, offs + j * 2);
           offs = -(j * 2);

@@ -152,8 +152,7 @@ void ProcessKeys(uint32_t now, kb_reporter& rpt) {
       // We've had it for less than the time allotted, so send the tapping key
       // TODO: Make sure we send the key up immediate after this!
       if ((state.action & kConsumer) == kConsumer) {
-        action_t key = getKeystroke(state.action);
-        DBG(dumpHex(key, " Tapping Consumer Key"));
+        DBG(dumpHex(getKeystroke(state.action), " Tapping Consumer Key"));
         state.down = true;
         ProcessConsumer(state, rpt);
         state.down = false;

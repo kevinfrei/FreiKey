@@ -33,11 +33,11 @@ const int layer_to_image[8] = {
   2, // "Base/Mac",
   3, // "Win"
   4, // "Linux",
-  1, // "Fn",
-  0, // "MacCaps",
-  0, // "WinCaps",
+  0, // "Fn",
+  1, // "MacCaps",
+  1, // "WinCaps",
   1, // "WinCtrl",
-  0 // "LinuxCaps"};
+  1 // "LinuxCaps"};
 };
 
 void ThreePieceBoard::Backlight(bool turnOn) {
@@ -74,7 +74,7 @@ void ThreePieceBoard::Configure() {
 
 void ThreePieceBoard::Changed(uint32_t now) {
   uint8_t lyr = getCurrentLayer();
-  if (lyr != lastShownLayerVal && false) {
+  if (lyr != lastShownLayerVal) {
     Backlight(true);
     tft->fillScreen(ST77XX_BLACK);
     lastShownLayerVal = lyr;
@@ -100,9 +100,11 @@ int8_t yoffs[12] = {3, 2, 1, 0, 2, 3, 3, 2, 0, 1, 2, 3};
 int8_t yloffs[12] = {3, 3, 2, 4, 3, 3, 3, 3, 4, 2, 3, 3};
 int8_t xoffs[12] = {-4, -4, -4, -3, 0, 1, -2, -1, 2, 3, 3, 3};
 int8_t xloffs[12] = {0, 0, -3, -3, -3, 3, -5, 2, 2, 2, 0, 0};
-void ThreePieceBoard::ShowScanCode(uint16_t scancode) {
-  Backlight(true);
-  lastShownLayerTime = millis();
+
+void DrawKeyboard(uint16_t scancode,
+                  uint16_t l,
+                  uint16_t t,
+                  Adafruit_ST7789* tft) {
   uint16_t x = (scancode & 0xFF) % 12;
   uint16_t y = (scancode & 0xFF) / 12;
   uint16_t w = 7;
@@ -126,7 +128,7 @@ void ThreePieceBoard::ShowScanCode(uint16_t scancode) {
     xo = xloffs[x];
   }
   uint16_t c = (scancode > 0xFF) ? 0xC000 : 0x200;
-  tft->fillRect(112 + xo + x * 8 + (left ? -8 : 8), y * 7 + yo + 2, w, 6, c);
+  tft->fillRect(l + xo + x * 8 + (left ? -8 : 8), t + y * 7 + yo, w, 6, c);
 #if defined(DISPLAY_CODE)
   tft->fillRect(0, 0, 50, 25, ST77XX_BLACK);
   tft->setCursor(0, 25);
@@ -134,4 +136,13 @@ void ThreePieceBoard::ShowScanCode(uint16_t scancode) {
   tft->print(scancode & 0xFF, HEX);
   tft->fillRect(5, 26, 5, 5, (scancode > 0xFF) ? ST77XX_RED : ST77XX_GREEN);
 #endif
+}
+
+void ThreePieceBoard::ShowScanCode(uint16_t scancode) {
+  if (false) {
+    Backlight(true);
+    lastShownLayerTime = millis();
+    // This is good stuff for debugging:
+    DrawKeyboard(scancode, 112, 2, tft);
+  }
 }

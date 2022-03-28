@@ -12,7 +12,7 @@ else
 flags=-j
 endif
 # Now the default target
-all: allk allf laptype mock
+all: laptype threepiece mock
 
 allclean:
 ifeq ($(OS),Windows_NT)

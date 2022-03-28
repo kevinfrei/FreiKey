@@ -31,7 +31,7 @@ void decode_prle(bytestream cmpStrm, uint32_t strmLen, sender send) {
       // Read the value and repeat it
       uint16_t paletteIndex = readBits(numBits, cmpStrm, &i, &bit);
       uint16_t color = palette[paletteIndex];
-      for (int32_t j = 0; j < length; j++) {
+      for (uint32_t j = 0; j < length; j++) {
         if (offs + j * 2 == bufSize) {
           send(buffer, bufSize);
           offs = -(j * 2);

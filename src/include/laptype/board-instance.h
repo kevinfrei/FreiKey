@@ -22,4 +22,5 @@ struct LaptypeBoard : public LaptypeMatrix {
   static void Configure();
   static void Changed(uint32_t now);
   static void Tick(uint32_t now);
+  static void ShowScanCode(uint16_t now);
 };
