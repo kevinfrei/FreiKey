@@ -1,8 +1,14 @@
+#pragma once
 
-#include "actions.h"
+enum class layer_num : uint8_t {
+  Base = 0,
+  MacBase = 0,
+  WinBase = 1,
+  LinBase = 2,
+  Func = 3,
+  MacCap = 4,
+  WinCap = 5,
+  WinCtl = 6,
+  LinCap = 7
+};
 
-// I need a datas structure that lets stuff work like this:
-
-using LayerMap = std::array<ScanAction, scanCodeCount>;
-
-ScanAction processLayer(uint8_t keyCode, bool pressed, LayerMap lm) {}

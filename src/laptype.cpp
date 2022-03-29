@@ -78,13 +78,13 @@ void LaptypeBoard::Configure() {
 }
 
 void LaptypeBoard::Changed(uint32_t now) {
-  uint8_t lyr = getCurrentLayer();
-  if (lyr != lastShownLayerVal) {
+  layer_num lyr = getCurrentLayer();
+  if (static_cast<uint8_t>(lyr) != lastShownLayerVal) {
     Backlight(true);
     tft->fillScreen(ST77XX_BLACK);
-    lastShownLayerVal = lyr;
+    lastShownLayerVal = static_cast<uint8_t>(lyr);
     lastShownLayerTime = now;
-    uint8_t imageNum = layer_to_image[lyr];
+    uint8_t imageNum = layer_to_image[static_cast<uint8_t>(lyr)];
     drawImage(images[imageNum],
               (tft->width() - images[imageNum]->width) / 2,
               (tft->height() - images[imageNum]->height) / 2,

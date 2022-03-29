@@ -52,11 +52,15 @@ struct keystate* findStateSlot(scancode_t scanCode) {
   return reap;
 }
 
+action_t resolve(uint8_t layerPos, uint8_t scancode) {
+  return keymap[static_cast<uint8_t>(curState.layer_stack[layerPos])][scancode];
+}
+
 // Find the first specified action in the layer stack
 action_t resolveActionForScanCodeOnActiveLayer(uint8_t scanCode) {
-  layer_t s = curState.layer_pos;
+  uint8_t s = curState.layer_pos;
   DBG(dumpVal(s, "Layer position: "));
-  while (s > 0 && keymap[curState.layer_stack[s]][scanCode] == ___) {
+  while (s > 0 && resolve(s, scanCode).isNoAction()) {
     --s;
   }
 #if defined(DEBUG)
@@ -65,17 +69,10 @@ action_t resolveActionForScanCodeOnActiveLayer(uint8_t scanCode) {
                 curState.layer_stack[s]);
   dumpHex(keymap[curState.layer_stack[s]][scanCode]);
 #endif
-  return keymap[curState.layer_stack[s]][scanCode];
+  return resolve(s, scanCode);
 }
 
-#if defined(BTLE_HOST) || defined(DISPLAY_ST7789)
-// For no good reason, I only have 2 bits per color...
-uint32_t getColorForCurrentLayer() {
-  return layer_colors[curState.layer_stack[curState.layer_pos]];
-}
-#endif
-
-uint8_t getCurrentLayer() {
+layer_num getCurrentLayer() {
   return curState.layer_stack[curState.layer_pos];
 }
 
@@ -96,17 +93,19 @@ void preprocessScanCode(scancode_t sc, bool pressed, uint32_t now) {
   DBG2(state->dump());
   // State update returns a layer action to perform...
   switch (state->update(sc, pressed, now)) {
-    case kPushLayer:
+    case layer_t::Push:
       curState.push_layer(state->get_layer());
       break;
-    case kPopLayer:
+    case layer_t::Pop:
       curState.pop_layer(state->get_layer());
       break;
-    case kToggleLayer:
+    case layer_t::Toggle:
       curState.toggle_layer(state->get_layer());
       break;
-    case kSwitchLayer:
+    case layer_t::Switch:
       curState.switch_layer(state->get_layer());
+      break;
+    case layer_t::None:
       break;
   }
 }
@@ -114,14 +113,16 @@ void ProcessConsumer(keystate& state, kb_reporter& rpt) {
   // For a consumer control button, there are no modifiers, it's
   // just a simple call. So just call it directly:
   if (state.down) {
-    DBG(dumpHex(state.action & kConsumerMask, "Consumer key press: "));
+    DBG(dumpHex(getConsumerCode(state.action.getConsumer()),
+                "Consumer key press: "));
     // See all the codes in all their glory here:
     // https://www.usb.org/sites/default/files/documents/hut1_12v2.pdf
     // (And if that doesn't work, check here: https://www.usb.org/hid)
-    rpt.consumer_press(state.action & kConsumerMask);
+    rpt.consumer_press(getConsumerCode(state.action.getConsumer()));
   } else {
-    DBG(dumpHex(state.action & kConsumerMask, "Consumer key release: "));
-    rpt.consumer_release(state.action & kConsumerMask);
+    DBG(dumpHex(getConsumerCode(state.action.getConsumer()),
+                "Consumer key release: "));
+    rpt.consumer_release(getConsumerCode(state.action.getConsumer()));
     // We have to clear this thing out when we're done, because we take
     // action on the key release as well. We don't do this for the normal
     // keyboardReport.
@@ -135,15 +136,17 @@ void ProcessKeys(uint32_t now, kb_reporter& rpt) {
   for (auto& state : keyStates) {
     if (state.scanCode == null_scan_code)
       continue;
-    action_t actions = getActions(state.action);
-    if (actions == kTapHold) {
+    KeyAction actions = state.action.getAction();
+    if (actions == KeyAction::TapHold) {
+      // TODO: I don't think this quite works...
+      
       // If we've exceeded the time limit, set the modifier
       // If we're under the time limit, and it's a key *down* we shouldn't
       // do anything, because we won't know what to do until after the time
       // limit is hit, or a key-up occurs.
       if (now - state.lastChange > TapAndHoldTimeLimit) {
         // Holding
-        mods |= getExtraMods(state.action);
+        mods |= static_cast<uint8_t>(state.action.getExtraMods());
         DBG(dumpHex(mods, " (Holding)"));
         rpt.set_modifier(mods);
       } else if (state.down) {
@@ -151,40 +154,40 @@ void ProcessKeys(uint32_t now, kb_reporter& rpt) {
       }
       // We've had it for less than the time allotted, so send the tapping key
       // TODO: Make sure we send the key up immediate after this!
-      if ((state.action & kConsumer) == kConsumer) {
-        DBG(dumpHex(getKeystroke(state.action), " Tapping Consumer Key"));
+      if (state.action.getAction() == KeyAction::Consumer) {
+        DBG(dumpHex(state.action.getKeystroke(), " Tapping Consumer Key"));
         state.down = true;
         ProcessConsumer(state, rpt);
         state.down = false;
         ProcessConsumer(state, rpt);
       } else {
-        action_t key = getKeystroke(state.action);
-        if (key != 0) {
-          rpt.add_key_press(key);
+        Keystroke key = state.action.getKeystroke();
+        if (key != Keystroke::None) {
+          rpt.add_key_press(getUSBCode(key));
           DBG(dumpHex(key, " Tapping"));
         }
       }
-    } else if ((state.action & kConsumer) == kConsumer) {
+    } else if (actions == KeyAction::Consumer) {
       ProcessConsumer(state, rpt);
-    } else if (actions == kKeyAndMod) {
+    } else if (actions == KeyAction::KeyAndMods) {
       if (state.down) {
-        mods |= getExtraMods(state.action);
+        mods |= static_cast<uint8_t>(state.action.getExtraMods());
         rpt.set_modifier(mods);
-        action_t key = getKeystroke(state.action);
-        if (key != 0) {
-          rpt.add_key_press(key);
+        Keystroke key = state.action.getKeystroke();
+        if (key != Keystroke::None) {
+          rpt.add_key_press(getUSBCode(key));
         }
       }
-    } else if (actions == kKeyPress) {
+    } else if (actions == KeyAction::KeyPress) {
       if (state.down) {
-        action_t key = getKeystroke(state.action);
-        if (key != 0) {
-          rpt.add_key_press(key);
+        Keystroke key = state.action.getKeystroke();
+        if (key != Keystroke::None) {
+          rpt.add_key_press(getUSBCode(key));
         }
       }
-    } else if (actions == kModifier) {
+    } else if (actions == KeyAction::Modifier) {
       if (state.down) {
-        mods |= getKeystroke(state.action);
+        mods |= static_cast<uint8_t>(state.action.getModifiers());
         rpt.set_modifier(mods);
       }
     }

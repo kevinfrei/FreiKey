@@ -4,57 +4,37 @@
 #include "action.h"
 #include "dbgcfg.h"
 
-using layer_t = uint8_t;
-constexpr layer_t kPushLayer = 1;
-constexpr layer_t kPopLayer = 2;
-constexpr layer_t kToggleLayer = 3;
-constexpr layer_t kSwitchLayer = 4;
+enum class layer_t : uint8_t {
+  None = 0,
+  Push = 1,
+  Pop = 2,
+  Toggle = 3,
+  Switch = 4
+};
 
-#define ___ 0
+#define ___ no_action
 #define PASTE(a, b) a##b
 
 #if defined(TEENSY)
 
-#define PK(a) ((PASTE(KEY_, a)) & 0x1ff)
-#define PM(a) ((PASTE(MODIFIERKEY_, a)) & 0x1ff)
-#define PK_(a) PASTE(KEY_, a)
-#define PM_(a) PASTE(MODIFIERKEY_, a)
-
-#define LEFTALT LEFT_ALT
-#define RIGHTALT RIGHT_ALT
-#define LEFTGUI LEFT_GUI
-#define RIGHTGUI RIGHT_GUI
-#define LEFTCTRL LEFT_CTRL
-#define RIGHTCTRL RIGHT_CTRL
-#define LEFTSHIFT LEFT_SHIFT
-#define RIGHTSHIFT RIGHT_SHIFT
-#define KEY_ESCAPE KEY_ESC
-#define KEY_GRAVE KEY_TILDE
-#define KEY_BRACKET_LEFT KEY_LEFT_BRACE
-#define KEY_BRACKET_RIGHT KEY_RIGHT_BRACE
-#define KEY_APOSTROPHE KEY_QUOTE
-#define KEY_ARROW_UP KEY_UP
-#define KEY_ARROW_DOWN KEY_DOWN
-#define KEY_ARROW_LEFT KEY_LEFT
-#define KEY_ARROW_RIGHT KEY_RIGHT
-#define KEY_APPLICATION KEY_MENU
-
 #else
-
-#define PK(a) PASTE(HID_KEY_, a)
-#define PM(a) PASTE(KEYBOARD_MODIFIER_, a)
-#define PK_(a) PASTE(HID_KEY_, a)
-#define PM_(a) PASTE(KEYBOARD_MODIFIER_, a)
 
 #endif
 
-#define KEY(a) keyPress(PK(a))
-#define MOD(a) modPress(PM(a))
-//#define TMOD(a) kToggleMod | PM(a)
-#define CONS(a) consPress(PK(a))
+#define PK(k) (Keystroke::k)
+#define PN(n) (Keystroke::_##n)
+#define PM(m) (Modifiers::m)
+#define PC(c) (Consumer::c)
 
+#define KEY(a) keyPress(PK(a))
+#define NUM(a) keyPress(PN(a))
+#define MOD(a) modPress(PM(a))
+#define CONS(a) consPress(PC(a))
+
+//#define TMOD(a) kToggleMod | PM(a)
 #define TAPH(a, b) tapAndHold(a, b)
 #define KMOD(a, b) keyAndModifiers(PK(a), PM(b))
+#define NMOD(a, b) keyAndModifiers(PN(a), PM(b))
 #define MOD1(a, b) keyAndModifiers(a, PM(b))
 #define KMOD2(a, b, c) keyAndModifiers(PK(a), PM(b), PM(c))
 #define MOD2(a, b, c) keyAndModifiers(a, PM(b), PM(c))
@@ -73,6 +53,7 @@ constexpr layer_t kSwitchLayer = 4;
 // I'm 100% certain that stuff is available for Windows, too, somewhere in
 // MSDN, cuz MSFT documents their stuff, unlike Apple...
 
+#if 0
 #define DK(a, v) constexpr action_t PK_(a) = v
 #define DM(a, v) constexpr action_t PM_(a) = PM(v)
 DK(M_PLAY, 0xCD);
@@ -86,150 +67,126 @@ DK(M_BACKWARD, 0xF1);
 DK(M_FORWARD, 0xF2);
 DK(M_SLEEP, 0xF8);
 DK(M_LOCK, 0xF9);
-
-// Let's mac-friendly-ify this stuff:
-
-#define LEFTOPTION LEFTALT
-#define RIGHTOPTION RIGHTALT
-#define LEFTCOMMAND LEFTGUI
-#define RIGHTCOMMAND RIGHTGUI
+#endif
 
 // Some stuff to make the action maps prettier. I use Clang Format, and it
 // messes up the keymaps badly if they're over 80 characters on any individual
 // line...
-#define LCMD MOD(LEFTCOMMAND)
-#define LSHFT MOD(LEFTSHIFT)
-#define LCTL MOD(LEFTCTRL)
-#define LOPT MOD(LEFTOPTION)
-#define RCMD MOD(RIGHTCOMMAND)
-#define RSHFT MOD(LEFTSHIFT)
-#define RCTL MOD(RIGHTSHIFT)
-#define ROPT MOD(RIGHTOPTION)
+#define LCMD MOD(LCmd)
+#define LSHFT MOD(LShft)
+#define LCTL MOD(LCtrl)
+#define LOPT MOD(LOpt)
+#define RCMD MOD(RCmd)
+#define RSHFT MOD(RShft)
+#define RCTL MOD(RCtrl)
+#define ROPT MOD(ROpt)
 
-#define LGUI MOD(LEFTGUI)
-#define LALT MOD(LEFTALT)
-#define RGUI MOD(RIGHTGUI)
-#define RALT MOD(RIGHTALT)
+#define LGUI MOD(LGui)
+#define LALT MOD(LAlt)
+#define RGUI MOD(RGui)
+#define RALT MOD(RAlt)
 
-#define GRV GRAVE
-#define OBRC BRACKET_LEFT
-#define CBRC BRACKET_RIGHT
-#define BKSP BACKSPACE
-#define DEL DELETE
-#define PGUP PAGE_UP
-#define PGDN PAGE_DOWN
-#define EQ_ KEY(EQUAL)
-#define SEMI_ KEY(SEMICOLON)
-#define COMMA_ KEY(COMMA)
-#define DOT_ KEY(PERIOD)
-#define QUOTE_ KEY(APOSTROPHE)
-#define ENTER_ KEY(ENTER)
-#define UP_ KEY(ARROW_UP)
-#define DOWN_ KEY(ARROW_DOWN)
-#define LEFT_ KEY(ARROW_LEFT)
-#define RIGHT_ KEY(ARROW_RIGHT)
-#define SPACE_ KEY(SPACE)
+#define GRV Grave
+#define OBRC OpenBrace
+#define CBRC CloseBrace
+#define BKSP Backspace
+#define DEL Delete
+#define PGUP PageUp
+#define PGDN PageDown
+#define EQ_ KEY(Equal)
+#define SEMI_ KEY(Semicolon)
+#define COMMA_ KEY(Comma)
+#define DOT_ KEY(Period)
+#define QUOTE_ KEY(Quote)
+#define ENTER_ KEY(Enter)
+#define UP_ KEY(Up)
+#define DOWN_ KEY(Down)
+#define LEFT_ KEY(Left)
+#define RIGHT_ KEY(Right)
+#define SPACE_ KEY(Space)
 #define MUTE_ KEY(M_MUTE)
-#define VOLUP_ CONS(M_VOLUME_UP)
-#define VOLDN_ CONS(M_VOLUME_DOWN)
+#define VOLUP_ CONS(VolumeUp)
+#define VOLDN_ CONS(VolumeDown)
 
-#define PLAY_ CONS(M_PLAY)
-#define PRVT_ CONS(M_PREVIOUS_TRACK)
-#define NXTT_ CONS(M_NEXT_TRACK)
+#define PLAY_ CONS(PlayPause)
+#define PRVT_ CONS(PrevTrack)
+#define NXTT_ CONS(NextTrack)
 
-#define SHFTCM LSHFT | LCMD
-#define CTLCM LCTL | LCMD
-#define OPTCM LOPT | LCMD
-#define SHFTCT LSHFT | LCMD
-#define GUICT LGUI | LCMD
-#define ALTCT LALT | LCMD
+#define SHFTCM action_t::Modifier(Modifiers::Shift, Modifiers::Command)
+#define CTLCM action_t::Modifier(Modifiers::Control, Modifiers::Command)
+#define OPTCM action_t::Modifier(Modifiers::Option, Modifiers::Command)
+#define SHFTCT action_t::Modifier(Modifiers::Shift, Modifiers::Control)
+#define GUICT action_t::Modifier(Modifiers::Gui, Modifiers::Control)
+#define ALTCT action_t::Modifier(Modifiers::Alt, Modifiers::Control)
+#define RSHFCT action_t::Modifier(Modifiers::RShf, Modifiers::LControl)
 
 // Some shortcuts for modifiers & stuff
-#define CMK(a) KMOD(a, LEFTCOMMAND)
-#define CM(a) MOD1(a, LEFTCOMMAND)
-#define CTK(a) KMOD(a, LEFTCTRL)
-#define CT(a) MOD1(a, LEFTCTRL)
-#define OPK(a) KMOD(a, LEFTOPTION)
-#define OP(a) MOD1(a, LEFTOPTION)
-#define AL(a) MOD1(a, LEFTALT)
-#define ALK(a) KMOD(a, LEFTALT)
-#define GU(a) MOD1(a, LEFTGUI)
-#define GUK(a) KMOD(a, LEFTGUI)
-#define COSK(a) KMOD3(a, LEFTCTRL, LEFTSHIFT, LEFTOPTION)
-#define COS(a) MOD3(a, LEFTCTRL, LEFTSHIFT, LEFTOPTION)
-#define ALLK(a) KMOD4(a, LEFTCTRL, LEFTSHIFT, LEFTOPTION, LEFTCOMMAND)
-#define ALL(a) MOD4(a, LEFTCTRL, LEFTSHIFT, LEFTOPTION, LEFTCOMMAND)
+#define CMK(a) KMOD(a, LCmd)
+#define CMN(a) NMOD(a, LCmd)
+#define CM(a) MOD1(a, LCmd)
+#define CTK(a) KMOD(a, LCtl)
+#define CTN(a) NMOD(a, LCtl)
+#define CT(a) MOD1(a, LCtl)
+#define OPK(a) KMOD(a, LOpt)
+#define OP(a) MOD1(a, LOpt)
+#define AL(a) MOD1(a, LAlt)
+#define ALK(a) KMOD(a, LAlt)
+#define GU(a) MOD1(a, LGui)
+#define GUK(a) KMOD(a, LGui)
+#define COSK(a) KMOD3(a, LCtrl, LShift, LOpt)
+#define COS(a) MOD3(a, LCtrl, LShift, LOpt)
+#define ALLK(a) KMOD4(a, LCtrl, LShift, LOpt, LCmd)
+#define ALL(a) MOD4(a, LCtrl, LShift, LOpt, LCmd)
 
 // CM == Command, OP = Option
-#define CM_EQ CM(EQ_)
-#define CM_SEMI CM(SEMI_)
-#define CM_QUOTE CM(QUOTE_)
-#define CM_CMA CM(COMMA_)
-#define CM_DOT CM(DOT_)
-#define CM_SLSH CMK(SLASH)
-#define CM_SPC CMK(SPACE)
-#define CM_PUP CMK(PGUP)
-#define CM_PDN CMK(PGDN)
-#define CM_ENT CM(ENTER_)
-#define OP_LEFT OP(LEFT_)
-#define OP_RIGHT OP(RIGHT_)
-#define CM_OBRC CMK(OBRC)
-#define CM_CBRC CMK(CBRC)
-#define CM_UP CM(UP_)
-#define CM_DN CM(DOWN_)
-#define MAC_WNL COS(LEFT_)
-#define MAC_WNR COS(RIGHT_)
-#define MAC_WNMX COS(UP_)
+#define CM_EQ CMK(Equal)
+#define CM_SEMI CMK(Semicolon)
+#define CM_QUOTE CMK(Quote)
+#define CM_CMA CMK(Comma)
+#define CM_DOT CMK(Dot)
+#define CM_SLSH CMK(Slash)
+#define CM_SPC CMK(Space)
+#define CM_PUP CMK(PgUp)
+#define CM_PDN CMK(PgDn)
+#define CM_ENT CMK(Enter)
+#define OP_LEFT OPK(Left)
+#define OP_RIGHT OPK(Right)
+#define CM_OBRC CMK(OpenBrace)
+#define CM_CBRC CMK(CloseBrace)
+#define CM_UP CMK(Up)
+#define CM_DN CMK(Down)
+#define MAC_WNL COSK(Left)
+#define MAC_WNR COSK(Right)
+#define MAC_WNMX COSK(Up)
 
 // CT = Control
-#define CT_OBRC CTK(OBRC)
-#define CT_CBRC CTK(CBRC)
-#define CT_QUOTE CT(QUOTE_)
-#define CT_SEMI CT(SEMI_)
-#define CT_EQ CTK(EQUAL)
-#define CT_SLSH CTK(SLASH)
-#define CT_CMA CT(COMMA_)
-#define CT_DOT CT(DOT_)
-#define CT_PUP CTK(PGUP)
-#define CT_PDN CTK(PGDN)
-#define CT_UP CT(UP_)
-#define CT_DN CT(DOWN_)
-#define CT_LEFT CT(LEFT_)
-#define CT_RIGHT CT(RIGHT_)
-#define CT_SPC CT(SPACE_)
-#define CT_ENT CTK(ENTER)
-#define WIN_WNL GU(LEFT_)
-#define WIN_WNR GU(RIGHT_)
-#define WIN_WNMX GU(UP_)
+#define CT_OBRC CTK(OpenBrace)
+#define CT_CBRC CTK(CloseBrace)
+#define CT_QUOTE CTK(Quote)
+#define CT_SEMI CTK(Semicolon)
+#define CT_EQ CTK(Equal)
+#define CT_SLSH CTK(Slash)
+#define CT_CMA CTK(Comma)
+#define CT_DOT CTK(Dot)
+#define CT_PUP CTK(PgUp)
+#define CT_PDN CTK(PgDn)
+#define CT_UP CTK(Up)
+#define CT_DN CTK(Down)
+#define CT_LEFT CTK(Left)
+#define CT_RIGHT CTK(Right)
+#define CT_SPC CTK(Space)
+#define CT_ENT CTK(Enter)
+#define WIN_WNL GUK(Left)
+#define WIN_WNR GUK(Right)
+#define WIN_WNMX GUK(Up)
 
-#if defined(FREIKEY)
-#define LAYER_MAC_BASE 0
-#define LAYER_WIN_BASE 1
-#define LAYER_FUNC 2
-#define LAYER_MAC_CAP 3
-#define LAYER_WIN_CAP 4
-#define LAYER_WIN_CTL 5
-#elif defined(KARBON) || defined(LAPTYPE) || defined(THREEPIECE) || \
-  defined(MOCK)
-#define LAYER_MAC_BASE 0
-#define LAYER_WIN_BASE 1
-#define LAYER_LIN_BASE 2
-#define LAYER_FUNC 3
-#define LAYER_MAC_CAP 4
-#define LAYER_WIN_CAP 5
-#define LAYER_WIN_CTL 6
-#define LAYER_LIN_CAP 7
-#else
-#error You probably want to define your keymap here...
-#endif
-
-#define LYR_WIN LYR_TOG(LAYER_WIN_BASE)
-#define LYR_LIN LYR_TOG(LAYER_LIN_BASE)
-#define LYR_MAC LYR_TOG(LAYER_WIN_BASE)
-#define LYR_FN LYR_TOG(LAYER_FUNC)
-#define MAC_CAP LYR_SHIFT(LAYER_MAC_CAP)
-#define WIN_CAP LYR_SHIFT(LAYER_WIN_CAP)
-#define LIN_CAP LYR_SHIFT(LAYER_LIN_CAP)
-#define WIN_CTL LYR_SHIFT(LAYER_WIN_CTL)
-#define SHFT_FN LYR_SHIFT(LAYER_FUNC)
-#define LYR_MWL LYR_ROTATE(LAYER_MAC_BASE, LAYER_WIN_BASE, LAYER_LIN_BASE)
+#define LYR_WIN LYR_TOG(static_cast<uint8_t>(layer_num::WinBase))
+#define LYR_LIN LYR_TOG(static_cast<uint8_t>(layer_num::LinBase))
+#define LYR_MAC LYR_TOG(static_cast<uint8_t>(layer_num::WinBase))
+#define LYR_FN LYR_TOG(static_cast<uint8_t>(layer_num::Func))
+#define MAC_CAP LYR_SHIFT(static_cast<uint8_t>(layer_num::MacCap))
+#define WIN_CAP LYR_SHIFT(static_cast<uint8_t>(layer_num::WinCap))
+#define LIN_CAP LYR_SHIFT(static_cast<uint8_t>(layer_num::LinCap))
+#define WIN_CTL LYR_SHIFT(static_cast<uint8_t>(layer_num::WinCtl))
+#define SHFT_FN LYR_SHIFT(static_cast<uint8_t>(layer_num::Func))
+// #define LYR_MWL LYR_ROTATE(LAYER_MAC_BASE, LAYER_WIN_BASE, LAYER_LIN_BASE)

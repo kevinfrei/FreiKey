@@ -26,9 +26,9 @@ struct State {
   static constexpr uint8_t layer_max = 7;
   char* debugString;
   uint8_t layer_pos;
-  std::array<uint8_t, layer_max + 1> layer_stack;
+  std::array<layer_num, layer_max + 1> layer_stack;
   State() : debugString(nullptr), layer_pos(0) {
-    layer_stack.fill(0);
+    layer_stack.fill(static_cast<layer_num>(0));
   }
   State(const State& gs)
     : debugString(gs.debugString),
@@ -36,9 +36,9 @@ struct State {
       layer_stack(gs.layer_stack) {}
   void reset() {
     layer_pos = 0;
-    layer_stack[0] = 0;
+    layer_stack[0] = layer_num::Base;
   }
-  uint8_t getLayer() const {
+  layer_num getLayer() const {
     return layer_stack[layer_pos];
   }
   bool operator!=(const State& gs) const {
@@ -52,13 +52,13 @@ struct State {
       return true;
     return !strcmp(debugString, gs.debugString);
   }
-  void push_layer(layer_t layer) {
+  void push_layer(layer_num layer) {
     DBG(dumpVal(layer, "Push "));
     if (layer_pos < layer_max)
       layer_stack[++layer_pos] = layer;
     DBG(dumpLayers());
   }
-  void toggle_layer(layer_t layer) {
+  void toggle_layer(layer_num layer) {
     // Toggling a layer: If it exists *anywhere* in the layer stack, turn it
     // off (and fold the layer stack down) If it's *not* in the layer stack,
     // add it.
@@ -80,7 +80,7 @@ struct State {
     DBG(Serial.print("(For Toggle) "));
     push_layer(layer);
   }
-  void pop_layer(layer_t layer) {
+  void pop_layer(layer_num layer) {
     DBG(dumpVal(layer, "Pop "));
     if (layer_pos > 0 && layer_stack[layer_pos] == layer) {
       // Easy-peasy
@@ -104,15 +104,15 @@ struct State {
     }
     DBG(dumpLayers());
   }
-  int8_t find_layer(layer_t l) {
+  int8_t find_layer(layer_num lyr) {
     for (int8_t l = layer_pos; l >= 0; l--) {
-      if (layer_stack[l] == l) {
-        return static_cast<uint8_t>(l);
+      if (layer_stack[l] == lyr) {
+        return l;
       }
     }
     return -1;
   }
-  void switch_layer(layer_t layer) {
+  void switch_layer(layer_num layer) {
     DBG(dumpVal(layer_stack[layer_pos], "Switching layer "));
     DBG(dumpVal(layer, "to layer "));
     layer_stack[layer_pos] = layer;

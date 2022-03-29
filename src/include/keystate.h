@@ -13,14 +13,14 @@ struct keystate {
   uint32_t lastChange;
   // The action this key state is referring to.
   // This comes from the keymap when the key is pressed.
-  action_t action;
+  action_t action = no_action;
   // The scan code of the key this action is about
   scancode_t scanCode;
   // Is this a press or release?
   bool down;
 
-  layer_t get_layer() const {
-    return action & 0xff;
+  layer_num get_layer() const {
+    return action.getLayer();
   }
 
   layer_t update(scancode_t sc, bool pressed, uint32_t now) {
@@ -42,18 +42,19 @@ struct keystate {
       if (pressed) {
         action = resolveActionForScanCodeOnActiveLayer(scanCode);
       } else {
-        action = 0;
+        action = no_action;
       }
     }
-    switch (getActions(action)) {
-      case kLayerShift:
-        return down ? kPushLayer : kPopLayer;
-      case kLayerToggle:
-        return down ? kToggleLayer : 0;
-      case kLayerSwitch:
-        return down ? kLayerSwitch : 0;
+    switch (action.getAction()) {
+      case KeyAction::LayerShift:
+        return down ? layer_t::Push : layer_t::Pop;
+      case KeyAction::LayerToggle:
+        return down ? layer_t::Toggle : layer_t::None;
+      case KeyAction::LayerSwitch:
+        return down ? layer_t::Switch : layer_t::None;
+      default:
+        return layer_t::None;
     }
-    return 0;
   };
 #if defined(DEBUG)
   void dump() const {
