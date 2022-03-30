@@ -7,6 +7,7 @@
 #include "bitmaps/mac.h"
 #include "bitmaps/win.h"
 #include "boardio.h"
+#include "enumtypes.h"
 #include "general.h"
 #include "image.h"
 #include "scanner.h"
@@ -24,7 +25,7 @@ constexpr uint8_t SPKR_SIGNAL = 4;
 Adafruit_ST7789* ThreePieceBoard::tft = nullptr;
 boolean ThreePieceBoard::backlightOn = false;
 uint32_t ThreePieceBoard::lastShownLayerTime = 0;
-uint32_t ThreePieceBoard::lastShownLayerVal = 0;
+layer_num ThreePieceBoard::lastShownLayerVal = layer_num::Base;
 const image_descriptor* images[5] = {
   gfx_amy, gfx_batman, gfx_mac, gfx_win, gfx_linux};
 
@@ -72,13 +73,13 @@ void ThreePieceBoard::Configure() {
 }
 
 void ThreePieceBoard::Changed(uint32_t now) {
-  uint8_t lyr = getCurrentLayer();
+  layer_num lyr = getCurrentLayer();
   if (lyr != lastShownLayerVal) {
     Backlight(true);
     tft->fillScreen(ST77XX_BLACK);
     lastShownLayerVal = lyr;
     lastShownLayerTime = now;
-    uint8_t imageNum = layer_to_image[lyr];
+    uint8_t imageNum = layer_to_image[static_cast<uint8_t>(lyr)];
     drawImage(images[imageNum],
               (320 - images[imageNum]->width) / 2,
               (240 - images[imageNum]->height) / 2,
