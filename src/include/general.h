@@ -53,7 +53,7 @@ struct State {
     return !strcmp(debugString, gs.debugString);
   }
   void push_layer(layer_num layer) {
-    DBG(dumpVal(layer, "Push "));
+    DBG(dumpVal(static_cast<uint8_t>(layer), "Push "));
     if (layer_pos < layer_max)
       layer_stack[++layer_pos] = layer;
     DBG(dumpLayers());
@@ -64,7 +64,7 @@ struct State {
     // add it.
     for (uint8_t l = layer_pos; l != 0; l--) {
       if (layer_stack[l] == layer) {
-        DBG(dumpVal(layer, "Turning off layer "));
+        DBG(dumpVal(static_cast<uint8_t>(layer), "Turning off layer "));
         DBG(dumpVal(l, "at location "));
         if (layer_pos != l) {
           DBG(dumpVal(layer_pos - l, "Shifting by "));
@@ -81,14 +81,14 @@ struct State {
     push_layer(layer);
   }
   void pop_layer(layer_num layer) {
-    DBG(dumpVal(layer, "Pop "));
+    DBG(dumpVal(static_cast<uint8_t>(layer), "Pop "));
     if (layer_pos > 0 && layer_stack[layer_pos] == layer) {
       // Easy-peasy
       --layer_pos;
     } else {
       for (uint8_t l = layer_pos; l != 0; l--) {
         if (layer_stack[l] == layer) {
-          DBG(dumpVal(layer, "Turning off layer "));
+          DBG(dumpVal(static_cast<uint8_t>(layer), "Turning off layer "));
           DBG(dumpVal(l, "at location "));
           if (layer_pos != l) {
             DBG(dumpVal(layer_pos - l, "Shifting by "));
@@ -113,8 +113,8 @@ struct State {
     return -1;
   }
   void switch_layer(layer_num layer) {
-    DBG(dumpVal(layer_stack[layer_pos], "Switching layer "));
-    DBG(dumpVal(layer, "to layer "));
+    DBG(dumpVal(static_cast<uint8_t>(layer_stack[layer_pos]), "Switching layer "));
+    DBG(dumpVal(static_cast<uint8_t>(layer), "to layer "));
     layer_stack[layer_pos] = layer;
     DBG(dumpLayers());
   }
@@ -150,7 +150,7 @@ struct State {
   void dumpLayers() {
     Serial.print("Layer stack: ");
     for (int i = 0; i <= layer_pos; i++) {
-      Serial.print(layer_stack[i]);
+      Serial.print(static_cast<uint8_t>(layer_stack[i]));
       Serial.print(" ");
     }
     Serial.println("");

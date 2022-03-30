@@ -104,7 +104,7 @@ class action_t {
   }
   Keystroke getKeystroke() const {
     return static_cast<Keystroke>(data & 0xff);
-  } 
+  }
   Consumer getConsumer() const {
     return static_cast<Consumer>(data & 0xfff);
   }
@@ -119,6 +119,16 @@ class action_t {
   layer_num getLayer() const {
     return static_cast<layer_num>(data & 0xF);
   }
+#if defined(DEBUG)
+  void dump() const {
+    Serial.print("data:");
+    Serial.print(data, HEX);
+    if (moreData != 0) {
+      Serial.print("|");
+      Serial.print(moreData, HEX);
+    }
+  }
+#endif
 };
 
 static constexpr action_t no_action = action_t::NoAction();

@@ -47,7 +47,7 @@ extern "C" void loop() {
     ProcessKeys(now, rpt);
     // Update the hardware previous state
     prevBits = after;
-    DBG2(after.dumpHex("State: "));
+    DBG2(Serial.printf("State: %s\n", after.to_string()));
     BoardIO::Changed(now);
   }
   BoardIO::Tick(now);

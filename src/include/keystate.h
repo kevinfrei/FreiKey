@@ -65,7 +65,7 @@ struct keystate {
     Serial.print(" lastChange=");
     Serial.print(lastChange);
     Serial.print(" action=");
-    Serial.print(action, HEX);
+    action.dump();
     Serial.println("");
   };
 #endif

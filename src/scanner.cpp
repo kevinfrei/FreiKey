@@ -67,7 +67,7 @@ action_t resolveActionForScanCodeOnActiveLayer(uint8_t scanCode) {
   Serial.printf("Resolving scancode %d on layer %d to action ",
                 scanCode,
                 curState.layer_stack[s]);
-  dumpHex(keymap[curState.layer_stack[s]][scanCode]);
+  keymap[static_cast<uint8_t>(curState.layer_stack[s])][scanCode].dump();
 #endif
   return resolve(s, scanCode);
 }
@@ -155,7 +155,7 @@ void ProcessKeys(uint32_t now, kb_reporter& rpt) {
       // We've had it for less than the time allotted, so send the tapping key
       // TODO: Make sure we send the key up immediate after this!
       if (state.action.getAction() == KeyAction::Consumer) {
-        DBG(dumpHex(state.action.getKeystroke(), " Tapping Consumer Key"));
+        DBG(dumpHex(static_cast<uint16_t>(state.action.getConsumer()), " Tapping Consumer Key"));
         state.down = true;
         ProcessConsumer(state, rpt);
         state.down = false;
@@ -164,7 +164,7 @@ void ProcessKeys(uint32_t now, kb_reporter& rpt) {
         Keystroke key = state.action.getKeystroke();
         if (key != Keystroke::None) {
           rpt.add_key_press(getUSBCode(key));
-          DBG(dumpHex(key, " Tapping"));
+          DBG(dumpHex(static_cast<uint8_t>(key), " Tapping"));
         }
       }
     } else if (actions == KeyAction::Consumer) {
