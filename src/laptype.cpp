@@ -9,7 +9,6 @@
 #include "boardio.h"
 #include "general.h"
 #include "image.h"
-#include "keymap.h"
 #include "scanner.h"
 
 constexpr uint8_t BACKLIGHT_PIN = 17;

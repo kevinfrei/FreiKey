@@ -59,7 +59,6 @@ const uint16_t layer_colors[] = {
 //          Layer change (latch, lock, or shift)
 
 // clang-format off
-
 const action_t keymap[][BoardIO::matrix_size] = {
 {// LAYER_MAC_BASE (0)
 LROW1(KEY(Esc), NUM(1), NUM(2), NUM(3), NUM(4), NUM(5)),         RROW1(NUM(6), NUM(7), NUM(8), NUM(9), NUM(0),     KEY(Minus)),
@@ -133,11 +132,11 @@ LROW6(          CTK(Home), CT_PDN, CTK(End),        CTK(CBRC)), RROW6(CT_ENT,   
 // I've really done is think about alt-prscn for handling screenshots & the
 // like...
 LROW1(CTK(Esc), CTN(1),    CTN(2), CTN(3),   CTN(4), CTN(5)),       RROW1(  CTN(6), CTN(7), CTN(8), CTN(9), CTN(0),  CTK(Minus)),
-LROW2(CTK(Tab),    CTK(Q),    CTK(W), KEY(End), CTK(R), CTK(T)),       RROW2(  CTK(Y), CTK(U), CTK(I), CTK(O), UP_,     CTK(Backslash)),
-LROW3(LCTL,        KEY(Home), CTK(S), KEY(Del), RIGHT_, CTK(G)),       RROW3(  CTK(H), CTK(J), CTK(K), CTK(L), CT_SEMI, CT_QUOTE),
-LROW4(SHFTCT,      CTK(Z),    CTK(X), CTK(C),   CTK(V), CTK(B)),       RROW4(  DOWN_,  CTK(M), CT_CMA, CT_DOT, CT_SLSH, RSHFCT),
-LROW5(___,     GUICT, ALTCT,   CT_PUP,        CTK(OBRC), CTK(BKSP)),   RROW5( CT_SPC, CT_EQ,      CT_UP,    ___, CTK(DEL), CTK(Grave)),
-LROW6(              CTK(Home), CT_PDN, CTK(End),           CTK(CBRC)), RROW6(CT_ENT,     CT_LEFT, CT_DN, CT_RIGHT),
+LROW2(CTK(Tab), CTK(Q),    CTK(W), KEY(End), CTK(R), CTK(T)),       RROW2(  CTK(Y), CTK(U), CTK(I), CTK(O), UP_,     CTK(Backslash)),
+LROW3(LCTL,     KEY(Home), CTK(S), KEY(Del), RIGHT_, CTK(G)),       RROW3(  CTK(H), CTK(J), CTK(K), CTK(L), CT_SEMI, CT_QUOTE),
+LROW4(SHFTCT,   CTK(Z),    CTK(X), CTK(C),   CTK(V), CTK(B)),       RROW4(  DOWN_,  CTK(M), CT_CMA, CT_DOT, CT_SLSH, RSHFCT),
+LROW5(___, GUICT, ALTCT,   CT_PUP,         CTK(OBRC), CTK(BKSP)),   RROW5( CT_SPC, CT_EQ,   CT_UP,    ___, CTK(DEL), CTK(Grave)),
+LROW6(          CTK(Home), CT_PDN, CTK(End),           CTK(CBRC)), RROW6(CT_ENT,   CT_LEFT, CT_DN, CT_RIGHT),
 },
 {// LAYER_LIN_CAP (7)
 LROW1(CTK(Esc), CTN(1),  CTN(2),  CTN(3), CTN(4), CTN(5)),      RROW1(  CTN(6), CTN(7), CTN(8), CTN(9), CTN(0),   CTK(Minus)),

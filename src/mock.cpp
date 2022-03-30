@@ -5,7 +5,6 @@
 
 #include "boardio.h"
 #include "general.h"
-#include "keymap.h"
 #include "mock.h"
 #include "scanner.h"
 

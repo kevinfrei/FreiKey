@@ -7,7 +7,6 @@
 #include "helpers.h"
 #include "host-comm.h"
 #include "kbreporter.h"
-#include "keymap.h"
 #include "keystate.h"
 #include "scanner.h"
 #include "sync.h"
