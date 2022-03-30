@@ -1,8 +1,8 @@
 #pragma once
 
+#include "enumtypes.h"
 #include "keymatrix.h"
 #include "mpu.h"
-#include "enumtypes.h"
 
 // clang-format off
 using LaptypeMatrix = KeyMatrix<Teensy, 

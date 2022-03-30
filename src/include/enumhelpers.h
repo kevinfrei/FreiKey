@@ -3,7 +3,6 @@
 #include <initializer_list>
 #include <type_traits>
 
-
 namespace detail {
 template <typename E>
 using underlying_type = typename std::underlying_type<E>::type;
@@ -47,7 +46,6 @@ class enum_array {
     return array_.size();
   }
 };
-
 
 // Boolean operators for Enums with a MASK member
 template <typename E, typename = detail::enum_types_only<E>>

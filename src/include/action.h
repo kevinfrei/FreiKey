@@ -37,8 +37,7 @@ class action_t {
   constexpr action_t(uint16_t d, uint16_t m) : data(d), moreData(m) {}
 
  public:
-  constexpr action_t(Modifiers mods)
-    : data(value_cast(mods)), moreData(0) {
+  constexpr action_t(Modifiers mods) : data(value_cast(mods)), moreData(0) {
     setKeyAction(KeyAction::Modifier);
   }
   static constexpr action_t Keypress(uint16_t keyPress) {

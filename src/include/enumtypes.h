@@ -25,4 +25,3 @@ enum class KeyAction : uint8_t {
   LayerSwitch,
   MaxActions = 15
 };
-

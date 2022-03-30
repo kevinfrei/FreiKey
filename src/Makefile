@@ -85,8 +85,8 @@ OPTFLAGS=/Od /ZI /EHsc
 STDNUM=/std:c++20
 OSUFFIX=obj
 else
-OBJFLAG="-o "
-IMGFLAG="-o "
+OBJFLAG=-o
+IMGFLAG=-o
 OPTFLAGS=-g
 STDNUM=-std=c++20
 OSUFFIX=o

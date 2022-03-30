@@ -47,8 +47,8 @@ void kb_reporter::add_key_press(Keystroke key) {
   }
 }
 
-void kb_reporter::consumer_press(Consumer kc) 
-{  // Handle these things in real-time
+void kb_reporter::consumer_press(Consumer kc) {
+  // Handle these things in real-time
   Keyboard.press(getConsumerUSBCode(kc));
 }
 

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <avr/pgmspace.h>
 #include <stdint.h>
 
 /*

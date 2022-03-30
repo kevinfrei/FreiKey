@@ -146,7 +146,6 @@ enum class Keystroke : uint8_t {
   F24 = 115,
 };
 
-
 enum class Consumer : uint16_t {
   PlayPause = 0xCD,
   NextTrack = 0xB5,
@@ -208,6 +207,6 @@ inline uint16_t getConsumerUSBCode(Consumer a) {
   return value_cast(a);
 }
 
-inline uint8_t getUSBCode(Modifiers m){
+inline uint8_t getUSBCode(Modifiers m) {
   return value_cast(m);
 }
