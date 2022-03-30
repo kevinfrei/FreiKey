@@ -1,6 +1,7 @@
 #pragma once
 
 #include "sysstuff.h"
+#include "usbenums.h"
 
 class kb_reporter {
   // This is used by the scanner to build & send the key press signals
@@ -10,9 +11,9 @@ class kb_reporter {
 
  public:
   kb_reporter();
-  void set_modifier(uint8_t);
-  void add_key_press(uint8_t);
-  void consumer_press(uint16_t);
-  void consumer_release(uint16_t);
+  void set_modifier(Modifiers);
+  void add_key_press(Keystroke);
+  void consumer_press(Consumer);
+  void consumer_release(Consumer);
   void send_keys();
 };

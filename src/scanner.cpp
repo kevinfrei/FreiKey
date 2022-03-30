@@ -113,16 +113,14 @@ void ProcessConsumer(keystate& state, kb_reporter& rpt) {
   // For a consumer control button, there are no modifiers, it's
   // just a simple call. So just call it directly:
   if (state.down) {
-    DBG(dumpHex(getConsumerUSBCode(state.action.getConsumer()),
-                "Consumer key press: "));
+    DBG(dumpHex(state.action.getConsumer(), "Consumer key press: "));
     // See all the codes in all their glory here:
     // https://www.usb.org/sites/default/files/documents/hut1_12v2.pdf
     // (And if that doesn't work, check here: https://www.usb.org/hid)
-    rpt.consumer_press(getConsumerUSBCode(state.action.getConsumer()));
+    rpt.consumer_press(state.action.getConsumer());
   } else {
-    DBG(dumpHex(getConsumerUSBCode(state.action.getConsumer()),
-                "Consumer key release: "));
-    rpt.consumer_release(getConsumerUSBCode(state.action.getConsumer()));
+    DBG(dumpHex(state.action.getConsumer(), "Consumer key release: "));
+    rpt.consumer_release(state.action.getConsumer());
     // We have to clear this thing out when we're done, because we take
     // action on the key release as well. We don't do this for the normal
     // keyboardReport.
@@ -131,7 +129,7 @@ void ProcessConsumer(keystate& state, kb_reporter& rpt) {
 }
 
 void ProcessKeys(uint32_t now, kb_reporter& rpt) {
-  uint8_t mods = 0;
+  Modifiers mods = Modifiers::None;
 
   for (auto& state : keyStates) {
     if (state.scanCode == null_scan_code)
@@ -139,14 +137,14 @@ void ProcessKeys(uint32_t now, kb_reporter& rpt) {
     KeyAction actions = state.action.getAction();
     if (actions == KeyAction::TapHold) {
       // TODO: I don't think this quite works...
-      
+
       // If we've exceeded the time limit, set the modifier
       // If we're under the time limit, and it's a key *down* we shouldn't
       // do anything, because we won't know what to do until after the time
       // limit is hit, or a key-up occurs.
       if (now - state.lastChange > TapAndHoldTimeLimit) {
         // Holding
-        mods |= static_cast<uint8_t>(state.action.getExtraMods());
+        mods = mods | state.action.getExtraMods();
         DBG(dumpHex(mods, " (Holding)"));
         rpt.set_modifier(mods);
       } else if (state.down) {
@@ -155,7 +153,7 @@ void ProcessKeys(uint32_t now, kb_reporter& rpt) {
       // We've had it for less than the time allotted, so send the tapping key
       // TODO: Make sure we send the key up immediate after this!
       if (state.action.getAction() == KeyAction::Consumer) {
-        DBG(dumpHex(static_cast<uint16_t>(state.action.getConsumer()), " Tapping Consumer Key"));
+        DBG(dumpHex(state.action.getConsumer(), " Tapping Consumer Key"));
         state.down = true;
         ProcessConsumer(state, rpt);
         state.down = false;
@@ -163,31 +161,31 @@ void ProcessKeys(uint32_t now, kb_reporter& rpt) {
       } else {
         Keystroke key = state.action.getKeystroke();
         if (key != Keystroke::None) {
-          rpt.add_key_press(getUSBCode(key));
-          DBG(dumpHex(static_cast<uint8_t>(key), " Tapping"));
+          rpt.add_key_press(key);
+          DBG(dumpHex(key, " Tapping"));
         }
       }
     } else if (actions == KeyAction::Consumer) {
       ProcessConsumer(state, rpt);
     } else if (actions == KeyAction::KeyAndMods) {
       if (state.down) {
-        mods |= static_cast<uint8_t>(state.action.getExtraMods());
+        mods = mods | state.action.getExtraMods();
         rpt.set_modifier(mods);
         Keystroke key = state.action.getKeystroke();
         if (key != Keystroke::None) {
-          rpt.add_key_press(getUSBCode(key));
+          rpt.add_key_press(key);
         }
       }
     } else if (actions == KeyAction::KeyPress) {
       if (state.down) {
         Keystroke key = state.action.getKeystroke();
         if (key != Keystroke::None) {
-          rpt.add_key_press(getUSBCode(key));
+          rpt.add_key_press(key);
         }
       }
     } else if (actions == KeyAction::Modifier) {
       if (state.down) {
-        mods |= static_cast<uint8_t>(state.action.getModifiers());
+        mods = mods | state.action.getModifiers();
         rpt.set_modifier(mods);
       }
     }

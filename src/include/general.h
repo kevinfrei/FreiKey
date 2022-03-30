@@ -7,21 +7,6 @@
 #include "dbgcfg.h"
 #include "keyhelpers.h"
 
-#if defined(BTLE_HOST)
-struct ClientState {
-  uint8_t battery;
-  uint8_t latency;
-  bool connected;
-  ClientState() : battery(0xff), latency(0), connected(false) {}
-  ClientState(const ClientState& cs)
-    : battery(cs.battery), latency(cs.latency), connected(cs.connected) {}
-  bool operator!=(const ClientState& cs) const {
-    return battery != cs.battery || latency != cs.latency ||
-           connected != cs.connected;
-  }
-};
-#endif
-
 struct State {
   static constexpr uint8_t layer_max = 7;
   uint8_t layer_pos;
@@ -39,12 +24,16 @@ struct State {
     return layer_stack[index == 0xFF ? layer_pos : index];
   }
   uint8_t getLayerVal(uint8_t index = 0xFF) const {
-    return static_cast<uint8_t>(getLayer(index));
+    return value_cast(getLayer(index));
   }
   bool operator!=(const State& gs) const {
     if (gs.layer_pos != layer_pos)
       return true;
-    return (layer_stack != gs.layer_stack);
+    for (uint8_t idx = 0; idx <= layer_pos; idx++) {
+      if (layer_stack[idx] != gs.layer_stack[idx])
+        return true;
+    }
+    return false;
   }
   void push_layer(layer_num layer) {
     DBG(dumpVal(layer, "Push "));

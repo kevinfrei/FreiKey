@@ -14,6 +14,9 @@ void dumpVal(uint32_t v, const char* header = nullptr);
 void dumpHex(uint8_t v, const char* header = nullptr);
 void dumpHex(uint16_t v, const char* header = nullptr);
 void dumpHex(uint32_t v, const char* header = nullptr);
+void dumpHex(Modifiers v, const char* header = nullptr);
+void dumpHex(Keystroke v, const char* header = nullptr);
+void dumpHex(Consumer v, const char* header = nullptr);
 void dumpHex(uint64_t v, const char* header = nullptr);
 void dumpHex(bool b, const char* header = nullptr);
 #define DBG(a) a

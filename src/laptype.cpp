@@ -7,6 +7,8 @@
 #include "bitmaps/mac.h"
 #include "bitmaps/win.h"
 #include "boardio.h"
+#include "enumhelpers.h"
+#include "enumtypes.h"
 #include "general.h"
 #include "image.h"
 #include "scanner.h"
@@ -19,19 +21,19 @@ constexpr uint8_t TFT_RST = 6;
 Adafruit_ST7789* LaptypeBoard::tft = nullptr;
 boolean LaptypeBoard::backlightOn = false;
 uint32_t LaptypeBoard::lastShownLayerTime = 0;
-uint32_t LaptypeBoard::lastShownLayerVal = 0;
+layer_num LaptypeBoard::lastShownLayer = layer_num::Base;
 const image_descriptor* images[5] = {
   gfx_amy, gfx_batman, gfx_mac, gfx_win, gfx_linux};
 
-const int layer_to_image[8] = {
-  2, // "Base/Mac",
-  3, // "Win"
-  4, // "Linux",
-  0, // "Fn",
-  1, // "MacCaps",
-  1, // "WinCaps",
-  1, // "WinCtrl",
-  1 // "LinuxCaps"};
+const enum_array<layer_num, uint8_t, 8> layer_to_image{
+  {layer_num::Base, 2}, // "Base/Mac",
+  {layer_num::WinBase, 3}, // "Win"
+  {layer_num::LinBase, 4}, // "Linux",
+  {layer_num::Func, 0}, // "Fn",
+  {layer_num::MacCap, 1}, // "MacCaps",
+  {layer_num::WinCap, 1}, // "WinCaps",
+  {layer_num::WinCtl, 1}, // "WinCtrl",
+  {layer_num::LinCap, 1} // "LinuxCaps"};
 };
 
 uint16_t prevWidth = 0;
@@ -78,12 +80,12 @@ void LaptypeBoard::Configure() {
 
 void LaptypeBoard::Changed(uint32_t now) {
   layer_num lyr = getCurrentLayer();
-  if (static_cast<uint8_t>(lyr) != lastShownLayerVal) {
+  if (lyr != lastShownLayer) {
     Backlight(true);
     tft->fillScreen(ST77XX_BLACK);
-    lastShownLayerVal = static_cast<uint8_t>(lyr);
+    lastShownLayer = lyr;
     lastShownLayerTime = now;
-    uint8_t imageNum = layer_to_image[static_cast<uint8_t>(lyr)];
+    uint8_t imageNum = layer_to_image[lyr];
     drawImage(images[imageNum],
               (tft->width() - images[imageNum]->width) / 2,
               (tft->height() - images[imageNum]->height) / 2,

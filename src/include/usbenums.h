@@ -1,5 +1,7 @@
 #pragma once
 
+#include "enumhelpers.h"
+
 // All my USB data values go in here. Very exciting stuff...
 
 enum class Keystroke : uint8_t {
@@ -144,10 +146,6 @@ enum class Keystroke : uint8_t {
   F24 = 115,
 };
 
-inline uint8_t getUSBCode(Keystroke k) {
-  // I think this is correct :)
-  return static_cast<uint8_t>(k);
-}
 
 enum class Consumer : uint16_t {
   PlayPause = 0xCD,
@@ -161,10 +159,6 @@ enum class Consumer : uint16_t {
   BrowserForward = 0x225,
   Sleep = 0x82
 };
-
-inline uint16_t getConsumerUSBCode(Consumer a) {
-  return static_cast<uint16_t>(a);
-}
 
 enum class Modifiers : uint8_t {
   None = 0,
@@ -201,11 +195,19 @@ enum class Modifiers : uint8_t {
   RCommand = 0x40,
   RGui = 0x80,
   ROpt = 0x80,
-  ROption = 0x80
+  ROption = 0x80,
+  MASK = 0xFF
 };
 
-// Ah, enum classes. So delightfully awkward to use...
-inline constexpr Modifiers operator|(Modifiers a, Modifiers b) {
-  return static_cast<Modifiers>(static_cast<uint8_t>(a) |
-                                static_cast<uint8_t>(b));
+inline uint8_t getUSBCode(Keystroke k) {
+  // I think this is correct :)
+  return value_cast(k);
+}
+
+inline uint16_t getConsumerUSBCode(Consumer a) {
+  return value_cast(a);
+}
+
+inline uint8_t getUSBCode(Modifiers m){
+  return value_cast(m);
 }

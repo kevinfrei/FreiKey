@@ -4,7 +4,6 @@
 #include "dongle.h"
 #include "general.h"
 #include "hardware.h"
-#include "helpers.h"
 #include "host-comm.h"
 #include "kbreporter.h"
 #include "keystate.h"

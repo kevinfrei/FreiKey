@@ -53,7 +53,7 @@ bool Sync::Buffer(uint32_t time, state::hw& left, state::hw& right) {
     if (last != this->state || time - lastTime > 1000) {
       lastTime = time;
       last = this->state;
-      Serial.println(stateNames[static_cast<uint32_t>(this->state)]);
+      Serial.println(stateNames[value_cast(this->state)]);
     }
 #endif
     done = true;

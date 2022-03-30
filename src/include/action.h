@@ -13,13 +13,13 @@ class action_t {
   uint16_t moreData;
 
   void setKeyAction(KeyAction ka) {
-    data = static_cast<uint16_t>(ka) << 12 | (data & 0xFFF);
+    data = value_cast(ka) << 12 | (data & 0xFFF);
   }
   void setLayer(uint8_t layerNum) {
     data = (data & 0xF000) | layerNum;
   }
   void setMods(Modifiers mods) {
-    data = (data & 0xFF00) | static_cast<uint8_t>(mods);
+    data = (data & 0xFF00) | value_cast(mods);
   }
   void setKeyPress(uint16_t keycode) {
     // TODO: Should I try to detect consumer code here?
@@ -38,14 +38,14 @@ class action_t {
 
  public:
   constexpr action_t(Modifiers mods)
-    : data(static_cast<uint16_t>(mods)), moreData(0) {
+    : data(value_cast(mods)), moreData(0) {
     setKeyAction(KeyAction::Modifier);
   }
   static constexpr action_t Keypress(uint16_t keyPress) {
     return action_t{KeyAction::KeyPress, keyPress};
   }
   static constexpr action_t Keypress(Keystroke keyPress) {
-    return action_t{KeyAction::KeyPress, static_cast<uint16_t>(keyPress)};
+    return action_t{KeyAction::KeyPress, value_cast(keyPress)};
   }
   static constexpr action_t Keypress(action_t keyPress) {
     return action_t{KeyAction::KeyPress, keyPress.data};
@@ -57,17 +57,17 @@ class action_t {
     return action_t{mod1 | mod2 | mod3 | mod4};
   }
   static constexpr action_t Modifier(action_t mods) {
-    return action_t{static_cast<Modifiers>(mods.data & 0xFF)};
+    return action_t{enum_cast<Modifiers>(mods.data & 0xFF)};
   }
   static constexpr action_t Modifier(Modifiers mods) {
     return action_t{mods};
   }
   static constexpr action_t ConsumerPress(Consumer keyPress) {
-    return action_t{KeyAction::Consumer, static_cast<uint16_t>(keyPress)};
+    return action_t{KeyAction::Consumer, value_cast(keyPress)};
   }
   static constexpr action_t Layer(KeyAction ka,
                                   layer_num layerNum = layer_num::Base) {
-    return action_t{ka, static_cast<uint16_t>(layerNum)};
+    return action_t{ka, value_cast(layerNum)};
   }
   static constexpr action_t Combine(action_t a, action_t b) {
     return action_t{a, b};
@@ -83,7 +83,7 @@ class action_t {
                                        Modifiers mod2 = Modifiers::None,
                                        Modifiers mod3 = Modifiers::None,
                                        Modifiers mod4 = Modifiers::None) {
-    return action_t{action_t{KeyAction::KeyAndMods, static_cast<uint16_t>(key)},
+    return action_t{action_t{KeyAction::KeyAndMods, value_cast(key)},
                     action_t::Modifier(mod1, mod2, mod3, mod4)};
   }
   static constexpr action_t KeyAndMods(action_t key,
@@ -99,24 +99,24 @@ class action_t {
   }
 
   KeyAction getAction() const {
-    return static_cast<KeyAction>(data >> 12);
+    return enum_cast<KeyAction>(data >> 12);
   }
   Keystroke getKeystroke() const {
-    return static_cast<Keystroke>(data & 0xff);
+    return enum_cast<Keystroke>(data & 0xff);
   }
   Consumer getConsumer() const {
-    return static_cast<Consumer>(data & 0xfff);
+    return enum_cast<Consumer>(data & 0xfff);
   }
   // This is for flagging consumer keycodes, as I have to handle them
   // differently
   Modifiers getModifiers() const {
-    return static_cast<Modifiers>(data & 0xFF);
+    return enum_cast<Modifiers>(data & 0xFF);
   }
   Modifiers getExtraMods() const {
-    return static_cast<Modifiers>(moreData & 0xFF);
+    return enum_cast<Modifiers>(moreData & 0xFF);
   }
   layer_num getLayer() const {
-    return static_cast<layer_num>(data & 0xF);
+    return enum_cast<layer_num>(data & 0xF);
   }
 #if defined(DEBUG)
   void dump() const {

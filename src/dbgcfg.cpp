@@ -1,7 +1,6 @@
 #include "sysstuff.h"
 
 #include "dbgcfg.h"
-#include "helpers.h"
 
 #if defined(DEBUG)
 
@@ -22,6 +21,18 @@ void dumpHex(uint32_t v, const char* header) {
 }
 
 void dumpHex(uint16_t v, const char* header) {
+  dumpHex(static_cast<uint32_t>(v), header);
+}
+
+void dumpHex(Modifiers v, const char* header) {
+  dumpHex(static_cast<uint32_t>(v), header);
+}
+
+void dumpHex(Keystroke v, const char* header) {
+  dumpHex(static_cast<uint32_t>(v), header);
+}
+
+void dumpHex(Consumer v, const char* header) {
   dumpHex(static_cast<uint32_t>(v), header);
 }
 

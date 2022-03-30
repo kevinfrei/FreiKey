@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "boardio.h"
+#include "enumhelpers.h"
 #include "general.h"
 #include "mock.h"
 #include "scanner.h"
@@ -29,7 +30,7 @@ void pinMode(uint16_t pin, pin_mode mode) {
       printf("Configure pin %d to state %d (%s)\n",
              pin,
              mode,
-             pmName[static_cast<int>(mode)]);
+             pmName[value_cast(mode)]);
     }
     pinModes[pin] = mode;
   }

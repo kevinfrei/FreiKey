@@ -37,24 +37,24 @@ kb_reporter::kb_reporter() : mods(0), repsize(0) {
   memset(report, 0, 6);
 }
 
-void kb_reporter::set_modifier(uint8_t mod) {
-  mods = mod;
+void kb_reporter::set_modifier(Modifiers mod) {
+  mods = getUSBCode(mod);
 }
 
-void kb_reporter::add_key_press(uint8_t key) {
+void kb_reporter::add_key_press(Keystroke key) {
   if (repsize < 6) {
-    report[repsize++] = key;
+    report[repsize++] = getUSBCode(key);
   }
 }
 
-void kb_reporter::consumer_press(uint16_t kc) {
-  // Handle these things in real-time
-  Keyboard.press(kc);
+void kb_reporter::consumer_press(Consumer kc) 
+{  // Handle these things in real-time
+  Keyboard.press(getConsumerUSBCode(kc));
 }
 
-void kb_reporter::consumer_release(uint16_t kc) {
+void kb_reporter::consumer_release(Consumer kc) {
   // Handle these things in real-time
-  Keyboard.release(kc);
+  Keyboard.release(getConsumerUSBCode(kc));
 }
 
 void kb_reporter::send_keys() {

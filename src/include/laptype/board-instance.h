@@ -2,6 +2,7 @@
 
 #include "keymatrix.h"
 #include "mpu.h"
+#include "enumtypes.h"
 
 // clang-format off
 using LaptypeMatrix = KeyMatrix<Teensy, 
@@ -17,7 +18,7 @@ struct LaptypeBoard : public LaptypeMatrix {
   static Adafruit_ST7789* tft;
   static bool backlightOn;
   static uint32_t lastShownLayerTime;
-  static uint32_t lastShownLayerVal;
+  static layer_num lastShownLayer;
   static void Backlight(bool on = true);
   static void Configure();
   static void Changed(uint32_t now);

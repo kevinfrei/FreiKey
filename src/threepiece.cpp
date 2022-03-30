@@ -79,7 +79,7 @@ void ThreePieceBoard::Changed(uint32_t now) {
     tft->fillScreen(ST77XX_BLACK);
     lastShownLayerVal = lyr;
     lastShownLayerTime = now;
-    uint8_t imageNum = layer_to_image[static_cast<uint8_t>(lyr)];
+    uint8_t imageNum = layer_to_image[value_cast(lyr)];
     drawImage(images[imageNum],
               (320 - images[imageNum]->width) / 2,
               (240 - images[imageNum]->height) / 2,
