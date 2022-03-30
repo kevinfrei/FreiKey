@@ -24,36 +24,30 @@ struct ClientState {
 
 struct State {
   static constexpr uint8_t layer_max = 7;
-  char* debugString;
   uint8_t layer_pos;
   std::array<layer_num, layer_max + 1> layer_stack;
-  State() : debugString(nullptr), layer_pos(0) {
-    layer_stack.fill(static_cast<layer_num>(0));
+  State() : layer_pos(0) {
+    layer_stack.fill(layer_num::Base);
   }
   State(const State& gs)
-    : debugString(gs.debugString),
-      layer_pos(gs.layer_pos),
-      layer_stack(gs.layer_stack) {}
+    : layer_pos(gs.layer_pos), layer_stack(gs.layer_stack) {}
   void reset() {
     layer_pos = 0;
     layer_stack[0] = layer_num::Base;
   }
-  layer_num getLayer() const {
-    return layer_stack[layer_pos];
+  layer_num getLayer(uint8_t index = 0xFF) const {
+    return layer_stack[index == 0xFF ? layer_pos : index];
+  }
+  uint8_t getLayerVal(uint8_t index = 0xFF) const {
+    return static_cast<uint8_t>(getLayer(index));
   }
   bool operator!=(const State& gs) const {
     if (gs.layer_pos != layer_pos)
       return true;
-    if (layer_stack != gs.layer_stack)
-      return true;
-    if (debugString == gs.debugString)
-      return false;
-    if (!debugString || !gs.debugString)
-      return true;
-    return !strcmp(debugString, gs.debugString);
+    return (layer_stack != gs.layer_stack);
   }
   void push_layer(layer_num layer) {
-    DBG(dumpVal(static_cast<uint8_t>(layer), "Push "));
+    DBG(dumpVal(layer, "Push "));
     if (layer_pos < layer_max)
       layer_stack[++layer_pos] = layer;
     DBG(dumpLayers());
@@ -64,7 +58,7 @@ struct State {
     // add it.
     for (uint8_t l = layer_pos; l != 0; l--) {
       if (layer_stack[l] == layer) {
-        DBG(dumpVal(static_cast<uint8_t>(layer), "Turning off layer "));
+        DBG(dumpVal(layer, "Turning off layer "));
         DBG(dumpVal(l, "at location "));
         if (layer_pos != l) {
           DBG(dumpVal(layer_pos - l, "Shifting by "));
@@ -81,14 +75,14 @@ struct State {
     push_layer(layer);
   }
   void pop_layer(layer_num layer) {
-    DBG(dumpVal(static_cast<uint8_t>(layer), "Pop "));
+    DBG(dumpVal(layer, "Pop "));
     if (layer_pos > 0 && layer_stack[layer_pos] == layer) {
       // Easy-peasy
       --layer_pos;
     } else {
       for (uint8_t l = layer_pos; l != 0; l--) {
         if (layer_stack[l] == layer) {
-          DBG(dumpVal(static_cast<uint8_t>(layer), "Turning off layer "));
+          DBG(dumpVal(layer, "Turning off layer "));
           DBG(dumpVal(l, "at location "));
           if (layer_pos != l) {
             DBG(dumpVal(layer_pos - l, "Shifting by "));
@@ -113,12 +107,12 @@ struct State {
     return -1;
   }
   void switch_layer(layer_num layer) {
-    DBG(dumpVal(static_cast<uint8_t>(layer_stack[layer_pos]), "Switching layer "));
-    DBG(dumpVal(static_cast<uint8_t>(layer), "to layer "));
+    DBG(dumpVal(layer_stack[layer_pos], "Switching layer "));
+    DBG(dumpVal(layer, "to layer "));
     layer_stack[layer_pos] = layer;
     DBG(dumpLayers());
   }
-  
+
   /*
   void rotate_layer(action_t action) {
     // Check to see if any of the layers specified (except base?)
@@ -148,10 +142,9 @@ struct State {
   */
 #if defined(DEBUG)
   void dumpLayers() {
-    Serial.print("Layer stack: ");
+    Serial.print("Layer stack:");
     for (int i = 0; i <= layer_pos; i++) {
-      Serial.print(static_cast<uint8_t>(layer_stack[i]));
-      Serial.print(" ");
+      dumpVal(layer_stack[i], " ");
     }
     Serial.println("");
   }

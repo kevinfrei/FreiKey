@@ -53,7 +53,7 @@ struct keystate* findStateSlot(scancode_t scanCode) {
 }
 
 action_t resolve(uint8_t layerPos, uint8_t scancode) {
-  return keymap[static_cast<uint8_t>(curState.layer_stack[layerPos])][scancode];
+  return keymap[curState.getLayerVal()][scancode];
 }
 
 // Find the first specified action in the layer stack
@@ -67,7 +67,7 @@ action_t resolveActionForScanCodeOnActiveLayer(uint8_t scanCode) {
   Serial.printf("Resolving scancode %d on layer %d to action ",
                 scanCode,
                 curState.layer_stack[s]);
-  keymap[static_cast<uint8_t>(curState.layer_stack[s])][scanCode].dump();
+  keymap[curState.getLayerVal(s)][scanCode].dump();
 #endif
   return resolve(s, scanCode);
 }
@@ -113,16 +113,16 @@ void ProcessConsumer(keystate& state, kb_reporter& rpt) {
   // For a consumer control button, there are no modifiers, it's
   // just a simple call. So just call it directly:
   if (state.down) {
-    DBG(dumpHex(getConsumerCode(state.action.getConsumer()),
+    DBG(dumpHex(getConsumerUSBCode(state.action.getConsumer()),
                 "Consumer key press: "));
     // See all the codes in all their glory here:
     // https://www.usb.org/sites/default/files/documents/hut1_12v2.pdf
     // (And if that doesn't work, check here: https://www.usb.org/hid)
-    rpt.consumer_press(getConsumerCode(state.action.getConsumer()));
+    rpt.consumer_press(getConsumerUSBCode(state.action.getConsumer()));
   } else {
-    DBG(dumpHex(getConsumerCode(state.action.getConsumer()),
+    DBG(dumpHex(getConsumerUSBCode(state.action.getConsumer()),
                 "Consumer key release: "));
-    rpt.consumer_release(getConsumerCode(state.action.getConsumer()));
+    rpt.consumer_release(getConsumerUSBCode(state.action.getConsumer()));
     // We have to clear this thing out when we're done, because we take
     // action on the key release as well. We don't do this for the normal
     // keyboardReport.

@@ -11,6 +11,10 @@ void dumpVal(uint32_t v, const char* header) {
   Serial.println(v);
 }
 
+void dumpVal(layer_num l, const char* header) {
+  dumpVal(static_cast<uint32_t>(l), header);
+}
+
 void dumpHex(uint32_t v, const char* header) {
   if (header)
     Serial.print(header);

@@ -1,3 +1,5 @@
+#pragma once
+
 // All my USB data values go in here. Very exciting stuff...
 
 enum class Keystroke : uint8_t {
@@ -160,7 +162,7 @@ enum class Consumer : uint16_t {
   Sleep = 0x82
 };
 
-inline uint16_t getConsumerCode(Consumer a) {
+inline uint16_t getConsumerUSBCode(Consumer a) {
   return static_cast<uint16_t>(a);
 }
 
@@ -202,7 +204,8 @@ enum class Modifiers : uint8_t {
   ROption = 0x80
 };
 
-inline Modifiers operator|(Modifiers a, Modifiers b) {
+// Ah, enum classes. So delightfully awkward to use...
+inline constexpr Modifiers operator|(Modifiers a, Modifiers b) {
   return static_cast<Modifiers>(static_cast<uint8_t>(a) |
                                 static_cast<uint8_t>(b));
 }

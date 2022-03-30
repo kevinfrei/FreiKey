@@ -2,10 +2,14 @@
 
 #include <cstdint>
 
+#include "enumtypes.h"
+#include "usbenums.h"
+
 // This is just a couple of dumpers that show stuff on the AdaFruit serial port,
 // and a couple of macros to do stuff when the system is build with DEBUG=1 (or
 // 2). Set the DEBUG flag in the Makefile :)
 #if defined(DEBUG)
+void dumpVal(layer_num v, const char* header = nullptr);
 void dumpVal(uint32_t v, const char* header = nullptr);
 void dumpHex(uint8_t v, const char* header = nullptr);
 void dumpHex(uint16_t v, const char* header = nullptr);

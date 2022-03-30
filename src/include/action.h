@@ -54,9 +54,7 @@ class action_t {
                                      Modifiers mod2 = Modifiers::None,
                                      Modifiers mod3 = Modifiers::None,
                                      Modifiers mod4 = Modifiers::None) {
-    return action_t{static_cast<Modifiers>(
-      static_cast<uint8_t>(mod1) | static_cast<uint8_t>(mod2) |
-      static_cast<uint8_t>(mod3) | static_cast<uint8_t>(mod4))};
+    return action_t{mod1 | mod2 | mod3 | mod4};
   }
   static constexpr action_t Modifier(action_t mods) {
     return action_t{static_cast<Modifiers>(mods.data & 0xFF)};
@@ -67,7 +65,8 @@ class action_t {
   static constexpr action_t ConsumerPress(Consumer keyPress) {
     return action_t{KeyAction::Consumer, static_cast<uint16_t>(keyPress)};
   }
-  static constexpr action_t Layer(KeyAction ka, uint8_t layerNum = 0) {
+  static constexpr action_t Layer(KeyAction ka,
+                                  layer_num layerNum = layer_num::Base) {
     return action_t{ka, static_cast<uint16_t>(layerNum)};
   }
   static constexpr action_t Combine(action_t a, action_t b) {
@@ -137,15 +136,15 @@ inline constexpr action_t keyPress(Keystroke ks) {
   return action_t::Keypress(ks);
 }
 
-inline constexpr action_t layerToggle(uint8_t n) {
+inline constexpr action_t layerToggle(layer_num n) {
   return action_t::Layer(KeyAction::LayerToggle, n);
 }
 
-inline constexpr action_t layerShift(uint8_t n) {
+inline constexpr action_t layerShift(layer_num n) {
   return action_t::Layer(KeyAction::LayerShift, n);
 }
 
-inline constexpr action_t layerSwitch(uint8_t n) {
+inline constexpr action_t layerSwitch(layer_num n) {
   return action_t::Layer(KeyAction::LayerSwitch, n);
 }
 

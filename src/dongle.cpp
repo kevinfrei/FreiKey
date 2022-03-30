@@ -3,7 +3,6 @@
 #include "dbgcfg.h"
 #include "debounce.h"
 #include "dongle.h"
-#include "drawing.h"
 #include "general.h"
 #include "globals.h"
 #include "hardware.h"
@@ -32,13 +31,6 @@ uint16_t Dongle::leftHandle = BLE_CONN_HANDLE_INVALID;
 uint16_t Dongle::rightHandle = BLE_CONN_HANDLE_INVALID;
 Adafruit_USBD_HID Dongle::usb_hid(
   desc_hid_report, sizeof(desc_hid_report), HID_ITF_PROTOCOL_NONE, 2, false);
-
-#if defined(HAS_DISPLAY)
-Adafruit_SSD1306 Dongle::display(Dongle::ScreenWidth,
-                                 Dongle::ScreenHeight,
-                                 &Wire,
-                                 Dongle::OledResetPin);
-#endif
 
 void Dongle::blink(bool leaveOn) {
   for (int i = 0; i < 10; i++) {
@@ -96,19 +88,6 @@ void Dongle::Configure() {
   for (auto pin : padPins) {
     pinMode(pin, INPUT_PULLUP);
   }
-#endif
-
-#if defined(HAS_DISPLAY)
-  // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
-  // Address 0x3C for 128x32
-  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
-    for (;;) {
-      Serial.println("SSD1306 allocation failed");
-      delay(750); // Don't proceed, loop forever
-    }
-  }
-  display.setRotation(3);
-  display.clearDisplay();
 #endif
 }
 
@@ -241,9 +220,6 @@ void Dongle::updateClientStatus(uint32_t now,
     Dongle::setRGB(r, g, b);
   }
 
-#if defined(HAS_DISPLAY)
-  drawing::updateState();
-#endif
 }
 
 // Called when we find a UART host to connect with
