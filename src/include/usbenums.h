@@ -1,3 +1,5 @@
+// All my USB data values go in here. Very exciting stuff...
+
 enum class Keystroke : uint8_t {
   None = 0,
   A = 4,
@@ -164,16 +166,16 @@ inline uint16_t getConsumerCode(Consumer a) {
 
 enum class Modifiers : uint8_t {
   None = 0,
-  LShf = 1,
-  LShft = 1,
-  LShift = 1,
-  Shift = 1,
-  LCtl = 2,
-  LCtrl = 2,
-  LControl = 2,
-  Control = 2,
-  Ctrl = 2,
-  Ctl = 2,
+  LCtl = 1,
+  LCtrl = 1,
+  LControl = 1,
+  Control = 1,
+  Ctrl = 1,
+  Ctl = 1,
+  LShf = 2,
+  LShft = 2,
+  LShift = 2,
+  Shift = 2,
   LAlt = 4,
   Alt = 4,
   LCmd = 4,
@@ -186,18 +188,18 @@ enum class Modifiers : uint8_t {
   LOption = 8,
   Opt = 8,
   Option = 8,
-  RShf = 16,
-  RShft = 16,
-  RShift = 16,
-  RCtl = 32,
-  RCtrl = 32,
-  RControl = 32,
-  RAlt = 64,
-  RCmd = 64,
-  RCommand = 64,
-  RGui = 128,
-  ROpt = 128,
-  ROption = 128
+  RCtl = 0x10,
+  RCtrl = 0x10,
+  RControl = 0x10,
+  RShf = 0x20,
+  RShft = 0x20,
+  RShift = 0x20,
+  RAlt = 0x40,
+  RCmd = 0x40,
+  RCommand = 0x40,
+  RGui = 0x80,
+  ROpt = 0x80,
+  ROption = 0x80
 };
 
 inline Modifiers operator|(Modifiers a, Modifiers b) {
