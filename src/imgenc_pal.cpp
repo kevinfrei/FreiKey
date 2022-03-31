@@ -104,9 +104,9 @@ bool encode_pal(bytestream data, uint32_t bytes, byte_printer print) {
   }
   // First, build the palette
   const uint16_t* colors = reinterpret_cast<const uint16_t*>(data);
-  uint32_t cbytes = bytes / 2;
+  uint32_t pixel_count = bytes / 2;
   std::pair<std::vector<uint16_t>, std::vector<uint16_t>> pal_and_rev =
-    calculate_palette(colors, cbytes);
+    calculate_palette(colors, pixel_count);
 
   // Okay, start encoding
   // First, the palette size
@@ -120,11 +120,11 @@ bool encode_pal(bytestream data, uint32_t bytes, byte_printer print) {
     print(val >> 8);
   }
 
-  uint8_t numBits = log2ish(pal_and_rev.first.size());
+  uint8_t numBits = log2ish(paletteSize);
   // Okay, now walk the pixels, reading the values and finding their palette
   // index, then write the index in numBits number of bits
   uint16_t bitBuffer = 0;
-  for (uint32_t pos = 0; pos < cbytes; pos++) {
+  for (uint32_t pos = 0; pos < pixel_count; pos++) {
     uint16_t color = colors[pos];
     uint16_t pIndex = pal_and_rev.second[color];
     if (pIndex >= paletteSize || pal_and_rev.first[pIndex] != color) {

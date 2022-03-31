@@ -119,34 +119,34 @@ class action_t {
   }
 #if defined(DEBUG)
   void dump() const {
-    switch(getAction()) {
-      case KeyAction::KeyPress: 
-      Serial.print("Keypress:");
-      break;
-      case KeyAction::Modifier: 
-      Serial.print("Modifier:");
-      break;
-      case KeyAction::TapHold: 
-      Serial.print("TapHold:");
-      break;
-      case KeyAction::Consumer: 
-      Serial.print("Consumer:");
-      break;
-      case KeyAction::KeyAndMods: 
-      Serial.print("KeyAndMods:");
-      break;
-      case KeyAction::LayerShift: 
-      Serial.print("LayerShift:");
-      break;
-      case KeyAction::LayerToggle: 
-      Serial.print("LayerToggle:");
-      break;
-      case KeyAction::LayerSwitch: 
-      Serial.print("LayerSwitch:");
-      break;
+    switch (getAction()) {
+      case KeyAction::KeyPress:
+        Serial.print("Keypress:");
+        break;
+      case KeyAction::Modifier:
+        Serial.print("Modifier:");
+        break;
+      case KeyAction::TapHold:
+        Serial.print("TapHold:");
+        break;
+      case KeyAction::Consumer:
+        Serial.print("Consumer:");
+        break;
+      case KeyAction::KeyAndMods:
+        Serial.print("KeyAndMods:");
+        break;
+      case KeyAction::LayerShift:
+        Serial.print("LayerShift:");
+        break;
+      case KeyAction::LayerToggle:
+        Serial.print("LayerToggle:");
+        break;
+      case KeyAction::LayerSwitch:
+        Serial.print("LayerSwitch:");
+        break;
       default:
-      Serial.print("Unknown:");
-      Serial.print(static_cast<uint32_t>(getAction()), HEX);
+        Serial.print("Unknown:");
+        Serial.print(static_cast<uint32_t>(getAction()), HEX);
     }
     Serial.print(data & 0xFFF, HEX);
     if (moreData != 0) {

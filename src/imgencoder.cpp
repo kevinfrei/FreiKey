@@ -6,14 +6,15 @@
 #include <string>
 #include <vector>
 
-#include "imgencoder.h"
 #define COMPRESSOR 1
+
 #include "bitmap.h"
 #include "bitmaps/amy.h"
 #include "bitmaps/batman.h"
 #include "bitmaps/linux.h"
 #include "bitmaps/mac.h"
 #include "bitmaps/win.h"
+#include "imgencoder.h"
 
 const image_descriptor* builtins[] = {
   gfx_amy, gfx_batman, gfx_mac, gfx_win, gfx_linux};
@@ -140,7 +141,7 @@ std::string name(image_compression c) {
 uint32_t check_roundtrip(
   const char* name, encoder enc, decoder dec, uint8_t* inBuf, uint32_t sz) {
   if (!enc(inBuf, sz, appendByteToChk)) {
-    return 0;
+    return ~0;
   }
   std::vector<uint8_t> outputCopy{chkBuf};
   chkBuf.clear();
@@ -150,12 +151,14 @@ uint32_t check_roundtrip(
   if (chkBuf.size() != sz) {
     std::cerr << name << " sizes are wrong " << chkBuf.size() << " decoded, "
               << sz << " original" << std::endl;
-    return 0;
+    chkBuf.clear();
+    return ~0;
   }
   for (int i = 0; i < chkBuf.size(); i += 2) {
     if (chkBuf[i] != inBuf[i] || chkBuf[i + 1] != inBuf[i + 1]) {
       std::cerr << name << " different at offset " << i << std::endl;
-      return 0;
+      chkBuf.clear();
+      return ~0;
     }
   }
   chkBuf.clear();
