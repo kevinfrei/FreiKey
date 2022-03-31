@@ -3,7 +3,7 @@
 #include "boardio.h"
 #include "dbgcfg.h"
 #include "debounce.h"
-#include "general.h"
+#include "generalstate.h"
 #include "scanner.h"
 
 GeneralState curState{};

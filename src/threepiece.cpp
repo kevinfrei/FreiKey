@@ -8,7 +8,7 @@
 #include "bitmaps/win.h"
 #include "boardio.h"
 #include "enumtypes.h"
-#include "general.h"
+#include "generalstate.h"
 #include "image.h"
 #include "scanner.h"
 
@@ -22,10 +22,10 @@ constexpr uint8_t TFT_RST = 21;
 constexpr uint8_t SPKR_GND = 0;
 constexpr uint8_t SPKR_SIGNAL = 4;
 
-Adafruit_ST7789* ThreePieceBoard::tft = nullptr;
-boolean ThreePieceBoard::backlightOn = false;
-uint32_t ThreePieceBoard::lastShownLayerTime = 0;
-layer_num ThreePieceBoard::lastShownLayerVal = layer_num::Base;
+Adafruit_ST7789* BoardIO::tft = nullptr;
+boolean BoardIO::backlightOn = false;
+uint32_t BoardIO::lastShownLayerTime = 0;
+layer_num BoardIO::lastShownLayerVal = layer_num::Base;
 const image_descriptor* images[5] = {
   gfx_amy, gfx_batman, gfx_mac, gfx_win, gfx_linux};
 
@@ -40,14 +40,14 @@ const int layer_to_image[8] = {
   1 // "LinuxCaps"};
 };
 
-void ThreePieceBoard::Backlight(bool turnOn) {
+void BoardIO::Backlight(bool turnOn) {
   if (backlightOn != turnOn) {
     digitalWrite(BACKLIGHT_PIN, turnOn ? HIGH : LOW);
     backlightOn = turnOn;
   }
 }
 
-void ThreePieceBoard::Configure() {
+void BoardIO::Configure() {
   tft = new Adafruit_ST7789(TFT_CS, TFT_DC, TFT_RST);
   pinMode(BACKLIGHT_PIN, OUTPUT);
   Backlight(true);
@@ -72,7 +72,7 @@ void ThreePieceBoard::Configure() {
   digitalWrite(SPKR_SIGNAL, LOW);
 }
 
-void ThreePieceBoard::Changed(uint32_t now) {
+void BoardIO::Changed(uint32_t now) {
   layer_num lyr = getCurrentLayer();
   if (lyr != lastShownLayerVal) {
     Backlight(true);
@@ -87,7 +87,7 @@ void ThreePieceBoard::Changed(uint32_t now) {
   }
 }
 
-void ThreePieceBoard::Tick(uint32_t now) {
+void BoardIO::Tick(uint32_t now) {
   if (now & 0x10) {
     // digitalWrite(SPKR_SIGNAL, (now & 0x20) ? HIGH : LOW);
   }
@@ -138,7 +138,7 @@ void DrawKeyboard(uint16_t scancode,
 #endif
 }
 
-void ThreePieceBoard::ShowScanCode(uint16_t scancode) {
+void BoardIO::ShowScanCode(uint16_t scancode) {
   if (false) {
     Backlight(true);
     lastShownLayerTime = millis();

@@ -1,7 +1,7 @@
 #include <vector>
 
 #include "dbgcfg.h"
-#include "general.h"
+#include "generalstate.h"
 #include "keymap.h"
 #include "keystate.h"
 #include "scanner.h"

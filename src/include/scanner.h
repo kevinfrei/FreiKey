@@ -30,4 +30,5 @@ scancode_t getNextScanCode(T& delta, T& curState, bool& pressed) {
   return sc;
 }
 
-#include "getscan_spclztn.h"
+// Specializations for getscan
+#include "getscan.h"

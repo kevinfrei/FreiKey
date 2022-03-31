@@ -5,7 +5,7 @@
 
 #include "boardio.h"
 #include "enumhelpers.h"
-#include "general.h"
+#include "generalstate.h"
 #include "mock.h"
 #include "scanner.h"
 
@@ -134,7 +134,7 @@ void KeyboardMock::set_key6(uint8_t) {}
 void KeyboardMock::set_modifier(uint8_t) {}
 void KeyboardMock::send_now() {}
 
-void MockBoard::Configure() {
+void BoardIO::Configure() {
   switches.reset();
   // printf("%zu switches\n", switches.size());
   for (uint8_t i = 0; i < 24; i++) {
@@ -143,10 +143,10 @@ void MockBoard::Configure() {
   }
   ConfigMatrix();
 }
-void MockBoard::Changed(uint32_t) {
+void BoardIO::Changed(uint32_t) {
   // Do nothing for now...
 }
-void MockBoard::Tick(uint32_t now) {
+void BoardIO::Tick(uint32_t now) {
   // Do nothing for now...
 }
 

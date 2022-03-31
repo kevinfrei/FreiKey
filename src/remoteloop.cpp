@@ -2,7 +2,7 @@
 
 #include "boardio.h"
 #include "dbgcfg.h"
-#include "general.h"
+#include "generalstate.h"
 #include "keystate.h"
 #include "scanner.h"
 

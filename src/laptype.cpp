@@ -9,7 +9,7 @@
 #include "boardio.h"
 #include "enumhelpers.h"
 #include "enumtypes.h"
-#include "general.h"
+#include "generalstate.h"
 #include "image.h"
 #include "scanner.h"
 
@@ -18,10 +18,10 @@ constexpr uint8_t TFT_CS = 8;
 constexpr uint8_t TFT_DC = 15;
 constexpr uint8_t TFT_RST = 6;
 
-Adafruit_ST7789* LaptypeBoard::tft = nullptr;
-boolean LaptypeBoard::backlightOn = false;
-uint32_t LaptypeBoard::lastShownLayerTime = 0;
-layer_num LaptypeBoard::lastShownLayer = layer_num::Base;
+Adafruit_ST7789* BoardIO::tft = nullptr;
+boolean BoardIO::backlightOn = false;
+uint32_t BoardIO::lastShownLayerTime = 0;
+layer_num BoardIO::lastShownLayer = layer_num::Base;
 const image_descriptor* images[5] = {
   gfx_amy, gfx_batman, gfx_mac, gfx_win, gfx_linux};
 
@@ -55,14 +55,14 @@ void ShowImage(Adafruit_ST7789* tft, uint8_t num) {
   prevWidth = w;
 }
 
-void LaptypeBoard::Backlight(bool turnOn) {
+void BoardIO::Backlight(bool turnOn) {
   if (backlightOn != turnOn) {
     digitalWrite(BACKLIGHT_PIN, turnOn ? HIGH : LOW);
     backlightOn = turnOn;
   }
 }
 
-void LaptypeBoard::Configure() {
+void BoardIO::Configure() {
   ConfigMatrix();
   tft = new Adafruit_ST7789(TFT_CS, TFT_DC, TFT_RST);
   pinMode(BACKLIGHT_PIN, OUTPUT);
@@ -78,7 +78,7 @@ void LaptypeBoard::Configure() {
   ShowImage(tft, 0);
 }
 
-void LaptypeBoard::Changed(uint32_t now) {
+void BoardIO::Changed(uint32_t now) {
   layer_num lyr = getCurrentLayer();
   if (lyr != lastShownLayer) {
     Backlight(true);
@@ -93,10 +93,10 @@ void LaptypeBoard::Changed(uint32_t now) {
   }
 }
 
-void LaptypeBoard::Tick(uint32_t now) {
+void BoardIO::Tick(uint32_t now) {
   if (now - lastShownLayerTime > 10000) {
     Backlight(false);
   }
 }
 
-void LaptypeBoard::ShowScanCode(uint16_t sc) {}
+void BoardIO::ShowScanCode(uint16_t sc) {}

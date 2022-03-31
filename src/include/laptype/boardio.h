@@ -14,7 +14,7 @@ using LaptypeMatrix = KeyMatrix<Teensy,
   16, 12, 18, 5, 1, 0>;
 // clang-format on
 
-struct LaptypeBoard : public LaptypeMatrix {
+struct BoardIO : public LaptypeMatrix {
   static Adafruit_ST7789* tft;
   static bool backlightOn;
   static uint32_t lastShownLayerTime;
@@ -25,3 +25,5 @@ struct LaptypeBoard : public LaptypeMatrix {
   static void Tick(uint32_t now);
   static void ShowScanCode(uint16_t now);
 };
+
+using MatrixBits = LaptypeMatrix::bits;

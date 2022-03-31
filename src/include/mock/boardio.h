@@ -13,7 +13,7 @@ using MockMatrix = KeyMatrix<MockMPU,
   13, 14, 15, 16, 17, 18>;
 // clang-format on
 
-struct MockBoard : public MockMatrix {
+struct BoardIO : public MockMatrix {
   static uint32_t lastShownLayerTime;
   static uint32_t lastShownLayerVal;
   static void Configure();
@@ -29,3 +29,5 @@ constexpr uint8_t pinToCol[24] = {
 constexpr uint8_t pinToRow[24] = {
   0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
   0xFF, 0,    1,    2,    3,    4,    5,    0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+
+using MatrixBits = MockMatrix::bits;

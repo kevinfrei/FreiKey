@@ -2,7 +2,7 @@
 #include "sysstuff.h"
 
 #include "enumtypes.h"
-struct ThreePieceBoard {
+struct BoardIO {
   static const uint8_t matrix_size = 72;
   typedef uint8_t bits;
   static Adafruit_ST7789* tft;
@@ -15,3 +15,5 @@ struct ThreePieceBoard {
   static void Tick(uint32_t now);
   static void ShowScanCode(uint16_t sc);
 };
+
+using MatrixBits = BoardIO::bits;

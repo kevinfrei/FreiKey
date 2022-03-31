@@ -7,14 +7,14 @@
 #include "dbgcfg.h"
 #include "keyhelpers.h"
 
-struct State {
+struct GeneralState {
   static constexpr uint8_t layer_max = 7;
   uint8_t layer_pos;
   std::array<layer_num, layer_max + 1> layer_stack;
-  State() : layer_pos(0) {
+  GeneralState() : layer_pos(0) {
     layer_stack.fill(layer_num::Base);
   }
-  State(const State& gs)
+  GeneralState(const GeneralState& gs)
     : layer_pos(gs.layer_pos), layer_stack(gs.layer_stack) {}
   void reset() {
     layer_pos = 0;
@@ -26,7 +26,7 @@ struct State {
   uint8_t getLayerVal(uint8_t index = 0xFF) const {
     return value_cast(getLayer(index));
   }
-  bool operator!=(const State& gs) const {
+  bool operator!=(const GeneralState& gs) const {
     if (gs.layer_pos != layer_pos)
       return true;
     for (uint8_t idx = 0; idx <= layer_pos; idx++) {
@@ -139,24 +139,5 @@ struct State {
   }
 #endif
 };
-
-#if defined(BTLE_HOST)
-class KarbonState : public State {
-  ClientState left, right;
-
- public:
-  KarbonState() : left(), right(), State() {}
-  KarbonState(const KarbonState& ks)
-    : left(ks.left), right(ks.right), State(ks) {}
-  bool operator!=(const KarbonState& ks) const {
-    if (gs.left != left || gs.right != right)
-      return true;
-    return State::operator!=(ks);
-  }
-};
-using GeneralState = KarbonState;
-#else
-using GeneralState = State;
-#endif
 
 extern GeneralState curState;

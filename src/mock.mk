@@ -1,7 +1,7 @@
 ifeq ($(OS),Windows_NT)
 # Decide if we've got VC++ around, which on Windows is preferred
 ifeq ($(VisualStudioVersion),)
-CXX=clang
+CXX=clang++
 else
 CXX=cl.exe
 endif
@@ -13,7 +13,7 @@ endif
 BUILD_PROJECT_NAME=${PROJ_NAME}${APP_SUFFIX}
 # variables I might need:
 # COMPILER_PATH
-COMPILER_CPP_FLAGS=-std=c++17 -DMOCKING -DMOCK
+COMPILER_CPP_FLAGS=-std=c++17 -DMOCKING
 COMPILER_CPP_CMD=clang++
 COMPILER_C_ELF_CMD=clang++
 # COMPILER_CPP_EXTRA_FLAGS
