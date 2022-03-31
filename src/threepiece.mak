@@ -29,7 +29,7 @@ PROJ_NAME=threepiece
 BUILD_PATH=out/threepiece
 
 # My custom flags
-COMPILER_CPP_EXTRA_FLAGS=-flto
+COMPILER_CPP_EXTRA_FLAGS=-DDEBUG=2 -flto
 
 # Libraries to use:
 LIB_BUSIO=1

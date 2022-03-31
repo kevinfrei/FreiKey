@@ -53,7 +53,7 @@ struct keystate* findStateSlot(scancode_t scanCode) {
 }
 
 action_t resolve(uint8_t layerPos, uint8_t scancode) {
-  return keymap[curState.getLayerVal()][scancode];
+  return keymap[value_cast(curState.layer_stack[layerPos])][scancode];
 }
 
 // Find the first specified action in the layer stack

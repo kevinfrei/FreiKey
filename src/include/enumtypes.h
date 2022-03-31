@@ -15,13 +15,13 @@ enum class layer_num : uint8_t {
 
 // This needs to fit in 4 bits
 enum class KeyAction : uint8_t {
-  KeyPress,
-  Modifier,
-  TapHold,
-  Consumer,
-  KeyAndMods,
-  LayerShift,
-  LayerToggle,
-  LayerSwitch,
+  KeyPress = 0,
+  Modifier = 1,
+  TapHold = 2,
+  Consumer = 3,
+  KeyAndMods = 4,
+  LayerShift = 5,
+  LayerToggle = 6,
+  LayerSwitch = 7,
   MaxActions = 15
 };

@@ -62,8 +62,8 @@ struct keystate {
     Serial.print(scanCode, HEX);
     Serial.print(" down=");
     Serial.print(down);
-    Serial.print(" lastChange=");
-    Serial.print(lastChange);
+    DBG3(Serial.print(" lastChange="));
+    DBG3(Serial.print(lastChange));
     Serial.print(" action=");
     action.dump();
     Serial.println("");

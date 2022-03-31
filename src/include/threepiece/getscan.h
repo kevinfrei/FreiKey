@@ -5,7 +5,7 @@
 #include <stdint.h>
 
 inline scancode_t validate(uint8_t b, bool& pressed) {
-  DBG2(dumpHex(b, "Validating Scan code 0x"));
+  DBG3(dumpHex(b, "Validating Scan code 0x"));
   b--;
   uint8_t sc = b / 3;
   uint8_t chk = b % 3;
@@ -15,12 +15,12 @@ inline scancode_t validate(uint8_t b, bool& pressed) {
     return 0xFF;
   } else {
     pressed = (sc < 36); // TODO: Encode all this shit somewhere?
-    DBG2(dumpVal(pressed ? 1 : 0, "Pressed: "));
-    DBG2(dumpHex(sc, "Raw scan code 0x"));
+    DBG3(dumpVal(pressed ? 1 : 0, "Pressed: "));
+    DBG3(dumpHex(sc, "Raw scan code 0x"));
     if (!pressed) {
       sc -= 36;
     }
-    DBG2(dumpHex(sc, "Validated scan code 0x"));
+    DBG3(dumpHex(sc, "Validated scan code 0x"));
     return sc;
   }
 }
