@@ -158,7 +158,7 @@ uint32_t check_roundtrip(
     return ~0;
   }
   for (int i = 0; i < chkBuf.size(); i += 2) {
-    if (chkBuf[i] != inBuf[i] || chkBuf[i + 1] != inBuf[i + 1]) {
+    if (chkBuf[i] != inBuf[i + 1] || chkBuf[i + 1] != inBuf[i]) {
       std::cerr << name << " different at offset " << i << std::endl;
       chkBuf.clear();
       return ~0;

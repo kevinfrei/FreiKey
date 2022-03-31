@@ -2,6 +2,8 @@
 #include "bitmap.h"
 #include "dbgcfg.h"
 #include <Adafruit_ST7789.h>
+// Note to self: Using the Adafruit_GFX header/display instead is *visibly*
+// slower
 
 uint8_t* buffer = nullptr;
 uint32_t curOffset = 0;
@@ -53,22 +55,17 @@ void drawImage(const image_descriptor* id,
   curOffset = 0;
 }
 
-uint16_t prevWidth = 0;
-uint16_t prevHeight = 0;
+uint16_t prevX = 0, prevWidth = 0, prevY = 0, prevHeight = 0;
 
 void ShowImage(Adafruit_ST7789* tft, const image_descriptor* img) {
-  uint16_t h = img->height;
+  tft->fillRect(prevX, prevY, prevWidth, prevHeight, ST77XX_BLACK);
   uint16_t w = img->width;
+  uint16_t h = img->height;
   uint16_t sw = tft->width();
   uint16_t sh = tft->height();
-  if (h < prevHeight || w < prevWidth) {
-    tft->fillRect((sw - prevWidth) / 2,
-                  (sh - prevHeight) / 2,
-                  prevWidth,
-                  prevHeight,
-                  ST77XX_BLACK);
-  }
-  drawImage(img, (sw - w) / 2, (sh - h) / 2, tft);
+  prevX = ((sw - w) > 0) ? micros() % (sw - w + 1) : 0;
+  prevY = ((sh - h) > 0) ? micros() % (sh - h + 1) : 0;
+  drawImage(img, prevX, prevY, tft);
   prevHeight = h;
   prevWidth = w;
 }
