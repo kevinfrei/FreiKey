@@ -39,8 +39,8 @@ void decode_rle(bytestream cmpStrm, uint32_t strmLen, sender send) {
           send(buffer, offs + j * 2);
           offs = -(j * 2);
         }
-        buffer[offs + j * 2] = byte1;
-        buffer[offs + j * 2 + 1] = byte2;
+        buffer[offs + j * 2 + 1] = byte1;
+        buffer[offs + j * 2] = byte2;
       }
       offs += length * 2;
     } else {
@@ -50,8 +50,8 @@ void decode_rle(bytestream cmpStrm, uint32_t strmLen, sender send) {
           send(buffer, offs + j * 2);
           offs = -(j * 2);
         }
-        buffer[offs + j * 2] = cmpStrm[i++];
         buffer[offs + j * 2 + 1] = cmpStrm[i++];
+        buffer[offs + j * 2] = cmpStrm[i++];
       }
       offs += length * 2;
     }

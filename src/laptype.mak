@@ -6,7 +6,7 @@ ifeq ($(OS),Windows_NT)
 	CMD_PATH=${RUNTIME_HARDWARE_PATH}
 else ifeq ($(shell uname -s), Darwin)
 	ARD=/Applications/Teensyduino.app/Contents/Java/hardware
-	SERIAL_PORT=$(shell ls /dev/cu.usbmodem5*)
+	SERIAL_PORT=$(shell ls /dev/cu.usbmodem1047*)
 	TOOLS_PATH=${ARD}/tools
 	RUNTIME_HARDWARE_PATH=${TOOLS_PATH}
 	CMD_PATH=${TOOLS_PATH}
@@ -54,7 +54,14 @@ USER_CPP_SRCS=\
 	bitmaps/batman.cpp \
 	bitmaps/win.cpp \
 	bitmaps/linux.cpp \
-	bitmaps/mac.cpp
+	bitmaps/mac.cpp \
+	bitmaps/haha.cpp \
+	bitmaps/hug.cpp \
+	bitmaps/like.cpp \
+	bitmaps/love.cpp \
+	bitmaps/mad.cpp \
+	bitmaps/sad.cpp \
+	bitmaps/wow.cpp
 
 VPATH:=bitmaps
 

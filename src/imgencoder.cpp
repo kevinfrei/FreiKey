@@ -76,7 +76,10 @@ std::string makeVarName(const std::string& name) {
     last = name.find_last_of('\\');
   std::string piece =
     (last == std::string::npos) ? name : name.substr(last + 1);
-  std::string res = "";
+  last = name.find_last_of('.');
+  if (last != std::string::npos)
+    piece = name.substr(0, last);
+  std::string res = "gfx_";
   if (!isalpha(piece[0])) {
     res.push_back('_');
   }
@@ -266,20 +269,21 @@ int main(int argc, const char* argv[]) {
     default:
       std::cout << "UNSUPPORTED TARGET FORMAT!" << std::endl;
   }
-  std::cout << std::endl
-            << "};" << std::endl
-            << "// clang-format on" << std::endl
-            << std::endl
-            << "image_descriptor " << varName << " = {" << std::endl
-            << "  .width = " << width << "," << std::endl
-            << "  .height = " << height << "," << std::endl
-            << "  .byte_count = " << outBuf.size() << "," << std::endl
-            << "  .compression = image_compression::" << name(cmp)
-            << ", " // TODO Update
-            << std::endl
-            << "  .image_data = " << varName << "_data" << std::endl
-            << "}; // "
-            << static_cast<float>(sz) / static_cast<float>(outBuf.size())
-            << " compression rate" << std::endl;
+  std::cout
+    << std::endl
+    << "};" << std::endl
+    << "// clang-format on" << std::endl
+    << std::endl
+    << "static const image_descriptor " << varName << "_raw = {" << std::endl
+    << "  .width = " << width << "," << std::endl
+    << "  .height = " << height << "," << std::endl
+    << "  .byte_count = " << outBuf.size() << "," << std::endl
+    << "  .compression = image_compression::" << name(cmp) << ", " << std::endl
+    << "  .image_data = " << varName << "_data" << std::endl
+    << "}; // " << static_cast<float>(sz) / static_cast<float>(outBuf.size())
+    << " compression rate" << std::endl
+    << std::endl
+    << "const image_descriptor* " << varName << " = &" << varName << "_raw;"
+    << std::endl;
   return 0;
 }
