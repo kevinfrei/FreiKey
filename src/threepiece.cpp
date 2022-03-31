@@ -7,6 +7,7 @@
 #include "bitmaps/mac.h"
 #include "bitmaps/win.h"
 #include "boardio.h"
+#include "enumhelpers.h"
 #include "enumtypes.h"
 #include "generalstate.h"
 #include "image.h"
@@ -26,19 +27,16 @@ Adafruit_ST7789* BoardIO::tft = nullptr;
 boolean BoardIO::backlightOn = false;
 uint32_t BoardIO::lastShownLayerTime = 0;
 layer_num BoardIO::lastShownLayerVal = layer_num::Base;
-const image_descriptor* images[5] = {
-  gfx_amy, gfx_batman, gfx_mac, gfx_win, gfx_linux};
 
-const int layer_to_image[8] = {
-  2, // "Base/Mac",
-  3, // "Win"
-  4, // "Linux",
-  0, // "Fn",
-  1, // "MacCaps",
-  1, // "WinCaps",
-  1, // "WinCtrl",
-  1 // "LinuxCaps"};
-};
+const enum_array<layer_num, const image_descriptor*, 8> layer_to_image = {
+  {layer_num::MacBase, gfx_mac},
+  {layer_num::WinBase, gfx_win},
+  {layer_num::LinBase, gfx_linux},
+  {layer_num::Func, gfx_amy},
+  {layer_num::MacCap, gfx_batman},
+  {layer_num::WinCap, gfx_batman},
+  {layer_num::WinCtl, gfx_batman},
+  {layer_num::LinCap, gfx_batman}};
 
 void BoardIO::Backlight(bool turnOn) {
   if (backlightOn != turnOn) {
@@ -60,10 +58,7 @@ void BoardIO::Configure() {
   tft->setFont(&FreeSans12pt7b);
   DBG2(Serial.println("Attempting first image render"));
   tft->fillScreen(ST77XX_BLACK);
-  drawImage(images[0],
-            (320 - images[0]->width) / 2,
-            (240 - images[0]->height) / 2,
-            tft);
+  ShowImage(tft, gfx_amy);
   DBG2(Serial.println("Screen Initialized"));
   //      Backlight(false);
   pinMode(SPKR_GND, OUTPUT);
@@ -79,11 +74,7 @@ void BoardIO::Changed(uint32_t now) {
     tft->fillScreen(ST77XX_BLACK);
     lastShownLayerVal = lyr;
     lastShownLayerTime = now;
-    uint8_t imageNum = layer_to_image[value_cast(lyr)];
-    drawImage(images[imageNum],
-              (320 - images[imageNum]->width) / 2,
-              (240 - images[imageNum]->height) / 2,
-              tft);
+    ShowImage(tft, layer_to_image[lyr]);
   }
 }
 

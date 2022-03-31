@@ -52,3 +52,23 @@ void drawImage(const image_descriptor* id,
   buffer = nullptr;
   curOffset = 0;
 }
+
+uint16_t prevWidth = 0;
+uint16_t prevHeight = 0;
+
+void ShowImage(Adafruit_ST7789* tft, const image_descriptor* img) {
+  uint16_t h = img->height;
+  uint16_t w = img->width;
+  uint16_t sw = tft->width();
+  uint16_t sh = tft->height();
+  if (h < prevHeight || w < prevWidth) {
+    tft->fillRect((sw - prevWidth) / 2,
+                  (sh - prevHeight) / 2,
+                  prevWidth,
+                  prevHeight,
+                  ST77XX_BLACK);
+  }
+  drawImage(img, (sw - w) / 2, (sh - h) / 2, tft);
+  prevHeight = h;
+  prevWidth = w;
+}
