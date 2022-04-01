@@ -67,8 +67,8 @@ USER_CPP_SRCS=\
 VPATH:=bitmaps
 
 ifeq ($(OS),Windows_NT)
-include teensy.win
+include tools/teensy.win
 else
-include teensy.mk
+include tools/teensy.mk
 endif
 

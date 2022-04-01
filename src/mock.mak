@@ -27,4 +27,4 @@ USER_CPP_SRCS=\
 	scanner.cpp \
 	mock.cpp
 
-include mock.mk
+include tools/mock.mk

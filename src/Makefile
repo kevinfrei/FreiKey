@@ -1,8 +1,8 @@
 # roll-up make file. It doesn't do dependency checking for anything,
 # it's just, perhaps, better than a shell script
 
-# phony rules cust there are no dependencies
-.PHONY: allclean karbon lk rk lkf rkf kflash lkflash rkflash fflash lfflash rfflash allk allf kf k lkf rkf laptype lt l ltf lf flaptype laptypef 3 3p three threepiece 3f 3pf threef threepiecef f3 f3p fthree fthreepiece imgcomp img cmp comp
+# phony rules cus there are no dependencies
+.PHONY: allclean laptype lt l ltf lf flaptype laptypef 3 3p three threepiece 3f 3pf threef threepiecef f3 f3p fthree fthreepiece imgcomp img cmp comp
 
 # TODO: Need to turn this off for Windows GNUmake :(
 # TODO: Make instead, use WSL for build, then Windows for flashing maybe?
@@ -12,7 +12,7 @@ else
 flags=-j
 endif
 # Now the default target
-all: laptype threepiece mock
+all: laptype threepiece mock img
 
 allclean:
 ifeq ($(OS),Windows_NT)
@@ -20,11 +20,6 @@ ifeq ($(OS),Windows_NT)
 else
 	-rm -rf out
 endif
-
-allk k: karbon lk rk
-
-karbon:
-	make ${flags} -f karbon.mak all compile_commands
 
 laptype lt l:
 	make ${flags} -f laptype.mak all compile_commands
@@ -41,20 +36,10 @@ fthreepiece fthree f3 f3p threepiecef threef 3f 3pf:
 mock m:
 	make ${flags} -f mock.mak all compile_commands
 
-lk:
-	make ${flags} -f l-karbon.mak all compile_commands
+rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
 
-rk:
-	make ${flags} -f r-karbon.mak all compile_commands
-
-kflash kf:
-	make ${flags} -f karbon.mak flash
-
-lkflash lkf:
-	make ${flags} -f l-karbon.mak flash
-
-rkflash rkf:
-	make ${flags} -f r-karbon.mak flash
+format: $(call rwildcard,include,*.h) $(wildcard *.cpp) $(wildcard bitmaps/*.cpp) $(wildcard bitmaps/*.h)
+	clang-format -i $^
 
 ifeq ($(OS),Windows_NT)
 # Decide if we've got VC++ around, which on Windows is preferred
