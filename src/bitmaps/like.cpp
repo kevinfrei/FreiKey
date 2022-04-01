@@ -64,8 +64,7 @@ static const image_descriptor gfx_like_raw = {
   .width = 50,
   .height = 50,
   .byte_count = 1611,
-  .compression = image_compression::PAL_NQRLE, 
-  .image_data = gfx_like_data
-}; // 3.10366 compression rate
+  .compression = image_compression::PAL_NQRLE,
+  .image_data = gfx_like_data}; // 3.10366 compression rate
 
 const image_descriptor* gfx_like = &gfx_like_raw;

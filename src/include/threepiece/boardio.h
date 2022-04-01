@@ -8,7 +8,7 @@ struct BoardIO {
   static Adafruit_ST7789* tft;
   static bool backlightOn;
   static uint32_t lastShownLayerTime;
-  static layer_num lastShownLayerVal;
+  static layer_num lastShownLayer;
   static void Backlight(bool on = true);
   static void Configure();
   static void Changed(uint32_t now);

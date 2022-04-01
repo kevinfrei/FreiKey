@@ -82,8 +82,7 @@ static const image_descriptor gfx_haha_raw = {
   .width = 50,
   .height = 50,
   .byte_count = 1995,
-  .compression = image_compression::PAL_NQRLE, 
-  .image_data = gfx_haha_data
-}; // 2.50627 compression rate
+  .compression = image_compression::PAL_NQRLE,
+  .image_data = gfx_haha_data}; // 2.50627 compression rate
 
 const image_descriptor* gfx_haha = &gfx_haha_raw;

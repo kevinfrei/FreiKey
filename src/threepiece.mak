@@ -55,7 +55,14 @@ USER_CPP_SRCS=\
 	bitmaps/batman.cpp \
 	bitmaps/win.cpp \
 	bitmaps/linux.cpp \
-	bitmaps/mac.cpp
+	bitmaps/mac.cpp \
+	bitmaps/haha.cpp \
+	bitmaps/hug.cpp \
+	bitmaps/like.cpp \
+	bitmaps/love.cpp \
+	bitmaps/mad.cpp \
+	bitmaps/sad.cpp \
+	bitmaps/wow.cpp
 
 VPATH:=bitmaps
 

@@ -71,7 +71,6 @@ void BoardIO::Changed(uint32_t now) {
   layer_num lyr = getCurrentLayer();
   if (lyr != lastShownLayer) {
     Backlight(true);
-    tft->fillScreen(ST77XX_BLACK);
     lastShownLayer = lyr;
     lastShownLayerTime = now;
     const image_descriptor* img = layer_to_image[lyr];

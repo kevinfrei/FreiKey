@@ -61,8 +61,7 @@ static const image_descriptor gfx_love_raw = {
   .width = 50,
   .height = 50,
   .byte_count = 1544,
-  .compression = image_compression::PAL_NQRLE, 
-  .image_data = gfx_love_data
-}; // 3.23834 compression rate
+  .compression = image_compression::PAL_NQRLE,
+  .image_data = gfx_love_data}; // 3.23834 compression rate
 
 const image_descriptor* gfx_love = &gfx_love_raw;

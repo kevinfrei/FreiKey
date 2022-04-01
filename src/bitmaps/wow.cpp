@@ -77,8 +77,7 @@ static const image_descriptor gfx_wow_raw = {
   .width = 50,
   .height = 50,
   .byte_count = 1923,
-  .compression = image_compression::PAL_NQRLE, 
-  .image_data = gfx_wow_data
-}; // 2.6001 compression rate
+  .compression = image_compression::PAL_NQRLE,
+  .image_data = gfx_wow_data}; // 2.6001 compression rate
 
 const image_descriptor* gfx_wow = &gfx_wow_raw;

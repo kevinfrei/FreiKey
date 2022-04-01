@@ -75,8 +75,7 @@ static const image_descriptor gfx_sad_raw = {
   .width = 50,
   .height = 50,
   .byte_count = 1840,
-  .compression = image_compression::PAL_NQRLE, 
-  .image_data = gfx_sad_data
-}; // 2.71739 compression rate
+  .compression = image_compression::PAL_NQRLE,
+  .image_data = gfx_sad_data}; // 2.71739 compression rate
 
 const image_descriptor* gfx_sad = &gfx_sad_raw;

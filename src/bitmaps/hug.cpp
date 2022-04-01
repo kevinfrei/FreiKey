@@ -154,8 +154,7 @@ static const image_descriptor gfx_hug_raw = {
   .width = 50,
   .height = 50,
   .byte_count = 3931,
-  .compression = image_compression::NQRLE, 
-  .image_data = gfx_hug_data
-}; // 1.27194 compression rate
+  .compression = image_compression::NQRLE,
+  .image_data = gfx_hug_data}; // 1.27194 compression rate
 
 const image_descriptor* gfx_hug = &gfx_hug_raw;
