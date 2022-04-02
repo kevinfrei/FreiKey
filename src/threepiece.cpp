@@ -35,6 +35,8 @@ boolean BoardIO::backlightOn = false;
 uint32_t BoardIO::lastShownLayerTime = 0;
 layer_num BoardIO::lastShownLayer = layer_num::Base;
 
+void MenuTrigger(uint16_t);
+
 const std::array<const image_descriptor*, 7> reaccs = {
   gfx_like, gfx_love, gfx_hug, gfx_haha, gfx_sad, gfx_mad, gfx_wow};
 
@@ -77,7 +79,11 @@ void BoardIO::Configure() {
   digitalWrite(SPKR_SIGNAL, LOW);
 }
 
-void BoardIO::Changed(uint32_t now) {
+bool BoardIO::Override(scancode_t sc, bool pressed, uint32_t now) {
+  return false;
+}
+
+void BoardIO::Changed(uint32_t now, uint16_t menuInfo) {
   layer_num lyr = getCurrentLayer();
   if (lyr != lastShownLayer) {
     Backlight(true);
@@ -88,6 +94,9 @@ void BoardIO::Changed(uint32_t now) {
       img = reaccs[now % 7];
     }
     ShowImage(tft, img);
+  }
+  if (menuInfo != 0) {
+    MenuTrigger(menuInfo);
   }
 }
 
@@ -149,4 +158,9 @@ void BoardIO::ShowScanCode(uint16_t scancode) {
     // This is good stuff for debugging:
     DrawKeyboard(scancode, 112, 2, tft);
   }
+}
+
+void MenuTrigger(uint16_t val) {
+  // The menu was triggers (with value val, if we care)
+  // Shift into calculator mode until we see the 
 }

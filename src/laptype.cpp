@@ -67,7 +67,11 @@ void BoardIO::Configure() {
   ShowImage(tft, gfx_amy);
 }
 
-void BoardIO::Changed(uint32_t now) {
+bool BoardIO::Override(scancode_t sc, bool pressed, uint32_t now) {
+  return false;
+}
+
+void BoardIO::Changed(uint32_t now, uint16_t menuInfo) {
   layer_num lyr = getCurrentLayer();
   if (lyr != lastShownLayer) {
     Backlight(true);

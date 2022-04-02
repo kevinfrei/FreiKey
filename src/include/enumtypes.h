@@ -23,5 +23,15 @@ enum class KeyAction : uint8_t {
   LayerShift = 5,
   LayerToggle = 6,
   LayerSwitch = 7,
+  Menu = 8, // EVIL PLANS!
   MaxActions = 15
+};
+
+// Layer changing stuff
+enum class layer_t : uint8_t {
+  None = 0,
+  Push = 1,
+  Pop = 2,
+  Toggle = 3,
+  Switch = 4
 };

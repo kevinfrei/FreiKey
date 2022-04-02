@@ -1,6 +1,7 @@
 #pragma once
 
 #include "keymatrix.h"
+#include "keystate.h"
 #include "mpu.h"
 
 // clang-format off
@@ -17,7 +18,8 @@ struct BoardIO : public MockMatrix {
   static uint32_t lastShownLayerTime;
   static uint32_t lastShownLayerVal;
   static void Configure();
-  static void Changed(uint32_t now);
+  static bool Override(scancode_t sc, bool pressed, uint32_t now);
+  static void Changed(uint32_t now, uint16_t menuInfo);
   static void Tick(uint32_t now);
 };
 

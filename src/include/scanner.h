@@ -19,7 +19,7 @@ uint32_t getColorForCurrentLayer();
 layer_num getCurrentLayer();
 keystate* findStateSlot(scancode_t scanCode);
 void preprocessScanCode(scancode_t sc, bool pressed, uint32_t now);
-void ProcessKeys(uint32_t now, kb_reporter& rpt);
+uint16_t ProcessKeys(uint32_t now, kb_reporter& rpt);
 
 // Given a delta mask, get the scan code, update the delta mask and set pressed
 // while we're at it.

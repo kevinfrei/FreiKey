@@ -1,4 +1,4 @@
-#include <vector>
+#include "sysstuff.h"
 
 #include "dbgcfg.h"
 #include "generalstate.h"
@@ -128,9 +128,9 @@ void ProcessConsumer(keystate& state, kb_reporter& rpt) {
   }
 }
 
-void ProcessKeys(uint32_t now, kb_reporter& rpt) {
+uint16_t ProcessKeys(uint32_t now, kb_reporter& rpt) {
   Modifiers mods = Modifiers::None;
-
+  uint16_t menuResult = 0;
   for (auto& state : keyStates) {
     if (state.scanCode == null_scan_code)
       continue;
@@ -188,6 +188,8 @@ void ProcessKeys(uint32_t now, kb_reporter& rpt) {
         mods = mods | state.action.getModifiers();
         rpt.set_modifier(mods);
       }
+    } else if (actions == KeyAction::Menu) {
+      menuResult = state.action.getMenuInfo();
     }
     /*
   This doesn't work, and I don't use it anyway
@@ -198,4 +200,5 @@ void ProcessKeys(uint32_t now, kb_reporter& rpt) {
   */
   }
   rpt.send_keys();
+  return menuResult;
 }

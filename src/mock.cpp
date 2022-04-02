@@ -143,11 +143,15 @@ void BoardIO::Configure() {
   }
   ConfigMatrix();
 }
-void BoardIO::Changed(uint32_t) {
+void BoardIO::Changed(uint32_t, uint16_t) {
   // Do nothing for now...
 }
 void BoardIO::Tick(uint32_t now) {
   // Do nothing for now...
+}
+
+bool BoardIO::Override(scancode_t, bool, uint32_t) {
+  return false;
 }
 
 // This where I should run some tests, right?

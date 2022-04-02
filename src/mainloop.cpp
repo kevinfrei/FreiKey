@@ -35,20 +35,23 @@ extern "C" void loop() {
   MatrixBits before = prevBits;
   MatrixBits after = key_scan(now);
   MatrixBits delta = before ^ after;
-  bool keysChanged = delta.any();
+  bool keysChanged = false;
   // Pseudo-code for what I'm looking to clean up:
   while (delta.any()) {
     bool pressed;
     scancode_t sc = getNextScanCode(delta, after, pressed);
-    preprocessScanCode(sc, pressed, now);
+    if (!BoardIO::Override(sc, pressed, now)) {
+      preprocessScanCode(sc, pressed, now);
+      keysChanged = true;
+    }
   }
   if (keysChanged) {
     kb_reporter rpt;
-    ProcessKeys(now, rpt);
+    uint16_t menuInfo = ProcessKeys(now, rpt);
     // Update the hardware previous state
     prevBits = after;
     DBG2(Serial.printf("State: %s\n", after.to_string()));
-    BoardIO::Changed(now);
+    BoardIO::Changed(now, menuInfo);
   }
   BoardIO::Tick(now);
 }

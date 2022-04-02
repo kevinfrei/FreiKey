@@ -71,6 +71,9 @@ class action_t {
   static constexpr action_t Combine(action_t a, action_t b) {
     return action_t{a, b};
   }
+  static constexpr action_t Menu(uint16_t info) {
+    return action_t{KeyAction::Menu, info};
+  }
   static constexpr action_t NoAction() {
     return action_t{};
   }
@@ -105,6 +108,9 @@ class action_t {
   }
   Consumer getConsumer() const {
     return enum_cast<Consumer>(data & 0xfff);
+  }
+  uint16_t getMenuInfo() const {
+    return data & 0xfff;
   }
   // This is for flagging consumer keycodes, as I have to handle them
   // differently
@@ -200,10 +206,15 @@ inline constexpr action_t keyAndModifiers(Keystroke key,
                                           Modifiers mod4 = Modifiers::None) {
   return action_t::KeyAndMods(key, mod1, mod2, mod3, mod4);
 }
+
 inline constexpr action_t keyAndModifiers(action_t key,
                                           Modifiers mod1,
                                           Modifiers mod2 = Modifiers::None,
                                           Modifiers mod3 = Modifiers::None,
                                           Modifiers mod4 = Modifiers::None) {
   return action_t::KeyAndMods(key, mod1, mod2, mod3, mod4);
+}
+
+inline constexpr action_t menuKey(uint16_t info) {
+  return action_t::Menu(info);
 }

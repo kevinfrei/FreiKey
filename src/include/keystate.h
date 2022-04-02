@@ -1,7 +1,8 @@
 #pragma once
 
 #include "action.h"
-#include "keyhelpers.h"
+#include "dbgcfg.h"
+#include "enumtypes.h"
 
 using scancode_t = uint8_t;
 constexpr scancode_t null_scan_code = 0xff;

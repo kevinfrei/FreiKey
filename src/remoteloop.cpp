@@ -37,13 +37,15 @@ extern "C" void loop() {
   for (scancode_t sc = getNextScanCode(left, right, pressed); sc != 0xFF;
        sc = getNextScanCode(left, right, pressed)) {
     DBG2(dumpHex(sc, "Got scan code 0x"));
-    preprocessScanCode(sc, pressed, now);
-    keysChanged = true;
+    if (!BoardIO::Override(sc, pressed, now)) {
+      preprocessScanCode(sc, pressed, now);
+      keysChanged = true;
+    }
   }
   if (keysChanged) {
     kb_reporter rpt;
-    ProcessKeys(now, rpt);
-    BoardIO::Changed(now);
+    uint16_t menuInfo = ProcessKeys(now, rpt);
+    BoardIO::Changed(now, menuInfo);
   }
   BoardIO::Tick(now);
 }

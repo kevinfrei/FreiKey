@@ -3,14 +3,7 @@
 
 #include "action.h"
 #include "dbgcfg.h"
-
-enum class layer_t : uint8_t {
-  None = 0,
-  Push = 1,
-  Pop = 2,
-  Toggle = 3,
-  Switch = 4
-};
+#include "enumtypes.h"
 
 #define ___ no_action
 #define PASTE(a, b) a##b
@@ -46,6 +39,7 @@ enum class layer_t : uint8_t {
 #define LYR_TOG(n) layerToggle(n)
 #define LYR_SHIFT(n) layerShift(n)
 #define LYR_SET(n) layerSwitch(n)
+#define MNU(n) menuKey(n)
 
 // Some missing keycodes from the Arduino/AdaFruit API's that I need. You can
 // find these from the QMK firmware HIDClassCommon.h file. I also find them in
