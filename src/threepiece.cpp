@@ -1,4 +1,5 @@
 #include "sysstuff.h"
+#include <HardwareSerial.h>
 
 #include "Fonts/FreeSans12pt7b.h"
 #include "bitmaps/amy.h"
@@ -16,9 +17,11 @@
 #include "boardio.h"
 #include "enumhelpers.h"
 #include "enumtypes.h"
-#include "generalstate.h"
 #include "image.h"
-#include "scanner.h"
+#include "scanning.h"
+
+#define right Serial2
+#define left Serial4
 
 // Display stuff
 constexpr uint8_t BACKLIGHT_PIN = 18;
@@ -58,6 +61,8 @@ void BoardIO::Backlight(bool turnOn) {
 }
 
 void BoardIO::Configure() {
+  right.begin(1 << 20);
+  left.begin(1 << 20);
   tft = new Adafruit_ST7789(TFT_CS, TFT_DC, TFT_RST);
   pinMode(BACKLIGHT_PIN, OUTPUT);
   Backlight(true);
@@ -162,5 +167,5 @@ void BoardIO::ShowScanCode(uint16_t scancode) {
 
 void MenuTrigger(uint16_t val) {
   // The menu was triggers (with value val, if we care)
-  // Shift into calculator mode until we see the 
+  // Shift into calculator mode until we see the
 }

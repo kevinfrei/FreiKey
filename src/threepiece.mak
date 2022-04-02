@@ -29,7 +29,9 @@ PROJ_NAME=threepiece
 BUILD_PATH=out/threepiece
 
 # My custom flags
-COMPILER_CPP_EXTRA_FLAGS=-DDEBUG=2 -flto
+COMPILER_CPP_EXTRA_FLAGS=
+# This causes link errors now :'(
+# -flto
 
 # Libraries to use:
 LIB_BUSIO=1
@@ -37,32 +39,22 @@ LIB_SPI=1
 LIB_GFX=1
 LIB_ST77XX=1
 LIB_WIRE=1
-# With NEW_CONFIG, this is where the configuration stuff lives
-# No more changing the makefile :)
-USER_INCLUDES=-Iinclude/threepiece -Iinclude/teensy -Iinclude
+
+USER_INCLUDES=-Iinclude/threepiece -Iinclude/remotescan -Iinclude/teensy -Iinclude
+
+BITMAPS=$(wildcard bitmaps/*.cpp)
+IMG_DECODERS=$(wildcard imgdec_*.cpp)
 
 USER_CPP_SRCS=\
 	dbgcfg.cpp \
 	kbreporter.cpp \
-	remoteloop.cpp \
-	scanner.cpp \
+	mainloop.cpp \
+	scanning.cpp \
+	remotescan.cpp \
 	threepiece.cpp \
 	image.cpp \
-	imgdec_rle.cpp \
-	imgdec_pal.cpp \
-	imgdec_prle.cpp \
-	bitmaps/amy.cpp \
-	bitmaps/batman.cpp \
-	bitmaps/win.cpp \
-	bitmaps/linux.cpp \
-	bitmaps/mac.cpp \
-	bitmaps/haha.cpp \
-	bitmaps/hug.cpp \
-	bitmaps/like.cpp \
-	bitmaps/love.cpp \
-	bitmaps/mad.cpp \
-	bitmaps/sad.cpp \
-	bitmaps/wow.cpp
+	${IMG_DECODERS} \
+	${BITMAPS}
 
 VPATH:=bitmaps
 

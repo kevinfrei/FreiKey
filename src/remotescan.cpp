@@ -2,9 +2,16 @@
 
 #include "dbgcfg.h"
 #include "keystate.h"
-#include <stdint.h>
+#include "scanner.h"
 
-inline scancode_t validate(uint8_t b, bool& pressed) {
+#define right Serial2
+#define left Serial4
+
+void Scanner::Reset() {}
+
+Scanner::Scanner(uint32_t now) {}
+
+scancode_t validate(uint8_t b, bool& pressed) {
   DBG3(dumpHex(b, "Validating Scan code 0x"));
   b--;
   uint8_t sc = b / 3;
@@ -26,10 +33,7 @@ inline scancode_t validate(uint8_t b, bool& pressed) {
 }
 
 // Template specialization for remote modules
-template <>
-inline scancode_t getNextScanCode<HardwareSerial>(HardwareSerial& left,
-                                                  HardwareSerial& right,
-                                                  bool& pressed) {
+scancode_t Scanner::getNextCode(bool& pressed) {
   scancode_t sc = 0xFF;
   if (left.available()) {
     sc = validate(left.read(), pressed);
@@ -47,3 +51,5 @@ inline scancode_t getNextScanCode<HardwareSerial>(HardwareSerial& left,
   DBG2(dumpVal(pressed ? 1 : 0, "Pressed: "));
   return sc;
 }
+
+void Scanner::Done() {}
