@@ -19,7 +19,7 @@
 #include "enumtypes.h"
 #include "generalstate.h"
 #include "image.h"
-#include "scanner.h"
+#include "scanning.h"
 
 constexpr uint8_t BACKLIGHT_PIN = 17;
 constexpr uint8_t TFT_CS = 8;

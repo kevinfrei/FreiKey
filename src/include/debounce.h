@@ -4,7 +4,7 @@
 #include <bitset>
 
 #include "boardio.h"
-#include "pullbit.h"
+#include "bitstuff.h"
 
 template <size_t SIZE>
 class Debouncer {
@@ -24,7 +24,10 @@ class Debouncer {
 
  public:
   Debouncer() : last_reported_switches{}, last_reported_time{} {}
-
+  void reset() {
+    last_reported_switches.reset();
+    last_reported_time.fill(0);
+  }
   BITS update(BITS cur_switches, uint32_t now) {
     // If we've read the same thing we last reported, there's nothing to do
     if (last_reported_switches == cur_switches)

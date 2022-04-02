@@ -38,13 +38,14 @@ LIB_ST77XX=1
 LIB_WIRE=1
 # With NEW_CONFIG, this is where the configuration stuff lives
 # No more changing the makefile :)
-USER_INCLUDES=-Iinclude/laptype -Iinclude/teensy -Iinclude
+USER_INCLUDES=-Iinclude/laptype -Iinclude/localscan -Iinclude/teensy -Iinclude
 
 USER_CPP_SRCS=\
 	dbgcfg.cpp \
 	kbreporter.cpp \
 	mainloop.cpp \
-	scanner.cpp \
+	scanning.cpp \
+	localscan.cpp \
 	laptype.cpp \
 	image.cpp \
 	imgdec_rle.cpp \

@@ -4,7 +4,7 @@
 #include "generalstate.h"
 #include "keymap.h"
 #include "keystate.h"
-#include "scanner.h"
+#include "scanning.h"
 
 // Declarations
 constexpr uint32_t TapAndHoldTimeLimit = 100;
@@ -135,69 +135,80 @@ uint16_t ProcessKeys(uint32_t now, kb_reporter& rpt) {
     if (state.scanCode == null_scan_code)
       continue;
     KeyAction actions = state.action.getAction();
-    if (actions == KeyAction::TapHold) {
-      // TODO: I don't think this quite works...
+    switch (actions) {
+      case KeyAction::TapHold: {
+        // TODO: I don't think this quite works...
 
-      // If we've exceeded the time limit, set the modifier
-      // If we're under the time limit, and it's a key *down* we shouldn't
-      // do anything, because we won't know what to do until after the time
-      // limit is hit, or a key-up occurs.
-      if (now - state.lastChange > TapAndHoldTimeLimit) {
-        // Holding
-        mods = mods | state.action.getExtraMods();
-        DBG(dumpHex(mods, " (Holding)"));
-        rpt.set_modifier(mods);
-      } else if (state.down) {
-        continue;
+        // If we've exceeded the time limit, set the modifier
+        // If we're under the time limit, and it's a key *down* we shouldn't
+        // do anything, because we won't know what to do until after the time
+        // limit is hit, or a key-up occurs.
+        if (now - state.lastChange > TapAndHoldTimeLimit) {
+          // Holding
+          mods = mods | state.action.getExtraMods();
+          DBG(dumpHex(mods, " (Holding)"));
+          rpt.set_modifier(mods);
+        } else if (state.down) {
+          continue;
+        }
+        // We've had it for less than the time allotted, so send the tapping key
+        // TODO: Make sure we send the key up immediate after this!
+        if (state.action.getAction() == KeyAction::Consumer) {
+          DBG(dumpHex(state.action.getConsumer(), " Tapping Consumer Key"));
+          state.down = true;
+          ProcessConsumer(state, rpt);
+          state.down = false;
+          ProcessConsumer(state, rpt);
+        } else {
+          Keystroke key = state.action.getKeystroke();
+          if (key != Keystroke::None) {
+            rpt.add_key_press(key);
+            DBG(dumpHex(key, " Tapping"));
+          }
+        }
+        break;
       }
-      // We've had it for less than the time allotted, so send the tapping key
-      // TODO: Make sure we send the key up immediate after this!
-      if (state.action.getAction() == KeyAction::Consumer) {
-        DBG(dumpHex(state.action.getConsumer(), " Tapping Consumer Key"));
-        state.down = true;
+      case KeyAction::Consumer: {
         ProcessConsumer(state, rpt);
-        state.down = false;
-        ProcessConsumer(state, rpt);
-      } else {
-        Keystroke key = state.action.getKeystroke();
-        if (key != Keystroke::None) {
-          rpt.add_key_press(key);
-          DBG(dumpHex(key, " Tapping"));
+        break;
+      }
+      case KeyAction::KeyAndMods: {
+        if (state.down) {
+          mods = mods | state.action.getExtraMods();
+          rpt.set_modifier(mods);
+          Keystroke key = state.action.getKeystroke();
+          if (key != Keystroke::None) {
+            rpt.add_key_press(key);
+          }
         }
+        break;
       }
-    } else if (actions == KeyAction::Consumer) {
-      ProcessConsumer(state, rpt);
-    } else if (actions == KeyAction::KeyAndMods) {
-      if (state.down) {
-        mods = mods | state.action.getExtraMods();
-        rpt.set_modifier(mods);
-        Keystroke key = state.action.getKeystroke();
-        if (key != Keystroke::None) {
-          rpt.add_key_press(key);
+      case KeyAction::KeyPress: {
+        if (state.down) {
+          Keystroke key = state.action.getKeystroke();
+          if (key != Keystroke::None) {
+            rpt.add_key_press(key);
+          }
         }
+        break;
       }
-    } else if (actions == KeyAction::KeyPress) {
-      if (state.down) {
-        Keystroke key = state.action.getKeystroke();
-        if (key != Keystroke::None) {
-          rpt.add_key_press(key);
+      case KeyAction::Modifier: {
+        if (state.down) {
+          mods = mods | state.action.getModifiers();
+          rpt.set_modifier(mods);
         }
+        break;
       }
-    } else if (actions == KeyAction::Modifier) {
-      if (state.down) {
-        mods = mods | state.action.getModifiers();
-        rpt.set_modifier(mods);
+      case KeyAction::Menu: {
+        menuResult = state.action.getMenuInfo();
+        break;
       }
-    } else if (actions == KeyAction::Menu) {
-      menuResult = state.action.getMenuInfo();
+      case KeyAction::LayerShift:
+      case KeyAction::LayerSwitch:
+      case KeyAction::LayerToggle:
+        // These are all handled during preprocessing
+        break;
     }
-    /*
-  This doesn't work, and I don't use it anyway
-  case kToggleMod:
-    mods ^= state.action & 0xff;
-    rpt.set_modifier(mods);
-    break;
-  */
   }
   rpt.send_keys();
   return menuResult;

@@ -2,24 +2,21 @@
 
 #include "boardio.h"
 #include "dbgcfg.h"
-#include "debounce.h"
 #include "generalstate.h"
+#include "keystate.h"
 #include "scanner.h"
+#include "scanning.h"
 
 GeneralState curState{};
-MatrixBits prevBits{0};
-Debouncer<BoardIO::matrix_size> debouncer{};
-
-MatrixBits key_scan(uint32_t now) {
-  auto res = BoardIO::Read();
-  return debouncer.update(res, now);
-}
 
 // This is called when the system is initialized.
 // The idea is that it should just wipe everything clean.
 void resetTheWorld() {
+  DBG2(Serial.println("Resetting the world!"));
   curState.reset();
   memset(keyStates, null_scan_code, sizeof(keyStates));
+  Scanner::Reset();
+  DBG2(Serial.println("World reset!"));
 }
 
 extern "C" void setup() {
@@ -30,16 +27,12 @@ extern "C" void setup() {
 }
 
 extern "C" void loop() {
+  scancode_t sc;
+  bool keysChanged = false, pressed = false;
   uint32_t now = millis();
-  // Get the before & after of each side into a 64 bit value
-  MatrixBits before = prevBits;
-  MatrixBits after = key_scan(now);
-  MatrixBits delta = before ^ after;
-  bool keysChanged = false;
-  // Pseudo-code for what I'm looking to clean up:
-  while (delta.any()) {
-    bool pressed;
-    scancode_t sc = getNextScanCode(delta, after, pressed);
+  Scanner scanner{now};
+  while ((sc = scanner.getNextCode(pressed)) != 0xFF) {
+    DBG2(dumpHex(sc, "Got scan code 0x"));
     if (!BoardIO::Override(sc, pressed, now)) {
       preprocessScanCode(sc, pressed, now);
       keysChanged = true;
@@ -48,10 +41,8 @@ extern "C" void loop() {
   if (keysChanged) {
     kb_reporter rpt;
     uint16_t menuInfo = ProcessKeys(now, rpt);
-    // Update the hardware previous state
-    prevBits = after;
-    DBG2(Serial.printf("State: %s\n", after.to_string()));
     BoardIO::Changed(now, menuInfo);
   }
+  scanner.Done();
   BoardIO::Tick(now);
 }
