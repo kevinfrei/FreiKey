@@ -24,7 +24,7 @@ USER_CPP_SRCS=\
 	dbgcfg.cpp \
 	kbreporter.cpp \
 	mainloop.cpp \
-	scanner.cpp \
+	scanning.cpp \
 	mock.cpp
 
 include tools/mock.mk

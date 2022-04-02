@@ -3,8 +3,8 @@
 #include <array>
 #include <bitset>
 
-#include "boardio.h"
 #include "bitstuff.h"
+#include "boardio.h"
 
 template <size_t SIZE>
 class Debouncer {

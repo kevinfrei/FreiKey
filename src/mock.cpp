@@ -161,3 +161,12 @@ int main(int argc, const char* argv[]) {
     loop();
   }
 }
+
+void Scanner::Reset() {}
+
+Scanner::Scanner(uint32_t now) {}
+scancode_t Scanner::getNextCode(bool& pressed) {
+  pressed = false;
+  return null_scan_code;
+}
+void Scanner::Done() {}

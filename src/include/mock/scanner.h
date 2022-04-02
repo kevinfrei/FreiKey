@@ -1,16 +1,6 @@
-#include "boardio.h"
-#include "debounce.h"
+#include "keystate.h"
 
 class Scanner {
-  MatrixBits before;
-  MatrixBits after;
-  MatrixBits delta;
-
-  // Scanner-specific global state
-  static MatrixBits prevBits;
-  static Debouncer<BoardIO::matrix_size> debouncer;
-  // Helper functions
-  static MatrixBits key_scan(uint32_t now);
 
  public:
   // This is the interface that needs filled in:
