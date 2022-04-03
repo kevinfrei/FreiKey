@@ -8,17 +8,27 @@
 # TODO: Make instead, use WSL for build, then Windows for flashing maybe?
 ifeq ($(OS),Windows_NT)
 flags=
+SEP=\\
+# Chocolatey install winflexbison3 :)
+FLEX=win_flex
+FLEXFLAGS=-wincompat
+BISON=win_bison
 else
 flags=-j
+SEP=/
+FLEX=flex
+BISON=bison
 endif
 # Now the default target
 all: laptype threepiece mock img
 
-allclean:
+clean:
 ifeq ($(OS),Windows_NT)
-	-rd /s /q out
+	-@rd /s /q out > NUL 2>&1
+	-@del CalcScanner.cpp CalcParser.cpp include\\CalcParser.h > NUL 2>&1
 else
 	-rm -rf out
+	-rm CalcScanner.cpp CalcParser.cpp include/CalcParser.h
 endif
 
 laptype lt l:
@@ -44,7 +54,7 @@ format: $(call rwildcard,include,*.h) $(wildcard *.cpp) $(wildcard bitmaps/*.cpp
 ifeq ($(OS),Windows_NT)
 # Decide if we've got VC++ around, which on Windows is preferred
 ifeq ($(VisualStudioVersion),)
-CXX=clang
+CXX=clang++
 else
 CXX=cl.exe
 endif
@@ -53,10 +63,13 @@ else
 SFX=
 endif
 
-comp cmp img imgcomp: out out/imagecomp${SFX}
+comp cmp img imgcomp: out out/imgenc out/imgenc/imagecomp${SFX}
 
 out:
 	-mkdir out
+
+out/imgenc:
+	-mkdir out${SEP}imgenc
 
 # Size is larger than -O3 lame lame lame, clang
 # OPTFLAGS=-flto -Oz
@@ -66,22 +79,22 @@ out:
 ifeq (${CXX},cl.exe)
 OBJFLAG=/FS /Fo
 IMGFLAG=/FS /Fe
-OPTFLAGS=/Od /ZI /EHsc
+OPTFLAGS=/O2 /EHsc
 STDNUM=/std:c++20
 OSUFFIX=obj
 else
 OBJFLAG=-o
 IMGFLAG=-o
-OPTFLAGS=-g
+OPTFLAGS=-O2
 STDNUM=-std=c++20
 OSUFFIX=o
 endif
 
 # Set up rules for local binaries
-out/%.${OSUFFIX}: bitmaps/%.cpp
+out/imgenc/%.${OSUFFIX}: bitmaps/%.cpp
 	${CXX} ${OPTFLAGS} -c -DCOMPRESSOR -Iinclude ${STDNUM} $< ${OBJFLAG}$@
 
-out/%.${OSUFFIX} : %.cpp
+out/imgenc/%.${OSUFFIX} : %.cpp
 	${CXX} ${OPTFLAGS} -c -DCOMPRESSOR -Iinclude ${STDNUM} $< ${OBJFLAG}$@
 
 IMGSRC = imgencoder.cpp \
@@ -98,7 +111,26 @@ IMGSRC = imgencoder.cpp \
  mac.cpp \
  linux.cpp
  
-OBJS = $(addprefix out/, $(patsubst %.cpp, %.${OSUFFIX}, ${IMGSRC}))
+IMGOBJS = $(addprefix out/imgenc/, $(patsubst %.cpp, %.${OSUFFIX}, ${IMGSRC}))
 
-out/imagecomp${SFX}: ${OBJS}
+out/imgenc/imagecomp${SFX}: ${IMGOBJS}
+	${CXX} ${OPTFLAGS} ${IMGFLAG}$@ $^
+
+calc: out out/calc out/calc/calculator${SFX}
+
+out/calc:
+	-mkdir out${SEP}calc
+
+out/calc/%.${OSUFFIX} : %.cpp
+	${CXX} ${OPTFLAGS} -c -DSTDALONE -Iinclude -I. ${STDNUM} $< ${OBJFLAG}$@
+
+CALCSRC = CalcParser.cpp CalcScanner.cpp
+
+CalcParser.cpp CalcScanner.cpp include/CalcParser.h: CalcLexer.ll CalcGrammar.yy
+	${FLEX} ${FLEXFLAGS} -nounistd CalcLexer.ll
+	${BISON} CalcGrammar.yy
+
+CALCOBJS = $(addprefix out/calc/, $(patsubst %.cpp, %.${OSUFFIX}, ${CALCSRC}))
+
+out/calc/calculator${SFX}: ${CALCOBJS}
 	${CXX} ${OPTFLAGS} ${IMGFLAG}$@ $^

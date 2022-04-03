@@ -4,12 +4,14 @@ ifeq ($(OS),Windows_NT)
 	SERIAL_PORT=COM15
 	RUNTIME_HARDWARE_PATH=c:/PROGRA~2/Arduino/hardware/tools
 	CMD_PATH=${RUNTIME_HARDWARE_PATH}
+	BISON=win_bison
 else ifeq ($(shell uname -s), Darwin)
 	ARD=/Applications/Teensyduino.app/Contents/Java/hardware
 	SERIAL_PORT=$(shell ls /dev/cu.usbmodem5*)
 	TOOLS_PATH=${ARD}/tools
 	RUNTIME_HARDWARE_PATH=${TOOLS_PATH}
 	CMD_PATH=${TOOLS_PATH}
+	BISON=bison
 else
   $(error No Linux support yet)
 endif
@@ -44,6 +46,12 @@ USER_INCLUDES=-Iinclude/threepiece -Iinclude/remotescan -Iinclude/teensy -Iinclu
 
 BITMAPS=$(wildcard bitmaps/*.cpp)
 IMG_DECODERS=$(wildcard imgdec_*.cpp)
+
+calculator-lex.cpp: calculator.l calculator.tab.h
+	${FLEX} calculator.l
+
+calculator.tab.c calculator.tab.h: calculator.y
+	${BISON} --defines=calculator-bison.h
 
 USER_CPP_SRCS=\
 	dbgcfg.cpp \
