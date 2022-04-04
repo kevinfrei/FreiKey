@@ -16,9 +16,8 @@ enum class TokenID {
   CParen,
   Assign,
   IVal,
-  IVar,
   FVal,
-  FVar,
+  String,
   Eof,
   Error
 };
@@ -30,135 +29,239 @@ class Token {
   uint16_t start, end;
 };
 
-bool parseNumber(std::vector<Token>& result,
-                 const std::string& str,
-                 uint16_t& start,
-                 uint16_t& end) {
-  uint16_t sz = str.size();
-  char cur = str[end - 1];
-  // Get the expression we're sitting on
-  // First, scan the numbers:
-  while (isdigit(cur) && end < sz) {
-    cur = tolower(str[end++]);
-  }
-  if (cur != '.' && cur != 'e') {
-    // It's just a string of digits, not a float value
-    result.push_back(Token{TokenID::IVal, start, end});
-    start = end++;
-    return true;
-  }
-  // If we're here, we're parsing a floating point value
-  bool seenDec = cur == '.';
-  // Eat the rest of the numeric part:
-  while (cur != 'e' && (isdigit(cur) || (!seenDec || cur == '.')) && end < sz) {
-    seenDec = cur == '.';
-    cur = tolower(str[end++]);
-  }
-  if (cur != 'e') {
-    // We got a string of \d*(.\d*)
-    result.push_back(Token{TokenID::FVal, start, end});
-    start = end++;
-    return true;
-  }
-  // Now we're parsing an exponent
-  end++;
-  do {
-    if (end == sz) {
-      break; // Error
-    }
-    cur = str[end - 1];
-    // Consume the optional +/-
-    if (cur == '-' || cur == '+') {
-      cur = str[end++];
-      if (end == sz) {
-        // Error
-        break;
-      }
-    }
-    // The 'e' must be followed by at least one digit
-    if (!isdigit(cur)) {
-      // error
-      break;
-    }
-    // Now scan until we have no more digits
-    while (isdigit(cur) && end < sz) {
-      cur = str[end++];
-    }
-    result.push_back(Token{TokenID::FVal, start, end});
-    start = end++;
-    return true;
-  } while (false);
-  result.push_back(Token{TokenID::Error, start, end});
-  return false;
-}
+enum class TState { NewToken, MaybeInt, String, Frac, StartExp, Exp };
 
-inline void addToken(TokenID tk, std::vector<Token>& res, uint16_t s, uint16_t e) {
-  res.push_back(Token{tk, s++, e++});
-};
+inline uint16_t addToken(TokenID tk,
+                         std::vector<Token>& res,
+                         uint16_t s,
+                         uint16_t e) {
+  res.push_back(Token{tk, s, e});
+  return e;
+}
 
 std::vector<Token> Tokenize(const std::string& str) {
-  std::vector<Token> result;
-  uint16_t start = 0;
-  uint16_t end = 1;
-  enum class TState { Digits, Float, Exp };
-  if (str.size() > 0xffff) {
-    result.push_back(Token{TokenID::Error, 0xffff, 0});
-    return result;
+  std::vector<Token> res;
+  uint16_t start, end;
+  TState state = TState::NewToken;
+
+  // Paranoia...
+  if (str.size() > 0xfffe) {
+    res.push_back(Token{TokenID::Error, 0xffff, 0});
+    return res;
   }
   uint16_t sz = str.size();
-  while (end <= sz) {
+  /* States:
+   *  NewToken:
+   *    digits -> MaybeInt
+   *    '.' -> Frac
+   *    letters/_ -> String
+   *    space -> skip
+   *    operators, etc... -> MakeOper, NewToken
+   *    Anything else -> Error
+   *  MaybeInt:
+   *    digits -> MaybeInt
+   *    e -> StartExp
+   *    . -> Frac
+   *    Anything else -> MakeInt, NewToken
+   *  Frac:
+   *    digits -> Frac
+   *    e -> StartExp
+   *    Anything else -> MakeFloat, NewToken
+   *  StartExp:
+   *    +/- -> Exp
+   *    Digits -> Exp(back up)
+   *    Anything else -> Error
+   *  Exp:
+   *    digits -> Exp
+   *    Anything else -> MakeFloat, NewToken
+   *  String:
+   *    letters/numbers/_ -> String
+   *    Anything else -> MakeString, NewToken
+   */
+  for (start = 0, end = 1; end <= sz; end++) {
     char cur = str[end - 1];
-    char lcur = tolower(cur);
-    if (isdigit(cur) || cur == '.') {
-      if (!parseNumber(result, str, start, end)) {
-        break;
-      }
-      start = end;
-    } else {
-      // Not a number
-      switch (cur) {
-        case '+':
-          addToken(TokenID::Add, result, start, end);
+    switch (state) {
+      case TState::NewToken:
+        // Look at start to see what new token to start:
+        switch (cur) {
+          case '+':
+            start = addToken(TokenID::Add, res, start, end);
+            continue;
+          case '-':
+            start = addToken(TokenID::Sub, res, start, end);
+            continue;
+          case '*':
+            start = addToken(TokenID::Mul, res, start, end);
+            continue;
+          case '/':
+            start = addToken(TokenID::Div, res, start, end);
+            continue;
+          case '=':
+            start = addToken(TokenID::Assign, res, start, end);
+            continue;
+          case '%':
+            start = addToken(TokenID::Mod, res, start, end);
+            continue;
+          case '!':
+            start = addToken(TokenID::Fact, res, start, end);
+            continue;
+          case '(':
+            start = addToken(TokenID::OParen, res, start, end);
+            continue;
+          case ')':
+            start = addToken(TokenID::CParen, res, start, end);
+            continue;
+          case '^':
+            start = addToken(TokenID::Exp, res, start, end);
+            continue;
+          case '.':
+            state = TState::Frac;
+            continue;
+          case ' ':
+            // Just skip spaces
+            start++;
+            continue;
+          default:
+            break;
+        }
+        // Okay, let's see what state to switch to, yeah?
+        if (isdigit(cur)) {
+          state = TState::MaybeInt;
           continue;
-        case '-':
-          addToken(TokenID::Sub, result, start, end);
+        } else if (isalpha(cur)) {
+          state = TState::String;
           continue;
-        case '*':
-          addToken(TokenID::Mul, result, start, end);
+        }
+        res.push_back(Token{TokenID::Error, start, end});
+        return res;
+      case TState::MaybeInt:
+        if (isdigit(cur)) {
           continue;
-        case '/':
-          addToken(TokenID::Div, result, start, end);
+        } else if (cur == 'e' || cur == 'E') {
+          state = TState::StartExp;
           continue;
-        case '=':
-          addToken(TokenID::Assign, result, start, end);
+        } else if (cur == '.') {
+          state = TState::Frac;
           continue;
-        case '%':
-          addToken(TokenID::Mod, result, start, end);
+        }
+        start = addToken(TokenID::IVal, res, start, --end);
+        state = TState::NewToken;
+        continue;
+      case TState::Frac:
+        if (isdigit(cur)) {
           continue;
-        case '!':
-          addToken(TokenID::Fact, result, start, end);
+        } else if (cur == 'e' || cur == 'E') {
+          state = TState::StartExp;
           continue;
-        case '(':
-          addToken(TokenID::OParen, result, start, end);
+        }
+        start = addToken(TokenID::FVal, res, start, --end);
+        state = TState::NewToken;
+        continue;
+      case TState::StartExp:
+        if (cur == '+' || cur == '-') {
+          state = TState::Exp;
           continue;
-        case ')':
-          addToken(TokenID::CParen, result, start, end);
+        }
+        if (isdigit(cur)) {
+          end--;
+          state = TState::Exp;
           continue;
-        case '^':
-          addToken(TokenID::Exp, result, start, end);
+        }
+        res.push_back(Token{TokenID::Error, start, end});
+        return res;
+      case TState::Exp:
+        if (isdigit(cur)) {
           continue;
-        default:
-          break;
-      }
-      // Maybe a variable, then yeah?
+        }
+        start = addToken(TokenID::FVal, res, start, --end);
+        state = TState::NewToken;
+        continue;
+      case TState::String:
+        if (isalnum(cur) || cur == '_') {
+          continue;
+        }
+        start = addToken(TokenID::String, res, start, --end);
+        state = TState::NewToken;
+        continue;
     }
   }
-  return result;
+  // Finish off the current token
+  switch (state) {
+    case TState::String:
+      addToken(TokenID::String, res, start, end);
+      break;
+    case TState::MaybeInt:
+      addToken(TokenID::IVal, res, start, end);
+      break;
+    case TState::Frac:
+    case TState::Exp:
+      addToken(TokenID::FVal, res, start, end);
+      break;
+    case TState::NewToken:
+      break;
+    default:
+      addToken(TokenID::Error, res, start, end);
+      return res;
+      break;
+  }
+  addToken(TokenID::Eof, res, end, end);
+  return res;
 }
 
+#if defined(TEST_TOKENIZATION)
 void Calculate(const std::string& str) {
   for (auto& token : Tokenize(str)) {
-    std::cout << str.substr(token.start, token.end) << std::endl;
+    switch (token.tok) {
+      case TokenID::Add:
+        std::cout << "Add: ";
+        break;
+      case TokenID::Sub:
+        std::cout << "Sub: ";
+        break;
+      case TokenID::Mul:
+        std::cout << "Mul: ";
+        break;
+      case TokenID::Div:
+        std::cout << "Div: ";
+        break;
+      case TokenID::Mod:
+        std::cout << "Mod: ";
+        break;
+      case TokenID::Exp:
+        std::cout << "Exp: ";
+        break;
+      case TokenID::Fact:
+        std::cout << "Fact: ";
+        break;
+      case TokenID::OParen:
+        std::cout << "OParen: ";
+        break;
+      case TokenID::CParen:
+        std::cout << "CParen: ";
+        break;
+      case TokenID::Assign:
+        std::cout << "Assign: ";
+        break;
+      case TokenID::IVal:
+        std::cout << "IVal: ";
+        break;
+      case TokenID::FVal:
+        std::cout << "FVal: ";
+        break;
+      case TokenID::String:
+        std::cout << "String: ";
+        break;
+      case TokenID::Error:
+        if (token.start > token.end)
+          std::cout << "Narsty Error!" << std::endl;
+        else
+          std::cout << "Error: ";
+        break;
+      case TokenID::Eof:
+        std::cout << "EOF" << std::endl;
+        continue;
+    }
+    std::cout << str.substr(token.start, token.end - token.start) << std::endl;
   }
 }
 
@@ -173,3 +276,4 @@ int main(int argc, const char* argv[]) {
   } while (!input.empty());
   return 0;
 }
+#endif
