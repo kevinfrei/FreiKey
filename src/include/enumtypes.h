@@ -35,3 +35,25 @@ enum class layer_t : uint8_t {
   Toggle = 3,
   Switch = 4
 };
+
+// Calculator token names
+enum class TokenID {
+  Add,
+  Sub,
+  Mul,
+  Div,
+  Mod,
+  Exp,
+  Fact,
+  OParen,
+  CParen,
+  Assign,
+  IVal,
+  FVal,
+  String,
+  Eof,
+  Error
+};
+
+// Calculator tokenization states
+enum class TState { NewToken, MaybeInt, String, Frac, StartExp, Exp };

@@ -25,10 +25,8 @@ all: laptype threepiece mock img
 clean:
 ifeq ($(OS),Windows_NT)
 	-@rd /s /q out > NUL 2>&1
-	-@del CalcScanner.cpp CalcParser.cpp include\\CalcParser.h > NUL 2>&1
 else
 	-rm -rf out
-	-rm CalcScanner.cpp CalcParser.cpp include/CalcParser.h
 endif
 
 laptype lt l:
@@ -79,13 +77,13 @@ out/imgenc:
 ifeq (${CXX},cl.exe)
 OBJFLAG=/FS /Fo
 IMGFLAG=/FS /Fe
-OPTFLAGS=/O2 /EHsc
+OPTFLAGS=/Od /Zi /EHsc
 STDNUM=/std:c++20
 OSUFFIX=obj
 else
 OBJFLAG=-o
 IMGFLAG=-o
-OPTFLAGS=-O2
+OPTFLAGS=-g
 STDNUM=-std=c++20
 OSUFFIX=o
 endif
@@ -122,13 +120,9 @@ out/calc:
 	-mkdir out${SEP}calc
 
 out/calc/%.${OSUFFIX} : %.cpp
-	${CXX} ${OPTFLAGS} -c -DSTDALONE -Iinclude -I. ${STDNUM} $< ${OBJFLAG}$@
+	${CXX} ${OPTFLAGS} -c -DCALC_TEST -Iinclude -I. ${STDNUM} $< ${OBJFLAG}$@
 
-CALCSRC = CalcParser.cpp CalcScanner.cpp
-
-CalcParser.cpp CalcScanner.cpp include/CalcParser.h: CalcLexer.ll CalcGrammar.yy
-	${FLEX} ${FLEXFLAGS} -nounistd CalcLexer.ll
-	${BISON} CalcGrammar.yy
+CALCSRC = CalcParsing.cpp CalcTokenization.cpp
 
 CALCOBJS = $(addprefix out/calc/, $(patsubst %.cpp, %.${OSUFFIX}, ${CALCSRC}))
 

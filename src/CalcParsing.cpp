@@ -6,209 +6,8 @@
 #include <string>
 #include <vector>
 
-enum class TokenID {
-  Add,
-  Sub,
-  Mul,
-  Div,
-  Mod,
-  Exp,
-  Fact,
-  OParen,
-  CParen,
-  Assign,
-  IVal,
-  FVal,
-  String,
-  Eof,
-  Error
-};
-
-class Token {
- public:
-  Token(TokenID t, uint16_t s, uint16_t e) : tok(t), start(s), end(e) {}
-  TokenID tok;
-  uint16_t start, end;
-};
-
-enum class TState { NewToken, MaybeInt, String, Frac, StartExp, Exp };
-
-inline uint16_t addToken(TokenID tk,
-                         std::vector<Token>& res,
-                         uint16_t s,
-                         uint16_t e) {
-  res.push_back(Token{tk, s, e});
-  return e;
-}
-
-std::vector<Token> Tokenize(const std::string& str) {
-  std::vector<Token> res;
-  uint16_t start, end;
-  TState state = TState::NewToken;
-
-  // Paranoia...
-  if (str.size() > 0xfffe) {
-    res.push_back(Token{TokenID::Error, 0xffff, 0});
-    return res;
-  }
-  uint16_t sz = str.size();
-  /* States:
-   *  NewToken:
-   *    digits -> MaybeInt
-   *    '.' -> Frac
-   *    letters/_ -> String
-   *    space -> skip
-   *    operators, etc... -> MakeOper, NewToken
-   *    Anything else -> Error
-   *  MaybeInt:
-   *    digits -> MaybeInt
-   *    e -> StartExp
-   *    . -> Frac
-   *    Anything else -> MakeInt, NewToken
-   *  Frac:
-   *    digits -> Frac
-   *    e -> StartExp
-   *    Anything else -> MakeFloat, NewToken
-   *  StartExp:
-   *    +/- -> Exp
-   *    Digits -> Exp(back up)
-   *    Anything else -> Error
-   *  Exp:
-   *    digits -> Exp
-   *    Anything else -> MakeFloat, NewToken
-   *  String:
-   *    letters/numbers/_ -> String
-   *    Anything else -> MakeString, NewToken
-   */
-  for (start = 0, end = 1; end <= sz; end++) {
-    char cur = str[end - 1];
-    switch (state) {
-      case TState::NewToken:
-        // Look at start to see what new token to start:
-        switch (cur) {
-          case '+':
-            start = addToken(TokenID::Add, res, start, end);
-            continue;
-          case '-':
-            start = addToken(TokenID::Sub, res, start, end);
-            continue;
-          case '*':
-            start = addToken(TokenID::Mul, res, start, end);
-            continue;
-          case '/':
-            start = addToken(TokenID::Div, res, start, end);
-            continue;
-          case '=':
-            start = addToken(TokenID::Assign, res, start, end);
-            continue;
-          case '%':
-            start = addToken(TokenID::Mod, res, start, end);
-            continue;
-          case '!':
-            start = addToken(TokenID::Fact, res, start, end);
-            continue;
-          case '(':
-            start = addToken(TokenID::OParen, res, start, end);
-            continue;
-          case ')':
-            start = addToken(TokenID::CParen, res, start, end);
-            continue;
-          case '^':
-            start = addToken(TokenID::Exp, res, start, end);
-            continue;
-          case '.':
-            state = TState::Frac;
-            continue;
-          case ' ':
-            // Just skip spaces
-            start++;
-            continue;
-          default:
-            break;
-        }
-        // Okay, let's see what state to switch to, yeah?
-        if (isdigit(cur)) {
-          state = TState::MaybeInt;
-          continue;
-        } else if (isalpha(cur)) {
-          state = TState::String;
-          continue;
-        }
-        res.push_back(Token{TokenID::Error, start, end});
-        return res;
-      case TState::MaybeInt:
-        if (isdigit(cur)) {
-          continue;
-        } else if (cur == 'e' || cur == 'E') {
-          state = TState::StartExp;
-          continue;
-        } else if (cur == '.') {
-          state = TState::Frac;
-          continue;
-        }
-        start = addToken(TokenID::IVal, res, start, --end);
-        state = TState::NewToken;
-        continue;
-      case TState::Frac:
-        if (isdigit(cur)) {
-          continue;
-        } else if (cur == 'e' || cur == 'E') {
-          state = TState::StartExp;
-          continue;
-        }
-        start = addToken(TokenID::FVal, res, start, --end);
-        state = TState::NewToken;
-        continue;
-      case TState::StartExp:
-        if (cur == '+' || cur == '-') {
-          state = TState::Exp;
-          continue;
-        }
-        if (isdigit(cur)) {
-          end--;
-          state = TState::Exp;
-          continue;
-        }
-        res.push_back(Token{TokenID::Error, start, end});
-        return res;
-      case TState::Exp:
-        if (isdigit(cur)) {
-          continue;
-        }
-        start = addToken(TokenID::FVal, res, start, --end);
-        state = TState::NewToken;
-        continue;
-      case TState::String:
-        if (isalnum(cur) || cur == '_') {
-          continue;
-        }
-        start = addToken(TokenID::String, res, start, --end);
-        state = TState::NewToken;
-        continue;
-    }
-  }
-  // Finish off the current token
-  switch (state) {
-    case TState::String:
-      addToken(TokenID::String, res, start, end);
-      break;
-    case TState::MaybeInt:
-      addToken(TokenID::IVal, res, start, end);
-      break;
-    case TState::Frac:
-    case TState::Exp:
-      addToken(TokenID::FVal, res, start, end);
-      break;
-    case TState::NewToken:
-      break;
-    default:
-      addToken(TokenID::Error, res, start, end);
-      return res;
-      break;
-  }
-  addToken(TokenID::Eof, res, end, end);
-  return res;
-}
+#include "Calculator.h"
+#include "enumtypes.h"
 
 class CalcValue {
   bool isFlt;
@@ -226,16 +25,44 @@ class CalcValue {
   CalcValue(const char* e = nullptr)
     : isFlt(true), fVal(0), iVal(-1LL), err(e) {}
   bool isError() const {
-    return isFloat && (iVal == -1LL || err != nullptr);
+    return isFlt && (iVal == -1LL || err != nullptr);
   }
   double asDouble() const {
-    return isFloat ? fVal : static_cast<double>(iVal);
+    return isFlt ? fVal : static_cast<double>(iVal);
   }
   int64_t asInt() const {
-    return isFloat ? static_cast<double>(fVal) : iVal;
+    return isFlt ? static_cast<double>(fVal) : iVal;
   }
   bool isFloat() const {
-    return isFloat;
+    return isFlt;
+  }
+  const char* message() const {
+    return err;
+  }
+  CalcValue operator-() const {
+    if (isError())
+      return *this;
+    return isFlt ? CalcValue{-fVal} : CalcValue{-iVal};
+  }
+  CalcValue operator+(const CalcValue& v) const {
+    if (isError())
+      return *this;
+    if (v.isError())
+      return v;
+    if (isFlt || v.isFlt) {
+      return CalcValue{this->asDouble() + v.asDouble()};
+    }
+    return CalcValue{this->asInt() + v.asInt()};
+  }
+  CalcValue operator-(const CalcValue& v) const {
+    if (isError())
+      return *this;
+    if (v.isError())
+      return v;
+    if (isFlt || v.isFlt) {
+      return CalcValue{this->asDouble() - v.asDouble()};
+    }
+    return CalcValue{this->asInt() - v.asInt()};
   }
 };
 
@@ -259,58 +86,142 @@ class CalculatorState {
   std::map<std::string, CalcValue> vars;
   std::map<std::string, CalcFunction> funcs;
 
+  const std::string* buffer;
   std::vector<Token> tokens;
   size_t cur;
 
-  Token& cur() const {
+  std::string getStr(const Token& t) {
+    return buffer->substr(t.start, t.end - t.start);
+  }
+
+  const Token& token() const {
     return tokens[cur];
   }
 
-  Token& peek() const {
+  const Token& peek() const {
     return tokens[cur + 1];
   }
 
-  void next() {
+  bool next() {
+    if (cur >= tokens.size()) {
+      return false;
+    }
     cur++;
+    return true;
   }
 
-  void back() {
+  bool back() {
+    if (cur == 0) {
+      return false;
+    }
     cur--;
+    return true;
   }
 
-  CalcValue Expr() {
+  CalcValue toIval(const Token& t) {
+    if (t.tok == TokenID::IVal) {
+      return CalcValue{std::stoll(getStr(t))};
+    } else if (t.tok == TokenID::FVal) {
+      return CalcValue{static_cast<int64_t>(std::stod(getStr(t)))};
+    }
+    return CalcValue{"Invalid Integer Value"};
+  }
+
+  CalcValue toFval(const Token& t) {
+    if (t.tok == TokenID::IVal) {
+      return CalcValue{std::stod(getStr(t))};
+    } else if (t.tok == TokenID::FVal) {
+      return CalcValue{static_cast<double>(std::stoll(getStr(t)))};
+    }
+    return CalcValue{"Invalid Float Value"};
+  }
+
+  CalcValue Prod(CalcValue running, TokenID op = TokenID::Mul) {
+
+  }
+
+  CalcValue Sum(CalcValue running, bool add = true) {
     CalcValue v;
+    // Sum:
+    //   Numish + Sum
+    // | Numish - Sum
+    // | Numish + Numish
+    // | Numish - Numish
+    size_t save1 = cur;
+    CalcValue v1 = Numish();
+    if (!v1.isError() &&
+        (token().tok == TokenID::Add || token().tok == TokenID::Sub)) {
+      TokenID t = token().tok;
+      next();
+      size_t save2 = cur;
+      v1 = add ? (running + v1) : (running - v1);
+      CalcValue v2 = Sum(v1, t == TokenID::Add);
+      if (!v2.isError()) {
+        return v2;
+      }
+      cur = save2;
+      v2 = Numish();
+      if (!v2.isError()) {
+        return (t == TokenID::Add) ? (v1 + v2) : (v1 - v2);
+      }
+    }
+    cur = save1;
     return v;
   }
 
-  CalcValue Assign(size_t& cur) {
+  CalcValue Numish() {
     CalcValue v;
-    return v;
-  }
-
-  CalcValue Prod(size_t& cur) {
-    CalcValue v;
-    return v;
-  }
-
-  CalcValue Numish(size_t& cur) {
-    CalcValue v;
-    return v;
-  }
-
-  CalcValue Func(size_t& cur) {
-    CalcValue v;
+    // Numish:
+    //   IVal/FVal
+    // | - Numish
+    // | ( Numish )
+    if (token().tok == TokenID::IVal) {
+      v = toIval(token());
+      next();
+    } else if (token().tok == TokenID::FVal) {
+      v = toFval(token());
+      next();
+    } else if (token().tok == TokenID::Sub) {
+      next();
+      v = Numish();
+      if (v.isError())
+        back();
+      else
+        v = -v;
+    } else if (token().tok == TokenID::OParen) {
+      size_t save = cur;
+      next();
+      v = Numish();
+      if (!v.isError() && token().tok == TokenID::CParen) {
+        next();
+        return v;
+      } else {
+        v = CalcValue{"Unbalanced Parentheses"};
+      }
+      cur = save;
+    }
     return v;
   }
 
   CalcValue Line() {
     CalcValue v;
+    // Line:
+    //   Sum
+    // | Numish
     cur = 0;
-    if (tokens[end].tok == TokenID::Eof) {
-      if (end == 0) {
-        v = CalcValue{"Empty!"};
+    v = Sum(CalcValue{0});
+    if (v.isError()) {
+      cur = 0;
+      v = Numish();
+    }
+    if (!v.isError()) {
+      if (token().tok != TokenID::Eof) {
+        v = CalcValue{"Extra Stuff"};
+      } else {
+        if (tokens.size() == 1) {
+          v = CalcValue{"Empty!"};
+        }
       }
-      k
     }
     return v;
   }
@@ -326,12 +237,14 @@ class CalculatorState {
     // Nothing in functions just yet...
   }
   CalcValue Parse(const std::string& str) {
+    buffer = &str;
     tokens = Tokenize(str);
-    CalcValue cv = Entry();
+    CalcValue cv = Line();
     return cv;
   }
 };
 
+#if defined(CALC_TEST)
 int main(int argc, const char* argv[]) {
   std::string input;
   CalculatorState state;
@@ -341,18 +254,19 @@ int main(int argc, const char* argv[]) {
     std::cout << "'" << input << "'" << std::endl;
     CalcValue cv = state.Parse(input);
     if (cv.isError()) {
-      std::cout << "Error!" << std::endl;
-    } else if (cv.isFloat) {
-      std::cout << cv.fVal << std::endl;
+      std::cout << (cv.message() ? cv.message() : "Unknown error") << std::endl;
+    } else if (cv.isFloat()) {
+      std::cout << cv.asDouble() << std::endl;
     } else {
-      std::cout << cv.iVal << std::endl;
+      std::cout << cv.asInt() << std::endl;
     }
     std::cout << "====" << std::endl;
   } while (!input.empty());
   return 0;
 }
+#endif
 
-#if defined(TEST_TOKENIZATION)
+#if defined(CALC_TEST_TOKENS)
 void Calculate(const std::string& str) {
   for (auto& token : Tokenize(str)) {
     switch (token.tok) {

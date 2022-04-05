@@ -78,6 +78,24 @@
       "cStandard": "c17",
       "cppStandard": "c++17",
       "intelliSenseMode": "macos-clang-arm64"
+    },
+    {
+      "name": "Calc (Win)",
+      "includePath": ["${workspaceFolder}/include"],
+      "defines": ["CALC_TEST"],
+      "windowsSdkVersion": "10.0.19041.0",
+      "compilerPath": "C:\\Program Files\\LLVM\\bin\\clang.exe",
+      "cStandard": "c11",
+      "cppStandard": "c++20",
+      "intelliSenseMode": "windows-clang-x64"
+    },
+    {
+      "name": "Calc (Mac)",
+      "includePath": ["${workspaceFolder}/include"],
+      "defines": [],
+      "cStandard": "c11",
+      "cppStandard": "c++20",
+      "intelliSenseMode": "macos-clang-arm64"
     }
   ],
   "version": 4
