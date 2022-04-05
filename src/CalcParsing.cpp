@@ -129,15 +129,16 @@ class CalculatorState {
 
   CalcValue toFval(const Token& t) {
     if (t.tok == TokenID::IVal) {
-      return CalcValue{std::stod(getStr(t))};
-    } else if (t.tok == TokenID::FVal) {
       return CalcValue{static_cast<double>(std::stoll(getStr(t)))};
+    } else if (t.tok == TokenID::FVal) {
+      return CalcValue{std::stod(getStr(t))};
     }
     return CalcValue{"Invalid Float Value"};
   }
 
   CalcValue Prod(CalcValue running, TokenID op = TokenID::Mul) {
-
+    CalcValue err;
+    return err;
   }
 
   CalcValue Sum(CalcValue running, bool add = true) {
