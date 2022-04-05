@@ -138,6 +138,10 @@ class CalculatorState {
 
   CalcValue Prod(CalcValue running, TokenID op = TokenID::Mul) {
     CalcValue err;
+    // Prod:
+    //    Numish */% Prod
+    //  | Numish */% Numish
+    
     return err;
   }
 
