@@ -37,11 +37,11 @@ class Scanner {
         break;
       case calc::Parser::token::INT: // INT
         yylval->emplace<int64_t>(
-          std::stoi(str.substr(t.start, t.end - t.start)));
+          atoll(str.substr(t.start, t.end - t.start).c_str()));
         break;
       case calc::Parser::token::FLT: // FLT
         yylval->emplace<double>(
-          std::stod(str.substr(t.start, t.end - t.start)));
+          atof(str.substr(t.start, t.end - t.start).c_str()));
         break;
       case calc::Parser::token::FLTVAR: // FLTVAR
       case calc::Parser::token::INTVAR: // INTVAR

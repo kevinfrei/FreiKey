@@ -1,8 +1,10 @@
 %{
-#include <iostream>
 #include <string>
 #include <cmath>
-#include <stdint.h>
+
+#if defined(NATIVE)
+#include <iostream>
+#endif
 
 // #include <FlexLexer.h>
 %}
@@ -32,6 +34,7 @@
 {
 // Using my own scanner, because flex has too FILE crap for Arduino to handle...
 #include "CalcScanner.h"
+
 #define yylex(x) scanner->lex(x)
 }
 
@@ -116,6 +119,7 @@ void Parse(std::string &str) {
   parser.parse();
 }
 
+#if defined(NATIVE)
 int main(int argc, const char* argv[]) {
   std::string input;
   do {
@@ -127,3 +131,4 @@ int main(int argc, const char* argv[]) {
   } while (!input.empty());
   return 0;
 }
+#endif

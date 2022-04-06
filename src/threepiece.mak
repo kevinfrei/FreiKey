@@ -42,12 +42,12 @@ LIB_GFX=1
 LIB_ST77XX=1
 LIB_WIRE=1
 
-USER_INCLUDES=-Iinclude/threepiece -Iinclude/remotescan -Iinclude/teensy -Iinclude
+USER_INCLUDES=-Iinclude/threepiece -Iinclude/remotescan -Iinclude/teensy -Iinclude -Igen
 
 BITMAPS=$(wildcard bitmaps/*.cpp)
 IMG_DECODERS=$(wildcard imgdec_*.cpp)
 
-gen/CalcParser.cpp gen/CalcParser.h: GENDIR nCalcGrammer.yy
+gen/CalcParser.cpp gen/CalcParser.h: GENDIR CalcGrammar.yy
 	${BISON} CalcGrammar.yy
 
 GENDIR:
@@ -61,10 +61,13 @@ USER_CPP_SRCS=\
 	remotescan.cpp \
 	threepiece.cpp \
 	image.cpp \
+	gen/CalcParser.cpp \
+	CalcTokenization.cpp \
 	${IMG_DECODERS} \
 	${BITMAPS}
 
-VPATH:=bitmaps
+VPATH+=bitmaps
+VPATH+=gen
 
 ifeq ($(OS),Windows_NT)
 include tools/teensy.win

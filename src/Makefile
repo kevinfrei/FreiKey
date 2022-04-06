@@ -25,8 +25,9 @@ all: laptype threepiece mock img
 clean:
 ifeq ($(OS),Windows_NT)
 	-@rd /s /q out > NUL 2>&1
+	-@rd /s /q out gen > NUL 2>&1
 else
-	-rm -rf out
+	-rm -rf out gen
 endif
 
 laptype lt l:
@@ -126,10 +127,10 @@ out/calc:
 	-mkdir out${SEP}calc
 
 out/calc/CalcParser.${OSUFFIX} : gen/CalcParser.cpp
-	${CXX} ${OPTFLAGS} -I. -Iinclude -Igen ${STDNUM} -c  $< ${OBJFLAG}$@
+	${CXX} ${OPTFLAGS} -I. -Iinclude -Igen -DNATIVE ${STDNUM} -c  $< ${OBJFLAG}$@
 
 out/calc/CalcTokenization.${OSUFFIX} : CalcTokenization.cpp
-	${CXX} ${OPTFLAGS} -I. -Iinclude -Igen ${STDNUM} -c $< ${OBJFLAG}$@
+	${CXX} ${OPTFLAGS} -I. -Iinclude -Igen -DNATIVE ${STDNUM} -c $< ${OBJFLAG}$@
 
 CALCOBJS = out/calc/CalcParser.${OSUFFIX} out/calc/CalcTokenization.${OSUFFIX}
 
