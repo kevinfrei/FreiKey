@@ -9,6 +9,8 @@
 #include "Calculator.h"
 #include "enumtypes.h"
 
+REMOVE THIS EVENTUALLY
+
 class CalcValue {
   bool isFlt;
   double fVal;
@@ -141,7 +143,7 @@ class CalculatorState {
     // Prod:
     //    Numish */% Prod
     //  | Numish */% Numish
-    
+
     return err;
   }
 

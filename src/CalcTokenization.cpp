@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include <vector>
+#include <string.h>
 
 #include "CalcParser.h"
 #include "Calculator.h"
@@ -14,17 +14,17 @@ inline uint16_t addToken(calc::Parser::token_kind_type tk,
 }
 
 // Float: \d*.?\d+(e+/-\d+)?
-std::vector<Token> Tokenize(const std::string& str) {
+std::vector<Token> Tokenize(const char *str) {
   std::vector<Token> res;
   uint16_t start, end;
   TState state = TState::NewToken;
   bool isFloat;
   // Paranoia...
-  if (str.size() > 0xfffe) {
+  size_t sz = strlen(str);
+  if (sz > 0xfffe) {
     res.push_back(Token{calc::Parser::token::YYerror, 0xffff, 0});
     return res;
   }
-  uint16_t sz = str.size();
   /* States:
    *  NewToken:
    *    digits -> MaybeInt

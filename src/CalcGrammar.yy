@@ -10,25 +10,27 @@
 %}
 
 %require "3.7.4"
-%language "C++"
+// %language "C++"
 
 %no-lines
 
 %defines "gen/CalcParser.h"
 %output "gen/CalcParser.cpp"
 
-%define api.parser.class {Parser}
-%define api.namespace {calc}
-%define api.value.type variant
+// %define api.parser.class {Parser}
+// %define api.namespace {calc}
+// %define api.value.type variant
 
-%parse-param {Scanner* scanner}
+// %parse-param {Scanner* scanner}
 
+/*
 %code requires
 {
     namespace calc {
         class Scanner;
     } // namespace calc
 } // %code requires
+*/
 
 %code
 {

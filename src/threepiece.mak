@@ -31,7 +31,7 @@ PROJ_NAME=threepiece
 BUILD_PATH=out/threepiece
 
 # My custom flags
-COMPILER_CPP_EXTRA_FLAGS=
+COMPILER_CPP_EXTRA_FLAGS=-O3
 # This causes link errors now :'(
 # -flto
 
@@ -53,6 +53,8 @@ gen/CalcParser.cpp gen/CalcParser.h: GENDIR CalcGrammar.yy
 GENDIR:
 	-mkdir gen
 
+CalcTokenization.cpp: gen/CalcParser.h
+
 USER_CPP_SRCS=\
 	dbgcfg.cpp \
 	kbreporter.cpp \
@@ -61,8 +63,8 @@ USER_CPP_SRCS=\
 	remotescan.cpp \
 	threepiece.cpp \
 	image.cpp \
-	gen/CalcParser.cpp \
 	CalcTokenization.cpp \
+	gen/CalcParser.cpp \
 	${IMG_DECODERS} \
 	${BITMAPS}
 
