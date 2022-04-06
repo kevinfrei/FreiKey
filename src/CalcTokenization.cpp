@@ -1,29 +1,30 @@
-#include <stdint.h>
-#include <string.h>
+#include <cstdint>
+#include <cstdlib>
+#include <cstring>
+#include <cctype>
 
 #include "CalcParser.h"
 #include "Calculator.h"
 #include "enumtypes.h"
 
-inline uint16_t addToken(calc::Parser::token_kind_type tk,
-                         std::vector<Token>& res,
-                         uint16_t s,
-                         uint16_t e) {
-  res.push_back(Token{tk, s, e});
+namespace calc {
+
+uint16_t Scanner::addToken(yytoken_kind_t tk, uint16_t s, uint16_t e) {
+  tokens.push_back(Token{tk, s, e});
   return e;
 }
 
 // Float: \d*.?\d+(e+/-\d+)?
-std::vector<Token> Tokenize(const char *str) {
-  std::vector<Token> res;
+void Scanner::Tokenize(const char* str) {
+  tokens.clear();
   uint16_t start, end;
   TState state = TState::NewToken;
   bool isFloat;
   // Paranoia...
   size_t sz = strlen(str);
   if (sz > 0xfffe) {
-    res.push_back(Token{calc::Parser::token::YYerror, 0xffff, 0});
-    return res;
+    tokens.push_back(Token{YYerror, 0xffff, 0});
+    return;
   }
   /* States:
    *  NewToken:
@@ -60,44 +61,34 @@ std::vector<Token> Tokenize(const char *str) {
         // Look at start to see what new token to start:
         switch (cur) {
           case '+':
-            start =
-              addToken(calc::Parser::token::PLUS, res, start, end);
+            start = addToken(PLUS, start, end);
             continue;
           case '-':
-            start =
-              addToken(calc::Parser::token::MINUS, res, start, end);
+            start = addToken(MINUS, start, end);
             continue;
           case '*':
-            start =
-              addToken(calc::Parser::token::MULTIPLY, res, start, end);
+            start = addToken(MULTIPLY, start, end);
             continue;
           case '/':
-            start =
-              addToken(calc::Parser::token::DIVIDE, res, start, end);
+            start = addToken(DIVIDE, start, end);
             continue;
           case '=':
-            start =
-              addToken(calc::Parser::token::ASSIGN, res, start, end);
+            start = addToken(ASSIGN, start, end);
             continue;
           case '%':
-            start =
-              addToken(calc::Parser::token::MODULO, res, start, end);
+            start = addToken(MODULO, start, end);
             continue;
           case '!':
-            start =
-              addToken(calc::Parser::token::FACTORIAL, res, start, end);
+            start = addToken(FACTORIAL, start, end);
             continue;
           case '(':
-            start =
-              addToken(calc::Parser::token::LPAREN, res, start, end);
+            start = addToken(LPAREN, start, end);
             continue;
           case ')':
-            start =
-              addToken(calc::Parser::token::RPAREN, res, start, end);
+            start = addToken(RPAREN, start, end);
             continue;
           case '^':
-            start =
-              addToken(calc::Parser::token::EXPONENT, res, start, end);
+            start = addToken(EXPONENT, start, end);
             continue;
           case '.':
             state = TState::Frac;
@@ -117,8 +108,8 @@ std::vector<Token> Tokenize(const char *str) {
           state = TState::String;
           continue;
         }
-        res.push_back(Token{calc::Parser::token::YYerror, start, end});
-        return res;
+        tokens.push_back(Token{YYerror, start, end});
+        return;
       case TState::MaybeInt:
         if (isdigit(cur)) {
           continue;
@@ -129,8 +120,7 @@ std::vector<Token> Tokenize(const char *str) {
           state = TState::Frac;
           continue;
         }
-        start =
-          addToken(calc::Parser::token::INT, res, start, --end);
+        start = addToken(INT, start, --end);
         state = TState::NewToken;
         continue;
       case TState::Frac:
@@ -140,7 +130,7 @@ std::vector<Token> Tokenize(const char *str) {
           state = TState::StartExp;
           continue;
         }
-        start = addToken(calc::Parser::token::FLT, res, start, --end);
+        start = addToken(FLT, start, --end);
         state = TState::NewToken;
         continue;
       case TState::StartExp:
@@ -153,13 +143,13 @@ std::vector<Token> Tokenize(const char *str) {
           state = TState::Exp;
           continue;
         }
-        res.push_back(Token{calc::Parser::token::YYerror, start, end});
-        return res;
+        tokens.push_back(Token{YYerror, start, end});
+        return;
       case TState::Exp:
         if (isdigit(cur)) {
           continue;
         }
-        start = addToken(calc::Parser::token::FLT, res, start, --end);
+        start = addToken(FLT, start, --end);
         state = TState::NewToken;
         continue;
       case TState::String:
@@ -167,11 +157,7 @@ std::vector<Token> Tokenize(const char *str) {
           continue;
         }
         isFloat = islower(str[start]);
-        start = addToken(isFloat ? calc::Parser::token::FLTVAR
-                                 : calc::Parser::token::INTVAR,
-                         res,
-                         start,
-                         --end);
+        start = addToken(isFloat ? FLTVAR : INTVAR, start, --end);
         state = TState::NewToken;
         continue;
     }
@@ -180,26 +166,22 @@ std::vector<Token> Tokenize(const char *str) {
   switch (state) {
     case TState::String:
       isFloat = islower(str[start]);
-      addToken(isFloat ? calc::Parser::token::FLTVAR
-                       : calc::Parser::token::INTVAR,
-               res,
-               start,
-               end);
+      addToken(isFloat ? FLTVAR : INTVAR, start, end);
       break;
     case TState::MaybeInt:
-      addToken(calc::Parser::token::INT, res, start, end);
+      addToken(INT, start, end);
       break;
     case TState::Frac:
     case TState::Exp:
-      addToken(calc::Parser::token::FLT, res, start, end);
+      addToken(FLT, start, end);
       break;
     case TState::NewToken:
       break;
     default:
-      addToken(calc::Parser::token::YYerror, res, start, end);
-      return res;
-      break;
+      addToken(YYerror, start, end);
+      return;
   }
-  addToken(calc::Parser::token::EOL, res, end, end);
-  return res;
+  addToken(EOL, end, end);
 }
+
+} // namespace calc

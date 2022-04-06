@@ -17,7 +17,7 @@ else
 flags=-j
 SEP=/
 FLEX=flex
-BISON=bison
+BISON=/opt/homebrew/opt/bison/bin/bison
 endif
 # Now the default target
 all: laptype threepiece mock img
@@ -26,8 +26,10 @@ clean:
 ifeq ($(OS),Windows_NT)
 	-@rd /s /q out > NUL 2>&1
 	-@rd /s /q out gen > NUL 2>&1
+	-@del CalcParser.cpp
+	-@del include\\CalcParser.h
 else
-	-rm -rf out gen
+	-rm -rf out gen CalcParser.cpp include/CalcParser.h
 endif
 
 laptype lt l:
@@ -117,20 +119,14 @@ out/imgenc/imagecomp${SFX}: ${IMGOBJS}
 
 calc: out out/calc out/calc/calculator${SFX}
 
-gen/CalcParser.cpp gen/CalcParser.h: GENDIR CalcGrammar.yy
-	${BISON} CalcGrammar.yy
-
-GENDIR:
-	-mkdir gen
+CalcParser.cpp include/CalcParser.h: CalcGrammar.yy
+	${BISON} $<
 
 out/calc:
 	-mkdir out${SEP}calc
 
-out/calc/CalcParser.${OSUFFIX} : gen/CalcParser.cpp
-	${CXX} ${OPTFLAGS} -I. -Iinclude -Igen -DNATIVE ${STDNUM} -c  $< ${OBJFLAG}$@
-
-out/calc/CalcTokenization.${OSUFFIX} : CalcTokenization.cpp
-	${CXX} ${OPTFLAGS} -I. -Iinclude -Igen -DNATIVE ${STDNUM} -c $< ${OBJFLAG}$@
+out/calc/%.${OSUFFIX} : %.cpp
+	${CXX} ${OPTFLAGS} -I. -Iinclude -DNATIVE ${STDNUM} -c  $< ${OBJFLAG}$@
 
 CALCOBJS = out/calc/CalcParser.${OSUFFIX} out/calc/CalcTokenization.${OSUFFIX}
 

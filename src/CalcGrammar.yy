@@ -1,12 +1,21 @@
 %{
 #include <cmath>
-
 #if defined(NATIVE)
 #include <iostream>
 #include <string>
+#else
+#include "Arduino.h"
+#endif
+// Using my own scanner, because flex has too much FILE crap for Arduino to handle...
+#include "Calculator.h"
+
+#if defined(NATIVE) 
+#define print(x) std::cout << x << std::endl
+#else
+#define print Serial.print
 #endif
 
-int yyerror(char *s);
+int yyerror(const char *s);
 int yylex(void);
 
 %}
@@ -15,21 +24,13 @@ int yylex(void);
 
 %no-lines
 
-%defines "gen/CalcParser.h"
-%output "gen/CalcParser.cpp"
+%defines "include/CalcParser.h"
+%output "CalcParser.cpp"
 
 %union{
   int		int_val;
   double	dbl_val;
   char str_val;
-}
-
-%code
-{
-// Using my own scanner, because flex has too FILE crap for Arduino to handle...
-#include "CalcScanner.h"
-
-// #define yylex(x) scanner->lex(x)
 }
 
 %token              EOL LPAREN RPAREN
@@ -49,18 +50,17 @@ int yylex(void);
 
 %code
 {
-//    namespace calc {
-        int64_t ivars['Z' - 'A' + 1];
-        double fvars['z' - 'a' + 1];
+int64_t ivars['Z' - 'A' + 1];
+double fvars['z' - 'a' + 1];
 
-        int64_t factorial(int64_t n) {
-          int64_t i;
-          for (i = 1; n > 1; n--) {
-            i *= n;
-          }
-          return i;
-        }
-//    } // namespace calc
+int64_t factorial(int64_t n) {
+  int64_t i;
+  for (i = 1; n > 1; n--) {
+    i *= n;
+  }
+  return i;
+}
+
 } // %code
 
 %%
@@ -69,11 +69,11 @@ lines   : %empty
         | lines line
         ;
 
-line    : EOL                       { std::cerr << "Read an empty line.\n"; }
-        | iexp EOL                  { std::cout << $1 << '\n'; }
-        | fexp EOL                  { std::cout << $1 << '\n'; }
-        | INTVAR ASSIGN iexp EOL    { ivars[$1 - 'A'] = $3; }
-        | FLTVAR ASSIGN fexp EOL    { fvars[$1 - 'a'] = $3; }
+line    : EOL                       { yyerror("Read an empty line.\n"); }
+        | iexp EOL                  { print($1); }
+        | fexp EOL                  { print($1); }
+        | INTVAR ASSIGN iexp EOL    { ivars[$1 - 'A'] = $3; print($3); }
+        | FLTVAR ASSIGN fexp EOL    { fvars[$1 - 'a'] = $3; print($3); }
         | error EOL                 { yyerrok; }
         ;
 
@@ -101,26 +101,37 @@ fexp    : FLT                       { $$ = $1; }
         ;
 
 %%
+const char *errors = nullptr;
+calc::Scanner *scan;
 
-void calc::Parser::error(const std::string& msg) {
-  std::cerr << msg << std::endl;
+int yyerror(const char *msg) {
+  errors = msg;
+  return 1;
 }
 
-void Parse(std::string &str) {
+int yylex() {
+  return scan->lex();
+}
+
+void Parse(const char *str) {
+  errors = nullptr;
   calc::Scanner scanner{ str };
-  calc::Parser parser{ &scanner };
-  std::cout.precision(10);
-  parser.parse();
+  scan = &scanner;
+  yyparse();
+  if (errors != nullptr) {
+    print(errors);
+  }
 }
 
 #if defined(NATIVE)
 int main(int argc, const char* argv[]) {
   std::string input;
+  std::cout.precision(10);
   do {
     std::cout << "Enter some stuff:" << std::endl;
     std::getline(std::cin, input);
     std::cout << "'" << input << "'" << std::endl;
-    Parse(input);
+    Parse(input.c_str());
     std::cout << "====" << std::endl;
   } while (!input.empty());
   return 0;

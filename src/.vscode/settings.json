@@ -104,7 +104,9 @@
     "xlocmon": "cpp",
     "xlocnum": "cpp",
     "xloctime": "cpp",
-    "xmemory": "cpp"
+    "xmemory": "cpp",
+    "__bits": "cpp",
+    "variant": "cpp"
   },
   "files.exclude": {
     "out": true,

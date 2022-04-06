@@ -2875,9 +2875,9 @@ all: ${BUILD_PATH} ${PROJ_NAME}
 
 # Some house keeping
 clean:
-	-rm ${USER_OBJS}
+	-rm ${USER_OBJS} ${USER_CLEAN}
 
-allclean:
+allclean: clean
 	-rm -rf ${BUILD_PATH}
 
 # Make us rebuild user code if the makefile(s) change:

@@ -11,7 +11,7 @@ else ifeq ($(shell uname -s), Darwin)
 	TOOLS_PATH=${ARD}/tools
 	RUNTIME_HARDWARE_PATH=${TOOLS_PATH}
 	CMD_PATH=${TOOLS_PATH}
-	BISON=bison
+	BISON=/opt/homebrew/opt/bison/bin/bison
 else
   $(error No Linux support yet)
 endif
@@ -31,7 +31,7 @@ PROJ_NAME=threepiece
 BUILD_PATH=out/threepiece
 
 # My custom flags
-COMPILER_CPP_EXTRA_FLAGS=-O3
+COMPILER_CPP_EXTRA_FLAGS=
 # This causes link errors now :'(
 # -flto
 
@@ -42,18 +42,20 @@ LIB_GFX=1
 LIB_ST77XX=1
 LIB_WIRE=1
 
-USER_INCLUDES=-Iinclude/threepiece -Iinclude/remotescan -Iinclude/teensy -Iinclude -Igen
+USER_INCLUDES=-Iinclude/threepiece -Iinclude/remotescan -Iinclude/teensy -Iinclude
 
 BITMAPS=$(wildcard bitmaps/*.cpp)
 IMG_DECODERS=$(wildcard imgdec_*.cpp)
 
-gen/CalcParser.cpp gen/CalcParser.h: GENDIR CalcGrammar.yy
-	${BISON} CalcGrammar.yy
-
 GENDIR:
 	-mkdir gen
 
-CalcTokenization.cpp: gen/CalcParser.h
+USER_CLEAN=CalcParser.cpp include/CalcParser.h
+
+${USER_CLEAN}: CalcGrammar.yy
+	${BISON} CalcGrammar.yy
+
+CalcTokenization.cpp: include/CalcParser.h
 
 USER_CPP_SRCS=\
 	dbgcfg.cpp \
@@ -64,7 +66,7 @@ USER_CPP_SRCS=\
 	threepiece.cpp \
 	image.cpp \
 	CalcTokenization.cpp \
-	gen/CalcParser.cpp \
+	CalcParser.cpp \
 	${IMG_DECODERS} \
 	${BITMAPS}
 
