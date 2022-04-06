@@ -1,52 +1,44 @@
 %{
-#include <string>
 #include <cmath>
 
 #if defined(NATIVE)
 #include <iostream>
+#include <string>
 #endif
 
-// #include <FlexLexer.h>
+int yyerror(char *s);
+int yylex(void);
+
 %}
 
 %require "3.7.4"
-// %language "C++"
 
 %no-lines
 
 %defines "gen/CalcParser.h"
 %output "gen/CalcParser.cpp"
 
-// %define api.parser.class {Parser}
-// %define api.namespace {calc}
-// %define api.value.type variant
-
-// %parse-param {Scanner* scanner}
-
-/*
-%code requires
-{
-    namespace calc {
-        class Scanner;
-    } // namespace calc
-} // %code requires
-*/
+%union{
+  int		int_val;
+  double	dbl_val;
+  char str_val;
+}
 
 %code
 {
 // Using my own scanner, because flex has too FILE crap for Arduino to handle...
 #include "CalcScanner.h"
 
-#define yylex(x) scanner->lex(x)
+// #define yylex(x) scanner->lex(x)
 }
 
 %token              EOL LPAREN RPAREN
-%token <int64_t>    INT
-%token <double>     FLT
-%token <char>       FLTVAR INTVAR
+%token <int_val>    INT
+%token <dbl_val>    FLT
+%token <str_val>    FLTVAR INTVAR
 
-%nterm <int64_t>    iexp
-%nterm <double>     fexp
+%nterm <int_val>    iexp
+%nterm <dbl_val>    fexp
 
 %nonassoc           ASSIGN
 %left               PLUS MINUS
@@ -57,7 +49,7 @@
 
 %code
 {
-    namespace calc {
+//    namespace calc {
         int64_t ivars['Z' - 'A' + 1];
         double fvars['z' - 'a' + 1];
 
@@ -68,7 +60,7 @@
           }
           return i;
         }
-    } // namespace calc
+//    } // namespace calc
 } // %code
 
 %%
