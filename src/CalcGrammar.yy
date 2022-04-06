@@ -4,14 +4,16 @@
 #include <cmath>
 #include <stdint.h>
 
-#include <FlexLexer.h>
+// #include <FlexLexer.h>
 %}
 
 %require "3.7.4"
 %language "C++"
 
-%defines "include/CalcParser.h"
-%output "CalcParser.cpp"
+%no-lines
+
+%defines "gen/CalcParser.h"
+%output "gen/CalcParser.cpp"
 
 %define api.parser.class {Parser}
 %define api.namespace {calc}
@@ -28,14 +30,15 @@
 
 %code
 {
-    #include "CalcScanner.h"
-    #define yylex(x) scanner->lex(x)
+// Using my own scanner, because flex has too FILE crap for Arduino to handle...
+#include "CalcScanner.h"
+#define yylex(x) scanner->lex(x)
 }
 
 %token              EOL LPAREN RPAREN
 %token <int64_t>    INT
 %token <double>     FLT
-%token <char>       INTVAR FLTVAR
+%token <char>       FLTVAR INTVAR
 
 %nterm <int64_t>    iexp
 %nterm <double>     fexp
@@ -103,5 +106,24 @@ fexp    : FLT                       { $$ = $1; }
 %%
 
 void calc::Parser::error(const std::string& msg) {
-    std::cerr << msg << std::endl;
+  std::cerr << msg << std::endl;
+}
+
+void Parse(std::string &str) {
+  calc::Scanner scanner{ str };
+  calc::Parser parser{ &scanner };
+  std::cout.precision(10);
+  parser.parse();
+}
+
+int main(int argc, const char* argv[]) {
+  std::string input;
+  do {
+    std::cout << "Enter some stuff:" << std::endl;
+    std::getline(std::cin, input);
+    std::cout << "'" << input << "'" << std::endl;
+    Parse(input);
+    std::cout << "====" << std::endl;
+  } while (!input.empty());
+  return 0;
 }

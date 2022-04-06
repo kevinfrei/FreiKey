@@ -47,11 +47,11 @@ USER_INCLUDES=-Iinclude/threepiece -Iinclude/remotescan -Iinclude/teensy -Iinclu
 BITMAPS=$(wildcard bitmaps/*.cpp)
 IMG_DECODERS=$(wildcard imgdec_*.cpp)
 
-calculator-lex.cpp: calculator.l calculator.tab.h
-	${FLEX} calculator.l
+gen/CalcParser.cpp gen/CalcParser.h: GENDIR nCalcGrammer.yy
+	${BISON} CalcGrammar.yy
 
-calculator.tab.c calculator.tab.h: calculator.y
-	${BISON} --defines=calculator-bison.h
+GENDIR:
+	-mkdir gen
 
 USER_CPP_SRCS=\
 	dbgcfg.cpp \

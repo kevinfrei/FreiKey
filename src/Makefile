@@ -116,15 +116,22 @@ out/imgenc/imagecomp${SFX}: ${IMGOBJS}
 
 calc: out out/calc out/calc/calculator${SFX}
 
+gen/CalcParser.cpp gen/CalcParser.h: GENDIR CalcGrammar.yy
+	${BISON} CalcGrammar.yy
+
+GENDIR:
+	-mkdir gen
+
 out/calc:
 	-mkdir out${SEP}calc
 
-out/calc/%.${OSUFFIX} : %.cpp
-	${CXX} ${OPTFLAGS} -c -DCALC_TEST -Iinclude -I. ${STDNUM} $< ${OBJFLAG}$@
+out/calc/CalcParser.${OSUFFIX} : gen/CalcParser.cpp
+	${CXX} ${OPTFLAGS} -I. -Iinclude -Igen ${STDNUM} -c  $< ${OBJFLAG}$@
 
-CALCSRC = CalcParsing.cpp CalcTokenization.cpp
+out/calc/CalcTokenization.${OSUFFIX} : CalcTokenization.cpp
+	${CXX} ${OPTFLAGS} -I. -Iinclude -Igen ${STDNUM} -c $< ${OBJFLAG}$@
 
-CALCOBJS = $(addprefix out/calc/, $(patsubst %.cpp, %.${OSUFFIX}, ${CALCSRC}))
+CALCOBJS = out/calc/CalcParser.${OSUFFIX} out/calc/CalcTokenization.${OSUFFIX}
 
 out/calc/calculator${SFX}: ${CALCOBJS}
 	${CXX} ${OPTFLAGS} ${IMGFLAG}$@ $^

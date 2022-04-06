@@ -39,3 +39,4 @@ src/Makefile
 src/out*
 src/.vs
 src/*.bin
+src/gen

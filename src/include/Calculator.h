@@ -1,14 +1,15 @@
 #pragma once
 
-#include "enumtypes.h"
 #include <stdint.h>
 #include <string>
 #include <vector>
 
+#include "CalcParser.h"
+
 class Token {
  public:
-  Token(TokenID t, uint16_t s, uint16_t e) : tok(t), start(s), end(e) {}
-  TokenID tok;
+  Token(calc::Parser::token_kind_type t, uint16_t s, uint16_t e) : tok(t), start(s), end(e) {}
+  calc::Parser::token_kind_type tok;
   uint16_t start, end;
 };
 
