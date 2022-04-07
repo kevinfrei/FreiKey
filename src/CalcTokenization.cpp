@@ -1,10 +1,13 @@
+#include <cctype>
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
-#include <cctype>
+
+#include "ValExpr.h"
 
 #include "CalcParser.h"
 #include "Calculator.h"
+
 #include "enumtypes.h"
 
 namespace calc {
@@ -149,7 +152,7 @@ void Scanner::Tokenize(const char* str) {
         if (isdigit(cur)) {
           continue;
         }
-        start = addToken(FLT, start, --end);
+        start = addToken(INT, start, --end);
         state = TState::NewToken;
         continue;
       case TState::String:
@@ -157,7 +160,7 @@ void Scanner::Tokenize(const char* str) {
           continue;
         }
         isFloat = islower(str[start]);
-        start = addToken(isFloat ? FLTVAR : INTVAR, start, --end);
+        start = addToken(VAR, start, --end);
         state = TState::NewToken;
         continue;
     }
@@ -166,7 +169,7 @@ void Scanner::Tokenize(const char* str) {
   switch (state) {
     case TState::String:
       isFloat = islower(str[start]);
-      addToken(isFloat ? FLTVAR : INTVAR, start, end);
+      addToken(VAR, start, end);
       break;
     case TState::MaybeInt:
       addToken(INT, start, end);

@@ -128,7 +128,7 @@ out/calc:
 out/calc/%.${OSUFFIX} : %.cpp
 	${CXX} ${OPTFLAGS} -I. -Iinclude -DNATIVE ${STDNUM} -c  $< ${OBJFLAG}$@
 
-CALCOBJS = out/calc/CalcParser.${OSUFFIX} out/calc/CalcTokenization.${OSUFFIX}
+CALCOBJS = out/calc/CalcParser.${OSUFFIX} out/calc/CalcTokenization.${OSUFFIX} out/calc/Calculator.${OSUFFIX}
 
 out/calc/calculator${SFX}: ${CALCOBJS}
 	${CXX} ${OPTFLAGS} ${IMGFLAG}$@ $^

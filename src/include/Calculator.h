@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cmath>
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
@@ -51,19 +52,21 @@ class Scanner {
         buf = new char[t.end - t.start + 1];
         strncpy(buf, &str[t.start], t.end - t.start);
         buf[t.end - t.start] = 0;
-        yylval.int_val = atoll(buf);
+        yylval.val = ValExpr{atoll(buf)};
         delete[] buf;
         break;
       case FLT: // FLT
         buf = new char[t.end - t.start + 1];
         strncpy(buf, &str[t.start], t.end - t.start);
         buf[t.end - t.start] = 0;
-        yylval.dbl_val = atof(buf);
+        yylval.val = ValExpr{atof(buf)};
         delete[] buf;
         break;
-      case FLTVAR: // FLTVAR
-      case INTVAR: // INTVAR
-        yylval.str_val = str[t.start];
+      case VAR: // VAR
+        buf = new char[t.end - t.start + 1];
+        strncpy(buf, &str[t.start], t.end - t.start);
+        buf[t.end - t.start] = 0;
+        yylval.val = ValExpr{0, buf};
         break;
       default:
         break;
@@ -71,5 +74,7 @@ class Scanner {
     return static_cast<int>(tok);
   }
 };
+
+using CalcFunction = ValExpr (*)(const ValExpr&);
 
 } // namespace calc

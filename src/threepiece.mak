@@ -67,6 +67,7 @@ USER_CPP_SRCS=\
 	image.cpp \
 	CalcTokenization.cpp \
 	CalcParser.cpp \
+	Calculator.cpp \
 	${IMG_DECODERS} \
 	${BITMAPS}
 
