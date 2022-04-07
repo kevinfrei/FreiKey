@@ -5,14 +5,14 @@
 #include "Arduino.h"
 #endif
 
-#include "ValExpr.h"
+#include "CalcExpr.h"
 
 #include "CalcParser.h"
 #include "Calculator.h"
 
 namespace calc {
 
-double ValExpr::asFloat() const {
+double CalcExpr::asFloat() const {
   switch (type) {
     case ValType::Float:
       return fVal;
@@ -23,7 +23,7 @@ double ValExpr::asFloat() const {
   }
 }
 
-int64_t ValExpr::asInt() const {
+int64_t CalcExpr::asInt() const {
   switch (type) {
     case ValType::Float:
       return static_cast<double>(fVal);
@@ -34,117 +34,117 @@ int64_t ValExpr::asInt() const {
   }
 }
 
-const char* ValExpr::asError() const {
+const char* CalcExpr::asError() const {
   return (type == ValType::Err) ? txt : "Not an error";
 }
 
-const char* ValExpr::asText() const {
+const char* CalcExpr::asText() const {
   return (type == ValType::Text) ? txt : "Not a name";
 }
 
-ValExpr ValExpr::operator-() const {
+CalcExpr CalcExpr::operator-() const {
   if (isError())
     return *this;
-  return isFloat() ? ValExpr{-this->asFloat()} : ValExpr{-this->asInt()};
+  return isFloat() ? CalcExpr{-this->asFloat()} : CalcExpr{-this->asInt()};
 }
 
-ValExpr ValExpr::operator+(const ValExpr& v) const {
-  if (isError())
-    return *this;
-  if (v.isError())
-    return v;
-  if (isFloat() || v.isFloat()) {
-    return ValExpr{this->asFloat() + v.asFloat()};
-  }
-  return ValExpr{this->asInt() + v.asInt()};
-}
-
-ValExpr ValExpr::operator-(const ValExpr& v) const {
+CalcExpr CalcExpr::operator+(const CalcExpr& v) const {
   if (isError())
     return *this;
   if (v.isError())
     return v;
   if (isFloat() || v.isFloat()) {
-    return ValExpr{this->asFloat() - v.asFloat()};
+    return CalcExpr{this->asFloat() + v.asFloat()};
   }
-  return ValExpr{this->asInt() - v.asInt()};
+  return CalcExpr{this->asInt() + v.asInt()};
 }
 
-ValExpr ValExpr::operator*(const ValExpr& v) const {
+CalcExpr CalcExpr::operator-(const CalcExpr& v) const {
   if (isError())
     return *this;
   if (v.isError())
     return v;
   if (isFloat() || v.isFloat()) {
-    return ValExpr{this->asFloat() * v.asFloat()};
+    return CalcExpr{this->asFloat() - v.asFloat()};
   }
-  return ValExpr{this->asInt() * v.asInt()};
+  return CalcExpr{this->asInt() - v.asInt()};
 }
 
-ValExpr ValExpr::operator/(const ValExpr& v) const {
+CalcExpr CalcExpr::operator*(const CalcExpr& v) const {
   if (isError())
     return *this;
   if (v.isError())
     return v;
   if (isFloat() || v.isFloat()) {
-    return ValExpr{this->asFloat() / v.asFloat()};
+    return CalcExpr{this->asFloat() * v.asFloat()};
   }
-  return ValExpr{this->asInt() / v.asInt()};
+  return CalcExpr{this->asInt() * v.asInt()};
 }
 
-ValExpr ValExpr::operator%(const ValExpr& v) const {
+CalcExpr CalcExpr::operator/(const CalcExpr& v) const {
   if (isError())
     return *this;
   if (v.isError())
     return v;
   if (isFloat() || v.isFloat()) {
-    return ValExpr{fmod(this->asFloat(), v.asFloat())};
+    return CalcExpr{this->asFloat() / v.asFloat()};
   }
-  return ValExpr{this->asInt() % v.asInt()};
+  return CalcExpr{this->asInt() / v.asInt()};
 }
 
-ValExpr ValExpr::factorial() const {
+CalcExpr CalcExpr::operator%(const CalcExpr& v) const {
+  if (isError())
+    return *this;
+  if (v.isError())
+    return v;
+  if (isFloat() || v.isFloat()) {
+    return CalcExpr{fmod(this->asFloat(), v.asFloat())};
+  }
+  return CalcExpr{this->asInt() % v.asInt()};
+}
+
+CalcExpr CalcExpr::factorial() const {
   if (isError())
     return *this;
   int64_t end = this->asInt();
   if (end < 0)
-    return ValExpr{1};
+    return CalcExpr{1};
   if (end > 20) {
     double val = 1;
     for (double i = 2.0; i <= end; i++) {
       val *= i;
     }
-    return ValExpr{val};
+    return CalcExpr{val};
   } else {
     int64_t val = 1;
     for (int64_t i = 2; i <= end; i++) {
       val *= i;
     }
-    return ValExpr{val};
+    return CalcExpr{val};
   }
 }
 
-ValExpr ValExpr::power(const ValExpr& v) const {
+CalcExpr CalcExpr::power(const CalcExpr& v) const {
   if (isError())
     return *this;
   if (v.isError())
     return v;
-  // TODO: Make this lookup the ValExpr for the variable of txt
-  return ValExpr{pow(this->asFloat(), v.asFloat())};
+  // TODO: Make this lookup the CalcExpr for the variable of txt
+  return CalcExpr{pow(this->asFloat(), v.asFloat())};
 }
 
-ValExpr ValExpr::getVal() const {
+CalcExpr CalcExpr::getVal() const {
   if (isError())
     return *this;
-  // TODO: Make this lookup the ValExpr for the variable of txt
-  return ValExpr{1.0};
+  // TODO: Make this lookup the CalcExpr for the variable of txt
+  return CalcExpr{1.0};
 }
 
-void ValExpr::assignVal(const ValExpr& v) const {
-  // TODO: Record the ValExpr in the variable mape
+void CalcExpr::assignVal(const CalcExpr& v) const {
+  // TODO: Record the CalcExpr in the variable mape
 }
 
-void ValExpr::show() const {
+void CalcExpr::show() const {
 #if defined(NATIVE)
   switch (type) {
     case ValType::Int:
@@ -180,7 +180,7 @@ void ValExpr::show() const {
 // This stuff is all for the bison parser
 
 const char* errors = nullptr;
-calc::Scanner* scan;
+calc::Lexer* scan;
 
 int yyerror(const char* msg) {
 #if defined(NATIVE)
@@ -196,7 +196,7 @@ int yylex() {
 
 void Parse(const char* str) {
   errors = nullptr;
-  calc::Scanner scanner{str};
+  calc::Lexer scanner{str};
   scan = &scanner;
   yyparse();
   if (errors != nullptr) {

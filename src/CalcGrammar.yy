@@ -2,7 +2,7 @@
 #include <cmath>
 
 // Using my own scanner, because flex is incredibly 'stdio.h-centric' which hates Arduino
-#include "ValExpr.h"
+#include "CalcExpr.h"
 int yyerror(const char *s);
 int yylex(void);
 
@@ -16,7 +16,7 @@ int yylex(void);
 %output "CalcParser.cpp"
 
 %union{
-  calc::ValExpr  val;
+  calc::CalcExpr  val;
 }
 
 %token          EOL LPAREN RPAREN

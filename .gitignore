@@ -40,3 +40,5 @@ src/out*
 src/.vs
 src/*.bin
 src/gen
+src/CalcParser.cpp
+src/include/CalcParser.h

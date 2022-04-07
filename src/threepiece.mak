@@ -55,7 +55,7 @@ USER_CLEAN=CalcParser.cpp include/CalcParser.h
 ${USER_CLEAN}: CalcGrammar.yy
 	${BISON} CalcGrammar.yy
 
-CalcTokenization.cpp: include/CalcParser.h
+CalcLexer.cpp: include/CalcParser.h
 
 USER_CPP_SRCS=\
 	dbgcfg.cpp \
@@ -65,7 +65,7 @@ USER_CPP_SRCS=\
 	remotescan.cpp \
 	threepiece.cpp \
 	image.cpp \
-	CalcTokenization.cpp \
+	CalcLexer.cpp \
 	CalcParser.cpp \
 	Calculator.cpp \
 	${IMG_DECODERS} \

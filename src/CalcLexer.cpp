@@ -3,26 +3,28 @@
 #include <cstdlib>
 #include <cstring>
 
-#include "ValExpr.h"
+#include "CalcExpr.h"
 
 #include "CalcParser.h"
 #include "Calculator.h"
 
 #include "enumtypes.h"
 
+// TODO: Make this stream, rather than full processing...
+// TODO: Add hex/binary modes, plus logic operations
+
 namespace calc {
 
-uint16_t Scanner::addToken(yytoken_kind_t tk, uint16_t s, uint16_t e) {
+uint16_t Lexer::addToken(yytoken_kind_t tk, uint16_t s, uint16_t e) {
   tokens.push_back(Token{tk, s, e});
   return e;
 }
 
 // Float: \d*.?\d+(e+/-\d+)?
-void Scanner::Tokenize(const char* str) {
+void Lexer::Tokenize(const char* str) {
   tokens.clear();
   uint16_t start, end;
   TState state = TState::NewToken;
-  bool isFloat;
   // Paranoia...
   size_t sz = strlen(str);
   if (sz > 0xfffe) {
@@ -159,7 +161,6 @@ void Scanner::Tokenize(const char* str) {
         if (isalnum(cur) || cur == '_') {
           continue;
         }
-        isFloat = islower(str[start]);
         start = addToken(VAR, start, --end);
         state = TState::NewToken;
         continue;
@@ -168,7 +169,6 @@ void Scanner::Tokenize(const char* str) {
   // Finish off the current token
   switch (state) {
     case TState::String:
-      isFloat = islower(str[start]);
       addToken(VAR, start, end);
       break;
     case TState::MaybeInt:

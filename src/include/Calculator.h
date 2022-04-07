@@ -17,7 +17,7 @@ class Token {
   uint16_t start, end;
 };
 
-class Scanner {
+class Lexer {
   std::vector<Token> tokens;
   const char* str;
   size_t cur;
@@ -25,7 +25,7 @@ class Scanner {
   void Tokenize(const char* str);
 
  public:
-  Scanner(const char* str) : str(str) {
+  Lexer(const char* str) : str(str) {
     Tokenize(str);
     cur = 0;
   }
@@ -52,21 +52,21 @@ class Scanner {
         buf = new char[t.end - t.start + 1];
         strncpy(buf, &str[t.start], t.end - t.start);
         buf[t.end - t.start] = 0;
-        yylval.val = ValExpr{atoll(buf)};
+        yylval.val = CalcExpr{atoll(buf)};
         delete[] buf;
         break;
       case FLT: // FLT
         buf = new char[t.end - t.start + 1];
         strncpy(buf, &str[t.start], t.end - t.start);
         buf[t.end - t.start] = 0;
-        yylval.val = ValExpr{atof(buf)};
+        yylval.val = CalcExpr{atof(buf)};
         delete[] buf;
         break;
       case VAR: // VAR
         buf = new char[t.end - t.start + 1];
         strncpy(buf, &str[t.start], t.end - t.start);
         buf[t.end - t.start] = 0;
-        yylval.val = ValExpr{0, buf};
+        yylval.val = CalcExpr{0, buf};
         break;
       default:
         break;
@@ -75,6 +75,6 @@ class Scanner {
   }
 };
 
-using CalcFunction = ValExpr (*)(const ValExpr&);
+using CalcFunction = CalcExpr (*)(const CalcExpr&);
 
 } // namespace calc
