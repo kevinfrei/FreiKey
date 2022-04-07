@@ -106,7 +106,8 @@
     "xloctime": "cpp",
     "xmemory": "cpp",
     "__bits": "cpp",
-    "variant": "cpp"
+    "variant": "cpp",
+    "xtr1common": "cpp"
   },
   "files.exclude": {
     "out": true,
