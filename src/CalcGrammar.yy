@@ -1,9 +1,8 @@
 %{
 #include <cmath>
 
-// Using my own scanner, because flex has too much FILE crap for Arduino to handle...
+// Using my own scanner, because flex is incredibly 'stdio.h-centric' which hates Arduino
 #include "ValExpr.h"
-
 int yyerror(const char *s);
 int yylex(void);
 

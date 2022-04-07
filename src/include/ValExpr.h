@@ -129,13 +129,21 @@ class ValExpr {
     if (isError())
       return *this;
     int64_t end = this->asInt();
-    int64_t val = 1;
     if (end < 0)
       return ValExpr{1};
-    for (int64_t i = 2; i <= end; i++) {
-      val *= i;
+    if (end > 20) {
+      double val = 1;
+      for (double i = 2.0; i <= end; i++) {
+        val *= i;
+      }
+      return ValExpr{val};
+    } else {
+      int64_t val = 1;
+      for (int64_t i = 2; i <= end; i++) {
+        val *= i;
+      }
+      return ValExpr{val};
     }
-    return ValExpr{val};
   }
 
   ValExpr power(const ValExpr& v) const {

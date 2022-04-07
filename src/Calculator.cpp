@@ -14,6 +14,9 @@ const char* errors = nullptr;
 calc::Scanner* scan;
 
 int yyerror(const char* msg) {
+  #if defined(NATIVE)
+  std::cerr << "Error:" << msg << std::endl;
+  #endif
   errors = msg;
   return 1;
 }
