@@ -13,7 +13,7 @@ else ifeq ($(shell uname -s), Darwin)
 	CMD_PATH=${TOOLS_PATH}
 	BISON=/opt/homebrew/opt/bison/bin/bison
 else
-  $(error No Linux support yet)
+  $(error No Linux support yet, but copying the Darwin stuff should be nearly all of the work)
 endif
 
 # I'm going to run an Apple II emulator on this "soon" so just run it at 600MHz
@@ -47,16 +47,6 @@ USER_INCLUDES=-Iinclude/threepiece -Iinclude/remotescan -Iinclude/teensy -Iinclu
 BITMAPS=$(wildcard bitmaps/*.cpp)
 IMG_DECODERS=$(wildcard imgdec_*.cpp)
 
-GENDIR:
-	-mkdir gen
-
-USER_CLEAN=CalcParser.cpp include/CalcParser.h
-
-${USER_CLEAN}: CalcGrammar.yy
-	${BISON} CalcGrammar.yy
-
-CalcLexer.cpp: include/CalcParser.h
-
 USER_CPP_SRCS=\
 	dbgcfg.cpp \
 	kbreporter.cpp \
@@ -65,14 +55,12 @@ USER_CPP_SRCS=\
 	remotescan.cpp \
 	threepiece.cpp \
 	image.cpp \
-	CalcLexer.cpp \
-	CalcParser.cpp \
-	Calculator.cpp \
 	${IMG_DECODERS} \
 	${BITMAPS}
 
 VPATH+=bitmaps
-VPATH+=gen
+
+include modules/calculator/include.mk
 
 ifeq ($(OS),Windows_NT)
 include tools/teensy.win
