@@ -8,7 +8,9 @@
 #include "CalcParser.h"
 #include "Calculator.h"
 
-#include "enumtypes.h"
+
+// Calculator lexical analysis states
+enum class TState { NewToken, MaybeInt, String, Frac, StartExp, Exp };
 
 // TODO: Make this stream, rather than full processing...
 // TODO: Add hex/binary modes, plus logic operations
