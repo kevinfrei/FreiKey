@@ -8,7 +8,6 @@
 #include "CalcParser.h"
 #include "Calculator.h"
 
-
 // Calculator lexical analysis states
 enum class TState { NewToken, MaybeInt, String, Frac, StartExp, Exp };
 

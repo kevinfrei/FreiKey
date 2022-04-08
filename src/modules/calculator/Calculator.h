@@ -27,9 +27,9 @@ class Context {
   std::map<const char*, CalcExpr> vars;
 
  public:
-  const char *intern(char *);
-  void assign(const CalcExpr &);
-  CalcExpr invoke(const char *, const CalcExpr &) const;
+  const char* intern(char*);
+  void assign(const CalcExpr&);
+  CalcExpr invoke(const char*, const CalcExpr&) const;
 };
 
 class Token {
