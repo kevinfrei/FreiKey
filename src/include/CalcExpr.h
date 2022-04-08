@@ -29,6 +29,22 @@ class CalcExpr {
   CalcExpr(uint8_t i) : type(ValType::Int), iVal(i) {}
   CalcExpr(const char* e = nullptr) : type(ValType::Err), txt(e) {}
   CalcExpr(int, const char* text) : type(ValType::Text), txt(text) {}
+  CalcExpr(const CalcExpr& ce) : type(ce.type) {
+    switch (type) {
+      case ValType::Int:
+        iVal = ce.iVal;
+        break;
+      case ValType::Float:
+        fVal = ce.fVal;
+        break;
+      default:
+        txt = ce.txt;
+        break;
+    }
+  }
+  CalcExpr& self() {
+    return *this;
+  }
   bool isInt() const {
     return type == ValType::Int;
   }
@@ -51,6 +67,9 @@ class CalcExpr {
   CalcExpr operator*(const CalcExpr& v) const;
   CalcExpr operator/(const CalcExpr& v) const;
   CalcExpr operator%(const CalcExpr& v) const;
+  CalcExpr operator&(const CalcExpr& v) const;
+  CalcExpr operator|(const CalcExpr& v) const;
+  CalcExpr operator~() const;
   CalcExpr factorial() const;
   CalcExpr power(const CalcExpr& v) const;
   CalcExpr getVal() const;
@@ -60,10 +79,6 @@ class CalcExpr {
 
 } // namespace calc
 
-#if !defined(YYSTYLE)
-#define YYSTYPE MyYYSType
+// This is the thing I use in Bison:
+#define YYSTYPE calc::CalcExpr
 #define YYSTYPE_IS_DECLARED
-struct MyYYSType {
-  calc::CalcExpr val;
-};
-#endif

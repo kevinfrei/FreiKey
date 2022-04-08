@@ -15,16 +15,18 @@ int yylex(void);
 %defines "include/CalcParser.h"
 %output "CalcParser.cpp"
 
-%union{
-  calc::CalcExpr  val;
+%code requires {
+#include "CalcExpr.h"
 }
 
-%token          EOL LPAREN RPAREN
-%token <val>    INT
-%token <val>    FLT
-%token <val>    VAR
+%define api.value.type yystype
 
-%nterm <val>    exp
+%token          EOL LPAREN RPAREN
+%token <self()>    INT
+%token <self()>    FLT
+%token <self()>    VAR
+
+%nterm <self()>    exp
 
 %nonassoc       ASSIGN
 %left           PLUS MINUS

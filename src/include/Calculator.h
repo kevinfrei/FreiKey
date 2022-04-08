@@ -4,11 +4,33 @@
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
+#include <functional>
+#include <map>
 #include <vector>
 
 #include "CalcParser.h"
 
 namespace calc {
+
+struct StrCompare : std::binary_function<const char*, char*, bool> {
+  bool operator()(char* str1, char* str2) {
+    return std::strcmp(str1, str2) < 0;
+  }
+};
+
+class Context {
+  // I need/want to intern strings
+  std::map<char*, const char*, StrCompare> interned;
+  // Then I need a function map
+  std::map<const char*, CalcExpr (*)(const CalcExpr&)> funcs;
+  // And I need a variable map
+  std::map<const char*, CalcExpr> vars;
+
+ public:
+  const char *intern(char *);
+  void assign(const CalcExpr &);
+  CalcExpr invoke(const char *, const CalcExpr &) const;
+};
 
 class Token {
  public:
@@ -52,21 +74,21 @@ class Lexer {
         buf = new char[t.end - t.start + 1];
         strncpy(buf, &str[t.start], t.end - t.start);
         buf[t.end - t.start] = 0;
-        yylval.val = CalcExpr{atoll(buf)};
+        yylval = CalcExpr{atoll(buf)};
         delete[] buf;
         break;
       case FLT: // FLT
         buf = new char[t.end - t.start + 1];
         strncpy(buf, &str[t.start], t.end - t.start);
         buf[t.end - t.start] = 0;
-        yylval.val = CalcExpr{atof(buf)};
+        yylval = CalcExpr{atof(buf)};
         delete[] buf;
         break;
       case VAR: // VAR
         buf = new char[t.end - t.start + 1];
         strncpy(buf, &str[t.start], t.end - t.start);
         buf[t.end - t.start] = 0;
-        yylval.val = CalcExpr{0, buf};
+        yylval = CalcExpr{0, buf};
         break;
       default:
         break;

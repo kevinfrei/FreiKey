@@ -33,12 +33,38 @@ void Lexer::Tokenize(const char* str) {
   }
   /* States:
    *  NewToken:
-   *    digits -> MaybeInt
+   *    0 -> Numberish <<<<<<<<<<<<<<<< NYI
+   *    [1-9] -> MaybeInt
    *    '.' -> Frac
    *    letters/_ -> String
    *    space -> skip
    *    operators, etc... -> MakeOper, NewToken
    *    Anything else -> Error
+   *  Numberish: <<<<<<<<<< Begin NYI
+   *    x -> MaybeHex
+   *    b -> MaybeBin
+   *    . -> Frac
+   *    [0-9] -> MaybeInt
+   *    Space -> MakeInt, NewToken
+   *    operators -> MakeInt, MakeOper, NewToken
+   *    Anything else -> Error
+   *  MaybeHex:
+   *    [0-9a-F] -> Hex
+   *    Anything else -> Error
+   *  Hex:
+   *    [0-9a-F] -> Hex
+   *    Space -> MakeHex, NewToken
+   *    Operators -> MakeHex, MakeOper, NewToken
+   *    Anything else -> Error
+   *  MaybeBin:
+   *    0/1 -> Bin
+   *    Anything Else -> Error
+   *  Bin:
+   *    0/1 -> Bin
+   *    Space -> MakeBin, NewToken
+   *    Operators -> MakeBin, MakeOper, NewToken
+   *    Anything else -> Error
+   *  <<<<<<<<<< End NYI
    *  MaybeInt:
    *    digits -> MaybeInt
    *    e -> StartExp
@@ -95,6 +121,10 @@ void Lexer::Tokenize(const char* str) {
           case '^':
             start = addToken(EXPONENT, start, end);
             continue;
+          case '|': // Bitwise or
+          case '&': // Bitwise and
+          case '~': // Bitwise negate
+            break;
           case '.':
             state = TState::Frac;
             continue;
