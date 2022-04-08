@@ -44,9 +44,6 @@ LIB_WIRE=1
 
 USER_INCLUDES=-Iinclude/threepiece -Iinclude/remotescan -Iinclude/teensy -Iinclude
 
-BITMAPS=$(wildcard bitmaps/*.cpp)
-IMG_DECODERS=$(wildcard imgdec_*.cpp)
-
 USER_CPP_SRCS=\
 	dbgcfg.cpp \
 	kbreporter.cpp \
@@ -54,13 +51,9 @@ USER_CPP_SRCS=\
 	scanning.cpp \
 	remotescan.cpp \
 	threepiece.cpp \
-	image.cpp \
-	${IMG_DECODERS} \
-	${BITMAPS}
-
-VPATH+=bitmaps
 
 include modules/calculator/include.mk
+include modules/images/include.mk
 
 ifeq ($(OS),Windows_NT)
 include tools/teensy.win

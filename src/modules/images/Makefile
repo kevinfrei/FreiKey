@@ -25,12 +25,7 @@ IMG_SRC = imgencoder.cpp \
  imgenc_prle.cpp \
  imgdec_prle.cpp
 
-BMP_SRC = \
- amy.cpp \
- batman.cpp \
- win.cpp \
- mac.cpp \
- linux.cpp
+BMP_SRC = $(notdir $(wildcard bitmaps/*.cpp))
  
 CPP_OBJS = $(addprefix ${DESTDIR}, $(patsubst %.cpp, %.${OSUFFIX}, ${IMG_SRC})) \
 	$(addprefix ${DESTDIR}, $(patsubst %.cpp, %.${OSUFFIX}, ${BMP_SRC}))

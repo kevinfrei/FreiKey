@@ -16,10 +16,9 @@ ${CALC_PARSER_FILES}: ${CALC_MODULE_DIR}CalcGrammar.yy
 	cd ${CALC_MODULE_DIR} && ${BISON} CalcGrammar.yy
 
 # one minor dependency...
-${CALC_MODULE_DIR}CalcLexer.cpp : ${CALC_MODULE_DIR}/include/CalcParser.h
+${CALC_MODULE_DIR}CalcLexer.cpp : ${CALC_MODULE_DIR}include/CalcParser.h
 
 USER_INCLUDES += -Imodules/calculator -Imodules/calculator/include
-
 USER_CPP_SRCS += $(addprefix ${CALC_MODULE_DIR}, CalcLexer.cpp CalcParser.cpp Calculator.cpp)
 
 VPATH += ${CALC_MODULE_DIR}

@@ -39,21 +39,16 @@ LIB_WIRE=1
 
 USER_INCLUDES=-Iinclude/laptype -Iinclude/localscan -Iinclude/teensy -Iinclude
 
-BITMAPS=$(wildcard bitmaps/*.cpp)
-IMG_DECODERS=$(wildcard imgdec_*.cpp)
-
 USER_CPP_SRCS=\
 	dbgcfg.cpp \
 	kbreporter.cpp \
 	mainloop.cpp \
 	scanning.cpp \
 	localscan.cpp \
-	laptype.cpp \
-	image.cpp \
-	${IMG_DECODERS} \
-	${BITMAPS}
+	laptype.cpp 
 
-VPATH:=bitmaps
+include modules/calculator/include.mk
+include modules/images/include.mk
 
 ifeq ($(OS),Windows_NT)
 include tools/teensy.win

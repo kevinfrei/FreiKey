@@ -24,19 +24,19 @@ else
 endif
 
 laptype lt l:
-	make ${flags} -f laptype.mak all compile_commands
+	$(MAKE) ${flags} -f laptype.mak all compile_commands
 
 flaptype laptypef lf ltf:
-	make ${flags} -f laptype.mak flash
+	$(MAKE) ${flags} -f laptype.mak flash
 
 threepiece three 3 3p:
-	make ${flags} -f threepiece.mak all compile_commands
+	$(MAKE) ${flags} -f threepiece.mak all compile_commands
 
 fthreepiece fthree f3 f3p threepiecef threef 3f 3pf:
-	make ${flags} -f threepiece.mak flash
+	$(MAKE) ${flags} -f threepiece.mak flash
 
 mock m:
-	make ${flags} -f mock.mak all compile_commands
+	$(MAKE) ${flags} -f mock.mak all compile_commands
 
 rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
 
