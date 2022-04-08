@@ -3,26 +3,26 @@ include ../standalone.mk
 .PHONY: clean
 
 DESTDIR = ../../out/calc/
-CALCPARSE = CalcParser.cpp include/CalcParser.h
-CALCIMAGE = ${DESTDIR}calculator${SFX}
+PARSE = CalcParser.cpp include/CalcParser.h
+IMAGE = ${DESTDIR}calculator${SFX}
 
-calc: out out/calc ${CALCIMAGE}
+calc: out out/calc ${IMAGE}
 
-${CALCPARSE}: CalcGrammar.yy
+${PARSE}: CalcGrammar.yy
 	${BISON} $<
 
 out out/calc:
-	-mkdir $(call MKDIRPATH,../../out/calc)
+	-mkdir $(call MKDIRPATH,${DESTDIR})
 
-../../out/calc/%.${OSUFFIX} : %.cpp
-	${CXX} ${OPTFLAGS} -I. -Iinclude -DNATIVE ${STDNUM} -c  $< ${OBJFLAG}$@
+${DESTDIR}%.${OSUFFIX} : %.cpp
+	${CXX} ${OPTFLAGS} -I. -Iinclude -DSTANDALONE ${STDNUM} -c  $< ${OBJFLAG}$@
 
-CALCSRC = CalcParser.cpp CalcLexer.cpp Calculator.cpp
+CPP_SRC = CalcParser.cpp CalcLexer.cpp Calculator.cpp
 
-CALCOBJS = $(addprefix ../../out/calc/, $(patsubst %.cpp, %.${OSUFFIX}, ${CALCSRC}))
+CPP_OBJS = $(addprefix ../../out/calc/, $(patsubst %.cpp, %.${OSUFFIX}, ${CPP_SRC}))
 
-${CALCIMAGE}: ${CALCOBJS}
+${IMAGE}: ${CPP_OBJS}
 	${CXX} ${OPTFLAGS} ${IMGFLAG}$@ $^
 
-clean: 
-	-rm ${CALCOBJS} ${CALCPARSE} ${CALCIMAGE}
+clean:
+	-rm ${CPP_OBJS} ${PARSE} ${IMAGE}

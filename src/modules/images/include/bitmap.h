@@ -23,7 +23,7 @@ enum class image_compression : uint8_t {
   NQRLE, // 16 bit NQRLE encoding
   PAL_RAW, // Palette encoding
   PAL_NQRLE, // Palette encoded as NQRLE data
-#if defined(COMPRESSOR)
+#if defined(STANDALONE)
   FIND_BEST,
   INVALID
 #endif

@@ -6,7 +6,9 @@
 #include <string>
 #include <vector>
 
-#define COMPRESSOR 1
+#if !defined(STANDALONE)
+#error This file is only for use in the stand alone image encoder/decoder
+#endif
 
 #include "bitmap.h"
 #include "bitmaps/amy.h"

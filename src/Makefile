@@ -2,7 +2,7 @@
 # it's just, perhaps, better than a shell script
 
 # phony rules cus there are no dependencies
-.PHONY: allclean laptype lt l ltf lf flaptype laptypef 3 3p three threepiece 3f 3pf threef threepiecef f3 f3p fthree fthreepiece imgcomp img cmp comp
+.PHONY: allclean laptype lt l ltf lf flaptype laptypef 3 3p three threepiece 3f 3pf threef threepiecef f3 f3p fthree fthreepiece img calc
 
 # TODO: Make instead, use WSL for build, then Windows for flashing maybe?
 ifeq ($(OS),Windows_NT)
@@ -10,17 +10,18 @@ flags=
 else
 flags=-j
 endif
-# Now the default target
-all: laptype threepiece mock img
 
-clean:	
+# Now the default target
+all: laptype threepiece mock img calc
+
+clean:
 	$(MAKE) -C modules/calculator ${flags} clean
+	$(MAKE) -C modules/images ${flags} clean
 ifeq ($(OS),Windows_NT)
 	-@rd /s /q out > NUL 2>&1
 else
 	-rm -rf out
 endif
-
 
 laptype lt l:
 	make ${flags} -f laptype.mak all compile_commands
@@ -42,39 +43,8 @@ rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst 
 format: $(call rwildcard,include,*.h) $(wildcard *.cpp) $(wildcard bitmaps/*.cpp) $(wildcard bitmaps/*.h) $(call rwildcard,modules,*.cpp) $(call rwildcard,modules,*.h)
 	clang-format -i $^
 
-comp cmp img imgcomp: out out/imgenc out/imgenc/imagecomp${SFX}
-
-out:
-	-mkdir out
-
-out/imgenc:
-	-mkdir out${SEP}imgenc
-
-# Set up rules for local binaries
-out/imgenc/%.${OSUFFIX}: bitmaps/%.cpp
-	${CXX} ${OPTFLAGS} -c -DCOMPRESSOR -Iinclude ${STDNUM} $< ${OBJFLAG}$@
-
-out/imgenc/%.${OSUFFIX} : %.cpp
-	${CXX} ${OPTFLAGS} -c -DCOMPRESSOR -Iinclude ${STDNUM} $< ${OBJFLAG}$@
-
-IMGSRC = imgencoder.cpp \
- img_cmdln.cpp \
- imgenc_rle.cpp \
- imgdec_rle.cpp \
- imgenc_pal.cpp \
- imgdec_pal.cpp \
- imgenc_prle.cpp \
- imgdec_prle.cpp \
- amy.cpp \
- batman.cpp \
- win.cpp \
- mac.cpp \
- linux.cpp
- 
-IMGOBJS = $(addprefix out/imgenc/, $(patsubst %.cpp, %.${OSUFFIX}, ${IMGSRC}))
-
-out/imgenc/imagecomp${SFX}: ${IMGOBJS}
-	${CXX} ${OPTFLAGS} ${IMGFLAG}$@ $^
+img:
+	$(MAKE) -C modules/images ${flags}
 
 calc:
 	$(MAKE) -C modules/calculator ${flags}

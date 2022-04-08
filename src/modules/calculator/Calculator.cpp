@@ -1,4 +1,4 @@
-#if defined(NATIVE)
+#if defined(STANDALONE)
 #include <iostream>
 #include <string>
 #else
@@ -145,7 +145,7 @@ void CalcExpr::assignVal(const CalcExpr& v) const {
 }
 
 void CalcExpr::show() const {
-#if defined(NATIVE)
+#if defined(STANDALONE)
   switch (type) {
     case ValType::Int:
       std::cout << asInt() << "_i" << std::endl;
@@ -183,7 +183,7 @@ const char* errors = nullptr;
 calc::Lexer* scan;
 
 int yyerror(const char* msg) {
-#if defined(NATIVE)
+#if defined(STANDALONE)
   std::cerr << "Error:" << msg << std::endl;
 #endif
   errors = msg;
@@ -200,7 +200,7 @@ void Parse(const char* str) {
   scan = &scanner;
   yyparse();
   if (errors != nullptr) {
-#if defined(NATIVE)
+#if defined(STANDALONE)
     std::cerr << errors << std::endl;
 #else
     Serial.println(errors);
@@ -208,7 +208,7 @@ void Parse(const char* str) {
   }
 }
 
-#if defined(NATIVE)
+#if defined(STANDALONE)
 int main(int argc, const char* argv[]) {
   std::string input;
   std::cout.precision(10);

@@ -1,5 +1,9 @@
 #pragma once
 
+#if !defined(STANDALONE)
+#error This is only meant to be used in the stand-alone image encoder/decoder thing
+#endif
+
 #include <ctype.h>
 #include <functional>
 #include <string>

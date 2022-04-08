@@ -2,7 +2,7 @@
 #include <cmath>
 #include <cstdint>
 
-#if defined(NATIVE)
+#if defined(STANDALONE)
 #include <iostream>
 #else
 #include "Arduino.h"
