@@ -73,8 +73,15 @@ class CalcExpr {
   CalcExpr factorial() const;
   CalcExpr power(const CalcExpr& v) const;
   CalcExpr getVal() const;
+  CalcExpr invoke(const CalcExpr& v) const;
   void assignVal(const CalcExpr& v) const;
   void show() const;
+#if defined(STANDALONE)
+  friend std::ostream& operator<<(std::ostream&, const CalcExpr&);
+#else
+  void print(const char* header = nullptr) const;
+  void println(const char* header = nullptr) const;
+#endif
 };
 
 } // namespace calc

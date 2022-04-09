@@ -4,7 +4,7 @@
 #include <cstring>
 
 #include "CalcExpr.h"
-
+#include "CalcLexer.h"
 #include "CalcParser.h"
 #include "Calculator.h"
 

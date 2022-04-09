@@ -17,7 +17,7 @@ out out/calc:
 ${DESTDIR}%.${OSUFFIX} : %.cpp
 	${CXX} ${OPTFLAGS} -I. -Iinclude -DSTANDALONE ${STDNUM} -c  $< ${OBJFLAG}$@
 
-CPP_SRC = CalcParser.cpp CalcLexer.cpp Calculator.cpp
+CPP_SRC = CalcParser.cpp CalcLexer.cpp Calculator.cpp CalcExpr.cpp
 
 CPP_OBJS = $(addprefix ../../out/calc/, $(patsubst %.cpp, %.${OSUFFIX}, ${CPP_SRC}))
 

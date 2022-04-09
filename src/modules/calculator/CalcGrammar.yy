@@ -43,7 +43,7 @@ lines   : %empty
 
 line    : EOL                       { yyerror("Read an empty line.\n"); }
         | exp EOL                   { $1.show(); }
-        | VAR ASSIGN exp EOL        { $1.assignVal($3); }
+        | VAR ASSIGN exp EOL        { $1.assignVal($3); $3.show(); }
         | error EOL                 { yyerrok; }
         ;
 
@@ -57,6 +57,7 @@ exp     : INT                       { $$ = $1; }
         | exp EXPONENT exp          { $$ = $1.power($3); }
         | MINUS exp %prec UMINUS    { $$ = -$2; }
         | exp FACTORIAL             { $$ = $1.factorial(); }
+        | VAR LPAREN exp RPAREN     { $$ = $1.invoke($3); }
         | LPAREN exp RPAREN         { $$ = $2; }
         | VAR                       { $$ = $1.getVal(); }
         ;
