@@ -10,9 +10,12 @@
 
 #include "CalcParser.h"
 
+// MSVC, LKG6, bad memories. Very. Bad. Memories.
+#define _CRT_SECURE_NO_WARNINGS 1
+
 namespace calc {
 
-struct StrCompare : std::binary_function<const char*, char*, bool> {
+struct StrCompare {
   bool operator()(char* str1, char* str2) {
     return std::strcmp(str1, str2) < 0;
   }

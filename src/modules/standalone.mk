@@ -12,11 +12,13 @@ SEP=\\
 # Chocolatey install winflexbison3 :)
 BISON=win_bison
 MKDIRPATH=$(subst /,${SEP},$1)
+devnull=NUL
 else
 SFX=
 SEP=/
 BISON=/opt/homebrew/opt/bison/bin/bison
 MKDIRPATH=-p $1
+devnull=/dev/null
 endif
 
 # Size is larger than -O3 lame lame lame, clang

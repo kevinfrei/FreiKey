@@ -12,7 +12,7 @@ ${PARSE}: CalcGrammar.yy
 	${BISON} $<
 
 out out/calc:
-	-mkdir $(call MKDIRPATH,${DESTDIR})
+	-@mkdir $(call MKDIRPATH,${DESTDIR}) > ${devnull} 2>&1
 
 ${DESTDIR}%.${OSUFFIX} : %.cpp
 	${CXX} ${OPTFLAGS} -I. -Iinclude -DSTANDALONE ${STDNUM} -c  $< ${OBJFLAG}$@
