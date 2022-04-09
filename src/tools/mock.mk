@@ -1,19 +1,40 @@
 ifeq ($(OS),Windows_NT)
-# Decide if we've got VC++ around, which on Windows is preferred
-ifeq ($(VisualStudioVersion),)
 CXX=clang++
+SFX=.exe
+SEP=\\
+MKDIRPATH=$(subst /,${SEP},$1)
 else
-CXX=cl.exe
+SFX=
+SEP=/
+BISON=/opt/homebrew/opt/bison/bin/bison
+MKDIRPATH=-p $1
 endif
-APP_SUFFIX=.exe
+
+# Size is larger than -O3 lame lame lame, clang
+# OPTFLAGS=-flto -Oz
+# Speed:
+# OPTFLAGS=-flto -O3
+# Debug:
+ifeq (${CXX},cl.exe)
+OBJFLAG=/Fo:
+IMGFLAG=/Fe:
+OPTFLAGS=/Od /Zi /EHsc
+STDNUM=/std:c++20
+OSUFFIX=obj
+ONLYCOMPILE=/c
 else
-APP_SUFFIX=
+OBJFLAG=-o
+IMGFLAG=-o
+OPTFLAGS=-g
+STDNUM=-std=c++20
+OSUFFIX=o
+ONLYCOMPILE=-c
 endif
 
 BUILD_PROJECT_NAME=${PROJ_NAME}${APP_SUFFIX}
 # variables I might need:
 # COMPILER_PATH
-COMPILER_CPP_FLAGS=-std=c++17 -DMOCKING
+COMPILER_CPP_FLAGS=${STDNUM} -DMOCKING
 COMPILER_CPP_CMD=clang++
 COMPILER_C_ELF_CMD=clang++
 # COMPILER_CPP_EXTRA_FLAGS
@@ -26,7 +47,7 @@ VPATH:=${VPATH}:${VPATH_MORE}:${VPATH_CORE}:${VPATH_VAR}
 
 USER_OBJS=\
   $(addprefix ${BUILD_PATH}/, \
-		$(patsubst %.cpp, %.cpp.o, $(notdir ${USER_SRC})))
+		$(patsubst %.cpp, %.cpp.${OSUFFIX}, $(notdir ${USER_SRC})))
 ALL_OBJS=${USER_OBJS}
 USER_JSON=\
   $(addprefix ${BUILD_PATH}/, \
@@ -44,10 +65,11 @@ all: ${BUILD_PATH} ${PROJ_NAME}
 
 # Some house keeping
 clean:
+ifeq ($(OS),Windows_NT)
+	-@del ${USER_OBJS}
+else
 	-rm ${USER_OBJS}
-
-allclean:
-	-rm -rf ${BUILD_PATH}
+endif
 
 # Make us rebuild user code if the makefile(s) change:
 # Needs to be above the deps thing, I think
@@ -57,7 +79,7 @@ ${USER_OBJS} : $(MAKEFILE_LIST)
 -include $(ALL_OBJS:.o=.d)
 
 # Next, the project name shortcut, because it's easier
-${PROJ_NAME}: ${BUILD_PATH}/${BUILD_PROJECT_NAME}
+${PROJ_NAME}: ${BUILD_PATH}/${BUILD_PROJECT_NAME}${SFX}
 
 # And finally, create the director
 # TODO: This no worky on Windows fer sure
@@ -68,11 +90,11 @@ else
 	@test -d "$@" || mkdir -p "$@"
 endif
 
-${BUILD_PATH}/%.cpp.o : %.cpp
-	"${CXX}" -c ${COMPILER_CPP_FLAGS} ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_CPP_EXTRA_FLAGS} "$<" -o "$@"
+${BUILD_PATH}/%.cpp.${OSUFFIX} : %.cpp
+	"${CXX}" ${ONLYCOMPILE} ${COMPILER_CPP_FLAGS} ${SYS_INCLUDES} ${USER_INCLUDES} ${OPTFLAGS} ${COMPILER_CPP_EXTRA_FLAGS} "$<" ${OBJFLAG} "$@"
 
-${BUILD_PATH}/${BUILD_PROJECT_NAME} : ${USER_OBJS}
-	"${CXX}" -o "$@" ${USER_OBJS} ${BUILD_FLAGS_LIBS}
+${BUILD_PATH}/${BUILD_PROJECT_NAME}${SFX} : ${USER_OBJS}
+	"${CXX}" ${USER_OBJS} ${BUILD_FLAGS_LIBS} ${IMGFLAG} "$@"
 
 ${BUILD_PATH}/%.cpp.json : %.cpp
 ifeq ($(OS),Windows_NT)

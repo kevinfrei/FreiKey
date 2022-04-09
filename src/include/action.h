@@ -12,13 +12,13 @@ class action_t {
   */
   uint16_t moreData;
 
-  void setKeyAction(KeyAction ka) {
+  constexpr void setKeyAction(KeyAction ka) {
     data = value_cast(ka) << 12 | (data & 0xFFF);
   }
-  void setLayer(uint8_t layerNum) {
+  constexpr void setLayer(uint8_t layerNum) {
     data = (data & 0xF000) | layerNum;
   }
-  void setMods(Modifiers mods) {
+  constexpr void setMods(Modifiers mods) {
     data = (data & 0xFF00) | value_cast(mods);
   }
   void setKeyPress(uint16_t keycode) {

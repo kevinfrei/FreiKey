@@ -16,7 +16,7 @@ class KeyMatrix {
 
   typedef std::bitset<matrix_size> bits;
 
-  static constexpr uint8_t byte_size = (bits::size() + 7) / 8;
+  static constexpr uint8_t byte_size = (matrix_size + 7) / 8;
 
  private:
   typedef std::array<uint8_t, nCols + nRows> ColsRows;
