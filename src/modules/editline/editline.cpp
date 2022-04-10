@@ -1,5 +1,7 @@
 #if defined(STANDALONE)
+#include <cstring>
 #include <iostream>
+
 #endif
 
 #include <cstddef>
@@ -212,7 +214,7 @@ const std::map<Keystroke, std::array<char, 3>> strokeToChar = {
   {Keystroke::_8, {'8', '*', 0}},
   {Keystroke::_9, {'9', '(', 0}},
   {Keystroke::Enter, {13, 0, 0}},
-  {Keystroke::Backspace, {2, 0, 0}},
+  {Keystroke::Backspace, {8, 0, 0}},
   {Keystroke::Tab, {9, 0, 0}},
   {Keystroke::Space, {' ', 0, 0}},
   {Keystroke::Minus, {'-', '_', 0}},
@@ -228,13 +230,12 @@ const std::map<Keystroke, std::array<char, 3>> strokeToChar = {
   {Keystroke::Slash, {'/', '?', 0}},
   {Keystroke::Home, {1, 0, 0}}, // ctrl-a
   {Keystroke::Up, {10, 0, 0}}, // ctrl-j
-  {Keystroke::Down, {11, 0, 0}}, // ctrl-k
-  {Keystroke::Left, {6, 0, 0}}, // ctrl-f
-  {Keystroke::Right, {2, 0, 0}}, // ctrl-b
+  {Keystroke::Down, {12, 0, 0}}, // ctrl-l
+  {Keystroke::Left, {2, 0, 0}}, // ctrl-b
+  {Keystroke::Right, {6, 0, 0}}, // ctrl-f
   {Keystroke::End, {5, 0, 0}}, // ctrl-e
   {Keystroke::PgUp, {16, 0, 0}}, // ctrl-p
   {Keystroke::PgDn, {14, 0, 0}}, // ctrl-n
-  {Keystroke::Backspace, {8, 0, 0}}, // ctrl-h
   {Keystroke::Delete, {4, 0, 0}}, // ctrl-d
   {Keystroke::Enter, {13, 0, 0}}, // ctrl-m
   {Keystroke::Tab, {9, 0, 0}} // ctrl-i
@@ -318,6 +319,7 @@ const editline& readline(Keystroke k, Modifiers m, bool pressed, uint32_t now) {
           memmove(&buffer[curLine.pos],
                   &buffer[curLine.pos + 1],
                   bufLen - curLine.pos);
+          bufLen--;
         }
         break;
       case 5:
@@ -330,12 +332,14 @@ const editline& readline(Keystroke k, Modifiers m, bool pressed, uint32_t now) {
           curLine.pos++;
         }
         break;
-      case 9:
+      case 8:
         // Backspace/Ctrl-h
         if (curLine.pos > 0) {
           memmove(&buffer[curLine.pos - 1],
                   &buffer[curLine.pos],
                   bufLen - curLine.pos);
+          bufLen--;
+          curLine.pos--;
         }
         break;
       case 20:
@@ -343,7 +347,7 @@ const editline& readline(Keystroke k, Modifiers m, bool pressed, uint32_t now) {
         if (curLine.pos < bufLen - 1) {
           char cur = buffer[curLine.pos];
           buffer[curLine.pos] = buffer[curLine.pos - 1];
-          buffer[curLine.pos-1] = cur;
+          buffer[curLine.pos - 1] = cur;
           curLine.pos++;
         }
         break;
@@ -359,32 +363,66 @@ const editline& readline(Keystroke k, Modifiers m, bool pressed, uint32_t now) {
 #if defined(STANDALONE)
 
 std::ostream& operator<<(std::ostream& o, const edit::editline& ln) {
-  o << "'" << ln.buf << "' at pos " << static_cast<uint32_t>(ln.pos);
+  o << "'" << ln.buf << "'@" << static_cast<uint32_t>(ln.pos);
   return o;
+}
+
+uint32_t count = 0;
+void check(Keystroke ks, Modifiers md, const char* str, uint8_t pos) {
+  const auto& ln = edit::readline(ks, md, true, count++);
+  if (std::strcmp(ln.buf, str) || ln.pos != pos) {
+    std::cout << "Expected '" << str << "'@" << static_cast<uint32_t>(pos)
+              << " but got " << ln << " at time " << count << std::endl;
+  }
 }
 
 int main(int argc, const char* argv[]) {
   edit::Initialize();
-  std::cout << edit::readline(Keystroke::Space, Modifiers::None, true, 0)
-            << std::endl;
-  std::cout << edit::readline(Keystroke::A, Modifiers::None, true, 1)
-            << std::endl;
-  std::cout << edit::readline(Keystroke::A, Modifiers::Shift, true, 2)
-            << std::endl;
-  std::cout << edit::readline(Keystroke::A, Modifiers::Ctrl, true, 3)
-            << std::endl;
-  std::cout << edit::readline(Keystroke::B, Modifiers::None, true, 4)
-            << std::endl;
-  std::cout << edit::readline(Keystroke::D, Modifiers::Ctrl, true, 5)
-            << std::endl;
-  std::cout << edit::readline(Keystroke::T, Modifiers::Ctrl, true, 6)
-            << std::endl;
-  std::cout << edit::readline(Keystroke::T, Modifiers::Ctrl, true, 7)
-            << std::endl;
-  std::cout << edit::readline(Keystroke::A, Modifiers::Ctrl, true, 8)
-            << std::endl;
-  std::cout << edit::readline(Keystroke::E, Modifiers::Ctrl, true, 9)
-            << std::endl;
+  check(Keystroke::Space, Modifiers::None, " ", 1); // 1
+  check(Keystroke::A, Modifiers::None, " a", 2); // 2
+  check(Keystroke::A, Modifiers::Shift, " aA", 3); // 3
+  check(Keystroke::A, Modifiers::Ctrl, " aA", 0); // 4
+  check(Keystroke::B, Modifiers::None, "b aA", 1); // 5
+  check(Keystroke::D, Modifiers::Ctrl, "baA", 1); // 6
+  check(Keystroke::T, Modifiers::Ctrl, "abA", 2); // 7
+  check(Keystroke::T, Modifiers::Ctrl, "aAb", 3); // 8
+  check(Keystroke::A, Modifiers::Ctrl, "aAb", 0); // 9
+  check(Keystroke::E, Modifiers::Ctrl, "aAb", 3); // 10
+  check(Keystroke::B, Modifiers::Ctrl, "aAb", 2); // 11
+  check(Keystroke::C, Modifiers::None, "aAcb", 3); // 12
+  check(Keystroke::H, Modifiers::Ctrl, "aAb", 2); // 13
+  check(Keystroke::F, Modifiers::Ctrl, "aAb", 3); // 14
+  // Now, normal keys instead of ctrl-modifiers:
+  check(Keystroke::Home, Modifiers::None, "aAb", 0); // 15
+  check(Keystroke::End, Modifiers::None, "aAb", 3); // 16
+  check(Keystroke::Left, Modifiers::None, "aAb", 2); // 17
+  check(Keystroke::Backspace, Modifiers::None, "ab", 1); // 18
+  check(Keystroke::Right, Modifiers::None, "ab", 2); // 19
+  check(Keystroke::Home, Modifiers::None, "ab", 0); // 20
+  check(Keystroke::Delete, Modifiers::None, "b", 0); // 21
+  check(Keystroke::Delete, Modifiers::None, "", 0); // 22
+  // I should test out all the things, right?
+  check(Keystroke::_1, Modifiers::None, "1", 1);
+  check(Keystroke::_1, Modifiers::Shift, "1!", 2);
+  check(Keystroke::_2, Modifiers::None, "1!2", 3);
+  check(Keystroke::_2, Modifiers::Shift, "1!2@", 4);
+  check(Keystroke::_3, Modifiers::None, "1!2@3", 5);
+  check(Keystroke::_3, Modifiers::Shift, "1!2@3#", 6);
+  check(Keystroke::_4, Modifiers::None, "1!2@3#4", 7);
+  check(Keystroke::_4, Modifiers::Shift, "1!2@3#4$", 8);
+  check(Keystroke::_5, Modifiers::None, "1!2@3#4$5", 9);
+  check(Keystroke::_5, Modifiers::Shift, "1!2@3#4$5%", 10);
+  check(Keystroke::_6, Modifiers::None, "1!2@3#4$5%6", 11);
+  check(Keystroke::_6, Modifiers::Shift, "1!2@3#4$5%6^", 12);
+  check(Keystroke::_7, Modifiers::None, "1!2@3#4$5%6^7", 13);
+  check(Keystroke::_7, Modifiers::Shift, "1!2@3#4$5%6^7&", 14);
+  check(Keystroke::_8, Modifiers::None, "1!2@3#4$5%6^7&8", 15);
+  check(Keystroke::_8, Modifiers::Shift, "1!2@3#4$5%6^7&8*", 16);
+  check(Keystroke::_9, Modifiers::None, "1!2@3#4$5%6^7&8*9", 17);
+  check(Keystroke::_9, Modifiers::Shift, "1!2@3#4$5%6^7&8*9(", 18);
+  check(Keystroke::_0, Modifiers::None, "1!2@3#4$5%6^7&8*9(0", 19);
+  check(Keystroke::_0, Modifiers::Shift, "1!2@3#4$5%6^7&8*9(0)", 20);
+  std::cout << "Testing complete" << std::endl;
   return 0;
 }
 #endif
