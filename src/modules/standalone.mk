@@ -11,14 +11,18 @@ SFX=.exe
 SEP=\\
 # Chocolatey install winflexbison3 :)
 BISON=win_bison
+CLEANPATHS=$(subst /,${SEP},$1)
 MKDIRPATH=$(subst /,${SEP},$1)
 devnull=NUL
+RM=del /s /q
 else
 SFX=
 SEP=/
 BISON=/opt/homebrew/opt/bison/bin/bison
+CLEANPATHS=$(subst *,@,$1)
 MKDIRPATH=-p $1
 devnull=/dev/null
+rm=rm -rf
 endif
 
 # Size is larger than -O3 lame lame lame, clang

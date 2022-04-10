@@ -34,5 +34,5 @@ ${IMAGE}: ${CPP_OBJS}
 	${CXX} ${OPTFLAGS} ${IMGFLAG}$@ $^
 
 clean: 
-	-rm ${CPP_OBJS} ${IMAGE}
+	-${RM} $(call CLEANPATHS, ${CPP_OBJS} ${IMAGE})
 

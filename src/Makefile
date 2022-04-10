@@ -2,7 +2,7 @@
 # it's just, perhaps, better than a shell script
 
 # phony rules cus there are no dependencies
-.PHONY: allclean laptype lt l ltf lf flaptype laptypef 3 3p three threepiece 3f 3pf threef threepiecef f3 f3p fthree fthreepiece img calc
+.PHONY: allclean laptype lt l ltf lf flaptype laptypef 3 3p three threepiece 3f 3pf threef threepiecef f3 f3p fthree fthreepiece img calc edit
 
 # TODO: Make instead, use WSL for build, then Windows for flashing maybe?
 ifeq ($(OS),Windows_NT)
@@ -12,7 +12,7 @@ flags=-j
 endif
 
 # Now the default target
-all: laptype threepiece mock img calc
+all: laptype threepiece mock img calc edit
 
 clean:
 	$(MAKE) -C modules/calculator ${flags} clean
@@ -48,3 +48,6 @@ img:
 
 calc:
 	$(MAKE) -C modules/calculator ${flags}
+
+edit:
+	$(MAKE) -C modules/editline ${flags}
