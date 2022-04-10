@@ -28,7 +28,7 @@ int yylex() {
 
 namespace calc {
 
-const char *Parse(const char* str) {
+const char* Parse(const char* str) {
   errors = nullptr;
   calc::Lexer scanner{str};
   scan = &scanner;
