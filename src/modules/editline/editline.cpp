@@ -360,6 +360,11 @@ const editline& readline(Keystroke k, Modifiers m, bool pressed, uint32_t now) {
           curLine.pos++;
         }
         break;
+      case 27:
+        // Escape: Clear
+        buffer[0] = 0;
+        curLine.pos = 0;
+        break;
       default:
         break;
     }

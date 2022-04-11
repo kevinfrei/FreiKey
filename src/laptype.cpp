@@ -119,7 +119,9 @@ void MenuModeKeyHandler(bool pressed, action_t a) {
       }
     }
     BoardIO::DrawText(ln);
-
+    if (a.getKeystroke() == Keystroke::Tab && pressed) {
+      Keyboard.print(ln.buf);
+    }
     // And if they hit whatever "paste" should be, type the calculator value
   }
 }
