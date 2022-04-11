@@ -64,9 +64,6 @@ void BoardIO::Configure() {
 
 void resetTheWorld();
 
-uint16_t pw = 1, ph = 1;
-int16_t px = 50, py = 50;
-
 void BoardIO::DrawText(const edit::editline& ln) {
   // Add the 'cursor'
   char loc[129];
@@ -88,9 +85,11 @@ void BoardIO::DrawText(const edit::editline& ln) {
   loc[s + after] = 0;
   // Now let's erase & redraw the text:
   tft->fillScreen(ST77XX_BLACK);
-  tft->getTextBounds(&loc[0], 0, 0, &px, &py, &pw, &ph);
-  int16_t x = (tft->width() - pw) / 2;
-  int16_t y = (tft->height() - ph) / 2;
+  uint16_t pw, ph;
+  int16_t x, y;
+  tft->getTextBounds(&loc[0], 0, 0, &x, &y, &pw, &ph);
+  x = (tft->width() - pw) / 2;
+  y = (tft->height() - ph) / 2;
   tft->setTextColor(ST77XX_GREEN);
   tft->setCursor(x, y);
   tft->print(&loc[0]);

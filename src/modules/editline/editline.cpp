@@ -248,14 +248,12 @@ const std::map<Keystroke, std::array<char, 3>> strokeToChar = {
 
 // For a keyboard line editor, 128 bytes, yeah?
 char buffer[128];
-uint8_t bufLen = 0;
 editline curLine;
 
 void Initialize() {
   buffer[0] = 0;
   curLine.buf = &buffer[0];
   curLine.pos = 0;
-  bufLen = 1;
 }
 
 char getChar(Keystroke k, Modifiers m) {
@@ -276,13 +274,26 @@ char getChar(Keystroke k, Modifiers m) {
 }
 
 void setline(const char* buf, int16_t pos) {
-  for (bufLen = 0; buf[bufLen]; bufLen++) {
+  uint8_t bufLen = 0;
+  for (; buf[bufLen]; bufLen++) {
     if (bufLen > 126)
       break;
   }
   bufLen++;
   memcpy(buffer, buf, bufLen);
   curLine.pos = (pos < 0 ? (bufLen - 1) : pos);
+}
+
+void insertChar(char c) {
+  std::memmove(&buffer[curLine.pos + 1],
+               &buffer[curLine.pos],
+               strlen(buffer) - curLine.pos + 1);
+  buffer[curLine.pos++] = c;
+}
+void deleteChar() {
+  std::memmove(&buffer[curLine.pos],
+               &buffer[curLine.pos + 1],
+               strlen(buffer) - curLine.pos);
 }
 
 const editline& readline(Keystroke k, Modifiers m, bool pressed, uint32_t now) {
@@ -293,6 +304,7 @@ const editline& readline(Keystroke k, Modifiers m, bool pressed, uint32_t now) {
   // Next add support for ctl-k/y for copy/paste
   // Maybe enable some sort of tab-to-autocomplete interface,
   // and eventually, add support for history navigation?
+  // Also, maybe add a delayed repeat?
   if (k == Keystroke::None) {
     return curLine;
   }
@@ -300,18 +312,14 @@ const editline& readline(Keystroke k, Modifiers m, bool pressed, uint32_t now) {
     return curLine;
   }
   char c = getChar(k, m);
-  // TODO: Handle ctrl chars && the like, inserting, generally doing stuff
-
+  uint8_t bufLen = strlen(buffer);
   if (c >= ' ' && c < 127) {
     // We're inserting a character at the current position
     // and moving the current position forward one character
     if (bufLen == 127) {
       return curLine;
     }
-    std::memmove(
-      &buffer[curLine.pos + 1], &buffer[curLine.pos], bufLen - curLine.pos + 1);
-    buffer[curLine.pos++] = c;
-    bufLen++;
+    insertChar(c);
   } else {
     switch (c) {
       case 1:
@@ -320,40 +328,36 @@ const editline& readline(Keystroke k, Modifiers m, bool pressed, uint32_t now) {
         break;
       case 2:
         // Left/Ctrl-b
-        curLine.pos = (curLine.pos > 0) ? (curLine.pos - 1) : 0;
+        if (curLine.pos > 0)
+          curLine.pos--;
         break;
       case 4:
         // Del/Ctrl-d
-        if (bufLen > 0 && curLine.pos < bufLen - 1) {
-          std::memmove(&buffer[curLine.pos],
-                       &buffer[curLine.pos + 1],
-                       bufLen - curLine.pos);
-          bufLen--;
+        if (bufLen > 0 && curLine.pos < bufLen) {
+          deleteChar();
         }
         break;
       case 5:
         // End/Ctrl-e
-        curLine.pos = bufLen - 1;
+        if (bufLen > 0)
+          curLine.pos = bufLen;
         break;
       case 6:
         // Right/Ctrl-f
-        if (curLine.pos < bufLen - 1) {
+        if (curLine.pos < bufLen) {
           curLine.pos++;
         }
         break;
       case 8:
         // Backspace/Ctrl-h
         if (curLine.pos > 0) {
-          std::memmove(&buffer[curLine.pos - 1],
-                       &buffer[curLine.pos],
-                       bufLen - curLine.pos);
-          bufLen--;
           curLine.pos--;
+          deleteChar();
         }
         break;
       case 20:
         // Ctrl-t: Transpose!
-        if (curLine.pos < bufLen - 1) {
+        if (curLine.pos < bufLen && curLine.pos > 0) {
           char cur = buffer[curLine.pos];
           buffer[curLine.pos] = buffer[curLine.pos - 1];
           buffer[curLine.pos - 1] = cur;
