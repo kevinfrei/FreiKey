@@ -5,6 +5,7 @@
 #include "Arduino.h"
 #endif
 
+#include "CalcContext.h"
 #include "CalcExpr.h"
 
 namespace calc {
@@ -129,36 +130,27 @@ CalcExpr CalcExpr::power(const CalcExpr& v) const {
     return *this;
   if (v.isError())
     return v;
-  // TODO: Make this lookup the CalcExpr for the variable of txt
+  // TODO: Make this work properly for integers
   return CalcExpr{pow(this->asFloat(), v.asFloat())};
 }
 
 CalcExpr CalcExpr::getVal() const {
-  if (isError())
+  if (isError() || !isText())
     return *this;
-  // TODO: Make this lookup the CalcExpr for the variable of txt
-  return CalcExpr{1.0};
+  return context.getVal(asText(), CalcExpr{"Undefined"});
 }
 
 CalcExpr CalcExpr::invoke(const CalcExpr& v) const {
-// TODO: Lookup the function and invoke it
-#if defined(STANDALONE)
-  std::cout << "Invoking " << *this << " on " << v << std::endl;
-#else
-  this->print("Invoking ");
-  v.println(" on ");
-#endif
-  return v;
+  if (isError() || !isText())
+    return *this;
+  return context.invoke(asText(), v);
 }
 
 void CalcExpr::assignVal(const CalcExpr& v) const {
-  // TODO: Record the CalcExpr in the variable mape
-#if defined(STANDALONE)
-  std::cout << "Assigning " << v << " to " << *this << std::endl;
-#else
-  v.print("Assigning ");
-  this->println(" to ");
-#endif
+  if (isError() || !isText()) {
+    return;
+  }
+  context.assign(asText(), v);
 }
 
 #if defined(STANDALONE)
@@ -246,7 +238,8 @@ void CalcExpr::show() const {
       return;
     }
     case ValType::Float:
-      // Wow, this is *really* bad. I should just make CalcExpr's be an actual data type
+      // Wow, this is *really* bad. I should just make CalcExpr's be an actual
+      // data type
       dtostrf(asFloat(), 1, 8, showBuffer);
       // Trim trailing 0's if there's a '.'
       if (strchr(showBuffer, '.')) {

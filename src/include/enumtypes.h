@@ -11,7 +11,7 @@ enum class layer_num : uint8_t {
   MacCap = 4,
   WinCap = 5,
   WinCtl = 6,
-  LinCap = 7, 
+  LinCap = 7,
 };
 
 // This needs to fit in 4 bits

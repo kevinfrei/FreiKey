@@ -1,3 +1,5 @@
+#pragma once
+
 #include <cmath>
 #include <cstdint>
 #include <cstdlib>
@@ -9,6 +11,7 @@
 #include "CalcParser.h"
 
 namespace calc {
+
 struct StrCompare {
   bool operator()(char* str1, char* str2) {
     return std::strcmp(str1, str2) < 0;
@@ -25,8 +28,11 @@ class Context {
 
  public:
   const char* intern(char*);
-  void assign(const CalcExpr&);
+  void assign(const char*, const CalcExpr&);
+  CalcExpr getVal(const char*, const CalcExpr&);
   CalcExpr invoke(const char*, const CalcExpr&) const;
 };
+
+extern Context context;
 
 } // namespace calc

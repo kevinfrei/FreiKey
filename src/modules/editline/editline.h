@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 
 #include <cstddef>
 #include <cstdint>
@@ -12,5 +12,5 @@ struct editline {
 };
 void Initialize();
 const editline& readline(Keystroke k, Modifiers m, bool pressed, uint32_t now);
-void setline(const char *buf, int16_t pos = -1);
+void setline(const char* buf, int16_t pos = -1);
 } // namespace edit

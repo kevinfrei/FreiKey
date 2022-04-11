@@ -28,7 +28,7 @@ int yylex() {
 
 namespace calc {
 
-void Initialize(){
+void Initialize() {
   memset(showBuffer, 0, 128);
 }
 

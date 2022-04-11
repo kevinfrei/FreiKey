@@ -10,7 +10,7 @@
 
 namespace calc {
 
-extern char *showBuffer;
+extern char* showBuffer;
 
 enum class ValType : uint8_t { Err, Int, Float, Text };
 
