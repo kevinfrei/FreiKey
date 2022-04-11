@@ -60,7 +60,7 @@ inline constexpr E operator&(E a, E b) {
 
 template <typename E, typename = detail::enum_types_only<E>>
 inline constexpr E operator^(E a, E b) {
-  return enum_cast<E>(value_cast(a) ^ value_cast(b) & value_cast(E::MASK));
+  return enum_cast<E>((value_cast(a) ^ value_cast(b)) & value_cast(E::MASK));
 }
 
 template <typename E, typename = detail::enum_types_only<E>>

@@ -1,11 +1,16 @@
 #if defined(STANDALONE)
 #include <cstring>
 #include <iostream>
+#define DBG(a)
+#else
+#include "dbgcfg.h"
+#include <Arduino.h>
 
 #endif
 
 #include <cstddef>
 #include <cstdint>
+#include <cstring>
 #include <map>
 
 #include "editline.h"
@@ -241,8 +246,6 @@ const std::map<Keystroke, std::array<char, 3>> strokeToChar = {
   {Keystroke::Tab, {9, 0, 0}} // ctrl-i
 };
 
-Keystroke (*codeToKey)(uint8_t) = nullptr;
-
 // For a keyboard line editor, 128 bytes, yeah?
 char buffer[128];
 uint8_t bufLen = 0;
@@ -256,14 +259,10 @@ void Initialize() {
 }
 
 char getChar(Keystroke k, Modifiers m) {
-  bool alt = (m & Modifiers::RAlt) == Modifiers::RAlt ||
-             (m & Modifiers::LAlt) == Modifiers::LAlt;
-  bool ctl = (m & Modifiers::RCtl) == Modifiers::RCtl ||
-             (m & Modifiers::LCtl) == Modifiers::LCtl;
-  bool gui = (m & Modifiers::RGui) == Modifiers::RGui &&
-             (m & Modifiers::LGui) == Modifiers::LGui;
-  bool shf = (m & Modifiers::RShf) == Modifiers::RShf ||
-             (m & Modifiers::LShf) == Modifiers::LShf;
+  bool alt = (m && Modifiers::RAlt) || (m && Modifiers::LAlt);
+  bool ctl = (m && Modifiers::RCtl) || (m && Modifiers::LCtl);
+  bool gui = (m && Modifiers::RGui) || (m && Modifiers::LGui);
+  bool shf = (m && Modifiers::RShf) || (m && Modifiers::LShf);
   if (alt || gui) {
     // For now, don't report anything back...
     return 0;
@@ -274,6 +273,16 @@ char getChar(Keystroke k, Modifiers m) {
     return iter->second[index];
   }
   return 0;
+}
+
+void setline(const char* buf, int16_t pos) {
+  for (bufLen = 0; buf[bufLen]; bufLen++) {
+    if (bufLen > 126)
+      break;
+  }
+  bufLen++;
+  memcpy(buffer, buf, bufLen);
+  curLine.pos = (pos < 0 ? (bufLen - 1) : pos);
 }
 
 const editline& readline(Keystroke k, Modifiers m, bool pressed, uint32_t now) {
@@ -291,7 +300,7 @@ const editline& readline(Keystroke k, Modifiers m, bool pressed, uint32_t now) {
     return curLine;
   }
   char c = getChar(k, m);
-  // TODO: Handle ctrl chars & the like, inserting, generally doing stuff
+  // TODO: Handle ctrl chars && the like, inserting, generally doing stuff
 
   if (c >= ' ' && c < 127) {
     // We're inserting a character at the current position
@@ -299,7 +308,7 @@ const editline& readline(Keystroke k, Modifiers m, bool pressed, uint32_t now) {
     if (bufLen == 127) {
       return curLine;
     }
-    memmove(
+    std::memmove(
       &buffer[curLine.pos + 1], &buffer[curLine.pos], bufLen - curLine.pos + 1);
     buffer[curLine.pos++] = c;
     bufLen++;
@@ -316,9 +325,9 @@ const editline& readline(Keystroke k, Modifiers m, bool pressed, uint32_t now) {
       case 4:
         // Del/Ctrl-d
         if (bufLen > 0 && curLine.pos < bufLen - 1) {
-          memmove(&buffer[curLine.pos],
-                  &buffer[curLine.pos + 1],
-                  bufLen - curLine.pos);
+          std::memmove(&buffer[curLine.pos],
+                       &buffer[curLine.pos + 1],
+                       bufLen - curLine.pos);
           bufLen--;
         }
         break;
@@ -335,9 +344,9 @@ const editline& readline(Keystroke k, Modifiers m, bool pressed, uint32_t now) {
       case 8:
         // Backspace/Ctrl-h
         if (curLine.pos > 0) {
-          memmove(&buffer[curLine.pos - 1],
-                  &buffer[curLine.pos],
-                  bufLen - curLine.pos);
+          std::memmove(&buffer[curLine.pos - 1],
+                       &buffer[curLine.pos],
+                       bufLen - curLine.pos);
           bufLen--;
           curLine.pos--;
         }

@@ -28,20 +28,17 @@ int yylex() {
 
 namespace calc {
 
+void Initialize(){
+  memset(showBuffer, 0, 128);
+}
+
 const char* Parse(const char* str) {
   errors = nullptr;
   calc::Lexer scanner{str};
   scan = &scanner;
   yyparse();
-  if (errors != nullptr) {
-#if defined(STANDALONE)
-    std::cerr << errors << std::endl;
-#else
-    Serial.println(errors);
-#endif
-  }
   // TODO: Return the calculated expression
-  return nullptr;
+  return showBuffer;
 }
 
 } // namespace calc

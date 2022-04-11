@@ -9,6 +9,9 @@
 
 namespace calc {
 
+char backing[128] = {0};
+char* showBuffer = &backing[0];
+
 double CalcExpr::asFloat() const {
   switch (type) {
     case ValType::Float:
@@ -219,17 +222,57 @@ void CalcExpr::show() const {
   }
 #else
   switch (type) {
-    case ValType::Int:
-      Serial.printf("%lld_i\n", asInt());
+    case ValType::Int: {
+      // Arduino doesn't support int64 dumping. Bring on the interview question:
+      int64_t val = asInt();
+      bool neg = (val < 0);
+      uint8_t pos = 0;
+      if (neg) {
+        showBuffer[pos++] = '-';
+        val = -val;
+      }
+      do {
+        showBuffer[pos++] = val % 10 + '0';
+        val /= 10;
+      } while (val != 0);
+      showBuffer[pos] = 0;
+      // Now reverse the whole thing
+      uint8_t start = neg ? 1 : 0;
+      for (pos--; pos > start; pos--, start++) {
+        char sb = showBuffer[start];
+        showBuffer[start] = showBuffer[pos];
+        showBuffer[pos] = sb;
+      };
       return;
+    }
     case ValType::Float:
-      Serial.printf("%f_d\n", asFloat());
+      // Wow, this is *really* bad. I should just make CalcExpr's be an actual data type
+      dtostrf(asFloat(), 1, 8, showBuffer);
+      // Trim trailing 0's if there's a '.'
+      if (strchr(showBuffer, '.')) {
+        size_t len = strlen(showBuffer);
+        if (len-- <= 1) {
+          return;
+        }
+        do {
+          char c = showBuffer[len--];
+          if (c == '0') {
+            showBuffer[len + 1] = 0;
+          } else if (c == '.') {
+            showBuffer[len + 1] = 0;
+            break;
+          } else {
+            break;
+          }
+        } while (true);
+      }
+      Serial.println(showBuffer);
       return;
     case ValType::Err:
-      Serial.printf("%s__!__\n", txt);
-      return;
     case ValType::Text:
-      Serial.printf("'%s'\n", txt);
+      strcpy(showBuffer, txt);
+      Serial.println(showBuffer);
+      return;
   }
 #endif
 }

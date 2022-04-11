@@ -1,3 +1,4 @@
+#include "EEPROM.h"
 #include "sysstuff.h"
 
 #include "boardio.h"
@@ -17,6 +18,7 @@ void resetTheWorld() {
   memset(keyStates, null_scan_code, sizeof(keyStates));
   Scanner::Reset();
   DBG2(Serial.println("World reset!"));
+  BoardIO::Reset(curState);
 }
 
 extern "C" void setup() {

@@ -28,7 +28,7 @@ PROJ_NAME=laptype
 BUILD_PATH=out/laptype
 
 # My custom flags
-COMPILER_CPP_EXTRA_FLAGS=-flto
+COMPILER_CPP_EXTRA_FLAGS=-DDEBUG=1 -flto
 
 # Libraries to use:
 LIB_BUSIO=1
@@ -36,6 +36,7 @@ LIB_SPI=1
 LIB_GFX=1
 LIB_ST77XX=1
 LIB_WIRE=1
+LIB_EEPROM=1
 
 USER_INCLUDES=-Iinclude/laptype -Iinclude/localscan -Iinclude/teensy -Iinclude
 
@@ -49,6 +50,7 @@ USER_CPP_SRCS=\
 
 include modules/calculator/include.mk
 include modules/images/include.mk
+include modules/editline/include.mk
 
 ifeq ($(OS),Windows_NT)
 include tools/teensy.win
