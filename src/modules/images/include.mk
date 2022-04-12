@@ -1,11 +1,3 @@
-ifeq ($(OS),Windows_NT)
-	BISON=win_bison
-else ifeq ($(shell uname -s), Darwin)
-	BISON=/opt/homebrew/opt/bison/bin/bison
-else
-  $(error No Linux support yet, but copying the Darwin stuff should be nearly all of the work)
-endif
-
 IMG_MODULE_DIR=modules/images/
 
 USER_INCLUDES += -I${IMG_MODULE_DIR} -I${IMG_MODULE_DIR}include
