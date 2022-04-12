@@ -5,10 +5,10 @@
 #include "Arduino.h"
 #endif
 
+#include "CalcContext.h"
 #include "CalcLexer.h"
 #include "CalcParser.h"
 #include "Calculator.h"
-#include "CalcContext.h"
 
 // This stuff is all for the bison parser
 

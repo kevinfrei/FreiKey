@@ -3,8 +3,10 @@
 
 #include "bitmaps/amy.h"
 #include "bitmaps/batman.h"
+#include "bitmaps/calc.h"
 #include "bitmaps/haha.h"
 #include "bitmaps/hug.h"
+#include "bitmaps/keyb.h"
 #include "bitmaps/like.h"
 #include "bitmaps/linux.h"
 #include "bitmaps/love.h"

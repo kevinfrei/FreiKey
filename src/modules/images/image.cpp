@@ -64,7 +64,7 @@ void ShowImage(Adafruit_ST7789* tft, const image_descriptor* img) {
   uint16_t sw = tft->width();
   uint16_t sh = tft->height();
   prevX = ((sw - w) > 0) ? micros() % (sw - w + 1) : 0;
-  prevY = ((sh - h) > 0) ? micros() % (sh - h + 1) : 0;
+  prevY = ((sh - h) > 0) ? (sh * micros()) % (sh - h + 1) : 0;
   drawImage(img, prevX, prevY, tft);
   prevHeight = h;
   prevWidth = w;

@@ -144,8 +144,7 @@ bool BoardIO::Override(scancode_t sc, bool pressed, uint32_t now) {
         a.getModifiers() == Modifiers::ROpt) {
       mode = BoardMode::Waiting;
       tft->fillScreen(ST77XX_BLACK);
-      tft->setCursor(20, 20);
-      tft->print("Exit Menu");
+      ShowImage(tft, gfx_keyb);
     } else if (a.getAction() == KeyAction::KeyPress ||
                a.getAction() == KeyAction::Modifier) {
       MenuModeKeyHandler(pressed, a);
@@ -181,8 +180,7 @@ void BoardIO::Changed(uint32_t now, uint16_t menuInfo) {
     Backlight(true);
     lastShownLayerTime = now;
     tft->fillScreen(ST77XX_BLACK);
-    tft->setCursor(20, 20);
-    tft->printf("Calculator mode!");
+    ShowImage(tft, gfx_calcpic);
     // Save the layer, so that it can get updated when we come back out
     SaveLayer();
   } else {
