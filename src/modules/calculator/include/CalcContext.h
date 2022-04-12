@@ -13,7 +13,7 @@
 namespace calc {
 
 struct StrCompare {
-  bool operator()(char* str1, char* str2) {
+  bool operator()(const char* const str1, const char* const str2) const {
     return std::strcmp(str1, str2) < 0;
   }
 };
@@ -31,6 +31,7 @@ class Context {
   void assign(const char*, const CalcExpr&);
   CalcExpr getVal(const char*, const CalcExpr&);
   CalcExpr invoke(const char*, const CalcExpr&) const;
+  void clear();
 };
 
 extern Context context;

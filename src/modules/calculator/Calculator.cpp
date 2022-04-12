@@ -8,6 +8,7 @@
 #include "CalcLexer.h"
 #include "CalcParser.h"
 #include "Calculator.h"
+#include "CalcContext.h"
 
 // This stuff is all for the bison parser
 
@@ -30,6 +31,7 @@ namespace calc {
 
 void Initialize() {
   memset(showBuffer, 0, 128);
+  context.clear();
 }
 
 const char* Parse(const char* str) {

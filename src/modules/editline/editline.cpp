@@ -5,13 +5,11 @@
 #else
 #include "dbgcfg.h"
 #include <Arduino.h>
-
 #endif
 
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
-#include <map>
 
 #include "editline.h"
 #include "usbenums.h"
@@ -180,72 +178,6 @@ constexpr KeyPress charToKey[] = {
   {Keystroke::Del}};
 */
 
-const std::map<Keystroke, std::array<char, 3>> strokeToChar = {
-  {Keystroke::A, {'a', 'A', 1}},
-  {Keystroke::B, {'b', 'B', 2}},
-  {Keystroke::C, {'c', 'C', 3}},
-  {Keystroke::D, {'d', 'D', 4}},
-  {Keystroke::E, {'e', 'E', 5}},
-  {Keystroke::F, {'f', 'F', 6}},
-  {Keystroke::G, {'g', 'G', 7}},
-  {Keystroke::H, {'h', 'H', 8}},
-  {Keystroke::I, {'i', 'I', 9}},
-  {Keystroke::J, {'j', 'J', 10}},
-  {Keystroke::K, {'k', 'K', 11}},
-  {Keystroke::L, {'l', 'L', 12}},
-  {Keystroke::M, {'m', 'M', 13}},
-  {Keystroke::N, {'n', 'N', 14}},
-  {Keystroke::O, {'o', 'O', 15}},
-  {Keystroke::P, {'p', 'P', 16}},
-  {Keystroke::Q, {'q', 'Q', 17}},
-  {Keystroke::R, {'r', 'R', 18}},
-  {Keystroke::S, {'s', 'S', 19}},
-  {Keystroke::T, {'t', 'T', 20}},
-  {Keystroke::U, {'u', 'U', 21}},
-  {Keystroke::V, {'v', 'V', 22}},
-  {Keystroke::W, {'w', 'W', 23}},
-  {Keystroke::X, {'x', 'X', 24}},
-  {Keystroke::Y, {'y', 'Y', 25}},
-  {Keystroke::Z, {'z', 'Z', 26}},
-  {Keystroke::Esc, {27, 27, 27}},
-  {Keystroke::_0, {'0', ')', 0}},
-  {Keystroke::_1, {'1', '!', 0}},
-  {Keystroke::_2, {'2', '@', 0}},
-  {Keystroke::_3, {'3', '#', 0}},
-  {Keystroke::_4, {'4', '$', 0}},
-  {Keystroke::_5, {'5', '%', 0}},
-  {Keystroke::_6, {'6', '^', 0}},
-  {Keystroke::_7, {'7', '&', 0}},
-  {Keystroke::_8, {'8', '*', 0}},
-  {Keystroke::_9, {'9', '(', 0}},
-  {Keystroke::Enter, {13, 0, 0}},
-  {Keystroke::Backspace, {8, 0, 0}},
-  {Keystroke::Tab, {9, 0, 0}},
-  {Keystroke::Space, {' ', 0, 0}},
-  {Keystroke::Minus, {'-', '_', 0}},
-  {Keystroke::Equal, {'=', '+', 0}},
-  {Keystroke::OpenBrace, {'[', '{', 0}},
-  {Keystroke::CloseBrace, {']', '}', 0}},
-  {Keystroke::Backslash, {'\\', '|', 0}},
-  {Keystroke::Semicolon, {';', ':', 0}},
-  {Keystroke::Quote, {'\'', '\"', 0}},
-  {Keystroke::Grave, {'`', '~', 0}},
-  {Keystroke::Comma, {',', '<', 0}},
-  {Keystroke::Period, {'.', '>', 0}},
-  {Keystroke::Slash, {'/', '?', 0}},
-  {Keystroke::Home, {1, 0, 0}}, // ctrl-a
-  {Keystroke::Up, {10, 0, 0}}, // ctrl-j
-  {Keystroke::Down, {12, 0, 0}}, // ctrl-l
-  {Keystroke::Left, {2, 0, 0}}, // ctrl-b
-  {Keystroke::Right, {6, 0, 0}}, // ctrl-f
-  {Keystroke::End, {5, 0, 0}}, // ctrl-e
-  {Keystroke::PgUp, {16, 0, 0}}, // ctrl-p
-  {Keystroke::PgDn, {14, 0, 0}}, // ctrl-n
-  {Keystroke::Delete, {4, 0, 0}}, // ctrl-d
-  {Keystroke::Enter, {13, 0, 0}}, // ctrl-m
-  {Keystroke::Tab, {9, 0, 0}} // ctrl-i
-};
-
 // For a keyboard line editor, 128 bytes, yeah?
 char buffer[128];
 editline curLine;
@@ -265,12 +197,85 @@ char getChar(Keystroke k, Modifiers m) {
     // For now, don't report anything back...
     return 0;
   }
-  const auto& iter = strokeToChar.find(k);
-  if (iter != strokeToChar.end()) {
-    int index = ctl ? 2 : !!shf;
-    return iter->second[index];
+  uint8_t ksv = value_cast(k);
+  if (ksv >= value_cast(Keystroke::A) && ksv <= value_cast(Keystroke::Z)) {
+    uint8_t base = ctl ? 1 : shf ? 'A' : 'a';
+    return ksv - value_cast(Keystroke::A) + base;
   }
-  return 0;
+  switch (k) {
+    case Keystroke::Esc:
+      return 27;
+    case Keystroke::Backspace:
+      return 8;
+    case Keystroke::Space:
+      return ' ';
+    case Keystroke::Home:
+      return 1; // ctrl-a
+    case Keystroke::Up:
+      return 10; // ctrl-j
+    case Keystroke::Down:
+      return 12; // ctrl-l
+    case Keystroke::Left:
+      return 2; // ctrl-b
+    case Keystroke::Right:
+      return 6; // ctrl-f
+    case Keystroke::End:
+      return 5; // ctrl-e
+    case Keystroke::PgUp:
+      return 16; // ctrl-p
+    case Keystroke::PgDn:
+      return 14; // ctrl-n
+    case Keystroke::Delete:
+      return 4; // ctrl-d
+    case Keystroke::Enter:
+      return 13; // ctrl-m
+    case Keystroke::Tab:
+      return 9; // ctrl-i
+    case Keystroke::_0:
+      return ctl ? 0 : (shf ? ')' : '0');
+    case Keystroke::_1:
+      return ctl ? 0 : (shf ? '!' : '1');
+    case Keystroke::_2:
+      return ctl ? 0 : (shf ? '@' : '2');
+    case Keystroke::_3:
+      return ctl ? 0 : (shf ? '#' : '3');
+    case Keystroke::_4:
+      return ctl ? 0 : (shf ? '$' : '4');
+    case Keystroke::_5:
+      return ctl ? 0 : (shf ? '%' : '5');
+    case Keystroke::_6:
+      return ctl ? 0 : (shf ? '^' : '6');
+    case Keystroke::_7:
+      return ctl ? 0 : (shf ? '&' : '7');
+    case Keystroke::_8:
+      return ctl ? 0 : (shf ? '*' : '8');
+    case Keystroke::_9:
+      return ctl ? 0 : (shf ? '(' : '9');
+    case Keystroke::Minus:
+      return ctl ? 0 : (shf ? '_' : '-');
+    case Keystroke::Equal:
+      return ctl ? 0 : (shf ? '+' : '=');
+    case Keystroke::OpenBrace:
+      return ctl ? 0 : (shf ? '{' : '[');
+    case Keystroke::CloseBrace:
+      return ctl ? 0 : (shf ? '}' : ']');
+    case Keystroke::Backslash:
+      return ctl ? 0 : (shf ? '|' : '\\');
+    case Keystroke::Semicolon:
+      return ctl ? 0 : (shf ? ':' : ';');
+    case Keystroke::Quote:
+      return ctl ? 0 : (shf ? '\"' : '\'');
+    case Keystroke::Grave:
+      return ctl ? 0 : (shf ? '~' : '`');
+    case Keystroke::Comma:
+      return ctl ? 0 : (shf ? '<' : ',');
+    case Keystroke::Period:
+      return ctl ? 0 : (shf ? '>' : '.');
+    case Keystroke::Slash:
+      return ctl ? 0 : (shf ? '?' : '/');
+    default:
+      return 0;
+  }
 }
 
 void setline(const char* buf, int16_t pos) {
@@ -280,7 +285,8 @@ void setline(const char* buf, int16_t pos) {
       break;
   }
   bufLen++;
-  memcpy(buffer, buf, bufLen);
+  std::memcpy(buffer, buf, bufLen);
+  buffer[bufLen] = 0;
   curLine.pos = (pos < 0 ? (bufLen - 1) : pos);
 }
 
@@ -290,6 +296,7 @@ void insertChar(char c) {
                strlen(buffer) - curLine.pos + 1);
   buffer[curLine.pos++] = c;
 }
+
 void deleteChar() {
   std::memmove(&buffer[curLine.pos],
                &buffer[curLine.pos + 1],
@@ -302,8 +309,7 @@ const editline& readline(Keystroke k, Modifiers m, bool pressed, uint32_t now) {
   // Arrows to navigate within the line, plus unix stuff:
   // ctl-a-e-f-b-h-d-t
   // Next add support for ctl-k/y for copy/paste
-  // Maybe enable some sort of tab-to-autocomplete interface,
-  // and eventually, add support for history navigation?
+  // Maybe eventually, add support for history navigation?
   // Also, maybe add a delayed repeat?
   if (k == Keystroke::None) {
     return curLine;
@@ -369,6 +375,7 @@ const editline& readline(Keystroke k, Modifiers m, bool pressed, uint32_t now) {
         buffer[0] = 0;
         curLine.pos = 0;
         break;
+      // TODO: Handle ctl-k/ctl-y for cut and paste
       default:
         break;
     }

@@ -13,4 +13,5 @@ struct editline {
 void Initialize();
 const editline& readline(Keystroke k, Modifiers m, bool pressed, uint32_t now);
 void setline(const char* buf, int16_t pos = -1);
+char getChar(Keystroke k, Modifiers m);
 } // namespace edit
