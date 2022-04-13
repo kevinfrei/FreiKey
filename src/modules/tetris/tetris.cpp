@@ -19,9 +19,10 @@ Adafruit_ST7789* dsp = nullptr;
 uint8_t xW, xO, yW, yO;
 uint8_t xN, yN;
 
-void CalcDisplayValues() {
+void calcDisplayValues() {
   uint16_t height = dsp->height();
-  uint16_t width = dsp->width() yW = (height - 1) / 24;
+  uint16_t width = dsp->width();
+  yW = (height - 1) / 24;
   xW = (width - 1) / 10;
   yW = std::min(xW, yW);
   xW = yW;
@@ -72,16 +73,15 @@ uint16_t getColor(uint8_t blk) {
 }
 
 // 0,0 is implied, and things are offset by 1, as "0" is empty block
-uint8_t pieces[7][6] =
-  {
-    {-1, 0, 1, 0, 0, -1}, // T
-    {-1, 1, 0, 1, 1, 0}, // S
-    {-1, 0, 0, 1, 1, 1}, // Z
-    {-1, 0, -1, 1, 0, 1}, // O
-    {-1, -1, 0, -1, 0, 1}, // L
-    {1, -1, 0, -1, 0, 1}, // J
-    {0, -2, 0, -1, 0, 1}, // I
-}
+int8_t pieces[7][6] = {
+  {-1, 0, 1, 0, 0, -1}, // T
+  {-1, 1, 0, 1, 1, 0}, // S
+  {-1, 0, 0, 1, 1, 1}, // Z
+  {-1, 0, -1, 1, 0, 1}, // O
+  {-1, -1, 0, -1, 0, 1}, // L
+  {1, -1, 0, -1, 0, 1}, // J
+  {0, -2, 0, -1, 0, 1}, // I
+};
 
 class Board {
   uint8_t blocks[10 * 24];
@@ -132,7 +132,7 @@ class Board {
       }
     }
   }
-}
+};
 
 class GameState {
   uint8_t curPiece;
@@ -155,17 +155,26 @@ class GameState {
 
 void Initialize() {
   // Don't think I need anything here...
-  gameState = GameFlowState::FirstTime
+  gameState = GameFlowState::FirstTime;
 }
 
 void Begin(Adafruit_ST7789* tft) {
-  gamesState = GameFlowState::JustStarting;
+  gameState = GameFlowState::JustStarting;
   dsp = tft;
   calcDisplayValues();
 }
 
 void KeyDown(Keystroke k) {
-  switch (gameState) { case GameFlowState::NotPlaying: }
+  switch (gameState) {
+    case GameFlowState::NotPlaying:
+      break;
+    case GameFlowState::JustStarting:
+      break;
+    case GameFlowState::InProgress:
+      break;
+    case GameFlowState::Completed:
+      break;
+  }
 }
 
 void Tick() {}

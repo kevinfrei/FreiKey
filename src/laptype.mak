@@ -51,6 +51,7 @@ USER_CPP_SRCS=\
 include modules/calculator/include.mk
 include modules/images/include.mk
 include modules/editline/include.mk
+include modules/tetris/include.mk
 
 ifeq ($(OS),Windows_NT)
 include tools/teensy.win

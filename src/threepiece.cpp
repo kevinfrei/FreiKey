@@ -1,19 +1,8 @@
+#include "EEPROM.h"
 #include "sysstuff.h"
 #include <HardwareSerial.h>
 
 #include "Fonts/FreeSans12pt7b.h"
-#include "bitmaps/amy.h"
-#include "bitmaps/batman.h"
-#include "bitmaps/haha.h"
-#include "bitmaps/hug.h"
-#include "bitmaps/like.h"
-#include "bitmaps/linux.h"
-#include "bitmaps/love.h"
-#include "bitmaps/mac.h"
-#include "bitmaps/mad.h"
-#include "bitmaps/sad.h"
-#include "bitmaps/win.h"
-#include "bitmaps/wow.h"
 #include "boardio.h"
 #include "enumhelpers.h"
 #include "enumtypes.h"
@@ -86,6 +75,26 @@ void BoardIO::Configure() {
 
 bool BoardIO::Override(scancode_t sc, bool pressed, uint32_t now) {
   return false;
+}
+
+void BoardIO::SaveLayer() {
+  uint8_t lyr = value_cast(getCurrentLayer());
+  if (lyr >= 0 && lyr < value_cast(layer_num::ValidSaves)) {
+    DBG(dumpVal(lyr, "Saving layer to eeprom "));
+    EEPROM.update(0, lyr);
+  } else {
+    DBG(dumpVal(lyr, "Not saving this to eeprom "));
+  }
+}
+
+void BoardIO::Reset(GeneralState& curState) {
+  uint8_t lyr = EEPROM.read(0);
+  if (lyr > 0 && lyr < value_cast(layer_num::ValidSaves)) {
+    DBG(dumpVal(lyr, "Turning this layer on:"));
+    curState.toggle_layer(enum_cast<layer_num>(lyr));
+  } else {
+    DBG(dumpVal(lyr, "Not setting this layer:"));
+  }
 }
 
 void BoardIO::Changed(uint32_t now, uint16_t menuInfo) {

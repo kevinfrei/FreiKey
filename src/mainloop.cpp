@@ -1,4 +1,3 @@
-#include "EEPROM.h"
 #include "sysstuff.h"
 
 #include "boardio.h"

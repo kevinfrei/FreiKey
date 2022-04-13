@@ -2,6 +2,7 @@
 #include "sysstuff.h"
 
 #include "enumtypes.h"
+#include "generalstate.h"
 #include "keystate.h"
 
 struct BoardIO {
@@ -14,9 +15,11 @@ struct BoardIO {
   static void Backlight(bool on = true);
   static void Configure();
   static bool Override(scancode_t sc, bool pressed, uint32_t now);
+  static void SaveLayer();
   static void Changed(uint32_t now, uint16_t menuInfo);
   static void Tick(uint32_t now);
   static void ShowScanCode(uint16_t sc);
+  static void Reset(GeneralState&);
 };
 
 using MatrixBits = BoardIO::bits;

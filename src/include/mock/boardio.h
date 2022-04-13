@@ -1,5 +1,6 @@
 #pragma once
 
+#include "generalstate.h"
 #include "keymatrix.h"
 #include "keystate.h"
 #include "mpu.h"
@@ -20,6 +21,7 @@ struct BoardIO : public MockMatrix {
   static void Configure();
   static bool Override(scancode_t sc, bool pressed, uint32_t now);
   static void Changed(uint32_t now, uint16_t menuInfo);
+  static void Reset(GeneralState&);
   static void Tick(uint32_t now);
 };
 

@@ -143,6 +143,7 @@ void BoardIO::Configure() {
   }
   ConfigMatrix();
 }
+void BoardIO::Reset(GeneralState&) {}
 void BoardIO::Changed(uint32_t, uint16_t) {
   // Do nothing for now...
 }
