@@ -39,8 +39,8 @@ const enum_array<layer_num, const image_descriptor*, 8> layer_to_image = {
 
 void BoardIO::Backlight(bool turnOn) {
   if (backlightOn != turnOn) {
-    digitalWrite(BACKLIGHT_PIN, turnOn ? HIGH : LOW);
     backlightOn = turnOn;
+    digitalWrite(BACKLIGHT_PIN, turnOn ? HIGH : LOW);
   }
 }
 
@@ -52,7 +52,7 @@ void BoardIO::Configure() {
   Backlight(true);
   tft->init(135, 240);
   // This is the fastest speed that worked
-  // (72mhz also worked, but seemed to be the same speed)
+  // (72mhz also worked, but seemed to be the same observable speed)
   tft->setSPISpeed(60000000);
   tft->setRotation(1);
   tft->fillScreen(ST77XX_BLACK);
@@ -199,6 +199,7 @@ void BoardIO::Changed(uint32_t now, uint16_t menuInfo) {
 }
 
 bool saved = true;
+
 void BoardIO::Tick(uint32_t now) {
   if (now - lastShownLayerTime > 10000) {
     Backlight(false);

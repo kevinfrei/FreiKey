@@ -73,7 +73,7 @@ uint16_t getColor(uint8_t blk) {
 }
 
 // 0,0 is implied, and things are offset by 1, as "0" is empty block
-int8_t pieces[7][6] = {
+constexpr int8_t pieces[7][6] = {
   {-1, 0, 1, 0, 0, -1}, // T
   {-1, 1, 0, 1, 1, 0}, // S
   {-1, 0, 0, 1, 1, 1}, // Z
@@ -87,6 +87,20 @@ class Board {
   uint8_t blocks[10 * 24];
   uint8_t& pos(uint8_t x, uint8_t y) {
     return blocks[y * 10 + x];
+  }
+  uint8_t& pos(uint8_t loc, uint8_t pn, uint8_t x, uint8_t y, uint8_t r) {
+    const int8_t *blkPos = &pieces[pn][0];
+    switch (r) {
+      default:
+      case 0:
+        return pos(x + blkPos[loc * 2], y + blkPos[loc * 2 + 1]);
+      case 1:
+        return pos(x + blkPos[loc * 2 + 1], y - blkPos[loc * 2]);
+      case 2:
+        return pos(x - blkPos[loc * 2], y - blkPos[loc * 2 + 1]);
+      case 3:
+        return pos(x - blkPos[loc * 2 + 1], y + blkPos[loc * 2]);
+    }
   }
   uint8_t cur(uint8_t v) {
     return v & 0xF;
@@ -110,13 +124,33 @@ class Board {
   bool placePiece(uint8_t pn, uint8_t x, uint8_t y, uint8_t r) {
     // Draw the piece at the given location,
     // returning true if it can be drawn there
+    if (cur(pos(x, y)) != 0)
+      return false;
+    if (cur(pos(0, pn, x, y, r)) != 0)
+      return false;
+    if (cur(pos(1, pn, x, y, r)) != 0)
+      return false;
+    if (cur(pos(2, pn, x, y, r)) != 0)
+      return false;
+
+    uint8_t p = pos(x, y);
+    p = both(cur(p), pn + 1);
+
+    p = pos(0, pn, x, y, r);
+    p = both(cur(p), pn + 1);
+
+    p = pos(1, pn, x, y, r);
+    p = both(cur(p), pn + 1);
+
+    p = pos(2, pn, x, y, r);
+    p = both(cur(p), pn + 1);
 
     return true;
   }
   void removePiece(uint8_t bn, uint8_t x, uint8_t y, uint8_t r) {
     // Delete the piece drawn at the given location
   }
-  void draw() {
+  void refresh() {
     // Walk the board and actually display any changes,
     // then clear the board of changes
     for (uint8_t x = 0; x < 10; x++) {
@@ -166,6 +200,8 @@ void Begin(Adafruit_ST7789* tft) {
 
 void KeyDown(Keystroke k) {
   switch (gameState) {
+    case GameFlowState::FirstTime:
+      break;
     case GameFlowState::NotPlaying:
       break;
     case GameFlowState::JustStarting:

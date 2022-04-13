@@ -57,6 +57,14 @@ void drawImage(const image_descriptor* id,
 
 uint16_t prevX = 0, prevWidth = 0, prevY = 0, prevHeight = 0;
 
+constexpr uint8_t ST77XX_VSCRDEF = 0x33;
+constexpr uint8_t ST77XX_VSCSAD = 0x37;
+constexpr uint8_t hi(uint16_t a) {
+  return (a >> 8) & 0xFF;
+}
+constexpr uint8_t lo(uint16_t a) {
+  return a & 0xFF;
+}
 void ShowImage(Adafruit_ST7789* tft, const image_descriptor* img) {
   tft->fillRect(prevX, prevY, prevWidth, prevHeight, ST77XX_BLACK);
   uint16_t w = img->width;
@@ -68,4 +76,32 @@ void ShowImage(Adafruit_ST7789* tft, const image_descriptor* img) {
   drawImage(img, prevX, prevY, tft);
   prevHeight = h;
   prevWidth = w;
+#if false
+  uint16_t TFA = 40, BFA = 40; // Top/Bottom Fixed Areas
+  uint16_t VSA = 320 - TFA - BFA; // Vertical Scroll Area
+  // TFA + VSA + BFA should == tft->height()
+  uint8_t buf[6] = {
+    hi(TFA), // Top Fixed Area high byte
+    lo(TFA), // Top Fixed area low byte
+    hi(VSA), // Vertial Scroll area high byte
+    lo(VSA), // Vertical Scroll area low byte
+    hi(BFA), // Bottom Fixed Area high byte
+    lo(BFA), // Bottom Fixed Area low byte
+  };
+  tft->sendCommand(ST77XX_VSCRDEF, buf, 6);
+  int16_t topLine = TFA + VSA;
+  while (false) {
+    // There's the ability to do "non-rolling" scrolling that I should look
+    // into... See pkage 203 of the spec sheet for the 7789S
+    uint8_t newTopLine[2] = {hi(topLine),
+                             lo(topLine)}; // This should be between TFA
+                                           // and BFA, big-endian
+    tft->sendCommand(ST77XX_VSCSAD, newTopLine, 2);
+    topLine--;
+        if (topLine < TFA)
+      topLine = TFA + VSA;
+    yield();
+    delay(16);
+  }
+#endif
 }
