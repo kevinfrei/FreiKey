@@ -1,5 +1,7 @@
-#include "tetris.h"
 #include "Adafruit_ST7789.h"
+#include <cstring>
+
+#include "tetris.h"
 #include "usbenums.h"
 
 namespace tetris {
@@ -14,24 +16,141 @@ enum class GameFlowState {
 GameFlowState gameState = GameFlowState::FirstTime;
 Adafruit_ST7789* dsp = nullptr;
 
-uint8_t pieces[7][8] =
-  {
-    {-1, 0, 1, 0, 0, -1}, // T
-    {-1, 0, 1, 0, 0, -1}, // S
-    {-1, 0, 1, 0, 0, -1}, // Z
-    {-1, 0, 1, 0, 0, -1}, // O
-    {-1, 0, 1, 0, 0, -1}, // L
-    {-1, 0, 1, 0, 0, -1}, // J
-    {-1, 0, 1, 0, 0, -1}, // I
+uint8_t xW, xO, yW, yO;
+uint8_t xN, yN;
+
+void CalcDisplayValues() {
+  uint16_t height = dsp->height();
+  uint16_t width = dsp->width() yW = (height - 1) / 24;
+  xW = (width - 1) / 10;
+  yW = std::min(xW, yW);
+  xW = yW;
+  xO = std::min(10, (width - xW * 10) / 2);
+  yO = std::min(10, height - yW * 24);
+  // This is only going to work for a landscape oriented display:
+  xN = xO * 5 + (xW * 23) / 2;
+  yN = (yW * 5) / 2;
 }
 
-struct GameState {
+uint16_t getDispX(uint8_t x) {
+  return xO + xW * x;
+}
+
+uint16_t getDispY(uint8_t y) {
+  return yO + yW * y;
+}
+
+uint16_t getDispW() {
+  return xW;
+}
+
+uint16_t getDispH() {
+  return yW;
+}
+
+uint16_t getColor(uint8_t blk) {
+  switch (blk) {
+    case 0:
+      return ST77XX_BLACK;
+    case 1:
+      return ST77XX_RED;
+    case 2:
+      return ST77XX_BLUE;
+    case 3:
+      return ST77XX_GREEN;
+    case 4:
+      return ST77XX_YELLOW;
+    case 5:
+      return ST77XX_CYAN;
+    case 6:
+      return ST77XX_MAGENTA;
+    case 7:
+      return ST77XX_ORANGE;
+    default:
+      return blk << 8 | blk;
+  }
+}
+
+// 0,0 is implied, and things are offset by 1, as "0" is empty block
+uint8_t pieces[7][6] =
+  {
+    {-1, 0, 1, 0, 0, -1}, // T
+    {-1, 1, 0, 1, 1, 0}, // S
+    {-1, 0, 0, 1, 1, 1}, // Z
+    {-1, 0, -1, 1, 0, 1}, // O
+    {-1, -1, 0, -1, 0, 1}, // L
+    {1, -1, 0, -1, 0, 1}, // J
+    {0, -2, 0, -1, 0, 1}, // I
+}
+
+class Board {
+  uint8_t blocks[10 * 24];
+  uint8_t& pos(uint8_t x, uint8_t y) {
+    return blocks[y * 10 + x];
+  }
+  uint8_t cur(uint8_t v) {
+    return v & 0xF;
+  }
+  uint8_t nxt(uint8_t v) {
+    return v >> 4;
+  }
+  uint8_t both(uint8_t c, uint8_t n) {
+    return c | (n << 4);
+  }
+  void drawBlock(uint8_t x, uint8_t y, uint8_t bn) {
+    // This should update the block array, but without rendering anything
+    uint8_t& blk = pos(x, y);
+    blk = both(cur(blk), nxt(bn));
+  }
+
+ public:
+  void reset() {
+    std::memset(blocks, 0, sizeof(blocks));
+  }
+  bool placePiece(uint8_t pn, uint8_t x, uint8_t y, uint8_t r) {
+    // Draw the piece at the given location,
+    // returning true if it can be drawn there
+
+    return true;
+  }
+  void removePiece(uint8_t bn, uint8_t x, uint8_t y, uint8_t r) {
+    // Delete the piece drawn at the given location
+  }
+  void draw() {
+    // Walk the board and actually display any changes,
+    // then clear the board of changes
+    for (uint8_t x = 0; x < 10; x++) {
+      for (uint8_t y = 0; y < 24; y++) {
+        uint8_t& val = pos(x, y);
+        uint8_t before = cur(val);
+        uint8_t after = nxt(val);
+        if (before != after) {
+          dsp->fillRect(
+            getDispX(x), getDispY(y), getDispW(), getDispH(), getColor(after));
+          val = both(after, after);
+        }
+      }
+    }
+  }
+}
+
+class GameState {
   uint8_t curPiece;
   uint8_t nextPiece;
-  uint8_t cx, cy;
+  uint8_t cx, cy, cr;
   uint32_t score;
   uint32_t level;
-  uint8_t board[10 * 24];
+  Board board;
+
+ public:
+  void reset() {
+    level = 0;
+    score = 0;
+  }
+  void drawFullBoard() {
+    dsp->fillScreen(ST77XX_BLACK);
+    //
+  }
 };
 
 void Initialize() {
@@ -42,6 +161,7 @@ void Initialize() {
 void Begin(Adafruit_ST7789* tft) {
   gamesState = GameFlowState::JustStarting;
   dsp = tft;
+  calcDisplayValues();
 }
 
 void KeyDown(Keystroke k) {
