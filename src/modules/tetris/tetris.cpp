@@ -49,6 +49,22 @@ uint16_t getDispH() {
   return yW;
 }
 
+uint16_t getPrevX(uint8_t x) {
+  return xN + xW * x;
+}
+
+uint16_t getPrevY(uint8_t y) {
+  return yN + yW * y;
+}
+
+uint16_t getPrevW() {
+  return xW * 3;
+}
+
+uint16_t getPrevH() {
+  return yW * 4;
+}
+
 uint16_t getColor(uint8_t blk) {
   switch (blk) {
     case 0:
@@ -124,31 +140,33 @@ class Board {
   bool placePiece(uint8_t pn, uint8_t x, uint8_t y, uint8_t r) {
     // Draw the piece at the given location,
     // returning true if it can be drawn there
-    if (cur(pos(x, y)) != 0)
+    uint8_t &p0 = pos(x,y);
+    if (cur(p0) != 0)
       return false;
-    if (cur(pos(0, pn, x, y, r)) != 0)
+    uint8_t &p1 = pos(0, pn, x, y, r);
+    if (cur(p1) != 0)
       return false;
-    if (cur(pos(1, pn, x, y, r)) != 0)
+    uint8_t &p2 = pos(1, pn, x, y, r);
+    if (cur(p2) != 0)
       return false;
-    if (cur(pos(2, pn, x, y, r)) != 0)
+      uint8_t &p3 = pos(2, pn, x, y, r);
+    if (cur(p3) != 0)
       return false;
 
-    uint8_t p = pos(x, y);
-    p = both(cur(p), pn + 1);
-
-    p = pos(0, pn, x, y, r);
-    p = both(cur(p), pn + 1);
-
-    p = pos(1, pn, x, y, r);
-    p = both(cur(p), pn + 1);
-
-    p = pos(2, pn, x, y, r);
-    p = both(cur(p), pn + 1);
+    p0 = both(cur(p0), pn + 1);
+    p1 = both(cur(p1), pn + 1);
+    p2 = both(cur(p2), pn + 1);
+    p3 = both(cur(p3), pn + 1);
 
     return true;
   }
   void removePiece(uint8_t bn, uint8_t x, uint8_t y, uint8_t r) {
     // Delete the piece drawn at the given location
+  }
+  void drawNext(uint8_t bn) {
+    dsp->fillRect(getPrevX(-1), getPrevY(-2), getPrevW(), getPrevH(), ST77XX_BLACK);
+    dsp->fillRect(getPrevX(pieces[bn][0]),getPrevY(pieces[bn][1]), getPrevW(), getPrevH(), getColor(bn));
+    // TODO: Continue here
   }
   void refresh() {
     // Walk the board and actually display any changes,
