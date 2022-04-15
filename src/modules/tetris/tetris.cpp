@@ -105,7 +105,7 @@ class Board {
     return blocks[y * 10 + x];
   }
   uint8_t& pos(uint8_t loc, uint8_t pn, uint8_t x, uint8_t y, uint8_t r) {
-    const int8_t *blkPos = &pieces[pn][0];
+    const int8_t* blkPos = &pieces[pn][0];
     switch (r) {
       default:
       case 0:
@@ -127,8 +127,8 @@ class Board {
   uint8_t both(uint8_t c, uint8_t n) {
     return c | (n << 4);
   }
+  // This should update the block array, but without rendering anything
   void drawBlock(uint8_t x, uint8_t y, uint8_t bn) {
-    // This should update the block array, but without rendering anything
     uint8_t& blk = pos(x, y);
     blk = both(cur(blk), nxt(bn));
   }
@@ -137,19 +137,19 @@ class Board {
   void reset() {
     std::memset(blocks, 0, sizeof(blocks));
   }
+  // Draw the piece at the given location,
+  // returning true if it can be drawn there
   bool placePiece(uint8_t pn, uint8_t x, uint8_t y, uint8_t r) {
-    // Draw the piece at the given location,
-    // returning true if it can be drawn there
-    uint8_t &p0 = pos(x,y);
+    uint8_t& p0 = pos(x, y);
     if (cur(p0) != 0)
       return false;
-    uint8_t &p1 = pos(0, pn, x, y, r);
+    uint8_t& p1 = pos(0, pn, x, y, r);
     if (cur(p1) != 0)
       return false;
-    uint8_t &p2 = pos(1, pn, x, y, r);
+    uint8_t& p2 = pos(1, pn, x, y, r);
     if (cur(p2) != 0)
       return false;
-      uint8_t &p3 = pos(2, pn, x, y, r);
+    uint8_t& p3 = pos(2, pn, x, y, r);
     if (cur(p3) != 0)
       return false;
 
@@ -160,13 +160,32 @@ class Board {
 
     return true;
   }
+  // Delete the piece drawn at the given location
+  // Draw the piece at the given location,
+  // returning true if it can be drawn there
   void removePiece(uint8_t bn, uint8_t x, uint8_t y, uint8_t r) {
-    // Delete the piece drawn at the given location
+    uint8_t& p0 = pos(x, y);
+    p0 = both(cur(p0), 0);
+    uint8_t& p1 = pos(0, bn, x, y, r);
+    p1 = both(cur(p1), 0);
+    uint8_t& p2 = pos(1, bn, x, y, r);
+    p2 = both(cur(p2), 0);
+    uint8_t& p3 = pos(2, bn, x, y, r);
+    p3 = both(cur(p3), 0);
   }
+  // Draw the "preview" of the next piece to drop
   void drawNext(uint8_t bn) {
-    dsp->fillRect(getPrevX(-1), getPrevY(-2), getPrevW(), getPrevH(), ST77XX_BLACK);
-    dsp->fillRect(getPrevX(pieces[bn][0]),getPrevY(pieces[bn][1]), getPrevW(), getPrevH(), getColor(bn));
-    // TODO: Continue here
+    uint16_t h = getDispH();
+    uint16_t w = getDispW();
+    dsp->fillRect(
+      getPrevX(-1), getPrevY(-2), getPrevW(), getPrevH(), ST77XX_BLACK);
+    dsp->fillRect(getPrevX(0), getPrevY(0), w, h, getColor(bn));
+    dsp->fillRect(
+      getPrevX(pieces[bn][0]), getPrevY(pieces[bn][1]), w, h, getColor(bn));
+    dsp->fillRect(
+      getPrevX(pieces[bn][2]), getPrevY(pieces[bn][3]), w, h, getColor(bn));
+    dsp->fillRect(
+      getPrevX(pieces[bn][4]), getPrevY(pieces[bn][5]), w, h, getColor(bn));
   }
   void refresh() {
     // Walk the board and actually display any changes,

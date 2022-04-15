@@ -64,6 +64,9 @@ void BoardIO::Configure() {
 
 void resetTheWorld();
 
+int16_t px = 0, py = 0;
+uint16_t pw = 240, ph = 135;
+
 void BoardIO::DrawText(const edit::editline& ln) {
   // Add the 'cursor'
   char loc[129];
@@ -85,11 +88,9 @@ void BoardIO::DrawText(const edit::editline& ln) {
   loc[s + after] = 0;
   // Now let's erase & redraw the text:
   tft->fillScreen(ST77XX_BLACK);
-  uint16_t pw, ph;
-  int16_t x, y;
-  tft->getTextBounds(&loc[0], 0, 0, &x, &y, &pw, &ph);
-  x = (tft->width() - pw) / 2;
-  y = (tft->height() - ph) / 2;
+  tft->getTextBounds(&loc[0], 10, 10, &px, &py, &pw, &ph);
+  uint16_t x = (tft->width() - pw) / 2 - 10 + px;
+  uint16_t y = (tft->height() - ph) / 2 - 10 + py;
   tft->setTextColor(ST77XX_GREEN);
   tft->setCursor(x, y);
   tft->print(&loc[0]);
@@ -156,10 +157,10 @@ bool BoardIO::Override(scancode_t sc, bool pressed, uint32_t now) {
 void BoardIO::SaveLayer() {
   uint8_t lyr = value_cast(getCurrentLayer());
   if (lyr >= 0 && lyr < value_cast(layer_num::ValidSaves)) {
-    DBG(dumpVal(lyr, "Saving layer to eeprom "));
+    DBG2(dumpVal(lyr, "Saving layer to eeprom "));
     EEPROM.update(0, lyr);
   } else {
-    DBG(dumpVal(lyr, "Not saving this to eeprom "));
+    DBG2(dumpVal(lyr, "Not saving this to eeprom "));
   }
 }
 
@@ -198,19 +199,14 @@ void BoardIO::Changed(uint32_t now, uint16_t menuInfo) {
   }
 }
 
-bool saved = true;
-
 void BoardIO::Tick(uint32_t now) {
-  if (now - lastShownLayerTime > 10000) {
+  if (mode == BoardMode::Normal && now - lastShownLayerTime > 10000) {
     Backlight(false);
     // This is a *really* slow debounce of layer switches :D
     // Only save a layer if we've had it set > 10 seconds
-    if (!saved) {
-      SaveLayer();
-      saved = true;
-    }
-  } else {
-    saved = false;
+    SaveLayer();
+  } else if (mode != BoardMode::Normal) {
+    // Don't need to do anything for Calculator mode, but what about Tetris mode?
   }
 }
 
