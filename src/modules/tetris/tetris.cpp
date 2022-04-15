@@ -101,7 +101,10 @@ constexpr int8_t pieces[7][6] = {
 
 class Board {
   uint8_t blocks[10 * 24];
+  static const uint8_t offboard = 0xFF;
   uint8_t& pos(uint8_t x, uint8_t y) {
+    if (x >= 10 || y >= 24)
+      return const_cast<uint8_t&>(offboard);
     return blocks[y * 10 + x];
   }
   uint8_t& pos(uint8_t loc, uint8_t pn, uint8_t x, uint8_t y, uint8_t r) {
@@ -141,16 +144,10 @@ class Board {
   // returning true if it can be drawn there
   bool placePiece(uint8_t pn, uint8_t x, uint8_t y, uint8_t r) {
     uint8_t& p0 = pos(x, y);
-    if (cur(p0) != 0)
-      return false;
     uint8_t& p1 = pos(0, pn, x, y, r);
-    if (cur(p1) != 0)
-      return false;
     uint8_t& p2 = pos(1, pn, x, y, r);
-    if (cur(p2) != 0)
-      return false;
     uint8_t& p3 = pos(2, pn, x, y, r);
-    if (cur(p3) != 0)
+    if (cur(p0) || cur(p1) || cur(p2) || cur(p3))
       return false;
 
     p0 = both(cur(p0), pn + 1);
