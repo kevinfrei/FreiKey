@@ -1,21 +1,4 @@
-include ../standalone.mk
-
-.PHONY: clean
-
-DESTDIR = ../../out/img/
-IMAGE = ${DESTDIR}image${SFX}
-
-img: out out/img ${IMAGE}
-
-out out/img:
-	-@mkdir $(call MKDIRPATH,${DESTDIR}) > ${devnull} 2>&1
-
-${DESTDIR}%.${OSUFFIX} : %.cpp
-	${CXX} ${OPTFLAGS} -I. -Iinclude -DSTANDALONE ${STDNUM} -c  $< ${OBJFLAG}$@
-
-${DESTDIR}%.${OSUFFIX} : bitmaps/%.cpp
-	${CXX} ${OPTFLAGS} -I. -Iinclude -DSTANDALONE ${STDNUM} -c  $< ${OBJFLAG}$@
-
+MODNAME=image
 IMG_SRC = imgencoder.cpp \
  img_cmdln.cpp \
  imgenc_rle.cpp \
@@ -24,15 +7,8 @@ IMG_SRC = imgencoder.cpp \
  imgdec_pal.cpp \
  imgenc_prle.cpp \
  imgdec_prle.cpp
-
 BMP_SRC = $(notdir $(wildcard bitmaps/*.cpp))
- 
-CPP_OBJS = $(addprefix ${DESTDIR}, $(patsubst %.cpp, %.${OSUFFIX}, ${IMG_SRC})) \
-	$(addprefix ${DESTDIR}, $(patsubst %.cpp, %.${OSUFFIX}, ${BMP_SRC}))
+CPP_SRC = ${IMG_SRC} ${BMP_SRC}
+VPATH += bitmaps
 
-${IMAGE}: ${CPP_OBJS}
-	${CXX} ${OPTFLAGS} ${IMGFLAG}$@ $^
-
-clean: 
-	-${RM} $(call CLEANPATHS, ${CPP_OBJS} ${IMAGE})
-
+include ../standalone.mk

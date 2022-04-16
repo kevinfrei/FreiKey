@@ -44,3 +44,23 @@ STDNUM=-std=c++20
 OSUFFIX=o
 endif
 
+DESTDIR = ../../out/${MODNAME}/
+IMAGE = ${DESTDIR}${MODNAME}${SFX}
+
+${MODNAME}: out/${MODNAME} ${IMAGE}
+
+.PHONY: clean ${MODNAME}
+
+out/${MODNAME}:
+	-@mkdir $(call MKDIRPATH,${DESTDIR}) > ${devnull} 2>&1
+
+CPP_OBJS = $(addprefix ${DESTDIR}, $(patsubst %.cpp, %.${OSUFFIX}, ${CPP_SRC}))
+
+${DESTDIR}%.${OSUFFIX} : %.cpp
+	${CXX} ${OPTFLAGS} -I. -Iinclude -I../../include -DSTANDALONE ${STDNUM} -c  $< ${OBJFLAG}$@
+
+clean: 
+	-${RM} $(call CLEANPATHS, ${CPP_OBJS} ${MORE_CLEAN} ${IMAGE})
+
+${IMAGE}: ${CPP_OBJS}
+	${CXX} ${OPTFLAGS} ${IMGFLAG}$@ $^

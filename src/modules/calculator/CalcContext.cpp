@@ -1,3 +1,4 @@
+// MSVC, LKG6, bad memories. Very. Bad. Memories.
 #define _CRT_SECURE_NO_WARNINGS
 #include <cmath>
 #include <cstring>

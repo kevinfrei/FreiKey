@@ -1,5 +1,9 @@
 #pragma once
 
+// MSVC, LKG6, bad memories. Very. Bad. Memories.
+#if !defined(_CRT_SECURE_NO_WARNINGS)
+#define _CRT_SECURE_NO_WARNINGS
+#endif
 #include <cmath>
 #include <cstdint>
 #include <cstdlib>
