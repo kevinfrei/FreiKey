@@ -206,7 +206,8 @@ void BoardIO::Tick(uint32_t now) {
     // Only save a layer if we've had it set > 10 seconds
     SaveLayer();
   } else if (mode != BoardMode::Normal) {
-    // Don't need to do anything for Calculator mode, but what about Tetris mode?
+    // Don't need to do anything for Calculator mode, but what about Tetris
+    // mode?
   }
 }
 

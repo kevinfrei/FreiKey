@@ -1,6 +1,6 @@
 #include "Adafruit_ST7789.h"
-#include <cstdint>
 #include <algorithm>
+#include <cstdint>
 
 #include "include/tetris_details.h"
 

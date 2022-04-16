@@ -6,7 +6,6 @@
 #include "CalcExpr.h"
 #include "CalcParser.h"
 
-
 namespace calc {
 
 class Token {

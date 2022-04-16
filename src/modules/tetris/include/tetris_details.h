@@ -5,7 +5,7 @@
 #include <cstdint>
 
 namespace tetris {
-extern class Adafruit_ST7789 *dsp;
+extern class Adafruit_ST7789* dsp;
 void calcDisplayValues();
 uint16_t getDispX(uint8_t x);
 uint16_t getDispY(uint8_t y);

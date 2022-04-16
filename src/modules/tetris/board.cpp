@@ -157,8 +157,13 @@ void Board::dump() {
                                       '?',
                                       '?',
                                       '?'};
-  for (int8_t x = -1; x < 11; x++) {
-    for (int8_t y = -1; y < 25; y++) {
+  std::cout << "Current:        Next:" << std::endl;
+  for (int8_t y = -1; y < 25; y++) {
+    for (int8_t x = -1; x < 11; x++) {
+      std::cout << syms[cur(pos(x, y))];
+    }
+    std::cout << " ";
+    for (int8_t x = -1; x < 11; x++) {
       std::cout << syms[nxt(pos(x, y))];
     }
     std::cout << std::endl;
@@ -174,7 +179,19 @@ void Board::dump() {
 int main(void) {
   std::cout << "Testing tetris" << std::endl;
   tetris::Board b;
-  b.dump();
+  for (uint8_t pn = 0; pn < 7; pn++) {
+    for (uint8_t rot = 0; rot < 4; rot++) {
+      bool attempted = b.placePiece(pn, 5, 2, rot);
+      if (!attempted) {
+        std::cout << "placePiece " << static_cast<int>(pn) << ",t,2,"
+                  << static_cast<int>(rot) << " failed" << std::endl;
+      }
+      b.render();
+      b.removePiece(pn, 5, 2, rot);
+      b.render();
+    }
+  }
+  std::cout << "Tetris testing complete" << std::endl;
 }
 
 #endif
