@@ -3,9 +3,12 @@
 
 #if defined(STANDALONE)
 #include <iostream>
+#else
+#include "Adafruit_ST7789.h"
 #endif
 
-#include "board.h"
+#include "include/board.h"
+#include "include/tetris_details.h"
 
 namespace tetris {
 
@@ -59,6 +62,10 @@ void Board::drawBlock(uint8_t x, uint8_t y, uint8_t bn) {
   blk = both(cur(blk), nxt(bn));
 }
 
+Board::Board() {
+  blocks.fill(0);
+}
+
 void Board::reset() {
   blocks.fill(0);
 }
@@ -95,7 +102,27 @@ void Board::removePiece(uint8_t bn, uint8_t x, uint8_t y, uint8_t r) {
   p3 = both(cur(p3), 0);
 }
 
+void Board::render() {
+  // Walk the board and actually display any changes,
+  // then clear the board of changes
+  for (uint8_t x = 0; x < 10; x++) {
+    for (uint8_t y = 0; y < 24; y++) {
+      uint8_t& val = pos(x, y);
+      uint8_t before = cur(val);
+      uint8_t after = nxt(val);
+      if (before != after) {
 #if !defined(STANDALONE)
+        dsp->fillRect(
+          getDispX(x), getDispY(y), getDispW(), getDispH(), getColor(after));
+#endif
+        val = both(after, after);
+      }
+    }
+  }
+}
+
+#if !defined(STANDALONE)
+
 // Draw the "preview" of the next piece to drop
 void Board::drawNext(uint8_t bn) {
   uint16_t h = getDispH();
@@ -131,12 +158,7 @@ void Board::dump() {
                                       '?',
                                       '?'};
   for (int8_t x = -1; x < 11; x++) {
-    std::cout << "Row " << static_cast<int>(x) << std::endl;
     for (int8_t y = -1; y < 25; y++) {
-      uint8_t p = pos(x, y);
-      std::cout << "pos: " << static_cast<int>(p) << std::endl;
-      uint8_t n = nxt(p);
-      std::cout << "nxt: " << static_cast<int>(n) << std::endl;
       std::cout << syms[nxt(pos(x, y))];
     }
     std::cout << std::endl;
@@ -144,25 +166,6 @@ void Board::dump() {
 }
 
 #endif
-
-void Board::refresh() {
-  // Walk the board and actually display any changes,
-  // then clear the board of changes
-  for (uint8_t x = 0; x < 10; x++) {
-    for (uint8_t y = 0; y < 24; y++) {
-      uint8_t& val = pos(x, y);
-      uint8_t before = cur(val);
-      uint8_t after = nxt(val);
-      if (before != after) {
-#if !defined(STANDALONE)
-        dsp->fillRect(
-          getDispX(x), getDispY(y), getDispW(), getDispH(), getColor(after));
-#endif
-        val = both(after, after);
-      }
-    }
-  }
-}
 
 } // namespace tetris
 

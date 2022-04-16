@@ -19,6 +19,7 @@ class Board {
   void drawBlock(uint8_t x, uint8_t y, uint8_t bn);
 
  public:
+  Board();
   void reset();
   // Draw the piece at the given location,
   // returning true if it can be drawn there
@@ -27,13 +28,13 @@ class Board {
   // Draw the piece at the given location,
   // returning true if it can be drawn there
   void removePiece(uint8_t bn, uint8_t x, uint8_t y, uint8_t r);
+  void render();
 #if !defined(STANDALONE)
   // Draw the "preview" of the next piece to drop
   void drawNext(uint8_t bn);
 #else
   void dump();
 #endif
-  void refresh();
 };
 
 } // namespace tetris
