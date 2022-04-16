@@ -2,6 +2,7 @@
 #include <array>
 #include <cstring>
 
+#include "include/board.h"
 #include "tetris.h"
 #include "usbenums.h"
 
