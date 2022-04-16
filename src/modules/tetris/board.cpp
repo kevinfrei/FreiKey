@@ -21,6 +21,8 @@ constexpr std::array<std::array<int8_t, 6>, 7> pieces{{
 }};
 
 uint8_t& Board::pos(uint8_t x, uint8_t y) {
+  if (x >= 10 || y >= 24)
+    return const_cast<uint8_t&>(offboard);
   return blocks[y * 10 + x];
 }
 
@@ -65,16 +67,10 @@ void Board::reset() {
 // returning true if it can be drawn there
 bool Board::placePiece(uint8_t pn, uint8_t x, uint8_t y, uint8_t r) {
   uint8_t& p0 = pos(x, y);
-  if (cur(p0) != 0)
-    return false;
   uint8_t& p1 = pos(0, pn, x, y, r);
-  if (cur(p1) != 0)
-    return false;
   uint8_t& p2 = pos(1, pn, x, y, r);
-  if (cur(p2) != 0)
-    return false;
   uint8_t& p3 = pos(2, pn, x, y, r);
-  if (cur(p3) != 0)
+  if (cur(p0) || cur(p1) || cur(p2) || cur(p3))
     return false;
 
   p0 = both(cur(p0), pn + 1);
@@ -137,7 +133,7 @@ void Board::dump() {
   for (int8_t x = -1; x < 11; x++) {
     std::cout << "Row " << static_cast<int>(x) << std::endl;
     for (int8_t y = -1; y < 25; y++) {
-      uint8_t p = pos(x,y);
+      uint8_t p = pos(x, y);
       std::cout << "pos: " << static_cast<int>(p) << std::endl;
       uint8_t n = nxt(p);
       std::cout << "nxt: " << static_cast<int>(n) << std::endl;
