@@ -22,6 +22,9 @@ constexpr uint8_t TFT_RST = 21;
 constexpr uint8_t SPKR_GND = 0;
 constexpr uint8_t SPKR_SIGNAL = 4;
 
+// Finally, the data for the SD card on the back of the Adafruit display
+constexpr uint8_t SD_CS = 19;
+
 Adafruit_ST7789* BoardIO::tft = nullptr;
 boolean BoardIO::backlightOn = false;
 uint32_t BoardIO::lastShownLayerTime = 0;

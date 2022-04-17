@@ -107,7 +107,8 @@
     "xmemory": "cpp",
     "__bits": "cpp",
     "variant": "cpp",
-    "xtr1common": "cpp"
+    "xtr1common": "cpp",
+    "*.rh": "cpp"
   },
   "files.exclude": {
     "out": true,
