@@ -1,12 +1,6 @@
 [submodule "src/libs/GFX"]
 	path = src/libs/GFX
 	url = https://github.com/adafruit/Adafruit-GFX-Library.git
-[submodule "src/libs/NeoPixel"]
-	path = src/libs/NeoPixel
-	url = https://github.com/adafruit/Adafruit_NeoPixel.git
-[submodule "src/libs/SSD1306"]
-	path = src/libs/SSD1306
-	url = https://github.com/adafruit/Adafruit_SSD1306.git
 [submodule "src/libs/Arduino2Make"]
 	path = src/libs/Arduino2Make
 	url = git@github.com:kevinfrei/Arduino2Make.git
@@ -20,15 +14,6 @@
 [submodule "src/libs/ST77XX"]
 	path = src/libs/ST77XX
 	url = https://github.com/adafruit/Adafruit-ST7735-Library.git
-[submodule "src/libs/nRF52_Adafruit"]
-	path = src/libs/nRF52_Adafruit
-	url = https://github.com/adafruit/Adafruit_nRF52_Arduino.git
-[submodule "src/libs/CMSIS5"]
-	path = src/libs/CMSIS5
-	url = https://github.com/ARM-software/CMSIS_5.git
-[submodule "src/libs/SdFat"]
-	path = src/libs/SdFat
-	url = https://github.com/greiman/SdFat.git
 [submodule "src/libs/apple2"]
 	path = src/libs/apple2
 	url = https://github.com/kevinfrei/linapple.git
