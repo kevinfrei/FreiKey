@@ -190,6 +190,40 @@ image_compression enc_and_dec(uint8_t* inBuf, uint32_t sz) {
   return image_compression::PAL_NQRLE;
 }
 
+bool isXPM(const char* buf) {
+  return !strncmp("/* XPM */", buf, 9);
+}
+
+enum class ParseState {
+  Header,
+  Size,
+  Palette,
+  Pixels
+};
+
+// https://en.wikipedia.org/wiki/X_PixMap
+bool parseXPM(const std::vector<uint8_t> &contents,
+              uint16_t* w,
+              uint16_t* h,
+              uint32_t* sz
+              char **buf) {
+  uint32_t pos = 9; // Start after the first '/* XPM */' line
+  bool res = false;
+  ParseState st = ParseState::Header;
+  std::vector<uint16_t> colorMap;
+  std::vector<uint8_t> res;
+  for (auto &it = contents.begin(); it != contents.end(); it++) {
+    // TODO: Continue parsing in here...
+  }
+  if (res) {
+    *buf = new char[*sz];
+    std::memcpy(buf, res.data(), *sz);
+  } else {
+    *buf = nullptr;
+  }
+  return res;
+}
+
 // I used https://lvgl.io/tools/imageconverter to convert to 565 format
 // This takes .bin files and spits out the list of bytes
 int main(int argc, const char* argv[]) {
@@ -208,6 +242,7 @@ int main(int argc, const char* argv[]) {
   uint8_t* buf = contents.data();
   uint32_t sz = static_cast<uint32_t>(contents.size()), width, height;
   uint8_t* inBuf;
+  bool byteSwap = true;
   if (ln.width) {
     // Raw image: get the data from the command line
     width = ln.width;
@@ -219,6 +254,14 @@ int main(int argc, const char* argv[]) {
                 << std::endl;
       return 1;
     }
+  } else if (isXPM(buf)) {
+    // Parse the XPM
+    // This is *really* a bad hack...
+    if (!parseXPM(contents, &width, &height, &sz)) {
+      std::cerr << "Unable to parse the XPM file" << std::endl;
+      return 1;
+    }
+    byteSwap = false;
   } else {
     // Image came from the converter thing. Pull data from the file
     inBuf = &buf[4];

@@ -26,3 +26,9 @@
 [submodule "src/libs/CMSIS5"]
 	path = src/libs/CMSIS5
 	url = https://github.com/ARM-software/CMSIS_5.git
+[submodule "src/libs/SdFat"]
+	path = src/libs/SdFat
+	url = https://github.com/greiman/SdFat.git
+[submodule "src/libs/apple2"]
+	path = src/libs/apple2
+	url = https://github.com/kevinfrei/linapple.git
