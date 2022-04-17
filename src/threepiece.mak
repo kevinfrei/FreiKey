@@ -42,6 +42,7 @@ LIB_GFX=1
 LIB_ST77XX=1
 LIB_WIRE=1
 LIB_EEPROM=1
+LIB_SDFAT=1
 
 USER_INCLUDES=-Iinclude/threepiece -Iinclude/remotescan -Iinclude/teensy -Iinclude
 
@@ -51,10 +52,11 @@ USER_CPP_SRCS=\
 	mainloop.cpp \
 	scanning.cpp \
 	remotescan.cpp \
-	threepiece.cpp \
+	threepiece.cpp
 
 include modules/calculator/include.mk
 include modules/images/include.mk
+include apple2.mk
 
 ifeq ($(OS),Windows_NT)
 include tools/teensy.win
