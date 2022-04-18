@@ -2,8 +2,102 @@
 #include "bitmap.h"
 #include "dbgcfg.h"
 #include <Adafruit_ST7789.h>
+#include <vector>
+#include <cmath>
+
 // Note to self: Using the Adafruit_GFX header/display instead is *visibly*
 // slower
+
+uint8_t interp(
+  double dx, double dy, uint8_t lu, uint8_t ru, uint8_t ld, uint8_t rd) {
+  // use the relative distances to decide this color value
+  double u = (1 - dx) * lu + dx * ru;
+  double l = (1 - dx) * ld + dx * rd;
+  double v = (1 - dy) * u + dy * l;
+  return static_cast<uint8_t>(v + 0.5);
+}
+
+uint16_t rgb16(uint8_t r, uint8_t g, uint8_t b) {
+  return ((r & 0x1F) << 11) | ((g & 0x3f) << 5) | (b & 0x1f);
+}
+
+uint16_t getp(const std::vector<uint16_t>& pixels,
+              uint16_t x,
+              uint16_t y,
+              uint16_t w,
+              uint8_t def) {
+  return ((x >= w) || ((y * w + x) >= pixels.size())) ? def : pixels[y * w + x];
+}
+
+uint8_t getr(const std::vector<uint16_t>& pixels,
+             uint16_t x,
+             uint16_t y,
+             uint16_t w,
+             uint8_t def = 0) {
+  return 0x1f & (getp(pixels, x, y, w, def) >> 11);
+}
+
+uint8_t getg(const std::vector<uint16_t>& pixels,
+             uint16_t x,
+             uint16_t y,
+             uint16_t w,
+             uint8_t def = 0) {
+  return 0x3f & (getp(pixels, x, y, w, def) >> 5);
+}
+
+uint8_t getb(const std::vector<uint16_t>& pixels,
+             uint16_t x,
+             uint16_t y,
+             uint16_t w,
+             uint8_t def = 0) {
+  return 0x1f & getp(pixels, x, y, w, def);
+}
+
+std::vector<uint16_t> bilinearExpand(const std::vector<uint16_t>& pixels,
+                                     uint16_t srcw,
+                                     uint16_t srch,
+                                     uint16_t dstw,
+                                     uint16_t dsth) {
+  if (dstw == 0) {
+    dstw = srcw * dsth / srch;
+  } else if (dsth == 0) {
+    dsth = srch * dstw / srcw;
+  }
+  if (dstw < srcw || dsth < srch) {
+    return pixels;
+  }
+  std::vector<uint16_t> res;
+  res.reserve(dstw * dsth);
+  double dw = dstw, sw = srcw, dh = dsth, sh = srch;
+  for (uint16_t y = 0; y < dsth; y++) {
+    double yd = y * sh / dh;
+    uint16_t yo = static_cast<uint16_t>(std::floor(yd) + 0.01);
+    double dy = yd - yo;
+    for (uint16_t x = 0; x < dstw; x++) {
+      double xd = x * sw / dw;
+      uint16_t xo = static_cast<uint16_t>(std::floor(xd) + 0.01);
+      double dx = xd - xo;
+      // Linear interpolation is pretty easy:
+      uint8_t rul = getr(pixels, xo, yo, srcw);
+      uint8_t gul = getg(pixels, xo, yo, srcw);
+      uint8_t bul = getb(pixels, xo, yo, srcw);
+      uint8_t rur = getr(pixels, xo + 1, yo, srcw, rul);
+      uint8_t gur = getg(pixels, xo + 1, yo, srcw, gul);
+      uint8_t bur = getb(pixels, xo + 1, yo, srcw, bul);
+      uint8_t rll = getr(pixels, xo, yo + 1, srcw, rul);
+      uint8_t gll = getg(pixels, xo, yo + 1, srcw, gul);
+      uint8_t bll = getb(pixels, xo, yo + 1, srcw, bul);
+      uint8_t rlr = getr(pixels, xo + 1, yo + 1, srcw, rul);
+      uint8_t glr = getg(pixels, xo + 1, yo + 1, srcw, gul);
+      uint8_t blr = getb(pixels, xo + 1, yo + 1, srcw, bul);
+      uint8_t r = interp(dx, dy, rul, rur, rll, rlr);
+      uint8_t g = interp(dx, dy, gul, gur, gll, glr);
+      uint8_t b = interp(dx, dy, bul, bur, bll, blr);
+      pixels.push_back(rgb16(r, g, b));
+    }
+  }
+  return std::vector<uint16_t>{};
+}
 
 uint8_t* buffer = nullptr;
 uint32_t curOffset = 0;
