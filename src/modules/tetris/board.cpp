@@ -23,6 +23,8 @@ constexpr std::array<std::array<int8_t, 6>, 7> pieces{{
   {0, -2, 0, -1, 0, 1}, // I
 }};
 
+uint8_t const Board::offboard = 0xFF;
+
 uint8_t& Board::pos(uint8_t x, uint8_t y) {
   if (x >= 10 || y >= 24)
     return const_cast<uint8_t&>(offboard);

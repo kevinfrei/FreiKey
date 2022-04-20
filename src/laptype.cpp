@@ -231,8 +231,10 @@ KeyboardMode BoardIO::Mode(uint32_t now, KeyboardMode mode) {
   // want to
   switch (mode) {
     case KeyboardMode::Calculator:
-      EnterCalculator();
+      // EnterCalculator();
       break;
+    case KeyboardMode::Menu:
+      return menu::Select(KeyboardMode::Calculator, KeybaordMode::Tetris);
     default:
       break;
   }

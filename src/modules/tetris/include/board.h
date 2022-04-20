@@ -8,7 +8,7 @@
 namespace tetris {
 
 class Board {
-  static const uint8_t offboard = 0xFF;
+  static const uint8_t offboard;
   std::array<uint8_t, 10 * 24> blocks;
   uint8_t& pos(uint8_t x, uint8_t y);
   uint8_t& pos(uint8_t loc, uint8_t pn, uint8_t x, uint8_t y, uint8_t r);
