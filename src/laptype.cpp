@@ -229,6 +229,13 @@ void BoardIO::Tick(uint32_t now) {
 KeyboardMode BoardIO::Mode(uint32_t now, KeyboardMode mode) {
   // This should transition the board into whatever other mode you may
   // want to
+  switch (mode) {
+    case KeyboardMode::Calculator:
+      EnterCalculator();
+      break;
+    default:
+      break;
+  }
   return KeyboardMode::Normal;
 }
 
