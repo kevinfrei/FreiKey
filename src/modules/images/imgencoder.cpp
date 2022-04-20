@@ -253,7 +253,7 @@ int main(int argc, const char* argv[]) {
   } else if (isXPM(buf)) {
     // Parse the XPM
     // This is *really* a bad hack...
-    char *out;
+    char* out;
     if (!parseXPM(contents, &width, &height, &sz, &out)) {
       std::cerr << "Unable to parse the XPM file" << std::endl;
       return 1;

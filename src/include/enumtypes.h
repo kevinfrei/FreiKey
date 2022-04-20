@@ -24,7 +24,7 @@ enum class KeyAction : uint8_t {
   LayerShift = 5,
   LayerToggle = 6,
   LayerSwitch = 7,
-  Menu = 8 // "mode switch"
+  Mode = 8 // "mode switch"
   // MaxActions = 15
 };
 
@@ -35,4 +35,15 @@ enum class layer_t : uint8_t {
   Pop = 2,
   Toggle = 3,
   Switch = 4
+};
+
+enum class KeyboardMode : uint8_t {
+  Normal = 0,
+  Menu, // To pick from other modes :D
+  Calculator, // Done
+  Tetris, // This is close enough
+  Snake, // Definitely going to code this at some point
+  MediaBrowse, // Sure, why not?
+  Apple2, // Eventually :)
+  Diagnostics // Maybe?
 };

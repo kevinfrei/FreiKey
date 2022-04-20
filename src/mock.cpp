@@ -151,8 +151,8 @@ void BoardIO::Tick(uint32_t now) {
   // Do nothing for now...
 }
 
-uint16_t BoardIO::Mode(uint32_t now, uint16_t mode) {
-  return 0;
+KeyboardMode BoardIO::Mode(uint32_t now, KeyboardMode mode) {
+  return KeyboardMode::Normal;
 }
 
 // This where I should run some tests, right?

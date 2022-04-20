@@ -39,7 +39,7 @@
 #define LYR_TOG(n) layerToggle(n)
 #define LYR_SHIFT(n) layerShift(n)
 #define LYR_SET(n) layerSwitch(n)
-#define MNU(n) menuKey(n)
+#define MODE(n) modeKey(n)
 
 // Some missing keycodes from the Arduino/AdaFruit API's that I need. You can
 // find these from the QMK firmware HIDClassCommon.h file. I also find them in

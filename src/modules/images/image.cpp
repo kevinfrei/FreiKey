@@ -2,8 +2,8 @@
 #include "bitmap.h"
 #include "dbgcfg.h"
 #include <Adafruit_ST7789.h>
-#include <vector>
 #include <cmath>
+#include <vector>
 
 // Note to self: Using the Adafruit_GFX header/display instead is *visibly*
 // slower

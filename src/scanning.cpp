@@ -128,9 +128,9 @@ void ProcessConsumer(keystate& state, kb_reporter& rpt) {
   }
 }
 
-uint16_t ProcessKeys(uint32_t now, kb_reporter& rpt) {
+KeyboardMode ProcessKeys(uint32_t now, kb_reporter& rpt) {
   Modifiers mods = Modifiers::None;
-  uint16_t menuResult = 0;
+  KeyboardMode mode = KeyboardMode::Normal;
   for (auto& state : keyStates) {
     if (state.scanCode == null_scan_code)
       continue;
@@ -199,8 +199,8 @@ uint16_t ProcessKeys(uint32_t now, kb_reporter& rpt) {
         }
         break;
       }
-      case KeyAction::Menu: {
-        menuResult = state.action.getMenuInfo();
+      case KeyAction::Mode: {
+        mode = state.action.getMode();
         break;
       }
       case KeyAction::LayerShift:
@@ -211,5 +211,5 @@ uint16_t ProcessKeys(uint32_t now, kb_reporter& rpt) {
     }
   }
   rpt.send_keys();
-  return menuResult;
+  return mode;
 }

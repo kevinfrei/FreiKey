@@ -203,7 +203,7 @@ void BoardIO::Changed(uint32_t now, uint16_t menuInfo) {
 }
 */
 
-void BoardIO::Changed(uint32_t now, GeneralState &state) {
+void BoardIO::Changed(uint32_t now, GeneralState& state) {
   layer_num lyr = getCurrentLayer();
   if (lyr != lastShownLayer) {
     Backlight(true);
@@ -226,10 +226,10 @@ void BoardIO::Tick(uint32_t now) {
   }
 }
 
-uint16_t BoardIO::Mode(uint32_t now, uint16_t mode) {
+KeyboardMode BoardIO::Mode(uint32_t now, KeyboardMode mode) {
   // This should transition the board into whatever other mode you may
   // want to
-  return 0;
+  return KeyboardMode::Normal;
 }
 
 void BoardIO::ShowScanCode(uint16_t sc) {}

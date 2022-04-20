@@ -37,7 +37,7 @@ extern "C" void loop() {
     preprocessScanCode(sc, pressed, now);
     keysChanged = true;
   }
-  uint16_t mode = 0;
+  KeyboardMode mode = KeyboardMode::Normal;
   if (keysChanged) {
     kb_reporter rpt;
     mode = ProcessKeys(now, rpt);
@@ -45,7 +45,7 @@ extern "C" void loop() {
   }
   scanner.Done();
   BoardIO::Tick(now);
-  while (mode != 0) {
+  while (mode != KeyboardMode::Normal) {
     mode = BoardIO::Mode(now, mode);
   }
 }

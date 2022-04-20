@@ -71,8 +71,8 @@ class action_t {
   static constexpr action_t Combine(action_t a, action_t b) {
     return action_t{a, b};
   }
-  static constexpr action_t Menu(uint16_t info) {
-    return action_t{KeyAction::Menu, info};
+  static constexpr action_t Mode(uint16_t info) {
+    return action_t{KeyAction::Mode, info};
   }
   static constexpr action_t NoAction() {
     return action_t{};
@@ -103,26 +103,33 @@ class action_t {
   KeyAction getAction() const {
     return enum_cast<KeyAction>(data >> 12);
   }
+
   Keystroke getKeystroke() const {
     return enum_cast<Keystroke>(data & 0xff);
   }
+
   Consumer getConsumer() const {
     return enum_cast<Consumer>(data & 0xfff);
   }
-  uint16_t getMenuInfo() const {
-    return data & 0xfff;
+
+  KeyboardMode getMode() const {
+    return enum_cast<KeyboardMode>(data & 0xff);
   }
+
   // This is for flagging consumer keycodes, as I have to handle them
   // differently
   Modifiers getModifiers() const {
     return enum_cast<Modifiers>(data & 0xFF);
   }
+
   Modifiers getExtraMods() const {
     return enum_cast<Modifiers>(moreData & 0xFF);
   }
+
   layer_num getLayer() const {
     return enum_cast<layer_num>(data & 0xF);
   }
+
 #if defined(DEBUG)
   void dump() const {
     switch (getAction()) {
@@ -149,6 +156,9 @@ class action_t {
         break;
       case KeyAction::LayerSwitch:
         Serial.print("LayerSwitch:");
+        break;
+      case KeyAction::Mode:
+        Serial.print("Mode Switch:");
         break;
       default:
         Serial.print("Unknown:");
@@ -215,6 +225,6 @@ inline constexpr action_t keyAndModifiers(action_t key,
   return action_t::KeyAndMods(key, mod1, mod2, mod3, mod4);
 }
 
-inline constexpr action_t menuKey(uint16_t info) {
-  return action_t::Menu(info);
+inline constexpr action_t modeKey(uint16_t info) {
+  return action_t::Mode(info);
 }

@@ -76,8 +76,8 @@ void BoardIO::Configure() {
   digitalWrite(SPKR_SIGNAL, LOW);
 }
 
-uint16_t BoardIO::Mode(uint32_t now, uint16_t mode) {
-  return 0;
+KeyboardMode BoardIO::Mode(uint32_t now, KeyboardMode mode) {
+  return KeyboardMode::Normal;
 }
 
 void BoardIO::SaveLayer() {

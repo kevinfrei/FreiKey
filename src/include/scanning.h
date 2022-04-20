@@ -5,6 +5,7 @@
 
 #include "kbreporter.h"
 #include "keystate.h"
+#include "enumtypes.h"
 
 // variable declarations
 constexpr uint8_t num_keystates = 10;
@@ -19,4 +20,4 @@ uint32_t getColorForCurrentLayer();
 layer_num getCurrentLayer();
 keystate* findStateSlot(scancode_t scanCode);
 void preprocessScanCode(scancode_t sc, bool pressed, uint32_t now);
-uint16_t ProcessKeys(uint32_t now, kb_reporter& rpt);
+KeyboardMode ProcessKeys(uint32_t now, kb_reporter& rpt);

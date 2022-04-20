@@ -19,7 +19,7 @@ struct BoardIO {
   static void Changed(uint32_t now, GeneralState&);
   static void Tick(uint32_t now);
   static void ShowScanCode(uint16_t sc);
-  static uint16_t Mode(uint32_t now, uint16_t mode);
+  static KeyboardMode Mode(uint32_t now, KeyboardMode mode);
   static void Reset(GeneralState&);
 };
 
