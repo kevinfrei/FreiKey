@@ -27,12 +27,13 @@ struct BoardIO : public LaptypeMatrix {
   static BoardMode mode;
   static void Backlight(bool on = true);
   static void Configure();
-  static bool Override(scancode_t sc, bool pressed, uint32_t now);
-  static void Changed(uint32_t now, uint16_t menuInfo);
+  // static bool Override(scancode_t sc, bool pressed, uint32_t now);
+  static void Changed(uint32_t now, GeneralState &state);
   static void Tick(uint32_t now);
   static void ShowScanCode(uint16_t now);
   static void DrawText(const edit::editline& ln);
   static void SaveLayer();
+  static uint16_t Mode(uint32_t now, uint16_t mode);
   static void Reset(GeneralState&);
 };
 

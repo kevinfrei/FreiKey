@@ -76,8 +76,8 @@ void BoardIO::Configure() {
   digitalWrite(SPKR_SIGNAL, LOW);
 }
 
-bool BoardIO::Override(scancode_t sc, bool pressed, uint32_t now) {
-  return false;
+uint16_t BoardIO::Mode(uint32_t now, uint16_t mode) {
+  return 0;
 }
 
 void BoardIO::SaveLayer() {
@@ -100,7 +100,7 @@ void BoardIO::Reset(GeneralState& curState) {
   }
 }
 
-void BoardIO::Changed(uint32_t now, uint16_t menuInfo) {
+void BoardIO::Changed(uint32_t now, GeneralState &) {
   layer_num lyr = getCurrentLayer();
   if (lyr != lastShownLayer) {
     Backlight(true);
@@ -112,9 +112,11 @@ void BoardIO::Changed(uint32_t now, uint16_t menuInfo) {
     }
     ShowImage(tft, img);
   }
+  /*
   if (menuInfo != 0) {
     MenuTrigger(menuInfo);
   }
+  */
 }
 
 void BoardIO::Tick(uint32_t now) {

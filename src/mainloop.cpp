@@ -34,16 +34,18 @@ extern "C" void loop() {
   Scanner scanner{now};
   while ((sc = scanner.getNextCode(pressed)) != 0xFF) {
     DBG2(dumpHex(sc, "Got scan code 0x"));
-    if (!BoardIO::Override(sc, pressed, now)) {
-      preprocessScanCode(sc, pressed, now);
-      keysChanged = true;
-    }
+    preprocessScanCode(sc, pressed, now);
+    keysChanged = true;
   }
+  uint16_t mode = 0;
   if (keysChanged) {
     kb_reporter rpt;
-    uint16_t menuInfo = ProcessKeys(now, rpt);
-    BoardIO::Changed(now, menuInfo);
+    mode = ProcessKeys(now, rpt);
+    BoardIO::Changed(now, curState);
   }
   scanner.Done();
   BoardIO::Tick(now);
+  while (mode != 0) {
+    mode = BoardIO::Mode(now, mode);
+  }
 }

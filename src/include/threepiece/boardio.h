@@ -14,11 +14,12 @@ struct BoardIO {
   static layer_num lastShownLayer;
   static void Backlight(bool on = true);
   static void Configure();
-  static bool Override(scancode_t sc, bool pressed, uint32_t now);
+  // static bool Override(scancode_t sc, bool pressed, uint32_t now);
   static void SaveLayer();
-  static void Changed(uint32_t now, uint16_t menuInfo);
+  static void Changed(uint32_t now, GeneralState&);
   static void Tick(uint32_t now);
   static void ShowScanCode(uint16_t sc);
+  static uint16_t Mode(uint32_t now, uint16_t mode);
   static void Reset(GeneralState&);
 };
 

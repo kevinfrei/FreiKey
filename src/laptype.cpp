@@ -126,6 +126,7 @@ void MenuModeKeyHandler(bool pressed, action_t a) {
   }
 }
 
+/*
 bool BoardIO::Override(scancode_t sc, bool pressed, uint32_t now) {
   if (mode == BoardMode::Normal) {
     return false;
@@ -153,6 +154,7 @@ bool BoardIO::Override(scancode_t sc, bool pressed, uint32_t now) {
   }
   return true;
 }
+*/
 
 void BoardIO::SaveLayer() {
   uint8_t lyr = value_cast(getCurrentLayer());
@@ -174,6 +176,7 @@ void BoardIO::Reset(GeneralState& curState) {
   }
 }
 
+/*
 void BoardIO::Changed(uint32_t now, uint16_t menuInfo) {
   if (menuInfo) {
     mode = BoardMode::Calculator;
@@ -198,17 +201,35 @@ void BoardIO::Changed(uint32_t now, uint16_t menuInfo) {
     }
   }
 }
+*/
+
+void BoardIO::Changed(uint32_t now, GeneralState &state) {
+  layer_num lyr = getCurrentLayer();
+  if (lyr != lastShownLayer) {
+    Backlight(true);
+    lastShownLayer = lyr;
+    lastShownLayerTime = now;
+    const image_descriptor* img = layer_to_image[lyr];
+    if (img == nullptr) {
+      img = reaccs[now % 7];
+    }
+    ShowImage(tft, img);
+  }
+}
 
 void BoardIO::Tick(uint32_t now) {
-  if (mode == BoardMode::Normal && now - lastShownLayerTime > 10000) {
+  if (now - lastShownLayerTime > 10000) {
     Backlight(false);
     // This is a *really* slow debounce of layer switches :D
     // Only save a layer if we've had it set > 10 seconds
     SaveLayer();
-  } else if (mode != BoardMode::Normal) {
-    // Don't need to do anything for Calculator mode, but what about Tetris
-    // mode?
   }
+}
+
+uint16_t BoardIO::Mode(uint32_t now, uint16_t mode) {
+  // This should transition the board into whatever other mode you may
+  // want to
+  return 0;
 }
 
 void BoardIO::ShowScanCode(uint16_t sc) {}
