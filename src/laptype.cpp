@@ -69,7 +69,7 @@ void BoardIO::DrawText(const edit::editline& ln) {
     after++;
   }
   loc[s + after] = 0;
-  lastPos = disp::CenteredText(&loc[0], lastPos);
+  disp::CenteredText(&loc[0], lastPos);
 }
 
 Modifiers menuMods = Modifiers ::None;

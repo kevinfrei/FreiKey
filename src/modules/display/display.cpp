@@ -53,23 +53,64 @@ void SetBacklight(bool turnOn, uint32_t now) {
   backlightOnTime = turnOn ? now : 0;
 }
 
-rect_t CenteredText(const char* loc,
-                    rect_t& prv,
-                    uint16_t color = ST77XX_WHITE,
-                    uint16_t bgColor = ST77XX_BLACK) {
-  rect_t reg;
-  tft->getTextBounds(loc, 0, 0, &reg.x, &reg.y, &reg.w, &reg.h);
-  uint16_t x = (tft->width() - reg.w) / 2 + reg.x;
-  uint16_t y = (tft->height() - reg.h) / 2 + reg.y;
-  tft->getTextBounds(loc, x, y, &reg.x, &reg.y, &reg.w, &reg.h);
-  if (prv.x < reg.x || prv.y < reg.y || prv.x + prv.w > reg.x + prv.w ||
-      prv.y + prv.h > reg.y + reg.h) {
-    tft->fillRect(prv.x, prv.y, prv.w, prv.h, bgColor);
+RelativeAlignment GetRelX(TextAlignment a) {
+  switch (a) {
+    case TextAlignment::LeftTop:
+    case TextAlignment::LeftMiddle:
+    case TextAlignment::LeftBottom:
+      return RelativeAlignment::Start;
+    case TextAlignment::CenterTop:
+    case TextAlignment::CenterMiddle:
+    case TextAlignment::CenterBottom:
+      return RelativeAlignment::Middle;
+    case TextAlignment::RightTop:
+    case TextAlignment::RightMiddle:
+    case TextAlignment::RightBottom:
+      return RelativeAlignment::End;
   }
+  return RelativeAlignment::Middle;
+}
+
+RelativeAlignment GetRelY(TextAlignment a) {
+  switch (a) {
+    case TextAlignment::LeftTop:
+    case TextAlignment::CenterTop:
+    case TextAlignment::RightTop:
+      return RelativeAlignment::Start;
+    case TextAlignment::LeftMiddle:
+    case TextAlignment::CenterMiddle:
+    case TextAlignment::RightMiddle:
+      return RelativeAlignment::Middle;
+    case TextAlignment::LeftBottom:
+    case TextAlignment::CenterBottom:
+    case TextAlignment::RightBottom:
+      return RelativeAlignment::End;
+  }
+  return RelativeAlignment::Middle;
+}
+
+uint16_t getAligned(
+  RelativeAlignment rel, uint16_t sz, uint16_t st, uint8_t pad, uint16_t max) {
+  return 0;
+}
+
+void CenteredText(const char* loc,
+                  rect_t& prv,
+                  TextAlignment align,
+                  uint8_t padding,
+                  uint16_t color = ST77XX_WHITE,
+                  uint16_t bgColor = ST77XX_BLACK) {
+  tft->fillRect(prv.x, prv.y, prv.w, prv.h, bgColor);
+  tft->getTextBounds(loc, 0, 0, &prv.x, &prv.y, &prv.w, &prv.h);
+  uint16_t x = getAligned(GetRelX(align), prv.w, prv.x, padding, tft->width());
+  uint16_t y = getAligned(GetRelY(align), prv.h, prv.y, padding, tft->height());
+  uint16_t x = (tft->width() - prv.w) / 2 + prv.x;
+  uint16_t y = (tft->height() - prv.h) / 2 + prv.y;
+  tft->getTextBounds(loc, x, y, &prv.x, &prv.y, &prv.w, &prv.h);
+  // Erase the old text
   tft->setTextColor(color);
   tft->setCursor(x, y);
   tft->print(loc);
-  return reg;
 }
 
 void SetTimeout(uint16_t seconds) {
@@ -82,10 +123,10 @@ void Tick(uint32_t now) {
   }
 }
 
-int8_t yoffs[12] = {3, 2, 1, 0, 2, 3, 3, 2, 0, 1, 2, 3};
-int8_t yloffs[12] = {3, 3, 2, 4, 3, 3, 3, 3, 4, 2, 3, 3};
-int8_t xoffs[12] = {-4, -4, -4, -3, 0, 1, -2, -1, 2, 3, 3, 3};
-int8_t xloffs[12] = {0, 0, -3, -3, -3, 3, -5, 2, 2, 2, 0, 0};
+constexpr int8_t yoffs[12] = {3, 2, 1, 0, 2, 3, 3, 2, 0, 1, 2, 3};
+constexpr int8_t yloffs[12] = {3, 3, 2, 4, 3, 3, 3, 3, 4, 2, 3, 3};
+constexpr int8_t xoffs[12] = {-4, -4, -4, -3, 0, 1, -2, -1, 2, 3, 3, 3};
+constexpr int8_t xloffs[12] = {0, 0, -3, -3, -3, 3, -5, 2, 2, 2, 0, 0};
 
 void DrawKeyboard(uint16_t scancode, uint16_t l, uint16_t t) {
   uint16_t x = (scancode & 0xFF) % 12;
