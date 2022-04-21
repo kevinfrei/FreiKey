@@ -1,9 +1,9 @@
 #pragma once
 
+#include "enumtypes.h"
 #include "generalstate.h"
 #include "keymatrix.h"
 #include "keystate.h"
-#include "enumtypes.h"
 #include "mpu.h"
 
 // clang-format off

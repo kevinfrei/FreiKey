@@ -3,9 +3,9 @@
 #include "sysstuff.h"
 #include <bitset>
 
+#include "enumtypes.h"
 #include "kbreporter.h"
 #include "keystate.h"
-#include "enumtypes.h"
 
 // variable declarations
 constexpr uint8_t num_keystates = 10;

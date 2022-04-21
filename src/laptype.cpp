@@ -2,9 +2,10 @@
 #include "sysstuff.h"
 #include <array>
 
+#include "Adafruit_ST7789.h"
 #include "Calculator.h"
-#include "Fonts/FreeSans12pt7b.h"
 #include "boardio.h"
+#include "display.h"
 #include "editline.h"
 #include "enumhelpers.h"
 #include "enumtypes.h"
@@ -19,7 +20,6 @@ constexpr uint8_t TFT_DC = 15;
 constexpr uint8_t TFT_RST = 6;
 
 Adafruit_ST7789* BoardIO::tft = nullptr;
-boolean BoardIO::backlightOn = false;
 uint32_t BoardIO::lastShownLayerTime = 0;
 layer_num BoardIO::lastShownLayer = layer_num::Base;
 BoardMode BoardIO::mode = BoardMode::Normal;
@@ -37,26 +37,10 @@ const enum_array<layer_num, const image_descriptor*, 8> layer_to_image = {
   {layer_num::WinCtl, gfx_batman},
   {layer_num::LinCap, nullptr}};
 
-void BoardIO::Backlight(bool turnOn) {
-  if (backlightOn != turnOn) {
-    backlightOn = turnOn;
-    digitalWrite(BACKLIGHT_PIN, turnOn ? HIGH : LOW);
-  }
-}
-
 void BoardIO::Configure() {
   ConfigMatrix();
-  tft = new Adafruit_ST7789(TFT_CS, TFT_DC, TFT_RST);
-  pinMode(BACKLIGHT_PIN, OUTPUT);
-
-  Backlight(true);
-  tft->init(135, 240);
-  // This is the fastest speed that worked
-  // (72mhz also worked, but seemed to be the same observable speed)
-  tft->setSPISpeed(60000000);
-  tft->setRotation(1);
-  tft->fillScreen(ST77XX_BLACK);
-  tft->setFont(&FreeSans12pt7b);
+  tft = disp::Init(135, 240, 60, 1, TFT_CS, TFT_DC, TFT_RST, BACKLIGHT_PIN);
+  disp::SetBacklight(true, millis());
   ShowImage(tft, gfx_amy);
   edit::Initialize();
   calc::Initialize();
@@ -64,8 +48,7 @@ void BoardIO::Configure() {
 
 void resetTheWorld();
 
-int16_t px = 0, py = 0;
-uint16_t pw = 240, ph = 135;
+disp::rect_t lastPos = {0, 0, 135, 240};
 
 void BoardIO::DrawText(const edit::editline& ln) {
   // Add the 'cursor'
@@ -86,14 +69,7 @@ void BoardIO::DrawText(const edit::editline& ln) {
     after++;
   }
   loc[s + after] = 0;
-  // Now let's erase & redraw the text:
-  tft->fillScreen(ST77XX_BLACK);
-  tft->getTextBounds(&loc[0], 10, 10, &px, &py, &pw, &ph);
-  uint16_t x = (tft->width() - pw) / 2 - 10 + px;
-  uint16_t y = (tft->height() - ph) / 2 - 10 + py;
-  tft->setTextColor(ST77XX_GREEN);
-  tft->setCursor(x, y);
-  tft->print(&loc[0]);
+  lastPos = disp::CenteredText(&loc[0], lastPos);
 }
 
 Modifiers menuMods = Modifiers ::None;
@@ -206,7 +182,7 @@ void BoardIO::Changed(uint32_t now, uint16_t menuInfo) {
 void BoardIO::Changed(uint32_t now, GeneralState& state) {
   layer_num lyr = getCurrentLayer();
   if (lyr != lastShownLayer) {
-    Backlight(true);
+    disp::SetBacklight(true, now);
     lastShownLayer = lyr;
     lastShownLayerTime = now;
     const image_descriptor* img = layer_to_image[lyr];
@@ -219,7 +195,7 @@ void BoardIO::Changed(uint32_t now, GeneralState& state) {
 
 void BoardIO::Tick(uint32_t now) {
   if (now - lastShownLayerTime > 10000) {
-    Backlight(false);
+    disp::Tick(now);
     // This is a *really* slow debounce of layer switches :D
     // Only save a layer if we've had it set > 10 seconds
     SaveLayer();
@@ -234,7 +210,8 @@ KeyboardMode BoardIO::Mode(uint32_t now, KeyboardMode mode) {
       // EnterCalculator();
       break;
     case KeyboardMode::Menu:
-      return menu::Select(KeyboardMode::Calculator, KeybaordMode::Tetris);
+      // return menu::Select(KeyboardMode::Calculator, KeybaordMode::Tetris);
+      break;
     default:
       break;
   }

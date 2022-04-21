@@ -100,7 +100,7 @@ void BoardIO::Reset(GeneralState& curState) {
   }
 }
 
-void BoardIO::Changed(uint32_t now, GeneralState &) {
+void BoardIO::Changed(uint32_t now, GeneralState&) {
   layer_num lyr = getCurrentLayer();
   if (lyr != lastShownLayer) {
     Backlight(true);

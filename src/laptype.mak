@@ -48,6 +48,7 @@ USER_CPP_SRCS=\
 	localscan.cpp \
 	laptype.cpp 
 
+include modules/display/include.mk
 include modules/calculator/include.mk
 include modules/images/include.mk
 include modules/editline/include.mk

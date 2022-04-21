@@ -21,11 +21,9 @@ enum class BoardMode { Normal, Waiting, Calculator };
 
 struct BoardIO : public LaptypeMatrix {
   static Adafruit_ST7789* tft;
-  static bool backlightOn;
   static uint32_t lastShownLayerTime;
   static layer_num lastShownLayer;
   static BoardMode mode;
-  static void Backlight(bool on = true);
   static void Configure();
   // static bool Override(scancode_t sc, bool pressed, uint32_t now);
   static void Changed(uint32_t now, GeneralState& state);
