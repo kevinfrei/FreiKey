@@ -29,7 +29,6 @@ struct BoardIO : public LaptypeMatrix {
   static void Changed(uint32_t now, GeneralState& state);
   static void Tick(uint32_t now);
   static void ShowScanCode(uint16_t now);
-  static void DrawText(const edit::editline& ln);
   static void SaveLayer();
   static KeyboardMode Mode(uint32_t now, KeyboardMode mode);
   static void Reset(GeneralState&);

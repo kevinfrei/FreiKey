@@ -12,6 +12,7 @@
 #include "generalstate.h"
 #include "image.h"
 #include "keymap.h"
+#include "modulekeyboard.h"
 #include "scanning.h"
 
 constexpr uint8_t BACKLIGHT_PIN = 17;
@@ -50,7 +51,7 @@ void resetTheWorld();
 
 disp::rect_t lastPos = {0, 0, 135, 240};
 
-void BoardIO::DrawText(const edit::editline& ln) {
+void DrawText(const edit::editline& ln) {
   // Add the 'cursor'
   char loc[129];
   int after = 0;
@@ -69,67 +70,41 @@ void BoardIO::DrawText(const edit::editline& ln) {
     after++;
   }
   loc[s + after] = 0;
-  disp::CenteredText(&loc[0], lastPos);
+  disp::DrawText(&loc[0], lastPos);
 }
 
-Modifiers menuMods = Modifiers ::None;
-void MenuModeKeyHandler(bool pressed, action_t a) {
-  if (a.getAction() == KeyAction::Modifier) {
-    if (pressed) {
-      menuMods |= a.getModifiers();
-    } else {
-      // This should turn them off, right?
-      menuMods &= ~a.getModifiers();
-    }
-  } else if (a.getAction() == KeyAction::KeyPress) {
-    // Send the keystroke to the Edit Line module
-    // Then print the results of the Edit Line modules on the screen
-
-    // If the user hits "enter" trigger the calculator
-    auto ln = edit::readline(a.getKeystroke(), menuMods, pressed, millis());
-    if (a.getKeystroke() == Keystroke::Enter && pressed) {
+KeyboardMode CalculatorHandler(Keystroke ks,
+                               Modifiers mods,
+                               bool pressed,
+                               uint32_t now) {
+  // Send the keystroke to the Edit Line module
+  // Then print the results of the Edit Line modules on the screen
+  auto ln = edit::readline(ks, mods, pressed, now);
+  if (pressed) {
+    if (ks == Keystroke::Enter) {
+      // If the user hit "enter" trigger the calculator
       const char* val = calc::Parse(ln.buf);
       if (val) {
         edit::setline(val);
-        ln = edit::readline(a.getKeystroke(), menuMods, pressed, millis());
+        ln = edit::readline(ks, mods, pressed, now);
+      } else if (ks == Keystroke::Tab) {
+        // If they hit "Tab", type the calculator value
+        Keyboard.print(ln.buf);
       }
     }
-    BoardIO::DrawText(ln);
-    if (a.getKeystroke() == Keystroke::Tab && pressed) {
-      Keyboard.print(ln.buf);
-    }
-    // And if they hit whatever "paste" should be, type the calculator value
   }
+  DrawText(ln);
+  return (!pressed && ks == Keystroke::None && mods == Modifiers::ROpt)
+           ? KeyboardMode::Normal
+           : KeyboardMode::Calculator;
 }
 
 /*
-bool BoardIO::Override(scancode_t sc, bool pressed, uint32_t now) {
-  if (mode == BoardMode::Normal) {
-    return false;
-  }
-  Backlight(true);
-  lastShownLayerTime = now;
-  action_t a = moduleKeyMap[sc];
-  if (mode == BoardMode::Waiting) {
-    if (a.getAction() == KeyAction::Modifier &&
-        a.getModifiers() == Modifiers::ROpt && !pressed) {
-      mode = BoardMode::Normal;
-      resetTheWorld();
-    }
-  } else {
-    // If we pres right-option, that gets us back to normal mode
-    if (pressed && a.getAction() == KeyAction::Modifier &&
-        a.getModifiers() == Modifiers::ROpt) {
-      mode = BoardMode::Waiting;
-      tft->fillScreen(ST77XX_BLACK);
-      ShowImage(tft, gfx_keyb);
-    } else if (a.getAction() == KeyAction::KeyPress ||
-               a.getAction() == KeyAction::Modifier) {
-      MenuModeKeyHandler(pressed, a);
-    }
-  }
-  return true;
-}
+  if (Switch to normal)
+    mode = BoardMode::Normal;
+    resetTheWorld();
+    tft->fillScreen(ST77XX_BLACK);
+    ShowImage(tft, gfx_keyb);
 */
 
 void BoardIO::SaveLayer() {
@@ -207,7 +182,7 @@ KeyboardMode BoardIO::Mode(uint32_t now, KeyboardMode mode) {
   // want to
   switch (mode) {
     case KeyboardMode::Calculator:
-      // EnterCalculator();
+      return ModuleKeyboardHandler(CalculatorHandler);
       break;
     case KeyboardMode::Menu:
       // return menu::Select(KeyboardMode::Calculator, KeybaordMode::Tetris);

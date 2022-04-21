@@ -94,18 +94,16 @@ uint16_t getAligned(
   return 0;
 }
 
-void CenteredText(const char* loc,
-                  rect_t& prv,
-                  TextAlignment align,
-                  uint8_t padding,
-                  uint16_t color = ST77XX_WHITE,
-                  uint16_t bgColor = ST77XX_BLACK) {
+void DrawText(const char* loc,
+              rect_t& prv,
+              TextAlignment align,
+              uint8_t padding,
+              uint16_t color,
+              uint16_t bgColor) {
   tft->fillRect(prv.x, prv.y, prv.w, prv.h, bgColor);
   tft->getTextBounds(loc, 0, 0, &prv.x, &prv.y, &prv.w, &prv.h);
   uint16_t x = getAligned(GetRelX(align), prv.w, prv.x, padding, tft->width());
   uint16_t y = getAligned(GetRelY(align), prv.h, prv.y, padding, tft->height());
-  uint16_t x = (tft->width() - prv.w) / 2 + prv.x;
-  uint16_t y = (tft->height() - prv.h) / 2 + prv.y;
   tft->getTextBounds(loc, x, y, &prv.x, &prv.y, &prv.w, &prv.h);
   // Erase the old text
   tft->setTextColor(color);

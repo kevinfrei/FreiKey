@@ -46,6 +46,7 @@ USER_CPP_SRCS=\
 	mainloop.cpp \
 	scanning.cpp \
 	localscan.cpp \
+	modulekeyboard.cpp \
 	laptype.cpp 
 
 include modules/display/include.mk
