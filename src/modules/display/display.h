@@ -2,6 +2,7 @@
 
 #include <cstdint>
 
+class Adafruit_ST7789;
 namespace disp {
 
 struct rect_t {
@@ -23,6 +24,7 @@ enum class TextAlignment : uint8_t {
   RightMiddle,
   RightBottom
 };
+
 Adafruit_ST7789* Init(uint16_t w,
                       uint16_t h,
                       uint8_t mhz,

@@ -23,7 +23,6 @@ constexpr uint8_t TFT_RST = 6;
 Adafruit_ST7789* BoardIO::tft = nullptr;
 uint32_t BoardIO::lastShownLayerTime = 0;
 layer_num BoardIO::lastShownLayer = layer_num::Base;
-BoardMode BoardIO::mode = BoardMode::Normal;
 
 const std::array<const image_descriptor*, 7> reaccs = {
   gfx_like, gfx_love, gfx_hug, gfx_haha, gfx_sad, gfx_mad, gfx_wow};
@@ -48,56 +47,6 @@ void BoardIO::Configure() {
 }
 
 void resetTheWorld();
-
-disp::rect_t lastPos = {0, 0, 135, 240};
-
-void DrawText(const edit::editline& ln) {
-  // Add the 'cursor'
-  char loc[129];
-  int after = 0;
-  size_t s;
-  DBG(Serial.println("Buffer:"));
-  DBG(Serial.println(ln.buf));
-  for (s = 0; ln.buf[s]; s++) {
-    if (after == 0 && ln.pos == s) {
-      loc[s] = '|';
-      after = 1;
-    }
-    loc[s + after] = ln.buf[s];
-  }
-  if (!after) {
-    loc[s] = '|';
-    after++;
-  }
-  loc[s + after] = 0;
-  disp::DrawText(&loc[0], lastPos);
-}
-
-KeyboardMode CalculatorHandler(Keystroke ks,
-                               Modifiers mods,
-                               bool pressed,
-                               uint32_t now) {
-  // Send the keystroke to the Edit Line module
-  // Then print the results of the Edit Line modules on the screen
-  auto ln = edit::readline(ks, mods, pressed, now);
-  if (pressed) {
-    if (ks == Keystroke::Enter) {
-      // If the user hit "enter" trigger the calculator
-      const char* val = calc::Parse(ln.buf);
-      if (val) {
-        edit::setline(val);
-        ln = edit::readline(ks, mods, pressed, now);
-      } else if (ks == Keystroke::Tab) {
-        // If they hit "Tab", type the calculator value
-        Keyboard.print(ln.buf);
-      }
-    }
-  }
-  DrawText(ln);
-  return (!pressed && ks == Keystroke::None && mods == Modifiers::ROpt)
-           ? KeyboardMode::Normal
-           : KeyboardMode::Calculator;
-}
 
 /*
   if (Switch to normal)
@@ -127,33 +76,6 @@ void BoardIO::Reset(GeneralState& curState) {
   }
 }
 
-/*
-void BoardIO::Changed(uint32_t now, uint16_t menuInfo) {
-  if (menuInfo) {
-    mode = BoardMode::Calculator;
-    menuMods = Modifiers::None;
-    Backlight(true);
-    lastShownLayerTime = now;
-    tft->fillScreen(ST77XX_BLACK);
-    ShowImage(tft, gfx_calcpic);
-    // Save the layer, so that it can get updated when we come back out
-    SaveLayer();
-  } else {
-    layer_num lyr = getCurrentLayer();
-    if (lyr != lastShownLayer) {
-      Backlight(true);
-      lastShownLayer = lyr;
-      lastShownLayerTime = now;
-      const image_descriptor* img = layer_to_image[lyr];
-      if (img == nullptr) {
-        img = reaccs[now % 7];
-      }
-      ShowImage(tft, img);
-    }
-  }
-}
-*/
-
 void BoardIO::Changed(uint32_t now, GeneralState& state) {
   layer_num lyr = getCurrentLayer();
   if (lyr != lastShownLayer) {
@@ -169,8 +91,8 @@ void BoardIO::Changed(uint32_t now, GeneralState& state) {
 }
 
 void BoardIO::Tick(uint32_t now) {
-  if (now - lastShownLayerTime > 10000) {
-    disp::Tick(now);
+  disp::Tick(now);
+  if (now - lastShownLayerTime > 10000 && now - lastShownLayerTime < 10100) {
     // This is a *really* slow debounce of layer switches :D
     // Only save a layer if we've had it set > 10 seconds
     SaveLayer();
@@ -182,7 +104,7 @@ KeyboardMode BoardIO::Mode(uint32_t now, KeyboardMode mode) {
   // want to
   switch (mode) {
     case KeyboardMode::Calculator:
-      return ModuleKeyboardHandler(CalculatorHandler);
+      return ModuleKeyboardHandler(calc::Handler);
       break;
     case KeyboardMode::Menu:
       // return menu::Select(KeyboardMode::Calculator, KeybaordMode::Tetris);

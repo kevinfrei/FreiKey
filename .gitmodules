@@ -17,3 +17,9 @@
 [submodule "src/libs/apple2"]
 	path = src/libs/apple2
 	url = https://github.com/kevinfrei/linapple.git
+[submodule "src/libs/T4_PXP"]
+	path = src/libs/T4_PXP
+	url = https://github.com/vjmuzik/T4_PXP.git
+[submodule "src/libs/GFX_Buffer"]
+	path = src/libs/GFX_Buffer
+	url = https://github.com/vjmuzik/Adafruit_GFX_Buffer.git

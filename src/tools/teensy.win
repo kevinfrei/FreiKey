@@ -2830,68 +2830,6 @@ ifdef LIB_GFX
     -Ilibs/GFX/Fonts
   VPATH_MORE+=libs/GFX/fontconvert libs/GFX
 endif
-ifdef LIB_SDFAT
-  CPP_SYS_SRCS+=libs/SdFat/extras/attic/PrintBasic.cpp \
-    libs/SdFat/extras/attic/SysCallBareUno.cpp \
-    libs/SdFat/src/common/FmtNumber.cpp \
-    libs/SdFat/src/common/FsCache.cpp \
-    libs/SdFat/src/common/FsDateTime.cpp \
-    libs/SdFat/src/common/FsName.cpp \
-    libs/SdFat/src/common/FsStructs.cpp \
-    libs/SdFat/src/common/FsUtf.cpp \
-    libs/SdFat/src/common/PrintBasic.cpp \
-    libs/SdFat/src/common/upcase.cpp \
-    libs/SdFat/src/ExFatLib/ExFatDbg.cpp \
-    libs/SdFat/src/ExFatLib/ExFatFile.cpp \
-    libs/SdFat/src/ExFatLib/ExFatFilePrint.cpp \
-    libs/SdFat/src/ExFatLib/ExFatFileWrite.cpp \
-    libs/SdFat/src/ExFatLib/ExFatFormatter.cpp \
-    libs/SdFat/src/ExFatLib/ExFatName.cpp \
-    libs/SdFat/src/ExFatLib/ExFatPartition.cpp \
-    libs/SdFat/src/ExFatLib/ExFatVolume.cpp \
-    libs/SdFat/src/FatLib/FatDbg.cpp \
-    libs/SdFat/src/FatLib/FatFile.cpp \
-    libs/SdFat/src/FatLib/FatFileLFN.cpp \
-    libs/SdFat/src/FatLib/FatFilePrint.cpp \
-    libs/SdFat/src/FatLib/FatFileSFN.cpp \
-    libs/SdFat/src/FatLib/FatFormatter.cpp \
-    libs/SdFat/src/FatLib/FatName.cpp \
-    libs/SdFat/src/FatLib/FatPartition.cpp \
-    libs/SdFat/src/FatLib/FatVolume.cpp \
-    libs/SdFat/src/FreeStack.cpp \
-    libs/SdFat/src/FsLib/FsFile.cpp \
-    libs/SdFat/src/FsLib/FsNew.cpp \
-    libs/SdFat/src/FsLib/FsVolume.cpp \
-    libs/SdFat/src/iostream/istream.cpp \
-    libs/SdFat/src/iostream/ostream.cpp \
-    libs/SdFat/src/iostream/StdioStream.cpp \
-    libs/SdFat/src/iostream/StreamBaseClass.cpp \
-    libs/SdFat/src/MinimumSerial.cpp \
-    libs/SdFat/src/SdCard/SdCardInfo.cpp \
-    libs/SdFat/src/SdCard/SdioTeensy.cpp \
-    libs/SdFat/src/SdCard/SdSpiCard.cpp \
-    libs/SdFat/src/SpiDriver/SdSpiArtemis.cpp \
-    libs/SdFat/src/SpiDriver/SdSpiChipSelect.cpp \
-    libs/SdFat/src/SpiDriver/SdSpiDue.cpp \
-    libs/SdFat/src/SpiDriver/SdSpiESP.cpp \
-    libs/SdFat/src/SpiDriver/SdSpiParticle.cpp \
-    libs/SdFat/src/SpiDriver/SdSpiSTM32.cpp \
-    libs/SdFat/src/SpiDriver/SdSpiSTM32Core.cpp \
-    libs/SdFat/src/SpiDriver/SdSpiTeensy3.cpp
-  SYS_INCLUDES+=-Ilibs/SdFat/doc \
-    -Ilibs/SdFat/extras/attic \
-    -Ilibs/SdFat/src \
-    -Ilibs/SdFat/src/common \
-    -Ilibs/SdFat/src/DigitalIO/boards \
-    -Ilibs/SdFat/src/DigitalIO \
-    -Ilibs/SdFat/src/ExFatLib \
-    -Ilibs/SdFat/src/FatLib \
-    -Ilibs/SdFat/src/FsLib \
-    -Ilibs/SdFat/src/iostream \
-    -Ilibs/SdFat/src/SdCard \
-    -Ilibs/SdFat/src/SpiDriver
-  VPATH_MORE+=libs/SdFat/extras/attic libs/SdFat/src/common libs/SdFat/src/ExFatLib libs/SdFat/src/FatLib libs/SdFat/src libs/SdFat/src/FsLib libs/SdFat/src/iostream libs/SdFat/src/SdCard libs/SdFat/src/SpiDriver
-endif
 ifdef LIB_ST77XX
   CPP_SYS_SRCS+=libs/ST77XX/Adafruit_ST7735.cpp \
     libs/ST77XX/Adafruit_ST7789.cpp \
@@ -2905,6 +2843,15 @@ ifdef LIB_BUSIO
     libs/BusIO/Adafruit_SPIDevice.cpp
   SYS_INCLUDES+=-Ilibs/BusIO
   VPATH_MORE+=libs/BusIO
+endif
+ifdef LIB_T4_PXP
+  CPP_SYS_SRCS+=libs/T4_PXP/src/T4_PXP.cpp
+  SYS_INCLUDES+=-Ilibs/T4_PXP/src
+  VPATH_MORE+=libs/T4_PXP/src
+endif
+ifdef LIB_GFX_BUFFER
+  SYS_INCLUDES+=-Ilibs/GFX_Buffer/src
+  VPATH_MORE+=
 endif
 SYS_SRC=${C_SYS_SRCS} ${CPP_SYS_SRCS} ${S_SYS_SRCS}
 USER_SRC=${USER_C_SRCS} ${USER_CPP_SRCS} ${USER_S_SRCS}
