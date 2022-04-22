@@ -1,7 +1,7 @@
 #pragma once
 #include "action.h"
-#include "usbenums.h"
 #include "enumtypes.h"
+#include "usbenums.h"
 #include <cstdint>
 
 typedef KeyboardMode (*KeystrokeHandler)(Keystroke ks,

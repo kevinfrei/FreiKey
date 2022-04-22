@@ -10,9 +10,7 @@ struct rect_t {
   uint16_t w, h;
 };
 
-enum class RelativeAlignment : uint8_t {
-  Start, Middle, End
-};
+enum class RelativeAlignment : uint8_t { Start, Middle, End };
 enum class TextAlignment : uint8_t {
   LeftTop,
   LeftMiddle,

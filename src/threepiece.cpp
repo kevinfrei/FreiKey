@@ -97,7 +97,6 @@ void BoardIO::Reset(GeneralState& curState) {
   }
 }
 
-
 void BoardIO::Changed(uint32_t now, GeneralState&) {
   layer_num lyr = getCurrentLayer();
   if (lyr != lastShownLayer) {
@@ -123,7 +122,6 @@ void BoardIO::Tick(uint32_t now) {
     SaveLayer();
   }
 }
-
 
 KeyboardMode BoardIO::Mode(uint32_t now, KeyboardMode mode) {
   // This should transition the board into whatever other mode you may

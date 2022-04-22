@@ -7,7 +7,6 @@
 #include "modulekeyboard.h"
 #include "scanning.h"
 
-
 namespace calc {
 
 disp::rect_t lastPos = {0, 0, 135, 240};
