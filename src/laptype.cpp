@@ -56,13 +56,17 @@ void resetTheWorld();
     ShowImage(tft, gfx_keyb);
 */
 
-void BoardIO::SaveLayer() {
-  uint8_t lyr = value_cast(getCurrentLayer());
-  if (lyr >= 0 && lyr < value_cast(layer_num::ValidSaves)) {
-    DBG2(dumpVal(lyr, "Saving layer to eeprom "));
-    EEPROM.update(0, lyr);
-  } else {
-    DBG2(dumpVal(lyr, "Not saving this to eeprom "));
+uint8_t lastSavedLayer = 0xFF;
+
+void BoardIO::SaveLayer(uint32_t now) {
+  if (now - lastShownLayerTime > 10000 && now - lastShownLayerTime < 10100) {
+    uint8_t lyr = value_cast(getCurrentLayer());
+    if (lyr >= 0 && lyr < value_cast(layer_num::ValidSaves) &&
+        lyr != lastSavedLayer) {
+      DBG2(dumpVal(lyr, "Saving layer to eeprom "));
+      EEPROM.update(0, lyr);
+      lastSavedLayer = lyr;
+    }
   }
 }
 
@@ -71,6 +75,7 @@ void BoardIO::Reset(GeneralState& curState) {
   if (lyr > 0 && lyr < value_cast(layer_num::ValidSaves)) {
     DBG(dumpVal(lyr, "Turning this layer on:"));
     curState.toggle_layer(enum_cast<layer_num>(lyr));
+    lastSavedLayer = lyr;
   } else {
     DBG(dumpVal(lyr, "Not setting this layer:"));
   }
@@ -93,11 +98,7 @@ void BoardIO::Changed(uint32_t now, GeneralState& state) {
 
 void BoardIO::Tick(uint32_t now) {
   disp::Tick(now);
-  if (now - lastShownLayerTime > 10000 && now - lastShownLayerTime < 10100) {
-    // This is a *really* slow debounce of layer switches :D
-    // Only save a layer if we've had it set > 10 seconds
-    SaveLayer();
-  }
+  SaveLayer(now);
 }
 
 KeyboardMode BoardIO::Mode(uint32_t now, KeyboardMode mode) {
