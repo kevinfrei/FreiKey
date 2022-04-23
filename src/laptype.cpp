@@ -15,10 +15,10 @@
 #include "modulekeyboard.h"
 #include "scanning.h"
 
-constexpr uint8_t BACKLIGHT_PIN = 17;
 constexpr uint8_t TFT_CS = 8;
 constexpr uint8_t TFT_DC = 15;
 constexpr uint8_t TFT_RST = 6;
+constexpr uint8_t BACKLIGHT_PIN = 17;
 
 Adafruit_ST7789* BoardIO::tft = nullptr;
 uint32_t BoardIO::lastShownLayerTime = 0;
@@ -79,6 +79,7 @@ void BoardIO::Reset(GeneralState& curState) {
 void BoardIO::Changed(uint32_t now, GeneralState& state) {
   layer_num lyr = getCurrentLayer();
   if (lyr != lastShownLayer) {
+    DBG(dumpVal(lyr, "Layer Change: "));
     disp::SetBacklight(true, now);
     lastShownLayer = lyr;
     lastShownLayerTime = now;
@@ -103,12 +104,12 @@ KeyboardMode BoardIO::Mode(uint32_t now, KeyboardMode mode) {
   // This should transition the board into whatever other mode you may
   // want to
   switch (mode) {
+    case KeyboardMode::Menu:
     case KeyboardMode::Calculator:
       return ModuleKeyboardHandler(calc::Handler);
       break;
-    case KeyboardMode::Menu:
       // return menu::Select(KeyboardMode::Calculator, KeybaordMode::Tetris);
-      break;
+      // break;
     default:
       break;
   }

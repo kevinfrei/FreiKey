@@ -3,6 +3,10 @@
 #include "enumtypes.h"
 #include "usbenums.h"
 
+#if defined(DEBUG)
+#include "Arduino.h"
+#endif
+
 class action_t {
   // 4 bits of action, 1 bit 'is consumer', 11 bits of 'data'
   uint16_t data;

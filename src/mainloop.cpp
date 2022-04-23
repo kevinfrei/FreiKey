@@ -21,6 +21,7 @@ void resetTheWorld() {
 }
 
 extern "C" void setup() {
+  DBG(for (uint16_t iter = 0; !Serial && iter < 2000; iter++) delay(1););
   DBG(Serial.begin(115200));
   DBG(Serial.println("SETUP!"));
   BoardIO::Configure();

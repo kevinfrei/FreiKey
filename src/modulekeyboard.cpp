@@ -35,7 +35,7 @@ KeyboardMode ModuleKeyboardHandler(KeystrokeHandler handler, Spinner spin) {
           mode = a.getMode();
           break;
         default:
-          DBG(dumpVal(value_cast(a.getKeyAction()),
+          DBG(dumpVal(value_cast(a.getAction()),
                       "Unsupported action type for raw keyboard: "));
       }
     }

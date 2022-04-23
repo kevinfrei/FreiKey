@@ -38,6 +38,9 @@ fthreepiece fthree f3 f3p threepiecef threef 3f 3pf:
 mock m:
 	$(MAKE) ${flags} -f mock.mak all compile_commands
 
+test t:
+	$(MAKE) ${flags} -f test.mak all
+
 rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
 
 format: $(call rwildcard,include,*.h) $(wildcard *.cpp) $(wildcard bitmaps/*.cpp) $(wildcard bitmaps/*.h) $(call rwildcard,modules,*.cpp) $(call rwildcard,modules,*.h)

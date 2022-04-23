@@ -2,6 +2,7 @@
 
 #include "Adafruit_ST7789.h"
 #include "Fonts/FreeSans12pt7b.h"
+#include "dbgcfg.h"
 #include "display.h"
 #include "enumhelpers.h"
 #include "enumtypes.h"
@@ -25,7 +26,9 @@ Adafruit_ST7789* Init(uint16_t w,
                       uint8_t TFT_Backlight,
                       uint8_t SD_CS,
                       uint8_t SPKR) {
+  DBG(Serial.println("Initializing Display Module"));
   tft = new Adafruit_ST7789(TFT_CS, TFT_DC, TFT_Reset);
+  backlightPin = TFT_Backlight;
   pinMode(TFT_Backlight, OUTPUT);
   tft->init(w, h);
   // This is the fastest speed that worked
@@ -47,7 +50,7 @@ Adafruit_ST7789* Init(uint16_t w,
 
 void SetBacklight(bool turnOn, uint32_t now) {
   // Only write if we're changing the setting
-  if (!!backlightOnTime != turnOn) {
+  if (turnOn ? (backlightOnTime == 0) : (backlightOnTime != 0)) {
     digitalWrite(backlightPin, turnOn ? HIGH : LOW);
   }
   backlightOnTime = turnOn ? now : 0;
@@ -116,7 +119,7 @@ void SetTimeout(uint16_t seconds) {
 }
 
 void Tick(uint32_t now) {
-  if (backlightOnTime && backlightOnTime + timeout > now) {
+  if (backlightOnTime && backlightOnTime + timeout < now) {
     SetBacklight(false, now);
   }
 }
