@@ -92,15 +92,29 @@ RelativeAlignment GetRelY(TextAlignment a) {
   return RelativeAlignment::Middle;
 }
 
-uint16_t getAligned(
-  RelativeAlignment rel, uint16_t sz, uint16_t st, uint8_t pad, uint16_t max) {
-  switch (rel) {
+uint16_t getAlignedX(
+  TextAlignment rel, uint16_t sz, int16_t st, uint8_t pad, uint16_t max) {
+  switch (GetRelX(rel)) {
     case RelativeAlignment::Start:
-      return st + pad;
+      return (st > 0) ? (st + pad) : pad;
     case RelativeAlignment::Middle:
-      return (max - sz) / 2;
+      return (max - (sz + st)) / 2;
     case RelativeAlignment::End:
-      return max - sz - pad;
+      return max - (sz + st) - pad;
+    default:
+      return 0;
+  }
+}
+
+uint16_t getAlignedY(
+  TextAlignment rel, uint16_t sz, int16_t st, uint8_t pad, uint16_t max) {
+  switch (GetRelY(rel)) {
+    case RelativeAlignment::Start:
+      return pad - st;
+    case RelativeAlignment::Middle:
+      return (max - st) / 2;
+    case RelativeAlignment::End:
+      return max - (sz + st) - pad;
     default:
       return 0;
   }
@@ -118,13 +132,17 @@ void DrawText(const char* loc,
     tft->fillScreen(bgColor);
   }
   tft->getTextBounds(loc, 0, 0, &prv.x, &prv.y, &prv.w, &prv.h);
-  uint16_t x = getAligned(GetRelX(align), prv.w, prv.x, padding, tft->width());
-  uint16_t y = getAligned(GetRelY(align), prv.h, prv.y, padding, tft->height());
+  uint16_t x = getAlignedX(align, prv.w, prv.x, padding, tft->width());
+  uint16_t y = getAlignedY(align, prv.h, prv.y, padding, tft->height());
   tft->getTextBounds(loc, x, y, &prv.x, &prv.y, &prv.w, &prv.h);
   // Erase the old text
   tft->setTextColor(color);
   tft->setCursor(x, y);
   tft->print(loc);
+#if defined(DEBUG) && DEBUG > 1
+  tft->drawPixel(x,y,ST77XX_RED);
+  tft->drawRect(prv.x, prv.y, prv.w, prv.h, ST77XX_CYAN);
+#endif
 }
 
 void SetTimeout(uint16_t seconds) {

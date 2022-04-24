@@ -51,8 +51,13 @@ KeyboardMode Handler(Keystroke ks, Modifiers mods, bool pressed, uint32_t now) {
     }
   }
   DrawText(ln);
-  return (!pressed && ks == Keystroke::None && mods == Modifiers::ROpt)
-           ? KeyboardMode::Normal
-           : KeyboardMode::Calculator;
+  KeyboardMode result =
+    (!pressed && ks == Keystroke::None && mods == Modifiers::ROpt)
+      ? KeyboardMode::Normal
+      : KeyboardMode::Calculator;
+  if (result == KeyboardMode::Normal) {
+    lastPos = {0, 0, 0, 0};
+  }
+  return result;
 }
 } // namespace calc
