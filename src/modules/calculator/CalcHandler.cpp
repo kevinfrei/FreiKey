@@ -9,7 +9,7 @@
 
 namespace calc {
 
-disp::rect_t lastPos = {0, 0, 135, 240};
+disp::rect_t lastPos = {0, 0, 0, 0};
 
 void DrawText(const edit::editline& ln) {
   // Add the 'cursor'

@@ -11,7 +11,8 @@
 // for something like a calculator or a game, etc...
 KeyboardMode ModuleKeyboardHandler(KeystrokeHandler handler, Spinner spin) {
   Modifiers localMods = Modifiers::None;
-  KeyboardMode mode = KeyboardMode::Normal;
+  KeyboardMode mode = KeyboardMode::Waiting;
+  DBG(Serial.println("Entering Module Keyboard handler"));
   do {
     scancode_t sc;
     bool pressed = false;
@@ -32,7 +33,9 @@ KeyboardMode ModuleKeyboardHandler(KeystrokeHandler handler, Spinner spin) {
           }
           break;
         case KeyAction::Mode:
-          mode = a.getMode();
+          if (pressed) {
+            mode = a.getMode();
+          }
           break;
         default:
           DBG(dumpVal(value_cast(a.getAction()),
@@ -44,6 +47,7 @@ KeyboardMode ModuleKeyboardHandler(KeystrokeHandler handler, Spinner spin) {
       mode = spin(mode, now);
     }
   } while (mode != KeyboardMode::Normal);
+  DBG(Serial.println("Exiting Module Keyboard Handler"));
   return mode;
 }
 /*

@@ -153,7 +153,7 @@ LROW1(KEY(Esc), NUM(1), NUM(2), NUM(3), NUM(4), NUM(5)),         RROW1(NUM(6), N
 LROW2(KEY(Tab), KEY(Q), KEY(W), KEY(E), KEY(R), KEY(T)),         RROW2(KEY(Y), KEY(U), KEY(I), KEY(O), KEY(P),     KEY(Backslash)),
 LROW3(RCTL,     KEY(A), KEY(S), KEY(D), KEY(F), KEY(G)),         RROW3(KEY(H), KEY(J), KEY(K), KEY(L), SEMI_,      QUOTE_),
 LROW4(LSHFT,    KEY(Z), KEY(X), KEY(C), KEY(V), KEY(B)),         RROW4(KEY(N), KEY(M), COMMA_, DOT_,   KEY(Slash), RSHFT),
-LROW5(LCTL, LOPT, LCMD, KEY(PgUp),    KEY(OBRC), KEY(BKSP)),    RROW5(SPACE_, EQ_,     UP_,       ROPT, KEY(Del), KEY(Grave)),
+LROW5(LCTL, LOPT, LCMD, KEY(PgUp),    KEY(OBRC), KEY(BKSP)),    RROW5(SPACE_, EQ_,     UP_,      MODE(0), KEY(Del), KEY(Grave)),
 LROW6(       KEY(Home), KEY(PgDn), KEY(End),       KEY(CBRC)), RROW6(ENTER_,    LEFT_, DOWN_, RIGHT_),
 };
 

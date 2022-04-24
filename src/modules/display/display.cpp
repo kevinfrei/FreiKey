@@ -94,7 +94,16 @@ RelativeAlignment GetRelY(TextAlignment a) {
 
 uint16_t getAligned(
   RelativeAlignment rel, uint16_t sz, uint16_t st, uint8_t pad, uint16_t max) {
-  return 0;
+  switch (rel) {
+    case RelativeAlignment::Start:
+      return st + pad;
+    case RelativeAlignment::Middle:
+      return (max - sz) / 2;
+    case RelativeAlignment::End:
+      return max - sz - pad;
+    default:
+      return 0;
+  }
 }
 
 void DrawText(const char* loc,
@@ -103,7 +112,11 @@ void DrawText(const char* loc,
               uint8_t padding,
               uint16_t color,
               uint16_t bgColor) {
-  tft->fillRect(prv.x, prv.y, prv.w, prv.h, bgColor);
+  if (prv.w && prv.h) {
+    tft->fillRect(prv.x, prv.y, prv.w, prv.h, bgColor);
+  } else {
+    tft->fillScreen(bgColor);
+  }
   tft->getTextBounds(loc, 0, 0, &prv.x, &prv.y, &prv.w, &prv.h);
   uint16_t x = getAligned(GetRelX(align), prv.w, prv.x, padding, tft->width());
   uint16_t y = getAligned(GetRelY(align), prv.h, prv.y, padding, tft->height());

@@ -48,5 +48,12 @@ extern "C" void loop() {
   BoardIO::Tick(now);
   while (mode != KeyboardMode::Normal) {
     mode = BoardIO::Mode(now, mode);
+    DBG2(dumpVal(value_cast(mode), "Mode handler returned "));
+    // If we're going back to normal mode
+    // Just reset the world...
+    if (mode == KeyboardMode::Normal) {
+      resetTheWorld();
+      BoardIO::ReturnFromMode();
+    }
   }
 }

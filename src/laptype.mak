@@ -28,7 +28,7 @@ PROJ_NAME=laptype
 BUILD_PATH=out/laptype
 
 # My custom flags
-COMPILER_CPP_EXTRA_FLAGS=-flto
+COMPILER_CPP_EXTRA_FLAGS=-flto -DDEBUG=2
 
 # Libraries to use:
 LIB_BUSIO=1

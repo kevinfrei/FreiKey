@@ -29,6 +29,7 @@ struct BoardIO : public LaptypeMatrix {
   static void SaveLayer(uint32_t now);
   static KeyboardMode Mode(uint32_t now, KeyboardMode mode);
   static void Reset(GeneralState&);
+  static void ReturnFromMode();
 };
 
 using MatrixBits = LaptypeMatrix::bits;

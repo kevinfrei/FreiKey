@@ -34,6 +34,7 @@ struct keystate {
           action = resolveActionForScanCodeOnActiveLayer(scanCode);
         }
       }
+      DBG2(dumpVal(sc, "Updated transition time for scancode "));
     } else {
       // We claimed a new slot, so set the transition
       // time to the current time.
@@ -45,7 +46,9 @@ struct keystate {
       } else {
         action = no_action;
       }
+      DBG2(dumpVal(sc, "Set lastChange for new scancode "));
     }
+    DBG2(Serial.println(pressed ? "(Pressed)": "(Released)"));
     switch (action.getAction()) {
       case KeyAction::LayerShift:
         return down ? layer_t::Push : layer_t::Pop;
@@ -57,6 +60,7 @@ struct keystate {
         return layer_t::None;
     }
   };
+
 #if defined(DEBUG)
   void dump() const {
     Serial.print("ScanCode=");

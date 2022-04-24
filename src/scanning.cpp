@@ -109,6 +109,7 @@ void preprocessScanCode(scancode_t sc, bool pressed, uint32_t now) {
       break;
   }
 }
+
 void ProcessConsumer(keystate& state, kb_reporter& rpt) {
   // For a consumer control button, there are no modifiers, it's
   // just a simple call. So just call it directly:
@@ -200,7 +201,10 @@ KeyboardMode ProcessKeys(uint32_t now, kb_reporter& rpt) {
         break;
       }
       case KeyAction::Mode: {
-        mode = state.action.getMode();
+        if (state.down) {
+          DBG2(state.dump());
+          mode = state.action.getMode();
+        }
         break;
       }
       case KeyAction::LayerShift:

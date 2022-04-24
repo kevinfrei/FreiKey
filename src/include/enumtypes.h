@@ -45,5 +45,6 @@ enum class KeyboardMode : uint8_t {
   Snake, // Definitely going to code this at some point
   MediaBrowse, // Sure, why not?
   Apple2, // Eventually :)
+  Waiting, // Default mode for the keyboard handler :)
   Diagnostics // Maybe?
 };
