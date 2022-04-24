@@ -23,3 +23,6 @@
 [submodule "src/libs/GFX_Buffer"]
 	path = src/libs/GFX_Buffer
 	url = https://github.com/vjmuzik/Adafruit_GFX_Buffer.git
+[submodule "src/libs/AsyncDMA"]
+	path = src/libs/AsyncDMA
+	url = https://github.com/kevinfrei/AsyncDMA_ST77XX
