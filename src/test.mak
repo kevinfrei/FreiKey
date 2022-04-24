@@ -46,24 +46,11 @@ LIB_SDFAT=1
 LIB_T4_PXP=1
 LIB_GFX_BUFFER=1
 
-USER_INCLUDES=-Iinclude/threepiece -Iinclude/remotescan -Iinclude/teensy -Iinclude
+# USER_INCLUDES=-Iinclude/threepiece -Iinclude/remotescan -Iinclude/teensy -Iinclude
 
 USER_CPP_SRCS=\
-	dbgcfg.cpp \
-	kbreporter.cpp \
-	mainloop.cpp \
-	scanning.cpp \
-	remotescan.cpp \
-	modulekeyboard.cpp \
-	threepiece.cpp
-
-include modules/display/include.mk
-include modules/calculator/include.mk
-include modules/images/include.mk
-include modules/editline/include.mk
-include modules/tetris/include.mk
-include apple2.mk
-
+	test_gfx.cpp
+	
 ifeq ($(OS),Windows_NT)
 include tools/teensy.win
 else
