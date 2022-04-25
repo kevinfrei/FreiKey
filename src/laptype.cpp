@@ -27,7 +27,7 @@ static layer_num lastShownLayer = layer_num::Base;
 const std::array<const image_descriptor*, 7> reaccs = {
   gfx_like, gfx_love, gfx_hug, gfx_haha, gfx_sad, gfx_mad, gfx_wow};
 
-const enum_array<layer_num, const image_descriptor*, 8> layer_to_image = {
+const enum_array<layer_num, const image_descriptor*> layer_to_image = {
   {layer_num::MacBase, gfx_mac},
   {layer_num::WinBase, gfx_win},
   {layer_num::LinBase, gfx_linux},

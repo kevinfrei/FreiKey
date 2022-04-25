@@ -21,24 +21,27 @@ constexpr E enum_cast(detail::underlying_type<E> v) {
   return static_cast<E>(v);
 }
 
-template <class IndexType, class ValueType, size_t Size>
+template <class EnumType,
+          class ValueType,
+          size_t Size = value_cast(EnumType::NumElems),
+          typename = detail::enum_types_only<EnumType>>
 class enum_array {
   std::array<ValueType, Size> array_;
 
  public:
   enum_array() {}
-  enum_array(std::initializer_list<std::pair<IndexType, ValueType>> vals) {
+  enum_array(std::initializer_list<std::pair<EnumType, ValueType>> vals) {
     for (auto& i : vals) {
       array_[value_cast(i.first)] = i.second;
     }
   }
   // TODO: Flesh this out into a real array with types & iterators & initializer
   // lists & stuff
-  ValueType& operator[](IndexType i) {
+  ValueType& operator[](EnumType i) {
     return array_[static_cast<size_t>(i)];
   }
 
-  const ValueType& operator[](IndexType i) const {
+  const ValueType& operator[](EnumType i) const {
     return array_[static_cast<size_t>(i)];
   }
 
