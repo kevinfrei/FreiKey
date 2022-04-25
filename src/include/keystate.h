@@ -48,7 +48,7 @@ struct keystate {
       }
       DBG2(dumpVal(sc, "Set lastChange for new scancode "));
     }
-    DBG2(Serial.println(pressed ? "(Pressed)": "(Released)"));
+    DBG2(Serial.println(pressed ? "(Pressed)" : "(Released)"));
     switch (action.getAction()) {
       case KeyAction::LayerShift:
         return down ? layer_t::Push : layer_t::Pop;

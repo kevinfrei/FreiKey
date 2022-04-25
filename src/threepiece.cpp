@@ -20,34 +20,34 @@
 #define left Serial4
 
 // Display stuff
-constexpr uint8_t BACKLIGHT_PIN = 18;
-constexpr uint8_t TFT_CS = 10;
-constexpr uint8_t TFT_DC = 20;
-constexpr uint8_t TFT_RST = 21;
+static constexpr uint8_t BACKLIGHT_PIN = 18;
+static constexpr uint8_t TFT_CS = 10;
+static constexpr uint8_t TFT_DC = 20;
+static constexpr uint8_t TFT_RST = 21;
 
 // And, I now have a speaker :D
-constexpr uint8_t SPKR_GND = 0;
-constexpr uint8_t SPKR_SIGNAL = 4;
+static constexpr uint8_t SPKR_GND = 0;
+static constexpr uint8_t SPKR_SIGNAL = 4;
 
 // Finally, the data for the SD card on the back of the Adafruit display
-constexpr uint8_t SD_CS = 19;
+static constexpr uint8_t SD_CS = 19;
 
-Adafruit_ST7789* BoardIO::tft = nullptr;
-uint32_t BoardIO::lastShownLayerTime = 0;
-layer_num BoardIO::lastShownLayer = layer_num::Base;
+static Adafruit_ST7789* tft = nullptr;
+static uint32_t lastShownLayerTime = 0;
+static layer_num lastShownLayer = layer_num::Base;
 
-const std::array<const image_descriptor*, 7> reaccs = {
+static const std::array<const image_descriptor*, 7> reaccs = {
   gfx_like, gfx_love, gfx_hug, gfx_haha, gfx_sad, gfx_mad, gfx_wow};
 
-const enum_array<layer_num, const image_descriptor*, 8> layer_to_image = {
-  {layer_num::MacBase, gfx_mac},
-  {layer_num::WinBase, gfx_win},
-  {layer_num::LinBase, gfx_linux},
-  {layer_num::Func, gfx_amy},
-  {layer_num::MacCap, nullptr},
-  {layer_num::WinCap, nullptr},
-  {layer_num::WinCtl, gfx_batman},
-  {layer_num::LinCap, nullptr}};
+static const enum_array<layer_num, const image_descriptor*, 8> layer_to_image =
+  {{layer_num::MacBase, gfx_mac},
+   {layer_num::WinBase, gfx_win},
+   {layer_num::LinBase, gfx_linux},
+   {layer_num::Func, gfx_amy},
+   {layer_num::MacCap, nullptr},
+   {layer_num::WinCap, nullptr},
+   {layer_num::WinCtl, gfx_batman},
+   {layer_num::LinCap, nullptr}};
 
 void BoardIO::Configure() {
   right.begin(1 << 20);

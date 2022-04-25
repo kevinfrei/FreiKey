@@ -20,9 +20,9 @@ constexpr uint8_t TFT_DC = 15;
 constexpr uint8_t TFT_RST = 6;
 constexpr uint8_t BACKLIGHT_PIN = 17;
 
-Adafruit_ST7789* BoardIO::tft = nullptr;
-uint32_t BoardIO::lastShownLayerTime = 0;
-layer_num BoardIO::lastShownLayer = layer_num::Base;
+static Adafruit_ST7789* tft = nullptr;
+static uint32_t lastShownLayerTime = 0;
+static layer_num lastShownLayer = layer_num::Base;
 
 const std::array<const image_descriptor*, 7> reaccs = {
   gfx_like, gfx_love, gfx_hug, gfx_haha, gfx_sad, gfx_mad, gfx_wow};

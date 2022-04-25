@@ -17,8 +17,6 @@ using MockMatrix = KeyMatrix<MockMPU,
 // clang-format on
 
 struct BoardIO : public MockMatrix {
-  static uint32_t lastShownLayerTime;
-  static uint32_t lastShownLayerVal;
   static void Configure();
   static void Changed(uint32_t now, GeneralState&);
   static void Reset(GeneralState&);

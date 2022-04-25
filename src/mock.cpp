@@ -155,9 +155,7 @@ KeyboardMode BoardIO::Mode(uint32_t now, KeyboardMode mode) {
   return KeyboardMode::Normal;
 }
 
-void BoardIO::ReturnFromMode() {
-  
-}
+void BoardIO::ReturnFromMode() {}
 
 // This where I should run some tests, right?
 int main(int argc, const char* argv[]) {

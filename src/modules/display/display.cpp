@@ -140,7 +140,7 @@ void DrawText(const char* loc,
   tft->setCursor(x, y);
   tft->print(loc);
 #if defined(DEBUG) && DEBUG > 1
-  tft->drawPixel(x,y,ST77XX_RED);
+  tft->drawPixel(x, y, ST77XX_RED);
   tft->drawRect(prv.x, prv.y, prv.w, prv.h, ST77XX_CYAN);
 #endif
 }

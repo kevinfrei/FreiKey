@@ -18,17 +18,22 @@ using LaptypeMatrix = KeyMatrix<Teensy,
 // clang-format on
 
 struct BoardIO : public LaptypeMatrix {
-  static Adafruit_ST7789* tft;
-  static uint32_t lastShownLayerTime;
-  static layer_num lastShownLayer;
+
+  /*
+    static Adafruit_ST7789* tft;
+    static uint32_t lastShownLayerTime;
+    static layer_num lastShownLayer;
+  */
+
   static void Configure();
   static void Changed(uint32_t now, GeneralState& state);
   static void Tick(uint32_t now);
-  static void ShowScanCode(uint16_t now);
-  static void SaveLayer(uint32_t now);
   static KeyboardMode Mode(uint32_t now, KeyboardMode mode);
   static void Reset(GeneralState&);
   static void ReturnFromMode();
+
+  static void ShowScanCode(uint16_t sc);
+  static void SaveLayer(uint32_t now);
 };
 
 using MatrixBits = LaptypeMatrix::bits;
