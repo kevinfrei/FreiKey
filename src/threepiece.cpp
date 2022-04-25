@@ -147,3 +147,7 @@ void BoardIO::ShowScanCode(uint16_t scancode) {
     disp::DrawKeyboard(scancode, 112, 2);
   }
 }
+
+void BoardIO::ReturnFromMode() {
+  // TODO: Display the keyboard, right?
+}

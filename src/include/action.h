@@ -3,7 +3,7 @@
 #include "enumtypes.h"
 #include "usbenums.h"
 
-#if defined(DEBUG)
+#if defined(DEBUG) && defined(ARDUINO)
 #include "Arduino.h"
 #endif
 

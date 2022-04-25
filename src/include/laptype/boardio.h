@@ -22,7 +22,6 @@ struct BoardIO : public LaptypeMatrix {
   static uint32_t lastShownLayerTime;
   static layer_num lastShownLayer;
   static void Configure();
-  // static bool Override(scancode_t sc, bool pressed, uint32_t now);
   static void Changed(uint32_t now, GeneralState& state);
   static void Tick(uint32_t now);
   static void ShowScanCode(uint16_t now);

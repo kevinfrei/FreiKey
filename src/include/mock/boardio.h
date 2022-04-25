@@ -20,11 +20,11 @@ struct BoardIO : public MockMatrix {
   static uint32_t lastShownLayerTime;
   static uint32_t lastShownLayerVal;
   static void Configure();
-  static bool Override(scancode_t sc, bool pressed, uint32_t now);
   static void Changed(uint32_t now, GeneralState&);
   static void Reset(GeneralState&);
   static KeyboardMode Mode(uint32_t now, KeyboardMode mode);
   static void Tick(uint32_t now);
+  static void ReturnFromMode();
 };
 
 constexpr uint8_t BAD_PIN = 0xFF;
