@@ -18,10 +18,10 @@ using MockMatrix = KeyMatrix<MockMPU,
 
 struct BoardIO : public MockMatrix {
   static void Configure();
-  static void Changed(uint32_t now, GeneralState&);
   static void Reset(GeneralState&);
-  static KeyboardMode Mode(uint32_t now, KeyboardMode mode);
+  static void Changed(uint32_t now, GeneralState&);
   static void Tick(uint32_t now);
+  static KeyboardMode Mode(uint32_t now, KeyboardMode mode);
   static void ReturnFromMode();
 };
 

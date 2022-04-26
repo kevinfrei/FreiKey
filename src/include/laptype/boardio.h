@@ -1,6 +1,5 @@
 #pragma once
 
-#include "editline.h"
 #include "enumtypes.h"
 #include "generalstate.h"
 #include "keymatrix.h"
@@ -18,13 +17,6 @@ using LaptypeMatrix = KeyMatrix<Teensy,
 // clang-format on
 
 struct BoardIO : public LaptypeMatrix {
-
-  /*
-    static Adafruit_ST7789* tft;
-    static uint32_t lastShownLayerTime;
-    static layer_num lastShownLayer;
-  */
-
   static void Configure();
   static void Changed(uint32_t now, GeneralState& state);
   static void Tick(uint32_t now);
