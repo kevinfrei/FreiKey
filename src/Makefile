@@ -4,12 +4,7 @@
 # phony rules cus there are no dependencies
 .PHONY: clean laptype lt l ltf lf flaptype laptypef 3 3p three threepiece 3f 3pf threef threepiecef f3 f3p fthree fthreepiece img calc edit tetris tet
 
-# TODO: Make instead, use WSL for build, then Windows for flashing maybe?
-ifeq ($(OS),Windows_NT)
 flags=-j
-else
-flags=-j
-endif
 
 # Now the default target
 all: laptype threepiece mock img calc edit tet
@@ -24,22 +19,22 @@ else
 endif
 
 laptype lt l:
-	$(MAKE) ${flags} -f laptype.mak all compile_commands
+	$(MAKE) ${flags} -f make-laptype.mak all compile_commands
 
 flaptype laptypef lf ltf:
-	$(MAKE) ${flags} -f laptype.mak flash
+	$(MAKE) ${flags} -f make-laptype.mak flash
 
 threepiece three 3 3p:
-	$(MAKE) ${flags} -f threepiece.mak all compile_commands
+	$(MAKE) ${flags} -f make-3piece.mak all compile_commands
 
 fthreepiece fthree f3 f3p threepiecef threef 3f 3pf:
-	$(MAKE) ${flags} -f threepiece.mak flash
+	$(MAKE) ${flags} -f make-3piece.mak flash
 
 mock m:
-	$(MAKE) ${flags} -f mock.mak all compile_commands
+	$(MAKE) ${flags} -f make-mock.mak all compile_commands
 
 test t:
-	$(MAKE) ${flags} -f test.mak all
+	$(MAKE) ${flags} -f make-test.mak all
 
 rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
 
@@ -57,4 +52,3 @@ edit:
 
 tet tetris:
 	$(MAKE) -C modules/tetris ${flags}
-
