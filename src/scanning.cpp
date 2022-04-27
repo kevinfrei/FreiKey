@@ -105,6 +105,9 @@ void preprocessScanCode(scancode_t sc, bool pressed, uint32_t now) {
     case layer_t::Switch:
       curState.switch_layer(state->get_layer());
       break;
+    case layer_t::Rotate:
+      curState.rotate_layers(state->get_layer1(), state->get_layer2(), state->get_layer3());
+      break;
     case layer_t::None:
       break;
   }

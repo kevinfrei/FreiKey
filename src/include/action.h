@@ -72,6 +72,11 @@ class action_t {
                                   layer_num layerNum = layer_num::Base) {
     return action_t{ka, value_cast(layerNum)};
   }
+  static constexpr action_t LayerRotate(layer_num a, layer_num b, layer_num c) {
+    return action_t{KeyAction::LayerRotate,
+                    static_cast<uint16_t>(value_cast(a) | (value_cast(b) << 4) |
+                                          (value_cast(c) << 8))};
+  }
   static constexpr action_t Combine(action_t a, action_t b) {
     return action_t{a, b};
   }
@@ -134,6 +139,18 @@ class action_t {
     return enum_cast<layer_num>(data & 0xF);
   }
 
+  layer_num getLayer1() const {
+    return enum_cast<layer_num>(data & 0xF);
+  }
+
+  layer_num getLayer2() const {
+    return enum_cast<layer_num>((data >> 4) & 0xF);
+  }
+
+  layer_num getLayer3() const {
+    return enum_cast<layer_num>((data >> 8) & 0xF);
+  }
+
 #if defined(DEBUG)
   void dump() const {
     switch (getAction()) {
@@ -193,6 +210,10 @@ inline constexpr action_t layerShift(layer_num n) {
 
 inline constexpr action_t layerSwitch(layer_num n) {
   return action_t::Layer(KeyAction::LayerSwitch, n);
+}
+
+inline constexpr action_t layerRotate(layer_num a, layer_num b, layer_num c) {
+  return action_t::LayerRotate(a, b, c);
 }
 
 inline constexpr action_t keyPress(action_t a) {

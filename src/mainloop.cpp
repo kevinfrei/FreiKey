@@ -21,6 +21,7 @@ void resetTheWorld() {
 }
 
 extern "C" void setup() {
+  // Wait for 2 seconds in case we are trying to attach a serial monitor
   DBG(for (uint16_t iter = 0; !Serial && iter < 2000; iter++) delay(1););
   DBG(Serial.begin(115200));
   DBG(Serial.println("SETUP!"));
@@ -29,11 +30,11 @@ extern "C" void setup() {
 }
 
 extern "C" void loop() {
-  scancode_t sc;
   bool keysChanged = false, pressed = false;
   uint32_t now = millis();
   Scanner scanner{now};
-  while ((sc = scanner.getNextCode(pressed)) != 0xFF) {
+  for (scancode_t sc = scanner.getNextCode(pressed); sc != 0xFF;
+       sc = scanner.getNextCode(pressed)) {
     DBG2(dumpHex(sc, "Got scan code 0x"));
     preprocessScanCode(sc, pressed, now);
     keysChanged = true;
@@ -50,7 +51,7 @@ extern "C" void loop() {
     mode = BoardIO::Mode(now, mode);
     DBG2(dumpVal(value_cast(mode), "Mode handler returned "));
     // If we're going back to normal mode
-    // Just reset the world...
+    // Just reset the world: it's easier this way...
     if (mode == KeyboardMode::Normal) {
       resetTheWorld();
       BoardIO::ReturnFromMode();

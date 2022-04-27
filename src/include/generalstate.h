@@ -39,7 +39,7 @@ struct GeneralState {
     DBG(dumpVal(layer, "Push "));
     if (layer_pos < layer_max)
       layer_stack[++layer_pos] = layer;
-    DBG(dumpLayers());
+    DBG2(dumpLayers());
   }
   void toggle_layer(layer_num layer) {
     // Toggling a layer: If it exists *anywhere* in the layer stack, turn it
@@ -47,16 +47,17 @@ struct GeneralState {
     // add it.
     for (uint8_t l = layer_pos; l != 0; l--) {
       if (layer_stack[l] == layer) {
-        DBG(dumpVal(layer, "Turning off layer "));
-        DBG(dumpVal(l, "at location "));
+        DBG2(dumpVal(layer, "Turning off layer "));
+        DBG2(dumpVal(l, "at location "));
         if (layer_pos != l) {
-          DBG(dumpVal(layer_pos - l, "Shifting by "));
+          DBG2(dumpVal(layer_pos - l, "Shifting by "));
           for (int i = l; i < layer_max; i++) {
             layer_stack[i] = layer_stack[i + 1];
           }
         }
         layer_pos--;
-        DBG(dumpLayers());
+        DBG2(dumpLayers());
+        DBG(dumpVal(layer, "Toggled off "));
         return;
       }
     }
@@ -71,21 +72,21 @@ struct GeneralState {
     } else {
       for (uint8_t l = layer_pos; l != 0; l--) {
         if (layer_stack[l] == layer) {
-          DBG(dumpVal(layer, "Turning off layer "));
-          DBG(dumpVal(l, "at location "));
+          DBG2(dumpVal(layer, "Turning off layer "));
+          DBG2(dumpVal(l, "at location "));
           if (layer_pos != l) {
-            DBG(dumpVal(layer_pos - l, "Shifting by "));
+            DBG2(dumpVal(layer_pos - l, "Shifting by "));
             for (int i = l; i < layer_max; i++) {
               layer_stack[i] = layer_stack[i + 1];
             }
           }
           layer_pos--;
-          DBG(dumpLayers());
+          DBG2(dumpLayers());
           break;
         }
       }
     }
-    DBG(dumpLayers());
+    DBG2(dumpLayers());
   }
   int8_t find_layer(layer_num lyr) {
     for (int8_t l = layer_pos; l >= 0; l--) {
@@ -99,36 +100,24 @@ struct GeneralState {
     DBG(dumpVal(layer_stack[layer_pos], "Switching layer "));
     DBG(dumpVal(layer, "to layer "));
     layer_stack[layer_pos] = layer;
-    DBG(dumpLayers());
+    DBG2(dumpLayers());
   }
-
-  /*
-  void rotate_layer(action_t action) {
-    // Check to see if any of the layers specified (except base?)
-    layer_t lyr0 = getRot0(action);
-    layer_t lyr1 = getRot1(action);
-    layer_t lyr2 = getRot2(action);
-    int8_t lp0 = find_layer(lyr0);
-    int8_t lp1 = find_layer(lyr1);
-    int8_t lp2 = find_layer(lyr2);
-    int8_t top = std::max(std::max(lp0, lp1), lp2);
-    layer_t active = layer_stack[top];
-    pop_layer(active);
-    if (active == lp2) {
-      if (lp0 < 0) {
-        push_layer(lp0);
-      }
-    } else if (active == lp1) {
-      if (lp2 < 0) {
-        push_layer(lp2);
-      }
-    } else if (active == lp0) {
-      if (lp1 < 0) {
-        push_layer(lp1);
-      }
+  void rotate_layers(layer_num a, layer_num b, layer_num c) {
+    // assumes that if you're rotating through the base layer,
+    // it's the first one. This should be asserted in the ctor...
+    DBG(Serial.print("Rotate: "));
+    if (find_layer(c) >= 0) {
+      toggle_layer(c);
+      toggle_layer(a);
+    } else if (find_layer(b) >= 0) {
+      toggle_layer(b);
+      toggle_layer(c);
+    } else if (find_layer(a) >= 0) {
+      toggle_layer(a);
+      toggle_layer(b);
     }
   }
-  */
+
 #if defined(DEBUG)
   void dumpLayers() {
     Serial.print("Layer stack:");

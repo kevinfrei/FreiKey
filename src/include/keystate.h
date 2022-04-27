@@ -23,6 +23,15 @@ struct keystate {
   layer_num get_layer() const {
     return action.getLayer();
   }
+  layer_num get_layer1() const {
+    return action.getLayer1();
+  }
+  layer_num get_layer2() const {
+    return action.getLayer2();
+  }
+  layer_num get_layer3() const {
+    return action.getLayer3();
+  }
 
   layer_t update(scancode_t sc, bool pressed, uint32_t now) {
     if (scanCode == sc) {
@@ -56,6 +65,8 @@ struct keystate {
         return down ? layer_t::Toggle : layer_t::None;
       case KeyAction::LayerSwitch:
         return down ? layer_t::Switch : layer_t::None;
+      case KeyAction::LayerRotate:
+        return down ? layer_t::Rotate : layer_t::None;
       default:
         return layer_t::None;
     }
