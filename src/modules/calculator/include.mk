@@ -1,11 +1,3 @@
-ifeq ($(OS),Windows_NT)
-	BISON=win_bison
-else ifeq ($(shell uname -s), Darwin)
-	BISON=/opt/homebrew/opt/bison/bin/bison
-else
-  $(error No Linux support yet, but copying the Darwin stuff should be nearly all of the work)
-endif
-
 CALC_MODULE_DIR=modules/calculator/
 
 CALC_PARSER_FILES=${CALC_MODULE_DIR}CalcParser.cpp ${CALC_MODULE_DIR}include/CalcParser.h

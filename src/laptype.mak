@@ -1,17 +1,30 @@
 # Some simple details
 ifeq ($(OS),Windows_NT)
+	SUF=win
 	ARD=${HOME}/AppData/Local
 	SERIAL_PORT=COM8
 	RUNTIME_HARDWARE_PATH=c:/PROGRA~2/Arduino/hardware/tools
 	CMD_PATH=${RUNTIME_HARDWARE_PATH}
+	BISON=win_bison
 else ifeq ($(shell uname -s), Darwin)
+	SUF=mac
 	ARD=/Applications/Teensyduino.app/Contents/Java/hardware
-	SERIAL_PORT=$(shell ls /dev/cu.usbmodem1047*)
+	SERIAL_PORT=$(shell ls /dev/cu.usbmodem5*)
 	TOOLS_PATH=${ARD}/tools
 	RUNTIME_HARDWARE_PATH=${TOOLS_PATH}
 	CMD_PATH=${TOOLS_PATH}
-else
-  $(error No Linux support yet)
+	BISON=/opt/homebrew/opt/bison/bin/bison
+else ifeq ($(shell uname -s), Linux)
+	SUF=lin
+	ARD=${HOME}/Apps/arduino-1.8.19/hardware
+# grab the *first* serial port we see
+	SERIAL_PORT=$(shell ls /dev/ttyACM* | head -1)
+	TOOLS_PATH=${ARD}/tools
+	RUNTIME_HARDWARE_PATH=${TOOLS_PATH}
+	CMD_PATH=${TOOLS_PATH}
+	BISON=/bin/bison
+else 
+  $(error No idea what platform you're running on...)
 endif
 
 # At only 24MHz, the screen is dramatically slower, but at 150MHz
@@ -56,9 +69,5 @@ include modules/images/include.mk
 include modules/editline/include.mk
 include modules/tetris/include.mk
 
-ifeq ($(OS),Windows_NT)
-include tools/teensy.win
-else
-include tools/teensy.mk
-endif
+include tools/teensy.${SUF}
 

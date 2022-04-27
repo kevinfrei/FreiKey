@@ -50,7 +50,7 @@ class Lexer {
         buf = new char[t.end - t.start + 1];
         strncpy(buf, &str[t.start], t.end - t.start);
         buf[t.end - t.start] = 0;
-        yylval = CalcExpr{atoll(buf)};
+        yylval = CalcExpr{static_cast<int64_t>(atoll(buf))};
         delete[] buf;
         break;
       case FLT: // FLT
