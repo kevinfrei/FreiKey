@@ -26,7 +26,8 @@ uint16_t getp(const std::vector<uint16_t>& pixels,
               uint16_t y,
               uint16_t w,
               uint8_t def) {
-  return ((x >= w) || ((y * w + x) >= pixels.size())) ? def : pixels[y * w + x];
+  size_t pos = y * w + x;
+  return ((x >= w) || (pos >= pixels.size())) ? def : pixels[pos];
 }
 
 uint8_t getr(const std::vector<uint16_t>& pixels,
@@ -93,10 +94,10 @@ std::vector<uint16_t> bilinearExpand(const std::vector<uint16_t>& pixels,
       uint8_t r = interp(dx, dy, rul, rur, rll, rlr);
       uint8_t g = interp(dx, dy, gul, gur, gll, glr);
       uint8_t b = interp(dx, dy, bul, bur, bll, blr);
-      pixels.push_back(rgb16(r, g, b));
+      res.push_back(rgb16(r, g, b));
     }
   }
-  return std::vector<uint16_t>{};
+  return res;
 }
 
 uint8_t* buffer = nullptr;

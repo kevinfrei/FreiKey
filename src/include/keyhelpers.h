@@ -39,6 +39,7 @@
 #define LYR_TOG(n) layerToggle(n)
 #define LYR_SHIFT(n) layerShift(n)
 #define LYR_SET(n) layerSwitch(n)
+#define LYR_ROT(a, b, c) layerRotate(a, b, c)
 #define MODE(n) modeKey(n)
 
 // Some missing keycodes from the Arduino/AdaFruit API's that I need. You can
@@ -183,4 +184,7 @@ DK(M_LOCK, 0xF9);
 #define LIN_CAP LYR_SHIFT(layer_num::LinCap)
 #define WIN_CTL LYR_SHIFT(layer_num::WinCtl)
 #define SHFT_FN LYR_SHIFT(layer_num::Func)
+#define LYR_MWL \
+  LYR_ROT(layer_num::MacBase, layer_num::WinBase, layer_num::LinBase)
+
 // #define LYR_MWL LYR_ROTATE(LAYER_MAC_BASE, LAYER_WIN_BASE, LAYER_LIN_BASE)

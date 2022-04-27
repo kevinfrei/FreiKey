@@ -213,6 +213,7 @@ KeyboardMode ProcessKeys(uint32_t now, kb_reporter& rpt) {
       case KeyAction::LayerShift:
       case KeyAction::LayerSwitch:
       case KeyAction::LayerToggle:
+      case KeyAction::LayerRotate:
         // These are all handled during preprocessing
         break;
     }
