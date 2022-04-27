@@ -1,5 +1,7 @@
 #include "sysstuff.h"
+
 #include <bitset>
+#include <iostream>
 #include <stdarg.h>
 #include <vector>
 
@@ -24,13 +26,11 @@ void pinMode(uint16_t pin, pin_mode mode) {
   // TODO: Check to make sure we're using the pins right in
   // digital/analog/read/write
   if (pin > pinModes.size() || pin > pinValue.size()) {
-    printf("Pin out of range\n");
+    std::cerr << "Pin out of range" << std::endl;
   } else {
     if (pinModes[pin] == pin_mode::invalid) {
-      printf("Configure pin %d to state %d (%s)\n",
-             pin,
-             mode,
-             pmName[value_cast(mode)]);
+      std::cout << "Configure pin " << pin << " to state " << value_cast(mode)
+                << " (" << pmName[value_cast(mode)] << ")" << std::endl;
     }
     pinModes[pin] = mode;
   }
@@ -38,9 +38,10 @@ void pinMode(uint16_t pin, pin_mode mode) {
 
 void digitalWrite(uint16_t pin, pin_status val) {
   if (pin > 23) {
-    printf("Pin out of range\n");
+    std::cerr << "Pin out of range" << std::endl;
   } else if (pinModes[pin] != OUTPUT) {
-    printf("Trying to write %d to pin #%d\n", val, pin);
+    std::cerr << "Trying to write " << value_cast(val) << " to pin #" << pin
+              << std::endl;
   } else {
     pinValue[pin] = val;
   }
@@ -90,31 +91,33 @@ SerialMock Serial;
 
 void SerialMock::begin(uint32_t) {}
 void SerialMock::print(const char* str) {
-  printf(str);
+  std::cout << str;
 }
 
 void SerialMock::print(uint32_t val, int base) {
   if (base == 10 || base == 0) {
-    printf("%d", val);
+    std::cout << val;
   } else if (base == 16) {
-    printf("%x", val);
+    std::cout << std::hex << val << std::dec;
   } else {
-    printf("%d (not in base %d)", val, base);
+    std::cout << val << " (not in base " << base << ")";
   }
 }
 void SerialMock::printf(const char* fmt, ...) {
+  char buffer[1024];
   va_list args;
   va_start(args, fmt);
-  vprintf(fmt, args);
+  vsprintf(&buffer[0], fmt, args);
   va_end(args);
+  std::cout << &buffer[0];
 }
 void SerialMock::println(char const* str) {
-  printf("%s\n", str);
+  std::cout << str << std::endl;
 }
 
 void SerialMock::println(uint32_t val, int base) {
   print(val, base);
-  printf("\n");
+  std::cout << std::endl;
 }
 
 SerialMock::operator bool() {
@@ -136,7 +139,7 @@ void KeyboardMock::send_now() {}
 
 void BoardIO::Configure() {
   switches.reset();
-  // printf("%zu switches\n", switches.size());
+  std::cout << switches.size() << " switches" << std::endl;
   for (uint8_t i = 0; i < 24; i++) {
     pinModes.push_back(pin_mode::invalid);
     pinValue.push_back(pin_status::invalid);
