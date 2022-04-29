@@ -108,8 +108,7 @@ KeyboardMode BoardIO::Mode(uint32_t now, KeyboardMode mode) {
   switch (mode) {
     case KeyboardMode::Menu:
       menu::SetupModeList(KeyboardMode::Calculator,
-                          KeyboardMode::Tetris,
-                          KeyboardMode::Apple2);
+                          KeyboardMode::Tetris);
       return ModuleKeyboardHandler(KeyboardMode::Menu, menu::Handler);
     case KeyboardMode::Calculator:
       ShowImage(tft, gfx_calcpic);

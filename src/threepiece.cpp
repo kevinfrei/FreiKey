@@ -13,6 +13,7 @@
 #include "generalstate.h"
 #include "image.h"
 #include "keymap.h"
+#include "menu.h"
 #include "modulekeyboard.h"
 #include "scanning.h"
 
@@ -128,10 +129,12 @@ KeyboardMode BoardIO::Mode(uint32_t now, KeyboardMode mode) {
   // want to
   switch (mode) {
     case KeyboardMode::Calculator:
-      return ModuleKeyboardHandler(calc::Handler);
+      return ModuleKeyboardHandler(KeyboardMode::Calculator, calc::Handler);
       break;
     case KeyboardMode::Menu:
-      // return menu::Select(KeyboardMode::Calculator, KeybaordMode::Tetris);
+      menu::SetupModeList(KeyboardMode::Calculator,
+                          KeyboardMode::Tetris);
+      return ModuleKeyboardHandler(KeyboardMode::Menu, menu::Handler);
       break;
     default:
       break;
@@ -149,5 +152,5 @@ void BoardIO::ShowScanCode(uint16_t scancode) {
 }
 
 void BoardIO::ReturnFromMode() {
-  // TODO: Display the keyboard, right?
+  ShowImage(tft, gfx_keyb);
 }
