@@ -3,6 +3,7 @@
 #include <cstdint>
 
 class Adafruit_ST7789;
+class Adafruit_SPITFT;
 namespace disp {
 
 struct rect_t {
@@ -43,4 +44,6 @@ void DrawText(const char* loc,
               uint8_t padding = 2,
               uint16_t color = 0xFFFF,
               uint16_t bgColor = 0);
+Adafruit_SPITFT *raw();
+
 } // namespace disp

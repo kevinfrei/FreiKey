@@ -1,0 +1,6 @@
+MENU_MODULE_DIR=modules/menu/
+
+USER_INCLUDES += -I${MENU_MODULE_DIR}
+USER_CPP_SRCS += $(addprefix ${MENU_MODULE_DIR}, menu.cpp)
+
+VPATH += ${MENU_MODULE_DIR}

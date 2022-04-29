@@ -1,7 +1,7 @@
 #include "sysstuff.h"
 
 #include "Adafruit_ST7789.h"
-#include "Fonts/FreeSans12pt7b.h"
+#include "Fonts/FreeSansBold12pt7b.h"
 #include "dbgcfg.h"
 #include "display.h"
 #include "enumhelpers.h"
@@ -36,7 +36,7 @@ Adafruit_ST7789* Init(uint16_t w,
   tft->setSPISpeed(mhz * 1000000);
   tft->setRotation(rotation);
   tft->fillScreen(ST77XX_BLACK);
-  tft->setFont(&FreeSans12pt7b);
+  tft->setFont(&FreeSansBold12pt7b);
 
   if (SD_CS != 0) {
     // TODO: Configure the SD card here, probably?
@@ -184,6 +184,10 @@ void DrawKeyboard(uint16_t scancode, uint16_t l, uint16_t t) {
   }
   uint16_t c = (scancode > 0xFF) ? 0xC000 : 0x200;
   tft->fillRect(l + xo + x * 8 + (left ? -8 : 8), t + y * 7 + yo, w, 6, c);
+}
+
+Adafruit_SPITFT *raw() {
+  return tft;
 }
 
 } // namespace disp

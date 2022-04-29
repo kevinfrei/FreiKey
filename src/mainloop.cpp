@@ -48,13 +48,14 @@ extern "C" void loop() {
   scanner.Done();
   BoardIO::Tick(now);
   while (mode != KeyboardMode::Normal) {
-    mode = BoardIO::Mode(now, mode);
-    DBG2(dumpVal(value_cast(mode), "Mode handler returned "));
+    auto newmode = BoardIO::Mode(now, mode);
+    DBG2(dumpVal(value_cast(newmode), "Mode handler returned "));
     // If we're going back to normal mode
     // Just reset the world: it's easier this way...
-    if (mode == KeyboardMode::Normal) {
+    if (newmode != mode) {
       resetTheWorld();
       BoardIO::ReturnFromMode();
     }
+    mode = newmode;
   }
 }

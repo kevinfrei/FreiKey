@@ -9,5 +9,6 @@ typedef KeyboardMode (*KeystrokeHandler)(Keystroke ks,
                                          bool pressed,
                                          uint32_t now);
 typedef KeyboardMode (*Spinner)(KeyboardMode mode, uint32_t now);
-KeyboardMode ModuleKeyboardHandler(KeystrokeHandler handler,
+KeyboardMode ModuleKeyboardHandler(KeyboardMode curMode,
+                                   KeystrokeHandler handler,
                                    Spinner spin = nullptr);

@@ -1,17 +1,21 @@
-#include "modulekeyboard.h"
+#include "dbgcfg.h"
+
 #include "action.h"
 #include "enumhelpers.h"
 #include "enumtypes.h"
 #include "keymap.h"
 #include "keystate.h"
+#include "modulekeyboard.h"
 #include "scanner.h"
 #include "usbenums.h"
 
 // This is used to let us not be a USB keyboard, but use the board "locally"
 // for something like a calculator or a game, etc...
-KeyboardMode ModuleKeyboardHandler(KeystrokeHandler handler, Spinner spin) {
+KeyboardMode ModuleKeyboardHandler(KeyboardMode curMode,
+                                   KeystrokeHandler handler,
+                                   Spinner spin) {
   Modifiers localMods = Modifiers::None;
-  KeyboardMode mode = KeyboardMode::Waiting;
+  KeyboardMode mode = curMode;
   DBG(Serial.println("Entering Module Keyboard handler"));
   do {
     scancode_t sc;
@@ -19,11 +23,12 @@ KeyboardMode ModuleKeyboardHandler(KeystrokeHandler handler, Spinner spin) {
     uint32_t now = millis();
     Scanner scanner{now};
     while ((sc = scanner.getNextCode(pressed)) != 0xFF) {
-      // TODO: Get the keystroke & modifier based on the scan code:
+      // Get the keystroke & modifier based on the scan code:
       action_t a = moduleKeyMap[sc];
       switch (a.getAction()) {
         case KeyAction::KeyPress:
           mode = handler(a.getKeystroke(), localMods, pressed, now);
+          DBG2(dumpVal(value_cast(mode), "Mode handler KeyPress returned "));
           break;
         case KeyAction::Modifier:
           if (pressed) {
@@ -31,11 +36,14 @@ KeyboardMode ModuleKeyboardHandler(KeystrokeHandler handler, Spinner spin) {
           } else {
             localMods &= ~a.getModifiers();
           }
+          mode = handler(Keystroke::None, localMods, pressed, now);
+          DBG2(dumpVal(value_cast(mode), "Mode handler Modifier returned "));
           break;
         case KeyAction::Mode:
           if (pressed) {
             mode = a.getMode();
           }
+          DBG2(dumpVal(value_cast(mode), "Got raw Mode action "));
           break;
         default:
           DBG(dumpVal(value_cast(a.getAction()),
@@ -43,10 +51,10 @@ KeyboardMode ModuleKeyboardHandler(KeystrokeHandler handler, Spinner spin) {
       }
     }
     scanner.Done();
-    if (mode != KeyboardMode::Normal && spin != nullptr) {
+    if (mode == curMode && spin != nullptr) {
       mode = spin(mode, now);
     }
-  } while (mode != KeyboardMode::Normal);
+  } while (mode == curMode);
   DBG(Serial.println("Exiting Module Keyboard Handler"));
   return mode;
 }

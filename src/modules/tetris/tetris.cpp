@@ -16,7 +16,7 @@ enum class GameFlowState {
 };
 
 GameFlowState gameState = GameFlowState::FirstTime;
-Board *brd = nullptr;
+Board* brd = nullptr;
 
 void Initialize() {
   // Don't think I need anything here...

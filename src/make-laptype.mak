@@ -72,6 +72,7 @@ include modules/calculator/include.mk
 include modules/images/include.mk
 include modules/editline/include.mk
 include modules/tetris/include.mk
+include modules/menu/include.mk
 
 include tools/teensy.${SUF}
 
