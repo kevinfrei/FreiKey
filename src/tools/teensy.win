@@ -2861,23 +2861,27 @@ SYS_OBJS=\
   $(addprefix ${BUILD_PATH}/, \
     $(patsubst %.c, %.c.o, \
       $(patsubst %.cpp, %.cpp.o, \
-        $(patsubst %.S, %.S.o, $(notdir ${SYS_SRC})))))
+        $(patsubst %.ino, %.ino.o, \
+          $(patsubst %.S, %.S.o, $(notdir ${SYS_SRC}))))))
 USER_OBJS=\
   $(addprefix ${BUILD_PATH}/, \
     $(patsubst %.c, %.c.o, \
       $(patsubst %.cpp, %.cpp.o, \
-        $(patsubst %.S, %.S.o, $(notdir ${USER_SRC})))))
+        $(patsubst %.ino, %.ino.o, \
+          $(patsubst %.S, %.S.o, $(notdir ${USER_SRC}))))))
 ALL_OBJS=${USER_OBJS} ${SYS_OBJS}
 SYS_JSON=\
   $(addprefix ${BUILD_PATH}/, \
     $(patsubst %.c, %.c.json, \
       $(patsubst %.cpp, %.cpp.json, \
-        $(patsubst %.S, %.S.json, $(notdir ${SYS_SRC})))))
+        $(patsubst %.ino, %.ino.json, \
+          $(patsubst %.S, %.S.json, $(notdir ${SYS_SRC}))))))
 USER_JSON=\
   $(addprefix ${BUILD_PATH}/, \
     $(patsubst %.c, %.c.json, \
       $(patsubst %.cpp, %.cpp.json, \
-        $(patsubst %.S, %.S.json, $(notdir ${USER_SRC})))))
+        $(patsubst %.ino, %.ino.json, \
+          $(patsubst %.S, %.S.json, $(notdir ${USER_SRC}))))))
 
 # And now the build rules!
 
@@ -2889,9 +2893,9 @@ all: ${BUILD_PATH} ${PROJ_NAME}
 
 # Some house keeping
 clean:
-	-rm ${USER_OBJS}
+	-rm ${USER_OBJS} ${USER_EXTRA}
 
-allclean:
+allclean: clean
 	-rm -rf ${BUILD_PATH}
 
 # Make us rebuild user code if the makefile(s) change:
@@ -2943,6 +2947,19 @@ else
 	@echo "\"command\":\"\\\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_GCC}\\\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_C} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_C_EXTRA_FLAGS} \\\"$<\\\" -o \\\"$@\\\"\"}," >> $@
 endif
 
+${BUILD_PATH}/%.ino.o : %.ino
+	"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_G__}" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_CPP} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} "-I${BUILD_PATH}/pch" ${SYS_INCLUDES} ${USER_INCLUDES} -x c++ ${COMPILER_INO_EXTRA_FLAGS} "$<" -o "$@"
+
+${BUILD_PATH}/%.ino.json : %.ino
+ifeq ($(OS),Windows_NT)
+	@echo { "directory":"$(<D)", "file":"$(<F)", "command": > $@
+	@echo "\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_G__}\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_CPP} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} \"-I${BUILD_PATH}/pch\" ${SYS_INCLUDES} ${USER_INCLUDES} -x c++ ${COMPILER_INO_EXTRA_FLAGS} \"$<\" -o \"$@\"" >> $@
+	@echo }, >> $@
+else
+	@echo "{ \"directory\": \"$(<D)\",\"file\":\"$(<F)\","
+	@echo "\"command\":\"\\\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_G__}\\\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_CPP} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} \\\"-I${BUILD_PATH}/pch\\\" ${SYS_INCLUDES} ${USER_INCLUDES} -x c++ ${COMPILER_INO_EXTRA_FLAGS} \\\"$<\\\" -o \\\"$@\\\"\"}," >> $@
+endif
+
 ${BUILD_PATH}/%.cpp.o : %.cpp
 	"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_G__}" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_CPP} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} "-I${BUILD_PATH}/pch" ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_CPP_EXTRA_FLAGS} "$<" -o "$@"
 
@@ -2957,10 +2974,12 @@ else
 endif
 
 ${BUILD_PATH}/system.a : ${SYS_OBJS}
-	"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_AR}" rcs "$@" $^
+	"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_AR}" ${COMPILER_AR_EXTRA_FLAGS} rcs "$@" $^
+
 
 ${BUILD_PATH}/${BUILD_PROJECT_NAME}.elf : ${BUILD_PATH}/system.a ${USER_OBJS}
-	"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_LINKER}" ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_LD} ${BUILD_FLAGS_LDSPECS} ${BUILD_FLAGS_CPU} -o "$@" ${USER_OBJS} "${BUILD_PATH}/system.a" "-L${BUILD_PATH}" ${BUILD_FLAGS_LIBS}
+	"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_LINKER}" ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_LD} ${BUILD_FLAGS_LDSPECS} ${BUILD_FLAGS_CPU} ${COMPILER_ELF_EXTRA_FLAGS} -o "$@" ${USER_OBJS} "${BUILD_PATH}/system.a" "-L${BUILD_PATH}" ${BUILD_FLAGS_LIBS}
+
 
 ${BUILD_PATH}/${BUILD_PROJECT_NAME}.hex : ${BUILD_PATH}/${BUILD_PROJECT_NAME}.elf
 	"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_OBJCOPY}" ${COMPILER_ELF2HEX_FLAGS} "$<" "$@"

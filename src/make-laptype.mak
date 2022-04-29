@@ -30,7 +30,10 @@ endif
 # At only 24MHz, the screen is dramatically slower, but at 150MHz
 # things are buttery smooth, so not running at 600MHz helps overheating, right?
 IN_SPEED=600
+# For debug:
 IN_USB=serialhid
+# For optimized:
+# IN_USB=keyboard
 IN_OPT=osstd
 IN_KEYS=en-us
 EXTRA_TIME_LOCAL=0
@@ -41,7 +44,8 @@ PROJ_NAME=laptype
 BUILD_PATH=out/laptype
 
 # My custom flags
-COMPILER_CPP_EXTRA_FLAGS=-flto 
+COMPILER_CPP_EXTRA_FLAGS=-flto -gsplit-dwarf
+# COMPILER_ELF_EXTRA_FLAGS=-Wl,--gdb-index
 # -DDEBUG=1
 
 # Libraries to use:
