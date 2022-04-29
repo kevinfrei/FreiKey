@@ -2,8 +2,7 @@
 #include <array>
 #include <cstring>
 
-#include "include/board.h"
-#include "include/tetris_details.h"
+#include "board.h"
 #include "tetris.h"
 #include "usbenums.h"
 
@@ -17,26 +16,7 @@ enum class GameFlowState {
 };
 
 GameFlowState gameState = GameFlowState::FirstTime;
-Adafruit_ST7789* dsp = nullptr;
-
-class GameState {
-  uint8_t curPiece;
-  uint8_t nextPiece;
-  uint8_t cx, cy, cr;
-  uint32_t score;
-  uint32_t level;
-  Board board;
-
- public:
-  void reset() {
-    level = 0;
-    score = 0;
-  }
-  void drawFullBoard() {
-    dsp->fillScreen(ST77XX_BLACK);
-    //
-  }
-};
+Board *brd = nullptr;
 
 void Initialize() {
   // Don't think I need anything here...
@@ -45,8 +25,11 @@ void Initialize() {
 
 void Begin(Adafruit_ST7789* tft) {
   gameState = GameFlowState::JustStarting;
-  dsp = tft;
-  calcDisplayValues();
+  // calcDisplayValues();
+  if (brd) {
+    delete brd;
+  }
+  brd = new Board(*tft, 5, 5);
 }
 
 void KeyDown(Keystroke k) {

@@ -22,6 +22,8 @@ struct StrCompare {
   }
 };
 
+enum class IntMode : uint8_t { Decimal = 0, Hexadecimal, Binary };
+
 class Context {
   // I need/want to intern strings
   std::map<char*, const char*, StrCompare> interned;
@@ -36,6 +38,7 @@ class Context {
   CalcExpr getVal(const char*, const CalcExpr&);
   CalcExpr invoke(const char*, const CalcExpr&) const;
   void clear();
+  IntMode curMode;
 };
 
 extern Context context;

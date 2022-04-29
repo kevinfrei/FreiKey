@@ -88,8 +88,40 @@ CalcExpr lnFn(const CalcExpr& ce) {
   return CalcExpr{std::log(ce.asFloat())};
 }
 
-const char* names[] = {
-  "pi", "e", "sqrt", "sin", "cos", "tan", "asin", "acos", "atan", "log", "ln"};
+CalcExpr intFn(const CalcExpr& ce) {
+  return CalcExpr{ce.asInt()};
+}
+
+CalcExpr decFn(const CalcExpr& ce) {
+  context.curMode = IntMode::Decimal;
+  return ce;
+}
+
+CalcExpr hexFn(const CalcExpr& ce) {
+  context.curMode = IntMode::Hexadecimal;
+  return ce;
+}
+
+CalcExpr binFn(const CalcExpr& ce) {
+  context.curMode = IntMode::Binary;
+  return ce;
+}
+
+const char* names[] = {"pi",
+                       "e",
+                       "sqrt",
+                       "sin",
+                       "cos",
+                       "tan",
+                       "asin",
+                       "acos",
+                       "atan",
+                       "log",
+                       "ln",
+                       "int",
+                       "dec",
+                       "hex",
+                       "bin"};
 
 void Context::clear() {
   for (auto& val : interned) {
@@ -115,6 +147,10 @@ void Context::clear() {
   funcs.emplace(names[8], atanFn);
   funcs.emplace(names[9], logFn);
   funcs.emplace(names[10], lnFn);
+  funcs.emplace(names[11], intFn);
+  funcs.emplace(names[12], decFn);
+  funcs.emplace(names[13], hexFn);
+  funcs.emplace(names[14], binFn);
 }
 
 } // namespace calc

@@ -1,16 +1,12 @@
-#include "Adafruit_ST7789.h"
 #include <algorithm>
 #include <cstdint>
 
-#include "include/tetris_details.h"
-
 namespace tetris {
+
 uint8_t xW, xO, yW, yO;
 uint8_t xN, yN;
 
-void calcDisplayValues() {
-  uint16_t height = dsp->height();
-  uint16_t width = dsp->width();
+void calcDisplayValues(uint16_t height, uint16_t width) {
   yW = (height - 1) / 24;
   xW = (width - 1) / 10;
   yW = std::min(xW, yW);
@@ -57,23 +53,24 @@ uint16_t getPrevH() {
 uint16_t getColor(uint8_t blk) {
   switch (blk) {
     case 0:
-      return ST77XX_BLACK;
+      return 0x0000; // Black
     case 1:
-      return ST77XX_RED;
+      return 0xF800; // Red
     case 2:
-      return ST77XX_BLUE;
+      return 0x001F; // Blue
     case 3:
-      return ST77XX_GREEN;
+      return 0x07E0; // Green
     case 4:
-      return ST77XX_YELLOW;
+      return 0xFFE0; // Yellow
     case 5:
-      return ST77XX_CYAN;
+      return 0x07FF; // Cyan
     case 6:
-      return ST77XX_MAGENTA;
+      return 0xF81F; // Magenta
     case 7:
-      return ST77XX_ORANGE;
+      return 0xFC00; // Orange
     default:
-      return blk << 8 | blk;
+      return 0xFFFF; // White
   }
 }
+
 } // namespace tetris
