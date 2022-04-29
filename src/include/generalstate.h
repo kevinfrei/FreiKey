@@ -106,15 +106,21 @@ struct GeneralState {
     // assumes that if you're rotating through the base layer,
     // it's the first one. This should be asserted in the ctor...
     DBG(Serial.print("Rotate: "));
-    if (find_layer(c) >= 0) {
-      toggle_layer(c);
+    layer_num which = b;
+    while (find_layer(a) > 0) {
       toggle_layer(a);
-    } else if (find_layer(b) >= 0) {
+    }
+    while (find_layer(b) > 0) {
+      which = c;
       toggle_layer(b);
+    }
+    while (find_layer(c) > 0) {
+      which = a;
       toggle_layer(c);
-    } else if (find_layer(a) >= 0) {
-      toggle_layer(a);
-      toggle_layer(b);
+    }
+    // At this point, we have no layers a,b,c unless one is the base layer
+    if (find_layer(which) != 0) {
+      toggle_layer(which);
     }
   }
 
