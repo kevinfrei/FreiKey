@@ -132,8 +132,7 @@ KeyboardMode BoardIO::Mode(uint32_t now, KeyboardMode mode) {
       return ModuleKeyboardHandler(KeyboardMode::Calculator, calc::Handler);
       break;
     case KeyboardMode::Menu:
-      menu::SetupModeList(KeyboardMode::Calculator,
-                          KeyboardMode::Tetris);
+      menu::SetupModeList(KeyboardMode::Calculator, KeyboardMode::Tetris);
       return ModuleKeyboardHandler(KeyboardMode::Menu, menu::Handler);
       break;
     default:

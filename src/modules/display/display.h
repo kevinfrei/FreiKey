@@ -44,6 +44,6 @@ void DrawText(const char* loc,
               uint8_t padding = 2,
               uint16_t color = 0xFFFF,
               uint16_t bgColor = 0);
-Adafruit_SPITFT *raw();
+Adafruit_SPITFT* raw();
 
 } // namespace disp

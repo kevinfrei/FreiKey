@@ -107,8 +107,7 @@ KeyboardMode BoardIO::Mode(uint32_t now, KeyboardMode mode) {
   // want to
   switch (mode) {
     case KeyboardMode::Menu:
-      menu::SetupModeList(KeyboardMode::Calculator,
-                          KeyboardMode::Tetris);
+      menu::SetupModeList(KeyboardMode::Calculator, KeyboardMode::Tetris);
       return ModuleKeyboardHandler(KeyboardMode::Menu, menu::Handler);
     case KeyboardMode::Calculator:
       ShowImage(tft, gfx_calcpic);

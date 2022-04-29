@@ -186,7 +186,7 @@ void DrawKeyboard(uint16_t scancode, uint16_t l, uint16_t t) {
   tft->fillRect(l + xo + x * 8 + (left ? -8 : 8), t + y * 7 + yo, w, 6, c);
 }
 
-Adafruit_SPITFT *raw() {
+Adafruit_SPITFT* raw() {
   return tft;
 }
 
