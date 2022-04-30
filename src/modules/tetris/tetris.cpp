@@ -46,12 +46,16 @@ void KeyDown(Button k, uint32_t now) {
   switch (gameState) {
     case GameFlowState::FirstTime:
       brd->splash();
+      delay(1000);
+      gameState = GameFlowState::NotPlaying;
       break;
     case GameFlowState::NotPlaying:
       brd->draw(now);
+      gameState = GameFlowState::JustStarting;
       break;
     case GameFlowState::JustStarting:
       brd->start(now);
+      gameState = GameFlowState::InProgress;
       break;
     case GameFlowState::InProgress:
       switch (k) {
@@ -70,7 +74,11 @@ void KeyDown(Button k, uint32_t now) {
         case Button::Down:
           brd->down(now);
           break;
+        case Button::Quit:
+          gameState = GameFlowState::NotPlaying;
+          break;
           // TODO: case Button::Pause:
+          // TODO: case Button::Drop:
       }
       break;
     case GameFlowState::Completed:

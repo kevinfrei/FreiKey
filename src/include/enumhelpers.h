@@ -1,4 +1,5 @@
 #pragma once
+#include <algorithm>
 #include <array>
 #include <initializer_list>
 #include <type_traits>
@@ -21,6 +22,22 @@ constexpr E enum_cast(detail::underlying_type<E> v) {
   return static_cast<E>(v);
 }
 
+/*
+C++20 :'(
+template <class EnumType,
+          class ValueType,
+          size_t Size = value_cast(EnumType::NumElems),
+          typename = detail::enum_types_only<EnumType>>
+constexpr std::array<ValueType, Size> init_array(
+  std::initializer_list<std::pair<EnumType, ValueType>> vals) {
+  std::array<ValueType, Size> res{};
+  std::for_each(vals.begin(), vals.end(), [&](const std::pair<EnumType,
+ValueType> &i){ res[value_cast(i.first)] = i.second;
+  });
+  return res;
+};
+*/
+
 template <class EnumType,
           class ValueType,
           size_t Size = value_cast(EnumType::NumElems),
@@ -30,10 +47,12 @@ class enum_array {
 
  public:
   enum_array() {}
-  enum_array(std::initializer_list<std::pair<EnumType, ValueType>> vals) {
-    for (auto& i : vals) {
-      array_[value_cast(i.first)] = i.second;
-    }
+  enum_array(std::initializer_list<std::pair<EnumType, ValueType>> vals)
+    : array_() {
+    std::for_each(
+      vals.begin(), vals.end(), [&](const std::pair<EnumType, ValueType>& i) {
+        array_[value_cast(i.first)] = i.second;
+      });
   }
   // TODO: Flesh this out into a real array with types & iterators & initializer
   // lists & stuff

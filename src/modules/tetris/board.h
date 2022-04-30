@@ -4,54 +4,19 @@
 
 #include "Adafruit_GFX.h"
 
+#include "enumhelpers.h"
 #include <cstdint>
+
 namespace tetris {
 
-constexpr int8_t pieces[7][24] =
-  // clang-format off
-{{ // I
-   0, -2,  0, -1,  0,  1,
-   2,  0,  1,  0, -1,  0,
-   0,  2,  0,  1,  0, -1,
-  -2,  0, -1,  0,  1,  0
-}, { // L
-   0, -1,  0,  1,  1,  1,
-   1,  0, -1,  0, -1,  1,
-   0,  1,  0, -1, -1, -1,
-  -1,  0,  1,  0,  1, -1
-}, { // J
-   0, -1,  0,  1, -1,  1,
-   1,  0, -1,  0, -1, -1,
-   0,  1,  0, -1,  1, -1,
-  -1,  0,  1,  0,  1,  1
-}, { // O
-   0,  1,  1,  0,  1,  1,
-  -1,  0,  0,  1, -1,  1,
-   0, -1, -1,  0, -1, -1,
-   1,  0,  0, -1,  1, -1
-}, { // T
-   0, -1,  1,  0, -1,  0,
-   1,  0,  0,  1,  0, -1,
-   0,  1, -1,  0,  1,  0,
-  -1,  0,  0, -1,  0,  1
-}, { // S
-  -1,  0,  0, -1,  1, -1, 
-   0,  1, -1,  0, -1, -1,
-   1,  0,  0,  1, -1,  1,
-   0, -1,  1,  0,  1,  1
-}, { // Z
-  -1, -1,  0, -1,  1,  0,
-   1, -1,  1,  0,  0,  1,
-   1,  1,  0,  1, -1,  0,
-  -1,  1, -1,  0,  0, -1
-}};
-// clang-format on
+enum class PieceName : uint8_t { I, L, J, O, T, S, Z, NumElems, Empty };
+
 class Board {
   // Constants
   static constexpr uint16_t White = 0xFFFF;
   static constexpr uint16_t Black = 0;
 
-  static constexpr uint8_t numPieces = 7;
+  static constexpr uint8_t numPieces = value_cast(PieceName::NumElems);
   static constexpr uint8_t numLocs = 6;
 
   static constexpr int8_t WIDTH = 10;
@@ -63,19 +28,20 @@ class Board {
   uint16_t PieceHeight;
 
   // data
-  bool board[WIDTH * HEIGHT];
+  PieceName board[WIDTH * HEIGHT];
   uint32_t score;
-  int8_t curPiece, nextPiece;
+  PieceName curPiece, nextPiece;
   uint8_t rot, x, y;
   uint32_t lastDropTime;
   uint32_t dropSpeed;
   uint16_t totalRows;
 
   void addScore(uint8_t v);
-  bool getSpot(uint8_t x, uint8_t y);
-  void setSpot(uint8_t x, uint8_t y);
+  PieceName getSpot(uint8_t x, uint8_t y);
+  void setSpot(uint8_t x, uint8_t y, PieceName piece);
   void clrSpot(uint8_t x, uint8_t y);
-  void drawDot(int8_t x, int8_t y, bool set, int16_t xo = 1, int16_t yo = 0);
+  void drawDot(
+    int8_t x, int8_t y, PieceName piece, int16_t xo = 1, int16_t yo = 0);
   void drawBoard();
   void drawNext();
   void drawScore();
@@ -93,7 +59,7 @@ class Board {
   bool active();
   void splash();
   void draw(uint32_t now);
-  void drawPiece(uint8_t piece, uint8_t rot, uint8_t xo, uint8_t yo);
+  void drawPiece(PieceName piece, uint8_t rot, uint8_t xo, uint8_t yo);
   void down(uint32_t now);
   void left();
   void right();
