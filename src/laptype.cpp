@@ -15,6 +15,7 @@
 #include "menu.h"
 #include "modulekeyboard.h"
 #include "scanning.h"
+#include "tetris.h"
 
 constexpr uint8_t TFT_CS = 8;
 constexpr uint8_t TFT_DC = 15;
@@ -45,6 +46,7 @@ void BoardIO::Configure() {
   ShowImage(tft, gfx_amy);
   edit::Initialize();
   calc::Initialize();
+  tetris::Initialize();
 }
 
 void resetTheWorld();
@@ -113,6 +115,9 @@ KeyboardMode BoardIO::Mode(uint32_t now, KeyboardMode mode) {
       ShowImage(tft, gfx_calcpic);
       return ModuleKeyboardHandler(KeyboardMode::Calculator, calc::Handler);
       break;
+    case KeyboardMode::Tetris:
+      return ModuleKeyboardHandler(
+        KeyboardMode::Tetris, tetris::Handler, tetris::Spin);
     default:
       break;
   }

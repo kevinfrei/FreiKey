@@ -3,7 +3,7 @@
 namespace tetris {
 
 Board::Board(Adafruit_GFX& dsp, uint8_t w, uint8_t h)
-  : display(dsp), PieceWidth(w), PieceHeight(h) {}
+  : display(dsp), PieceWidth(w), PieceHeight(h), score(0) {}
 
 void Board::addScore(uint8_t v) {
   score += v;

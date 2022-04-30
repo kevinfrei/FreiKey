@@ -13,7 +13,6 @@ SEP=\\
 BISON=win_bison
 CLEANPATHS=$(subst /,${SEP},$1)
 MKDIRPATH=$(subst /,${SEP},$1)
-devnull=NUL
 RM=del /s /q
 else
 SFX=
@@ -21,7 +20,6 @@ SEP=/
 BISON=/opt/homebrew/opt/bison/bin/bison
 CLEANPATHS=$(subst *,@,$1)
 MKDIRPATH=-p $1
-devnull=/dev/null
 rm=rm -rf
 endif
 
@@ -52,7 +50,11 @@ ${MODNAME}: out/${MODNAME} ${IMAGE}
 .PHONY: clean ${MODNAME}
 
 out/${MODNAME}:
-	-@mkdir $(call MKDIRPATH,${DESTDIR}) > ${devnull} 2>&1
+ifeq ($(OS),Windows_NT)
+	@if not exist $(call MKDIRPATH, ${DESTDIR}) mkdir $(call MKDIRPATH,${DESTDIR}) 2> NUL 1> NUL
+else
+	test -d ${DESTDIR} || mkdir p ${DESTDIR} 2>&1 > /dev/null
+endif
 
 CPP_OBJS = $(addprefix ${DESTDIR}, $(patsubst %.cpp, %.${OSUFFIX}, ${CPP_SRC}))
 

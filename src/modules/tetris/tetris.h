@@ -1,12 +1,12 @@
 #pragma once
 
 #include "usbenums.h"
-
-class Adafruit_ST7789;
+#include "enumtypes.h"
 
 namespace tetris {
+
 void Initialize();
-void Begin(Adafruit_ST7789* tft);
-void KeyDown(Keystroke k);
-void Tick();
+KeyboardMode Handler(Keystroke ks, Modifiers m, bool pressed, uint32_t now);
+KeyboardMode Spin(KeyboardMode curMode, uint32_t now);
+
 } // namespace tetris

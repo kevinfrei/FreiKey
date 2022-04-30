@@ -42,7 +42,7 @@ PROJ_NAME=threepiece
 BUILD_PATH=out/threepiece
 
 # My custom flags
-COMPILER_CPP_EXTRA_FLAGS=
+COMPILER_CPP_EXTRA_FLAGS=-DDEBUG=2
 # This causes link errors now :'(
 # -flto
 
