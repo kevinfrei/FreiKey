@@ -1,7 +1,7 @@
 #pragma once
 
-#include "usbenums.h"
 #include "enumtypes.h"
+#include "usbenums.h"
 
 namespace tetris {
 

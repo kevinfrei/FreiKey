@@ -1,6 +1,18 @@
 #include "board.h"
-
 namespace tetris {
+
+uint16_t getColor(uint8_t);
+// Splash screen
+struct LetterLoc {
+  char letter;
+  uint16_t x, y;
+};
+constexpr LetterLoc tetris[6] = {{'T', 15, 40},
+                                 {'E', 50, 55},
+                                 {'T', 85, 70},
+                                 {'R', 120, 85},
+                                 {'I', 165, 100},
+                                 {'S', 190, 115}};
 
 Board::Board(Adafruit_GFX& dsp, uint8_t w, uint8_t h)
   : display(dsp), PieceWidth(w), PieceHeight(h), score(0) {}
@@ -165,14 +177,17 @@ bool Board::active() {
 }
 
 void Board::splash() {
-  display.setTextSize(3);
-  display.setTextColor(White);
   display.fillScreen(Black);
+  uint8_t v = 1;
+  display.setTextSize(2);
   for (auto& loc : tetris) {
     char buf[2] = {loc.letter, 0};
+    display.setTextColor(getColor(v++));
     display.setCursor(loc.x, loc.y);
     display.print(&buf[0]);
   }
+  display.setTextSize(1);
+  display.setTextColor(White);
   // display.display();
 }
 

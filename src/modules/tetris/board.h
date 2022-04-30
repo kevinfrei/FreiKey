@@ -7,17 +7,6 @@
 #include <cstdint>
 namespace tetris {
 
-// Splash screen
-struct LetterLoc {
-  char letter;
-  uint8_t x, y;
-};
-constexpr LetterLoc tetris[6] = {{'T', 0, 0},
-                                 {'e', 3, 19},
-                                 {'t', 6, 42},
-                                 {'r', 11, 63},
-                                 {'i', 12, 84},
-                                 {'s', 14, 105}};
 constexpr int8_t pieces[7][24] =
   // clang-format off
 {{ // I

@@ -3,12 +3,13 @@
 #include <cstring>
 
 #include "board.h"
+#include "display.h"
 #include "enumtypes.h"
 #include "tetris.h"
 #include "usbenums.h"
-#include "display.h"
 
 namespace tetris {
+
 enum class GameFlowState {
   FirstTime,
   JustStarting,
@@ -17,7 +18,16 @@ enum class GameFlowState {
   Completed
 };
 
-enum class Button { RotateLeft, RotateRight, Down, Left, Right, Drop, Quit, Pause };
+enum class Button {
+  RotateLeft,
+  RotateRight,
+  Down,
+  Left,
+  Right,
+  Drop,
+  Quit,
+  Pause
+};
 
 GameFlowState gameState = GameFlowState::FirstTime;
 Board* brd = nullptr;
@@ -60,7 +70,7 @@ void KeyDown(Button k, uint32_t now) {
         case Button::Down:
           brd->down(now);
           break;
-        // TODO: case Button::Pause:
+          // TODO: case Button::Pause:
       }
       break;
     case GameFlowState::Completed:

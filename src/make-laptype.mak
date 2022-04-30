@@ -44,7 +44,7 @@ PROJ_NAME=laptype
 BUILD_PATH=out/laptype
 
 # My custom flags
-COMPILER_CPP_EXTRA_FLAGS=-flto -gsplit-dwarf -DDEBUG=2
+COMPILER_CPP_EXTRA_FLAGS=-flto -gsplit-dwarf
 # COMPILER_ELF_EXTRA_FLAGS=-Wl,--gdb-index
 # -DDEBUG=1
 
