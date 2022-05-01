@@ -31,8 +31,8 @@ const enum_array<PieceName, std::array<std::array<int8_t, 6>, 4>> pieces{
   {PieceName::I,
    {{{0, -2, 0, -1, 0, 1},
      {2, 0, 1, 0, -1, 0},
-     {0, 2, 0, 1, 0, -1},
-     {-2, 0, -1, 0, 1, 0}}}},
+     {0, -2, 0, -1, 0, 1},
+     {2, 0, 1, 0, -1, 0}}}},
   {PieceName::L,
    {{{0, -1, 0, 1, 1, 1},
      {1, 0, -1, 0, -1, 1},
@@ -45,9 +45,9 @@ const enum_array<PieceName, std::array<std::array<int8_t, 6>, 4>> pieces{
      {-1, 0, 1, 0, 1, 1}}}},
   {PieceName::O,
    {{{0, 1, 1, 0, 1, 1},
-     {-1, 0, 0, 1, -1, 1},
-     {0, -1, -1, 0, -1, -1},
-     {1, 0, 0, -1, 1, -1}}}},
+     {0, 1, 1, 0, 1, 1},
+     {0, 1, 1, 0, 1, 1},
+     {0, 1, 1, 0, 1, 1}}}},
   {PieceName::T,
    {{{0, -1, 1, 0, -1, 0},
      {1, 0, 0, 1, 0, -1},
@@ -56,13 +56,13 @@ const enum_array<PieceName, std::array<std::array<int8_t, 6>, 4>> pieces{
   {PieceName::S,
    {{{-1, 0, 0, -1, 1, -1},
      {0, 1, -1, 0, -1, -1},
-     {1, 0, 0, 1, -1, 1},
-     {0, -1, 1, 0, 1, 1}}}},
+     {-1, 0, 0, -1, 1, -1},
+     {0, 1, -1, 0, -1, -1}}}},
   {PieceName::Z,
    {{{-1, -1, 0, -1, 1, 0},
      {1, -1, 1, 0, 0, 1},
-     {1, 1, 0, 1, -1, 0},
-     {-1, 1, -1, 0, 0, -1}}}}};
+     {-1, -1, 0, -1, 1, 0},
+     {1, -1, 1, 0, 0, 1}}}}};
 
 Board::Board(Adafruit_GFX& dsp, uint8_t w, uint8_t h)
   : display(dsp), PieceWidth(w), PieceHeight(h), score(0) {
@@ -83,60 +83,6 @@ void Board::setSpot(uint8_t x, uint8_t y, PieceName piece) {
 
 void Board::clrSpot(uint8_t x, uint8_t y) {
   board[y * WIDTH + x] = PieceName::Empty;
-}
-
-void Board::drawDot(
-  int8_t x, int8_t y, PieceName pieceNum, int16_t xo, int16_t yo) {
-  display.fillRect(xo + x * PieceWidth,
-                   yo + y * PieceHeight,
-                   PieceWidth,
-                   PieceHeight,
-                   getColor(pieceNum));
-}
-
-void Board::drawBoard() {
-  // Board outline:
-  display.drawFastVLine(0,
-                        TOP_BUFFER * PieceHeight,
-                        1 + (HEIGHT - TOP_BUFFER) * PieceHeight,
-                        White);
-  display.drawFastVLine(1 + WIDTH * PieceWidth,
-                        TOP_BUFFER * PieceHeight,
-                        1 + (HEIGHT - TOP_BUFFER) * PieceHeight,
-                        White);
-  display.drawFastHLine(1, HEIGHT * PieceHeight, WIDTH * PieceWidth, White);
-  // Draw each of the spots that are set
-  // TODO: Optimize this into larger rectangles
-  for (int8_t x = 0; x < WIDTH; x++) {
-    for (int8_t y = 0; y < HEIGHT; y++) {
-      drawDot(x, y, getSpot(x, y));
-    }
-  }
-}
-
-void Board::drawNext() {
-  if (nextPiece != PieceName::NumElems) {
-    display.setCursor(140, 26);
-    display.print("Next");
-    drawPiece(nextPiece, 0, 115, 60);
-  }
-}
-
-void Board::drawScore() {
-  display.setCursor(100, 110);
-  display.println("Score");
-  // Center the score:
-  int offset = 1;
-  if (score > 9)
-    offset++;
-  if (score > 99)
-    offset++;
-  if (score > 999)
-    offset++;
-  if (score > 9999)
-    offset++;
-  display.setCursor(210 - 6 * offset, 112);
-  display.print(score);
 }
 
 void Board::newPiece() {
@@ -244,28 +190,119 @@ void Board::splash() {
 }
 
 void Board::draw(uint32_t now) {
-  if (now - lastDraw > msPerFrame) {
-    lastDraw = now;
-    display.fillScreen(Black);
-    display.setTextSize(1);
-    display.setTextColor(White);
-    drawBoard();
-    drawNext();
+  if (!lastDraw || now - lastDraw > msPerFrame) {
+    if (!lastDraw) {
+      display.fillScreen(Black);
+    }
     drawScore();
+    drawNext();
+    drawBoard();
     if (now - lastDropTime > dropSpeed) {
       down(now);
     }
-    drawPiece(curPiece, rot, 1 + x * 3, y * 3);
+    drawPiece(curPiece, rot, x, y);
+    lastDraw = now;
     // display.display();
   }
 }
 
-void Board::drawPiece(PieceName piece, uint8_t rot, uint8_t xo, uint8_t yo) {
+void Board::drawPiece(PieceName piece, uint8_t rot, uint8_t xc, uint8_t yc) {
   auto& loc = pieces[piece][rot];
-  drawDot(0, 0, piece, xo, yo);
+  drawDot(xc, yc, piece);
   for (uint8_t i = 0; i < numLocs; i += 2) {
-    drawDot(loc[i], loc[i + 1], piece, xo, yo);
+    drawDot(xc + loc[i], yc + loc[i + 1], piece);
   }
+}
+
+void Board::drawDot(int8_t x, int8_t y, PieceName pieceNum) {
+  display.fillRect(BOARD_LEFT_OFFSET + x * PieceWidth,
+                   BOARD_TOP_OFFSET + y * PieceHeight,
+                   PieceWidth,
+                   PieceHeight,
+                   getColor(pieceNum));
+}
+
+void Board::drawBoard() {
+  // Board outline:
+  display.drawFastVLine(BOARD_LEFT_OFFSET - 1,
+                        TOP_BUFFER * PieceHeight + BOARD_TOP_OFFSET,
+                        1 + (HEIGHT - TOP_BUFFER) * PieceHeight,
+                        White);
+  display.drawFastVLine(BOARD_LEFT_OFFSET + WIDTH * PieceWidth,
+                        TOP_BUFFER * PieceHeight + BOARD_TOP_OFFSET,
+                        1 + (HEIGHT - TOP_BUFFER) * PieceHeight,
+                        White);
+  display.drawFastHLine(BOARD_LEFT_OFFSET - 1,
+                        BOARD_TOP_OFFSET + HEIGHT * PieceHeight,
+                        WIDTH * PieceWidth + 2,
+                        White);
+  // Draw each of the spots that are set
+  // TODO: Optimize this into larger rectangles
+  for (int8_t x = 0; x < WIDTH; x++) {
+    for (int8_t y = 0; y < HEIGHT; y++) {
+      drawDot(x, y, getSpot(x, y));
+    }
+  }
+}
+
+void Board::drawNext() {
+  if (nextPiece != PieceName::Empty && lastDrawNextPiece != nextPiece) {
+    display.setCursor(100, 40);
+    int16_t xp, yp;
+    uint16_t wp, hp;
+    display.getTextBounds("Next:", 100, 40, &xp, &yp, &wp, &hp);
+    display.print("Next:");
+    xp = xp + wp + 20;
+    yp = yp + hp - 10;
+    if (lastDrawNextPiece != PieceName::Empty) {
+      // Erase the old piece
+      auto& pc = pieces[lastDrawNextPiece][0];
+      display.fillRect(xp, yp, 10, 10, Black);
+      for (size_t i = 0; i < 6; i += 2) {
+        display.fillRect(xp + pc[i] * 10, yp + pc[i + 1] * 10, 10, 10, Black);
+      }
+    }
+    auto& pc = pieces[nextPiece][0];
+    display.fillRect(xp, yp, 10, 10, getColor(nextPiece));
+    for (size_t i = 0; i < 6; i += 2) {
+      display.fillRect(
+        xp + pc[i] * 10, yp + pc[i + 1] * 10, 10, 10, getColor(nextPiece));
+    }
+    lastDrawNextPiece = nextPiece;
+  }
+}
+
+void Board::drawScore() {
+  if (score != lastDrawnScore) {
+    display.setTextSize(1);
+    display.setTextColor(White);
+    int16_t xp, yp;
+    uint16_t wp, hp;
+    char buf[20] = {
+      'S', 'c', 'o', 'r', 'e', ':', ' ', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    itoa(score, &buf[7], 11);
+    display.getTextBounds(buf, 100, 110, &xp, &yp, &wp, &hp);
+    display.fillRect(xp - 5, yp - 5, wp + 10, hp + 10, Black);
+    display.setCursor(100, 110);
+    display.print(buf);
+    lastDrawnScore = score;
+  }
+}
+
+void Board::start(uint32_t now) {
+  display.fillScreen(Black);
+  clearBoard();
+  uint8_t data = analogRead(A6) ^ micros();
+  nextPiece = enum_cast<PieceName>((data >> 3) % numPieces);
+  newPiece();
+  lastDropTime = now;
+  lastDraw = 0;
+  lastDrawNextPiece = PieceName::Empty;
+  totalRows = 0;
+  dropSpeed = 1000;
+  score = 0;
+  lastDrawnScore = 0xFFFFFFFF;
+  draw(now);
 }
 
 void Board::down(uint32_t now) {
@@ -309,19 +346,6 @@ void Board::rotCCW() {
   if (intersects()) {
     rot = (rot + 1) & 3;
   }
-}
-
-void Board::start(uint32_t now) {
-  clearBoard();
-  uint8_t data = analogRead(A6) ^ micros();
-  nextPiece = enum_cast<PieceName>((data >> 3) % numPieces);
-  newPiece();
-  lastDropTime = now;
-  lastDraw = 0;
-  totalRows = 0;
-  dropSpeed = 1000;
-  score = 0;
-  draw(now);
 }
 
 } // namespace tetris

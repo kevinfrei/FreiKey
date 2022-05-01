@@ -50,6 +50,7 @@ void KeyDown(Button k, uint32_t now) {
       gameState = GameFlowState::NotPlaying;
       break;
     case GameFlowState::NotPlaying:
+      disp::raw()->fillScreen(0);
       brd->draw(now);
       gameState = GameFlowState::JustStarting;
       break;
@@ -140,6 +141,7 @@ KeyboardMode Handler(Keystroke ks, Modifiers m, bool pressed, uint32_t now) {
 }
 
 KeyboardMode Spin(KeyboardMode curMode, uint32_t now) {
+  // TODO: Implement key-repeat for down...
   brd->draw(now);
   return curMode;
 }
