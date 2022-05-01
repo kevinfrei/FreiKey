@@ -82,6 +82,7 @@ void KeyDown(Button k, uint32_t now) {
       }
       break;
     case GameFlowState::Completed:
+      gameState = GameFlowState::NotPlaying;
       break;
   }
 }
@@ -139,7 +140,7 @@ KeyboardMode Handler(Keystroke ks, Modifiers m, bool pressed, uint32_t now) {
 }
 
 KeyboardMode Spin(KeyboardMode curMode, uint32_t now) {
-  // brd->draw(now);
+  brd->draw(now);
   return curMode;
 }
 

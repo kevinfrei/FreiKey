@@ -33,6 +33,7 @@ class Board {
   PieceName curPiece, nextPiece;
   uint8_t rot, x, y;
   uint32_t lastDropTime;
+  uint32_t lastDraw;
   uint32_t dropSpeed;
   uint16_t totalRows;
 

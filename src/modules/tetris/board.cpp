@@ -3,6 +3,8 @@
 
 namespace tetris {
 
+constexpr uint32_t msPerFrame = 50; // Render at 20 FPS, yeah?
+
 uint16_t getColor(uint8_t);
 
 constexpr bool validPiece(PieceName pn) {
@@ -13,7 +15,7 @@ uint16_t getColor(PieceName pn) {
   return getColor(validPiece(pn) ? (value_cast(pn) + 1) : 0);
 }
 
-// Splash screen
+// Stupid splash screen
 struct LetterLoc {
   char letter;
   uint16_t x, y;
@@ -25,51 +27,42 @@ constexpr LetterLoc tetris[6] = {{'T', 15, 40},
                                  {'I', 165, 100},
                                  {'S', 190, 115}};
 
-// clang-format off
-const enum_array<PieceName, std::array<int8_t, 24>> pieces{{
-  PieceName::I, { 
-   0, -2,  0, -1,  0,  1,
-   2,  0,  1,  0, -1,  0,
-   0,  2,  0,  1,  0, -1,
-  -2,  0, -1,  0,  1,  0
-}},
- { PieceName::L, {
-   0, -1,  0,  1,  1,  1,
-   1,  0, -1,  0, -1,  1,
-   0,  1,  0, -1, -1, -1,
-  -1,  0,  1,  0,  1, -1
-}},
- { PieceName::J, {
-   0, -1,  0,  1, -1,  1,
-   1,  0, -1,  0, -1, -1,
-   0,  1,  0, -1,  1, -1,
-  -1,  0,  1,  0,  1,  1
-}},
- { PieceName::O, {
-   0,  1,  1,  0,  1,  1,
-  -1,  0,  0,  1, -1,  1,
-   0, -1, -1,  0, -1, -1,
-   1,  0,  0, -1,  1, -1
-}}, 
-{ PieceName::T, {
-   0, -1,  1,  0, -1,  0,
-   1,  0,  0,  1,  0, -1,
-   0,  1, -1,  0,  1,  0,
-  -1,  0,  0, -1,  0,  1
-}},
- { PieceName::S, {
-  -1,  0,  0, -1,  1, -1, 
-   0,  1, -1,  0, -1, -1,
-   1,  0,  0,  1, -1,  1,
-   0, -1,  1,  0,  1,  1
-}},
- { PieceName::Z, {
-  -1, -1,  0, -1,  1,  0,
-   1, -1,  1,  0,  0,  1,
-   1,  1,  0,  1, -1,  0,
-  -1,  1, -1,  0,  0, -1
-}}};
-// clang-format on
+const enum_array<PieceName, std::array<std::array<int8_t, 6>, 4>> pieces{
+  {PieceName::I,
+   {{{0, -2, 0, -1, 0, 1},
+     {2, 0, 1, 0, -1, 0},
+     {0, 2, 0, 1, 0, -1},
+     {-2, 0, -1, 0, 1, 0}}}},
+  {PieceName::L,
+   {{{0, -1, 0, 1, 1, 1},
+     {1, 0, -1, 0, -1, 1},
+     {0, 1, 0, -1, -1, -1},
+     {-1, 0, 1, 0, 1, -1}}}},
+  {PieceName::J,
+   {{{0, -1, 0, 1, -1, 1},
+     {1, 0, -1, 0, -1, -1},
+     {0, 1, 0, -1, 1, -1},
+     {-1, 0, 1, 0, 1, 1}}}},
+  {PieceName::O,
+   {{{0, 1, 1, 0, 1, 1},
+     {-1, 0, 0, 1, -1, 1},
+     {0, -1, -1, 0, -1, -1},
+     {1, 0, 0, -1, 1, -1}}}},
+  {PieceName::T,
+   {{{0, -1, 1, 0, -1, 0},
+     {1, 0, 0, 1, 0, -1},
+     {0, 1, -1, 0, 1, 0},
+     {-1, 0, 0, -1, 0, 1}}}},
+  {PieceName::S,
+   {{{-1, 0, 0, -1, 1, -1},
+     {0, 1, -1, 0, -1, -1},
+     {1, 0, 0, 1, -1, 1},
+     {0, -1, 1, 0, 1, 1}}}},
+  {PieceName::Z,
+   {{{-1, -1, 0, -1, 1, 0},
+     {1, -1, 1, 0, 0, 1},
+     {1, 1, 0, 1, -1, 0},
+     {-1, 1, -1, 0, 0, -1}}}}};
 
 Board::Board(Adafruit_GFX& dsp, uint8_t w, uint8_t h)
   : display(dsp), PieceWidth(w), PieceHeight(h), score(0) {
@@ -167,7 +160,7 @@ bool Board::intersects() {
     Serial.printf("%d %d hit\n", x, y);
     return true;
   }
-  const int8_t* loc = &pieces[curPiece][rot * numLocs];
+  auto& loc = pieces[curPiece][rot];
   for (int8_t i = 0; i < numLocs; i += 2) {
     if (checkLoc(x + loc[i], y + loc[i + 1]))
       return true;
@@ -177,7 +170,7 @@ bool Board::intersects() {
 
 void Board::placePiece() {
   setSpot(x, y, curPiece);
-  const int8_t* loc = &pieces[curPiece][rot * numLocs];
+  auto& loc = pieces[curPiece][rot];
   for (uint8_t i = 0; i < 6; i += 2) {
     setSpot(x + loc[i], y + loc[i + 1], curPiece);
   }
@@ -210,7 +203,7 @@ void Board::removeLines() {
 bool Board::gameOver() {
   // Check to see if there are any hits above the top of the board
   for (int8_t x = 0; x < WIDTH; x++) {
-    for (int8_t y = 0; y < 4; y++) {
+    for (int8_t y = 0; y < TOP_BUFFER; y++) {
       if (checkLoc(x, y))
         return true;
     }
@@ -251,21 +244,24 @@ void Board::splash() {
 }
 
 void Board::draw(uint32_t now) {
-  display.fillScreen(Black);
-  display.setTextSize(1);
-  display.setTextColor(White);
-  drawBoard();
-  drawNext();
-  drawScore();
-  if (now > lastDropTime + dropSpeed) {
-    down(now);
+  if (now - lastDraw > msPerFrame) {
+    lastDraw = now;
+    display.fillScreen(Black);
+    display.setTextSize(1);
+    display.setTextColor(White);
+    drawBoard();
+    drawNext();
+    drawScore();
+    if (now - lastDropTime > dropSpeed) {
+      down(now);
+    }
+    drawPiece(curPiece, rot, 1 + x * 3, y * 3);
+    // display.display();
   }
-  drawPiece(curPiece, rot, 1 + x * 3, y * 3);
-  // display.display();
 }
 
 void Board::drawPiece(PieceName piece, uint8_t rot, uint8_t xo, uint8_t yo) {
-  const int8_t* loc = &pieces[piece][rot * numLocs];
+  auto& loc = pieces[piece][rot];
   drawDot(0, 0, piece, xo, yo);
   for (uint8_t i = 0; i < numLocs; i += 2) {
     drawDot(loc[i], loc[i + 1], piece, xo, yo);
@@ -321,9 +317,11 @@ void Board::start(uint32_t now) {
   nextPiece = enum_cast<PieceName>((data >> 3) % numPieces);
   newPiece();
   lastDropTime = now;
+  lastDraw = 0;
   totalRows = 0;
   dropSpeed = 1000;
   score = 0;
+  draw(now);
 }
 
 } // namespace tetris
