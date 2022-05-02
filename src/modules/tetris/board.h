@@ -5,6 +5,7 @@
 #include "Adafruit_GFX.h"
 
 #include "enumhelpers.h"
+#include <array>
 #include <cstdint>
 
 namespace tetris {
@@ -30,7 +31,7 @@ class Board {
   uint16_t PieceHeight;
 
   // data
-  PieceName board[WIDTH * HEIGHT];
+  std::array<PieceName, WIDTH * HEIGHT> board;
   uint32_t score;
   uint32_t lastDrawnScore;
 
@@ -47,8 +48,7 @@ class Board {
   PieceName getSpot(uint8_t x, uint8_t y);
   void setSpot(uint8_t x, uint8_t y, PieceName piece);
   void clrSpot(uint8_t x, uint8_t y);
-  void drawDot(
-    int8_t x, int8_t y, PieceName piece);
+  void drawDot(int8_t x, int8_t y, PieceName piece);
   void drawBoard();
   void drawNext();
   void drawScore();

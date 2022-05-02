@@ -3,7 +3,7 @@
 
 namespace tetris {
 
-constexpr uint32_t msPerFrame = 50; // Render at 20 FPS, yeah?
+constexpr uint32_t msPerFrame = 50; // Try to render at 20 FPS, yeah?
 
 uint16_t getColor(uint8_t);
 
@@ -20,12 +20,12 @@ struct LetterLoc {
   char letter;
   uint16_t x, y;
 };
-constexpr LetterLoc tetris[6] = {{'T', 15, 40},
-                                 {'E', 50, 55},
-                                 {'T', 85, 70},
-                                 {'R', 120, 85},
-                                 {'I', 165, 100},
-                                 {'S', 190, 115}};
+constexpr std::array<LetterLoc, 6> tetris{{{'T', 15, 40},
+                                           {'E', 50, 55},
+                                           {'T', 85, 70},
+                                           {'R', 120, 85},
+                                           {'I', 165, 100},
+                                           {'S', 190, 115}}};
 
 const enum_array<PieceName, std::array<std::array<int8_t, 6>, 4>> pieces{
   {PieceName::I,
@@ -65,7 +65,11 @@ const enum_array<PieceName, std::array<std::array<int8_t, 6>, 4>> pieces{
      {1, -1, 1, 0, 0, 1}}}}};
 
 Board::Board(Adafruit_GFX& dsp, uint8_t w, uint8_t h)
-  : display(dsp), PieceWidth(w), PieceHeight(h), score(0) {
+  : display(dsp),
+    PieceWidth(w),
+    PieceHeight(h),
+    score(0),
+    nextPiece(PieceName::Empty) {
   clearBoard();
 }
 
@@ -246,7 +250,7 @@ void Board::drawBoard() {
 }
 
 void Board::drawNext() {
-  if (nextPiece != PieceName::Empty && lastDrawNextPiece != nextPiece) {
+  if (validPiece(nextPiece) && lastDrawNextPiece != nextPiece) {
     display.setCursor(100, 40);
     int16_t xp, yp;
     uint16_t wp, hp;

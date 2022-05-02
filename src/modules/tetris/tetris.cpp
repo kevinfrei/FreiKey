@@ -47,10 +47,10 @@ void KeyDown(Button k, uint32_t now) {
     case GameFlowState::FirstTime:
       brd->splash();
       delay(1000);
+      disp::raw()->fillScreen(0);
       gameState = GameFlowState::NotPlaying;
       break;
     case GameFlowState::NotPlaying:
-      disp::raw()->fillScreen(0);
       brd->draw(now);
       gameState = GameFlowState::JustStarting;
       break;
