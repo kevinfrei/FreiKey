@@ -51,3 +51,4 @@ enum class KeyboardMode : uint8_t {
   Diagnostics, // Maybe?
   NumElems
 };
+

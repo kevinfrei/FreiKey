@@ -16,7 +16,7 @@ KeyboardMode ModuleKeyboardHandler(KeyboardMode curMode,
                                    Spinner spin) {
   Modifiers localMods = Modifiers::None;
   KeyboardMode mode = curMode;
-  DBG(Serial.println("Entering Module Keyboard handler"));
+  Dbg << "Entering Module Keyboard handler" << sfmt::endl;
   do {
     scancode_t sc;
     bool pressed = false;
@@ -28,7 +28,8 @@ KeyboardMode ModuleKeyboardHandler(KeyboardMode curMode,
       switch (a.getAction()) {
         case KeyAction::KeyPress:
           mode = handler(a.getKeystroke(), localMods, pressed, now);
-          DBG2(dumpVal(value_cast(mode), "Mode handler KeyPress returned "));
+          Dbg2 << "Mode handler KeyPress returned " << value_cast(mode)
+               << sfmt::endl;
           break;
         case KeyAction::Modifier:
           if (pressed) {
@@ -37,17 +38,18 @@ KeyboardMode ModuleKeyboardHandler(KeyboardMode curMode,
             localMods &= ~a.getModifiers();
           }
           mode = handler(Keystroke::None, localMods, pressed, now);
-          DBG2(dumpVal(value_cast(mode), "Mode handler Modifier returned "));
+          Dbg2 << "Mode handler Modifier returned " << value_cast(mode)
+               << sfmt::endl;
           break;
         case KeyAction::Mode:
           if (pressed) {
             mode = a.getMode();
           }
-          DBG2(dumpVal(value_cast(mode), "Got raw Mode action "));
+          Dbg2 << "Got raw Mode action " << value_cast(mode) << sfmt::endl;
           break;
         default:
-          DBG(dumpVal(value_cast(a.getAction()),
-                      "Unsupported action type for raw keyboard: "));
+          Dbg << "Unsupported action type for raw keyboard: " << a.getAction()
+              << sfmt::endl;
       }
     }
     scanner.Done();
@@ -55,7 +57,7 @@ KeyboardMode ModuleKeyboardHandler(KeyboardMode curMode,
       mode = spin(mode, now);
     }
   } while (mode == curMode);
-  DBG(Serial.println("Exiting Module Keyboard Handler"));
+  Dbg << "Exiting Module Keyboard Handler" << sfmt::endl;
   return mode;
 }
 /*

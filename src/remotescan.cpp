@@ -12,22 +12,22 @@ void Scanner::Reset() {}
 Scanner::Scanner(uint32_t now) {}
 
 scancode_t validate(uint8_t b, bool& pressed) {
-  DBG3(dumpHex(b, "Validating Scan code 0x"));
+  Dbg2 << "Validating Scan code 0x" << sfmt::hex << b << sfmt::endl;
   b--;
   uint8_t sc = b / 3;
   uint8_t chk = b % 3;
   if (sc % 3 != chk) {
     // Error!
-    DBG(dumpHex(b, "Invalid scan code received 0x"));
+    Dbg2 << "Invalid scan code received 0x" << sfmt::hex << b << sfmt::endl;
     return 0xFF;
   } else {
     pressed = (sc < 36); // TODO: Encode all this shit somewhere?
-    DBG3(dumpVal(pressed ? 1 : 0, "Pressed: "));
-    DBG3(dumpHex(sc, "Raw scan code 0x"));
+    Dbg2 << "Pressed: " << (pressed ? 1 : 0) << sfmt::endl;
+    Dbg2 << "Raw scan code 0x" << sfmt::hex << sc << sfmt::endl;
     if (!pressed) {
       sc -= 36;
     }
-    DBG3(dumpHex(sc, "Validated scan code 0x"));
+    Dbg2 << "Validated scan code 0x" << sfmt::hex << sc << sfmt::endl;
     return sc;
   }
 }
@@ -48,7 +48,7 @@ scancode_t Scanner::getNextCode(bool& pressed) {
   } else {
     return 0xFF;
   }
-  DBG2(dumpVal(pressed ? 1 : 0, "Pressed: "));
+  Dbg2 << "Pressed: " << (pressed ? 1 : 0) << sfmt::endl;
   return sc;
 }
 

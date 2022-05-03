@@ -11,17 +11,6 @@ constexpr uint32_t TapAndHoldTimeLimit = 100;
 
 keystate keyStates[num_keystates];
 
-#if defined(DEBUG)
-void dumpScanCode(uint8_t sc, bool pressed) {
-  Serial.print("Scan Code ");
-  Serial.print(sc, HEX);
-  Serial.println(pressed ? " was pressed" : " was released");
-#if defined(DISPLAY)
-  BoardIO::ShowScanCode(sc + (pressed ? 0xFF00 : 0));
-#endif
-}
-#endif
-
 // Look for a slot that is either already in use for this scan code, or vacant.
 // If we don't have a vacant slot, return the oldest, but still in use, slot,
 // but only for key-up states, as we're probably through with them anyway.
@@ -59,16 +48,13 @@ action_t resolve(uint8_t layerPos, uint8_t scancode) {
 // Find the first specified action in the layer stack
 action_t resolveActionForScanCodeOnActiveLayer(uint8_t scanCode) {
   uint8_t s = curState.layer_pos;
-  DBG(dumpVal(s, "Layer position: "));
+  Dbg << "Layer position: " << s << sfmt::endl;
   while (s > 0 && resolve(s, scanCode).isNoAction()) {
     --s;
   }
-#if defined(DEBUG)
-  Serial.printf("Resolving scancode %d on layer %d to action ",
-                scanCode,
-                curState.layer_stack[s]);
-  keymap[curState.getLayerVal(s)][scanCode].dump();
-#endif
+  Dbg << "Resolving scancode " << scanCode << " on layer "
+      << curState.layer_stack[s] << keymap[curState.getLayerVal(s)][scanCode]
+      << sfmt::endl;
   return resolve(s, scanCode);
 }
 
@@ -79,7 +65,9 @@ layer_num getCurrentLayer() {
 // Called immediately after seeing the scan code:
 // Find a slot for the key, and deal with layer "stuff"
 void preprocessScanCode(scancode_t sc, bool pressed, uint32_t now) {
-  DBG2(dumpScanCode(sc, pressed));
+  Dbg2 << "Scan Code " << sfmt::hex << sc
+       << (pressed ? " was pressed" : " was released") << sfmt::endl;
+  BoardIO::ShowScanCode(sc + (pressed ? 0xFF00 : 0));
   // Get a state slot for this scan code
   keystate* state = findStateSlot(sc);
   if (!state) {
@@ -87,10 +75,10 @@ void preprocessScanCode(scancode_t sc, bool pressed, uint32_t now) {
     // ignore it. If we chose to toss out older keydowns instead, things could
     // get pretty weird. If this is a keyup, and we still don't have a state
     // slot, that's a little bonkers, but there's not much we can do about it.
-    DBG(Serial.println("Unable to find an unused keystat slot!"));
+    Dbg << "Unable to find an unused keystat slot!" << sfmt::endl;
     return;
   }
-  DBG2(state->dump());
+  Dbg2 << *state << sfmt::endl;
   // State update returns a layer action to perform...
   switch (state->update(sc, pressed, now)) {
     case layer_t::Push:
@@ -118,13 +106,15 @@ void ProcessConsumer(keystate& state, kb_reporter& rpt) {
   // For a consumer control button, there are no modifiers, it's
   // just a simple call. So just call it directly:
   if (state.down) {
-    DBG(dumpHex(state.action.getConsumer(), "Consumer key press: "));
+    Dbg << "Consumer key press: " << sfmt::hex
+        << value_cast(state.action.getConsumer()) << sfmt::endl;
     // See all the codes in all their glory here:
     // https://www.usb.org/sites/default/files/documents/hut1_12v2.pdf
     // (And if that doesn't work, check here: https://www.usb.org/hid)
     rpt.consumer_press(state.action.getConsumer());
   } else {
-    DBG(dumpHex(state.action.getConsumer(), "Consumer key release: "));
+    Dbg << "Consumer key release: " << sfmt::hex
+        << value_cast(state.action.getConsumer()) << sfmt::endl;
     rpt.consumer_release(state.action.getConsumer());
     // We have to clear this thing out when we're done, because we take
     // action on the key release as well. We don't do this for the normal
@@ -151,7 +141,7 @@ KeyboardMode ProcessKeys(uint32_t now, kb_reporter& rpt) {
         if (now - state.lastChange > TapAndHoldTimeLimit) {
           // Holding
           mods = mods | state.action.getExtraMods();
-          DBG(dumpHex(mods, " (Holding)"));
+          Dbg << " (Holding)" << sfmt::bin << value_cast(mods) << sfmt::endl;
           rpt.set_modifier(mods);
         } else if (state.down) {
           continue;
@@ -159,7 +149,8 @@ KeyboardMode ProcessKeys(uint32_t now, kb_reporter& rpt) {
         // We've had it for less than the time allotted, so send the tapping key
         // TODO: Make sure we send the key up immediate after this!
         if (state.action.getAction() == KeyAction::Consumer) {
-          DBG(dumpHex(state.action.getConsumer(), " Tapping Consumer Key"));
+          Dbg << "Tapping consumer key: " << sfmt::hex
+              << value_cast(state.action.getConsumer()) << sfmt::endl;
           state.down = true;
           ProcessConsumer(state, rpt);
           state.down = false;
@@ -168,7 +159,7 @@ KeyboardMode ProcessKeys(uint32_t now, kb_reporter& rpt) {
           Keystroke key = state.action.getKeystroke();
           if (key != Keystroke::None) {
             rpt.add_key_press(key);
-            DBG(dumpHex(key, " Tapping"));
+            Dbg << " Tapping" << sfmt::hex << value_cast(key) << sfmt::endl;
           }
         }
         break;
@@ -206,7 +197,7 @@ KeyboardMode ProcessKeys(uint32_t now, kb_reporter& rpt) {
       }
       case KeyAction::Mode: {
         if (state.down) {
-          DBG2(state.dump());
+          Dbg2 << state << sfmt::endl;
           mode = state.action.getMode();
         }
         break;

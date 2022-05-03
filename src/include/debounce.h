@@ -45,9 +45,9 @@ class Debouncer {
         // Let's clear the change from cur_switches
         // If it's on, this will turn it off, if it's off, this will turn it on
         cur_switches.flip(bit_num);
-        DBG(dumpVal(bit_num, "Bounce ignored "));
-        DBG(dumpVal(now - last_reported_time[bit_num],
-                    "milleseconds since initial flip: "));
+        Dbg << "Bounce ignored " << bit_num << sfmt::endl;
+        Dbg << "milleseconds since initial flip: "
+            << now - last_reported_time[bit_num] << sfmt::endl;
       } else {
         // We're not in the debounce period: leave the change intact, and start
         // the timer

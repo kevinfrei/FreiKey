@@ -12,11 +12,11 @@ GeneralState curState{};
 // This is called when the system is initialized.
 // The idea is that it should just wipe everything clean.
 void resetTheWorld() {
-  DBG2(Serial.println("Resetting the world!"));
+  Dbg2 << "Resetting the world!" << sfmt::endl;
   curState.reset();
   memset(keyStates, null_scan_code, sizeof(keyStates));
   Scanner::Reset();
-  DBG2(Serial.println("World reset!"));
+  Dbg2 << "World reset!" << sfmt::endl;
   BoardIO::Reset(curState);
 }
 
@@ -24,7 +24,7 @@ extern "C" void setup() {
   // Wait for 2 seconds in case we are trying to attach a serial monitor
   DBG(for (uint16_t iter = 0; !Serial && iter < 2000; iter++) delay(1););
   DBG(Serial.begin(115200));
-  DBG(Serial.println("SETUP!"));
+  Dbg << "SETUP!" << sfmt::endl;
   BoardIO::Configure();
   resetTheWorld();
 }
@@ -35,7 +35,7 @@ extern "C" void loop() {
   Scanner scanner{now};
   for (scancode_t sc = scanner.getNextCode(pressed); sc != 0xFF;
        sc = scanner.getNextCode(pressed)) {
-    DBG2(dumpHex(sc, "Got scan code 0x"));
+    Dbg2 << "Got scan code 0x" << sfmt::hex << sc << sfmt::endl;
     preprocessScanCode(sc, pressed, now);
     keysChanged = true;
   }
@@ -49,7 +49,7 @@ extern "C" void loop() {
   BoardIO::Tick(now);
   while (mode != KeyboardMode::Normal) {
     auto newmode = BoardIO::Mode(now, mode);
-    DBG2(dumpVal(value_cast(newmode), "Mode handler returned "));
+    Dbg2 << "Mode handler returned " << newmode;
     // If we're going back to normal mode
     // Just reset the world: it's easier this way...
     if (newmode != mode) {

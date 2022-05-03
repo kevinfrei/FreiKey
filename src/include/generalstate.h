@@ -7,6 +7,10 @@
 #include "dbgcfg.h"
 #include "keyhelpers.h"
 
+enum class layerStack { LS };
+static constexpr layerStack LayerStack = layerStack::LS;
+
+SerialStream& operator<<(SerialStream& s, layerStack ls);
 struct GeneralState {
   static constexpr uint8_t layer_max = 7;
   uint8_t layer_pos;
@@ -36,10 +40,10 @@ struct GeneralState {
     return false;
   }
   void push_layer(layer_num layer) {
-    DBG(dumpVal(layer, "Push "));
+    Dbg << "Push " << layer << sfmt::endl;
     if (layer_pos < layer_max)
       layer_stack[++layer_pos] = layer;
-    DBG2(dumpLayers());
+    Dbg2 << LayerStack;
   }
   void toggle_layer(layer_num layer) {
     // Toggling a layer: If it exists *anywhere* in the layer stack, turn it
@@ -47,46 +51,45 @@ struct GeneralState {
     // add it.
     for (uint8_t l = layer_pos; l != 0; l--) {
       if (layer_stack[l] == layer) {
-        DBG2(dumpVal(layer, "Turning off layer "));
-        DBG2(dumpVal(l, "at location "));
+        Dbg2 << "Turning off layer " << layer << " at location " << l
+             << sfmt::endl;
         if (layer_pos != l) {
-          DBG2(dumpVal(layer_pos - l, "Shifting by "));
+          Dbg2 << "Shifting by " << layer_pos - l << sfmt::endl;
           for (int i = l; i < layer_max; i++) {
             layer_stack[i] = layer_stack[i + 1];
           }
         }
         layer_pos--;
-        DBG2(dumpLayers());
-        DBG(dumpVal(layer, "Toggled off "));
+        Dbg2 << LayerStack;
+        Dbg << "Toggled off " << layer << sfmt::endl;
         return;
       }
     }
-    DBG(Serial.print("(For Toggle) "));
+    Dbg << "(For Toggle) ";
     push_layer(layer);
   }
   void pop_layer(layer_num layer) {
-    DBG(dumpVal(layer, "Pop "));
+    Dbg << "Pop " << layer << sfmt::endl;
     if (layer_pos > 0 && layer_stack[layer_pos] == layer) {
       // Easy-peasy
       --layer_pos;
     } else {
       for (uint8_t l = layer_pos; l != 0; l--) {
         if (layer_stack[l] == layer) {
-          DBG2(dumpVal(layer, "Turning off layer "));
-          DBG2(dumpVal(l, "at location "));
+          Dbg2 << "Turning off layer " << layer << " at location " << l
+               << sfmt::endl;
           if (layer_pos != l) {
-            DBG2(dumpVal(layer_pos - l, "Shifting by "));
+            Dbg2 << "Shifting by " << layer_pos - l << sfmt::endl;
             for (int i = l; i < layer_max; i++) {
               layer_stack[i] = layer_stack[i + 1];
             }
           }
           layer_pos--;
-          DBG2(dumpLayers());
           break;
         }
       }
     }
-    DBG2(dumpLayers());
+    Dbg2 << LayerStack;
   }
   int8_t find_layer(layer_num lyr) {
     for (int8_t l = layer_pos; l >= 0; l--) {
@@ -97,15 +100,15 @@ struct GeneralState {
     return -1;
   }
   void switch_layer(layer_num layer) {
-    DBG(dumpVal(layer_stack[layer_pos], "Switching layer "));
-    DBG(dumpVal(layer, "to layer "));
+    Dbg << "Switching layer " << layer_stack[layer_pos] << " to layer " << layer
+        << sfmt::endl;
     layer_stack[layer_pos] = layer;
-    DBG2(dumpLayers());
+    Dbg2 << LayerStack;
   }
   void rotate_layers(layer_num a, layer_num b, layer_num c) {
     // assumes that if you're rotating through the base layer,
     // it's the first one. This should be asserted in the ctor...
-    DBG(Serial.print("Rotate: "));
+    Dbg << "Rotate: ";
     layer_num which = b;
     while (find_layer(a) > 0) {
       toggle_layer(a);
@@ -123,16 +126,14 @@ struct GeneralState {
       toggle_layer(which);
     }
   }
-
-#if defined(DEBUG)
-  void dumpLayers() {
-    Serial.print("Layer stack:");
-    for (int i = 0; i <= layer_pos; i++) {
-      dumpVal(layer_stack[i], " ");
-    }
-    Serial.println("");
-  }
-#endif
 };
 
 extern GeneralState curState;
+
+inline SerialStream& operator<<(SerialStream& s, layerStack ls) {
+  s << "Layer Stack:";
+  for (int i = 0; i <= curState.layer_pos; i++) {
+    s << " " << curState.layer_stack[i];
+  }
+  return s << sfmt::endl;
+}

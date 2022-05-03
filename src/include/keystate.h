@@ -43,7 +43,7 @@ struct keystate {
           action = resolveActionForScanCodeOnActiveLayer(scanCode);
         }
       }
-      DBG2(dumpVal(sc, "Updated transition time for scancode "));
+      Dbg2 << "Updated transition time for scancode " << sc << sfmt::endl;
     } else {
       // We claimed a new slot, so set the transition
       // time to the current time.
@@ -55,9 +55,9 @@ struct keystate {
       } else {
         action = no_action;
       }
-      DBG2(dumpVal(sc, "Set lastChange for new scancode "));
+      Dbg2 << "Set lastChange for new scancode " << sc << sfmt::endl;
     }
-    DBG2(Serial.println(pressed ? "(Pressed)" : "(Released)"));
+    Dbg2 << (pressed ? "(Pressed)" : "(Released)");
     switch (action.getAction()) {
       case KeyAction::LayerShift:
         return down ? layer_t::Push : layer_t::Pop;
@@ -71,18 +71,10 @@ struct keystate {
         return layer_t::None;
     }
   };
-
-#if defined(DEBUG)
-  void dump() const {
-    Serial.print("ScanCode=");
-    Serial.print(scanCode, HEX);
-    Serial.print(" down=");
-    Serial.print(down);
-    DBG3(Serial.print(" lastChange="));
-    DBG3(Serial.print(lastChange));
-    Serial.print(" action=");
-    action.dump();
-    Serial.println("");
-  };
-#endif
 };
+
+inline SerialStream& operator<<(SerialStream& s, const keystate& ks) {
+  s << "ScanCode=" << sfmt::hex << ks.scanCode << " down=" << ks.down
+    << " lastChange=" << ks.lastChange << " action=" << ks.action << sfmt::endl;
+    return s;
+}

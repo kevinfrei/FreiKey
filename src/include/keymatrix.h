@@ -35,21 +35,21 @@ class KeyMatrix {
 #if !defined(ROWOUT)
     // For my wiring, the columns are output, and the rows are input...
     for (uint8_t cn = 0; cn < nCols; cn++) {
-      DBG2(dumpVal(colPin(cn), "Output Pin "));
+      Dbg2 << "Output Pin " << colPin(cn) << sfmt::endl;
       T::configOutputPin(colPin(cn));
     }
     for (uint8_t rn = 0; rn < nRows; rn++) {
-      DBG2(dumpVal(rowPin(rn), "Input Pullup "));
+      Dbg2 << "Input Pullup " << rowPin(rn) << sfmt::endl;
       T::configInputPin(rowPin(rn));
     }
 #else
     // For my wiring, the columns are output, and the rows are input...
     for (uint8_t cn = 0; cn < nCols; cn++) {
-      DBG2(dumpVal(colPin(cn), "Column Pin "));
+      Dbg2 << "Column Pin " << colPin(cn) << sfmt::endl;
       T::configInputPin(colPin(cn));
     }
     for (uint8_t rn = 0; rn < nRows; rn++) {
-      DBG2(dumpVal(rowPin(rn), "Row Pin "));
+      Dbg2 << "Row Pullup " << rowPin(rn) << sfmt::endl;
       T::configOutputPin(rowPin(rn));
     }
 #endif

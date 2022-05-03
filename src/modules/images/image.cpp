@@ -134,11 +134,8 @@ void drawImage(const image_descriptor* id,
         break;
     }
     if (curOffset != size) {
-      DBG(
-        Serial.printf("Invalid output: Erp %d bytes instead of %d (from %d)\n",
-                      curOffset,
-                      size,
-                      id->byte_count));
+      Dbg << "Invalid output: Erp " << curOffset << " bytes instead of " << size
+          << " (from " << id->byte_count << ")" << sfmt::endl;
     } else {
       tft->drawRGBBitmap(x, y, (uint16_t*)buffer, id->width, id->height);
     }

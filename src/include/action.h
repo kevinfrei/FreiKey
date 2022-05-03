@@ -150,48 +150,7 @@ class action_t {
   layer_num getLayer3() const {
     return enum_cast<layer_num>((data >> 8) & 0xF);
   }
-
-#if defined(DEBUG)
-  void dump() const {
-    switch (getAction()) {
-      case KeyAction::KeyPress:
-        Serial.print("Keypress:");
-        break;
-      case KeyAction::Modifier:
-        Serial.print("Modifier:");
-        break;
-      case KeyAction::TapHold:
-        Serial.print("TapHold:");
-        break;
-      case KeyAction::Consumer:
-        Serial.print("Consumer:");
-        break;
-      case KeyAction::KeyAndMods:
-        Serial.print("KeyAndMods:");
-        break;
-      case KeyAction::LayerShift:
-        Serial.print("LayerShift:");
-        break;
-      case KeyAction::LayerToggle:
-        Serial.print("LayerToggle:");
-        break;
-      case KeyAction::LayerSwitch:
-        Serial.print("LayerSwitch:");
-        break;
-      case KeyAction::Mode:
-        Serial.print("Mode Switch:");
-        break;
-      default:
-        Serial.print("Unknown:");
-        Serial.print(static_cast<uint32_t>(getAction()), HEX);
-    }
-    Serial.print(data & 0xFFF, HEX);
-    if (moreData != 0) {
-      Serial.print("|");
-      Serial.print(moreData, HEX);
-    }
-  }
-#endif
+  friend SerialStream& operator<<(SerialStream& s, const action_t& a);
 };
 
 static constexpr action_t no_action = action_t::NoAction();
@@ -252,4 +211,12 @@ inline constexpr action_t keyAndModifiers(action_t key,
 
 inline constexpr action_t modeKey(uint16_t info) {
   return action_t::Mode(info);
+}
+
+inline SerialStream& operator<<(SerialStream& s, const action_t& a) {
+  s << a.getAction() << ":" << sfmt::hex << (a.data & 0xFFF);
+  if (a.moreData != 0) {
+    s << "|" << sfmt::hex << a.moreData;
+  }
+  return s;
 }

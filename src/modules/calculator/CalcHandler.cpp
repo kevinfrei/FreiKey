@@ -16,8 +16,7 @@ void DrawText(const edit::editline& ln) {
   char loc[129];
   int after = 0;
   size_t s;
-  DBG(Serial.println("Buffer:"));
-  DBG(Serial.println(ln.buf));
+  Dbg << "Buffer:" << sfmt::endl << ln.buf << sfmt::endl;
   for (s = 0; ln.buf[s]; s++) {
     if (after == 0 && ln.pos == s) {
       loc[s] = '|';

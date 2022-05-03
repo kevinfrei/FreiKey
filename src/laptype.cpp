@@ -66,7 +66,7 @@ void BoardIO::SaveLayer(uint32_t now) {
     uint8_t lyr = value_cast(getCurrentLayer());
     if (lyr >= 0 && lyr < value_cast(layer_num::ValidSaves) &&
         lyr != lastSavedLayer) {
-      DBG2(dumpVal(lyr, "Saving layer to eeprom "));
+      Dbg2 << "Saving layer to eeprom " << lyr << sfmt::endl;
       EEPROM.update(0, lyr);
       lastSavedLayer = lyr;
     }
@@ -76,18 +76,18 @@ void BoardIO::SaveLayer(uint32_t now) {
 void BoardIO::Reset(GeneralState& curState) {
   uint8_t lyr = EEPROM.read(0);
   if (lyr > 0 && lyr < value_cast(layer_num::ValidSaves)) {
-    DBG(dumpVal(lyr, "Turning this layer on:"));
+    Dbg << "Turning this layer on:" << lyr << sfmt::endl;
     curState.toggle_layer(enum_cast<layer_num>(lyr));
     lastSavedLayer = lyr;
   } else {
-    DBG(dumpVal(lyr, "Not setting this layer:"));
+    Dbg << "Not setting this layer:" << lyr << sfmt::endl;
   }
 }
 
 void BoardIO::Changed(uint32_t now, GeneralState& state) {
   layer_num lyr = getCurrentLayer();
   if (lyr != lastShownLayer) {
-    DBG(dumpVal(lyr, "Layer Change: "));
+    Dbg << "Layer Change:" << lyr << sfmt::endl;
     disp::SetBacklight(true, now);
     lastShownLayer = lyr;
     lastShownLayerTime = now;

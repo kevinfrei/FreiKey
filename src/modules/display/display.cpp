@@ -26,7 +26,7 @@ Adafruit_ST7789* Init(uint16_t w,
                       uint8_t TFT_Backlight,
                       uint8_t SD_CS,
                       uint8_t SPKR) {
-  DBG(Serial.println("Initializing Display Module"));
+  Dbg << "Initializing Display Module" << sfmt::endl;
   tft = new Adafruit_ST7789(TFT_CS, TFT_DC, TFT_Reset);
   backlightPin = TFT_Backlight;
   pinMode(TFT_Backlight, OUTPUT);

@@ -23,6 +23,8 @@ struct BoardIO : public MockMatrix {
   static void Tick(uint32_t now);
   static KeyboardMode Mode(uint32_t now, KeyboardMode mode);
   static void ReturnFromMode();
+  
+  static void ShowScanCode(uint16_t sc);
 };
 
 constexpr uint8_t BAD_PIN = 0xFF;

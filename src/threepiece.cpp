@@ -66,9 +66,9 @@ void BoardIO::Configure() {
   disp::SetBacklight(true, millis());
   // This is the fastest speed that worked
   // (72mhz also worked, but seemed to be the same speed)
-  DBG2(Serial.println("Attempting first image render"));
+  Dbg2 << "Attempting first image render" << sfmt::endl;
   ShowImage(tft, gfx_amy);
-  DBG2(Serial.println("Screen Initialized"));
+  Dbg2 << "Screen Initialized" << sfmt::endl;
   // Backlight(false);
   pinMode(SPKR_GND, OUTPUT);
   digitalWrite(SPKR_GND, LOW);
@@ -81,20 +81,20 @@ void BoardIO::Configure() {
 void BoardIO::SaveLayer() {
   uint8_t lyr = value_cast(getCurrentLayer());
   if (lyr >= 0 && lyr < value_cast(layer_num::ValidSaves)) {
-    DBG(dumpVal(lyr, "Saving layer to eeprom "));
+    Dbg << "Saving layer to eeprom " << lyr << sfmt::endl;
     EEPROM.update(0, lyr);
   } else {
-    DBG(dumpVal(lyr, "Not saving this to eeprom "));
+    Dbg << "Not saving this to eeprom " << lyr << sfmt::endl;
   }
 }
 
 void BoardIO::Reset(GeneralState& curState) {
   uint8_t lyr = EEPROM.read(0);
   if (lyr > 0 && lyr < value_cast(layer_num::ValidSaves)) {
-    DBG(dumpVal(lyr, "Turning this layer on:"));
+    Dbg << "Turning this layer on:" << lyr << sfmt::endl;
     curState.toggle_layer(enum_cast<layer_num>(lyr));
   } else {
-    DBG(dumpVal(lyr, "Not setting this layer:"));
+    Dbg << "Not setting this layer:" << lyr << sfmt::endl;
   }
 }
 

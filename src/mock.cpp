@@ -103,6 +103,7 @@ void SerialMock::print(uint32_t val, int base) {
     std::cout << val << " (not in base " << base << ")";
   }
 }
+
 void SerialMock::printf(const char* fmt, ...) {
   char buffer[1024];
   va_list args;
@@ -111,6 +112,7 @@ void SerialMock::printf(const char* fmt, ...) {
   va_end(args);
   std::cout << &buffer[0];
 }
+
 void SerialMock::println(char const* str) {
   std::cout << str << std::endl;
 }
@@ -159,6 +161,8 @@ KeyboardMode BoardIO::Mode(uint32_t now, KeyboardMode mode) {
 }
 
 void BoardIO::ReturnFromMode() {}
+
+void BoardIO::ShowScanCode(uint16_t sc) {}
 
 // This where I should run some tests, right?
 int main(int argc, const char* argv[]) {
