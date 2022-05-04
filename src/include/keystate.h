@@ -76,5 +76,5 @@ struct keystate {
 inline SerialStream& operator<<(SerialStream& s, const keystate& ks) {
   s << "ScanCode=" << sfmt::hex << ks.scanCode << " down=" << ks.down
     << " lastChange=" << ks.lastChange << " action=" << ks.action << sfmt::endl;
-    return s;
+  return s;
 }

@@ -43,11 +43,6 @@ KeyboardMode Handler(Keystroke ks, Modifiers mods, bool pressed, uint32_t now) {
       if (val) {
         edit::setline(val);
         ln = edit::readline(ks, mods, pressed, now);
-      } else if (ks == Keystroke::Tab) {
-        // If they hit "Tab", type the calculator value
-        // This is a Teensy thing. I could definitely write my own version
-        // to make it more 'platform-agnostic'
-        Keyboard.print(ln.buf);
       }
     }
   }
@@ -58,6 +53,9 @@ KeyboardMode Handler(Keystroke ks, Modifiers mods, bool pressed, uint32_t now) {
       : KeyboardMode::Calculator;
   if (result == KeyboardMode::Normal) {
     lastPos = {0, 0, 0, 0};
+  }
+  if (ks == Keystroke::Tab && pressed) {
+    Keyboard.print(ln.buf);
   }
   return result;
 }

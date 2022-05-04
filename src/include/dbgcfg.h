@@ -188,7 +188,8 @@ inline SerialStream& operator<<(SerialStream& o, KeyAction ka) {
     case KeyAction::Mode:
       return o << "Mode Switch";
     default:
-      return o << "Unknown KeyAction:" << sfmt::hex << static_cast<uint32_t>(ka);
+      return o << "Unknown KeyAction:" << sfmt::hex
+               << static_cast<uint32_t>(ka);
   }
 }
 #endif // !defined __DBGCFG_H_HEADER

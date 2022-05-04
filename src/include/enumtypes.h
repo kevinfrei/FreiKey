@@ -46,9 +46,10 @@ enum class KeyboardMode : uint8_t {
   Calculator, // Done
   Tetris, // This is close enough
   Snake, // Definitely going to code this at some point
+  BubbleBreaker, // Maybe
+  Bejeweled, // Maybe
   MediaBrowse, // Sure, why not?
   Apple2, // Eventually :)
   Diagnostics, // Maybe?
   NumElems
 };
-
