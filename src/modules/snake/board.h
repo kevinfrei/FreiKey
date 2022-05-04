@@ -7,7 +7,6 @@
 #include "enumhelpers.h"
 #include <array>
 #include <cstdint>
-#include <vector>
 
 namespace snake {
 
@@ -21,9 +20,9 @@ class Board {
   static constexpr uint16_t MR = 0x8000;
   static constexpr uint16_t DR = 0x4000;
   static constexpr uint16_t BL = 0x001F;
-
+  using Bitmap = std::array<uint16_t, 7 * 7>;
   // clang-format off
-  static constexpr std::array<uint16_t, 49> NS {
+  static constexpr Bitmap NS {
     BK, DG, MG, LG, MG, DG, BK,
     BK, DG, MG, LG, MG, DG, BK,
     BK, DG, MG, LG, MG, DG, BK,
@@ -32,7 +31,7 @@ class Board {
     BK, DG, MG, LG, MG, DG, BK,
     BK, DG, MG, LG, MG, DG, BK,
   };
-  static constexpr std::array<uint16_t, 49> EW {
+  static constexpr Bitmap EW {
     BK, BK, BK, BK, BK, BK, BK,
     DG, DG, DG, DG, DG, DG, DG,
     MG, MG, MG, MG, MG, MG, MG,
@@ -41,7 +40,7 @@ class Board {
     DG, DG, DG, DG, DG, DG, DG,
     BK, BK, BK, BK, BK, BK, BK,
   };
-  static constexpr std::array<uint16_t, 49> NE {
+  static constexpr Bitmap NE {
     BK, DG, MG, LG, MG, DG, BK,
     BK, DG, MG, LG, MG, DG, DG,
     BK, DG, MG, LG, MG, MG, MG,
@@ -50,7 +49,7 @@ class Board {
     BK, DG, DG, DG, DG, DG, DG,
     BK, BK, BK, BK, BK, BK, BK,
   };
-  static constexpr std::array<uint16_t, 49> SE {
+  static constexpr Bitmap SE {
     BK, BK, BK, BK, BK, BK, BK,
     BK, DG, DG, DG, DG, DG, DG,
     BK, DG, MG, MG, MG, MG, MG,
@@ -59,7 +58,7 @@ class Board {
     BK, DG, MG, LG, MG, DG, DG,
     BK, DG, MG, LG, MG, DG, BK,
   };
-  static constexpr std::array<uint16_t, 49> NW {
+  static constexpr Bitmap NW {
     BK, DG, MG, LG, MG, DG, BK,
     DG, DG, MG, LG, MG, DG, BK,
     MG, MG, MG, LG, MG, DG, BK,
@@ -68,7 +67,7 @@ class Board {
     DG, DG, DG, DG, DG, DG, BK,
     BK, BK, BK, BK, BK, BK, BK,
   };
-  static constexpr std::array<uint16_t, 49> SW {
+  static constexpr Bitmap SW {
     BK, BK, BK, BK, BK, BK, BK,
     DG, DG, DG, DG, DG, DG, BK,
     MG, MG, MG, MG, MG, DG, BK,
@@ -77,7 +76,7 @@ class Board {
     DG, DG, MG, LG, MG, DG, BK,
     BK, DG, MG, LG, MG, DG, BK,
   };
-  static constexpr std::array<uint16_t, 49> NT {
+  static constexpr Bitmap NT {
     BK, DG, MG, LG, MG, DG, BK,
     BK, DG, MG, LG, MG, DG, BK,
     BK, DG, MG, LG, MG, DG, BK,
@@ -86,7 +85,7 @@ class Board {
     BK, BK, DG, MG, DG, BK, BK,
     BK, BK, BK, DG, BK, BK, BK,
   };
-  static constexpr std::array<uint16_t, 49> ST {
+  static constexpr Bitmap ST {
     BK, BK, BK, DG, BK, BK, BK,
     BK, BK, DG, MG, DG, BK, BK,
     BK, DG, MG, LG, MG, DG, BK,
@@ -95,7 +94,7 @@ class Board {
     BK, DG, MG, LG, MG, DG, BK,
     BK, DG, MG, LG, MG, DG, BK,
   };
-  static constexpr std::array<uint16_t, 49> ET {
+  static constexpr Bitmap ET {
     BK, BK, BK, BK, BK, BK, BK,
     BK, BK, DG, DG, DG, DG, DG,
     BK, DG, MG, MG, MG, MG, MG,
@@ -104,7 +103,7 @@ class Board {
     BK, BK, DG, DG, DG, DG, DG,
     BK, BK, BK, BK, BK, BK, BK,
   };
-  static constexpr std::array<uint16_t, 49> WT {
+  static constexpr Bitmap WT {
     BK, BK, BK, BK, BK, BK, BK,
     DG, DG, DG, DG, DG, BK, BK,
     MG, MG, MG, MG, MG, DG, BK,
@@ -113,7 +112,7 @@ class Board {
     DG, DG, DG, DG, DG, BK, BK,
     BK, BK, BK, BK, BK, BK, BK,
   };
-  static constexpr std::array<uint16_t, 49> SH {
+  static constexpr Bitmap SH {
     BK, DG, MG, LG, MG, DG, BK,
     BK, DG, MG, LG, MG, DG, BK,
     BK, DG, MG, LG, MG, DG, BK,
@@ -122,7 +121,7 @@ class Board {
     BK, BK, BK, MR, BK, BK, BK,
     BK, BK, MR, BK, MR, BK, BK,
   };
-  static constexpr std::array<uint16_t, 49> NH {
+  static constexpr Bitmap NH {
     BK, BK, MR, BK, MR, BK, BK,
     BK, BK, BK, MR, BK, BK, BK,
     BK, MG, BL, MR, BL, MG, BK,
@@ -131,7 +130,7 @@ class Board {
     BK, DG, MG, LG, MG, DG, BK,
     BK, DG, MG, LG, MG, DG, BK,
   };
-  static constexpr std::array<uint16_t, 49> WH {
+  static constexpr Bitmap WH {
     BK, BK, BK, BK, BK, BK, BK,
     BK, BK, MG, DG, DG, DG, DG,
     MR, BK, BL, MG, MG, MG, MG,
@@ -140,7 +139,7 @@ class Board {
     BK, BK, MG, DG, DG, DG, DG,
     BK, BK, BK, BK, BK, BK, BK,
   };
-  static constexpr std::array<uint16_t, 49> EH {
+  static constexpr Bitmap EH {
     BK, BK, BK, BK, BK, BK, BK,
     DG, DG, DG, DG, MG, BK, BK,
     MG, MG, MG, MG, BL, BK, MR,
@@ -149,7 +148,7 @@ class Board {
     DG, DG, DG, DG, MG, BK, BK,
     BK, BK, BK, BK, BK, BK, BK,
   };
-  static constexpr std::array<uint16_t, 49> Apple {
+  static constexpr Bitmap Apple {
     BK, BK, BK, MG, MG, BK, BK,
     BK, BK, DR, MG, DR, BK, BK,
     BK, DR, MR, LR, MR, DR, BK,
@@ -185,6 +184,86 @@ class Board {
   }
   static Dir ToDir(Piece p) {
     return enum_cast<Dir>(value_cast(p & Piece::ToMask) >> 4);
+  }
+  static const Bitmap& BitmapForPiece(Piece p) {
+    if (p == Piece::Apple) {
+      return Apple;
+    }
+    if (p == Piece::Border || p == Piece::Empty) {
+      return TODO;
+    }
+    if (p & Piece::ToMask != Piece::Empty &&
+        p & Piece::FromMask != Piece::Empty) {
+      // Not a head or tail
+      Dir f = FromDir(p);
+      Dir t = ToDir(p);
+      switch (f) {
+        case Dir::N:
+          switch (t) {
+            case Dir::N:
+            case Dir::E:
+              return NE;
+            case Dir::S:
+              return NS;
+            case Dir::W:
+              return NW;
+          }
+        case Dir::S:
+          switch (t) {
+            case Dir::N:
+              return NS;
+            case Dir::E:
+              return SE;
+            case Dir::S:
+            case Dir::W:
+              return SW;
+          }
+        case Dir::E:
+          switch (t) {
+            case Dir::N:
+              return NE;
+            case Dir::E:
+            case Dir::S:
+              return SE;
+            case Dir::W:
+              return EW;
+          }
+        case Dir::W:
+          switch (t) {
+            case Dir::N:
+              return NW;
+            case Dir::E:
+              return EW;
+            case Dir::S:
+            case Dir::W:
+              return SW;
+          }
+      }
+    } else if (p & piece::ToMask) {
+      // This is the tail
+      switch (ToDir(p)) {
+        case Dir::N:
+          return NT;
+        case Dir::E:
+          return ET;
+        case Dir::S:
+          return ST;
+        case Dir::W:
+          return WT;
+      }
+    } else {
+      // This is the head
+      switch (FromDir(p)) {
+        case Dir::N:
+          return NH;
+        case Dir::E:
+          return EH;
+        case Dir::S:
+          return SH;
+        case Dir::W:
+          return WH;
+      }
+    }
   }
   std::array<Piece, (WIDTH + 2) * (HEIGHT * 2)> field;
   Adafruit_GFX& display;
