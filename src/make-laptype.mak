@@ -9,7 +9,7 @@ ifeq ($(OS),Windows_NT)
 else ifeq ($(shell uname -s), Darwin)
 	SUF=mac
 	ARD=/Applications/Teensyduino.app/Contents/Java/hardware
-	SERIAL_PORT=$(shell ls /dev/cu.usbmodem5*)
+	SERIAL_PORT=$(shell ls /dev/cu.usbmodem*501)
 	TOOLS_PATH=${ARD}/tools
 	RUNTIME_HARDWARE_PATH=${TOOLS_PATH}
 	CMD_PATH=${TOOLS_PATH}
@@ -29,7 +29,7 @@ endif
 
 # At only 24MHz, the screen is dramatically slower, but at 150MHz
 # things are buttery smooth, so not running at 600MHz helps overheating, right?
-IN_SPEED=600
+IN_SPEED=150
 # For debug:
 IN_USB=serialhid
 # For optimized:
@@ -71,7 +71,7 @@ include modules/display/include.mk
 include modules/calculator/include.mk
 include modules/images/include.mk
 include modules/editline/include.mk
-include modules/tetris/include.mk
+include modules/tetris/maketetris.mk
 include modules/menu/include.mk
 
 include tools/teensy.${SUF}

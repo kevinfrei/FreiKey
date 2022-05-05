@@ -2,7 +2,7 @@
 #include <array>
 #include <cstring>
 
-#include "board.h"
+#include "tetrisboard.h"
 #include "display.h"
 #include "enumtypes.h"
 #include "tetris.h"

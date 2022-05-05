@@ -9,7 +9,7 @@ ifeq ($(OS),Windows_NT)
 else ifeq ($(shell uname -s), Darwin)
 	SUF=mac
 	ARD=/Applications/Teensyduino.app/Contents/Java/hardware
-	SERIAL_PORT=$(shell ls /dev/cu.usbmodem5*)
+	SERIAL_PORT=$(wildcard /dev/cu.usb*401)
 	TOOLS_PATH=${ARD}/tools
 	RUNTIME_HARDWARE_PATH=${TOOLS_PATH}
 	CMD_PATH=${TOOLS_PATH}
@@ -42,7 +42,7 @@ PROJ_NAME=threepiece
 BUILD_PATH=out/threepiece
 
 # My custom flags
-COMPILER_CPP_EXTRA_FLAGS=
+COMPILER_CPP_EXTRA_FLAGS=-DDEBUG=2
 # This causes link errors now :'(
 # -flto
 
@@ -72,7 +72,7 @@ include modules/display/include.mk
 include modules/calculator/include.mk
 include modules/images/include.mk
 include modules/editline/include.mk
-include modules/tetris/include.mk
+include modules/tetris/maketetris.mk
 include modules/menu/include.mk
 include apple2.mk
 

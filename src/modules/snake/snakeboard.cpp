@@ -1,68 +1,7 @@
-#include "board.h"
+#include "snakeboard.h"
 #include "enumhelpers.h"
 
-namespace tetris {
-
-constexpr uint32_t msPerFrame = 50; // Try to render at 20 FPS, yeah?
-
-uint16_t getColor(uint8_t);
-
-constexpr bool validPiece(PieceName pn) {
-  return pn != PieceName::NumElems && pn != PieceName::Empty;
-}
-
-uint16_t getColor(PieceName pn) {
-  return getColor(validPiece(pn) ? (value_cast(pn) + 1) : 0);
-}
-
-// Stupid splash screen
-struct LetterLoc {
-  char letter;
-  uint16_t x, y;
-};
-constexpr std::array<LetterLoc, 6> tetris{{{'T', 15, 40},
-                                           {'E', 50, 55},
-                                           {'T', 85, 70},
-                                           {'R', 120, 85},
-                                           {'I', 165, 100},
-                                           {'S', 190, 115}}};
-
-const enum_array<PieceName, std::array<std::array<int8_t, 6>, 4>> pieces{
-  {PieceName::I,
-   {{{0, -2, 0, -1, 0, 1},
-     {2, 0, 1, 0, -1, 0},
-     {0, -2, 0, -1, 0, 1},
-     {2, 0, 1, 0, -1, 0}}}},
-  {PieceName::L,
-   {{{0, -1, 0, 1, 1, 1},
-     {1, 0, -1, 0, -1, 1},
-     {0, 1, 0, -1, -1, -1},
-     {-1, 0, 1, 0, 1, -1}}}},
-  {PieceName::J,
-   {{{0, -1, 0, 1, -1, 1},
-     {1, 0, -1, 0, -1, -1},
-     {0, 1, 0, -1, 1, -1},
-     {-1, 0, 1, 0, 1, 1}}}},
-  {PieceName::O,
-   {{{0, 1, 1, 0, 1, 1},
-     {0, 1, 1, 0, 1, 1},
-     {0, 1, 1, 0, 1, 1},
-     {0, 1, 1, 0, 1, 1}}}},
-  {PieceName::T,
-   {{{0, -1, 1, 0, -1, 0},
-     {1, 0, 0, 1, 0, -1},
-     {0, 1, -1, 0, 1, 0},
-     {-1, 0, 0, -1, 0, 1}}}},
-  {PieceName::S,
-   {{{-1, 0, 0, -1, 1, -1},
-     {0, 1, -1, 0, -1, -1},
-     {-1, 0, 0, -1, 1, -1},
-     {0, 1, -1, 0, -1, -1}}}},
-  {PieceName::Z,
-   {{{-1, -1, 0, -1, 1, 0},
-     {1, -1, 1, 0, 0, 1},
-     {-1, -1, 0, -1, 1, 0},
-     {1, -1, 1, 0, 0, 1}}}}};
+namespace snake {
 
 Board::Board(Adafruit_GFX& dsp, uint8_t w, uint8_t h)
   : display(dsp),

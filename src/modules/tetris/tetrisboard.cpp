@@ -1,4 +1,4 @@
-#include "board.h"
+#include "tetrisboard.h"
 #include "enumhelpers.h"
 
 namespace tetris {

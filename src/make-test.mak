@@ -7,7 +7,7 @@ ifeq ($(OS),Windows_NT)
 	BISON=win_bison
 else ifeq ($(shell uname -s), Darwin)
 	ARD=/Applications/Teensyduino.app/Contents/Java/hardware
-	SERIAL_PORT=$(shell ls /dev/cu.usbmodem5*)
+	SERIAL_PORT=$(shell ls /dev/cu.usbmodem*401)
 	TOOLS_PATH=${ARD}/tools
 	RUNTIME_HARDWARE_PATH=${TOOLS_PATH}
 	CMD_PATH=${TOOLS_PATH}
