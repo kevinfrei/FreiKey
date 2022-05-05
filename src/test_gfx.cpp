@@ -4,13 +4,41 @@
 
 typedef Adafruit_ST7789 display_t;
 
-#if 1
+#define BUFFER
+// #define NORMAL
+// #define ASYNC
+
+constexpr uint8_t TFT_CS = 10;
+constexpr uint8_t TFT_DC = 20;
+constexpr uint8_t TFT_RESET = 21;
+
+#if defined(BUFFER)
+
 typedef Adafruit_GFX_Buffer<display_t> GFXBuffer;
-GFXBuffer display = GFXBuffer(240, 320, display_t(10, 20, 21));
-#define show() display.display()
+GFXBuffer display = GFXBuffer(240, 320, display_t(TFT_CS, TFT_DC, TFT_RESET));
+
+uint8_t show() {
+  return !!display.display();
+}
+
+#elif defined(NORMAL)
+
+display_t display = display_t(TFT_CS, TFT_DC, TFT_RESET);
+
+uint8_t show() {
+  return 1;
+}
+
+#elif defined(ASYNC)
+
+// TODO
+// This is a completely different library. I'll need to build out a thin
+// wrapper/abstraction layer so I can use the three things interchangeably
+
 #else
-display_t display = display_t(10, 20, 21);
-#define show() 1
+
+#error Sorry: You need to define one of BUFFER, NORMAL, or ASYNC
+
 #endif
 
 extern "C" void setup() {
