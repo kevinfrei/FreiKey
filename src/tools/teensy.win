@@ -2853,6 +2853,15 @@ ifdef LIB_GFX_BUFFER
   SYS_INCLUDES+=-Ilibs/GFX_Buffer/src
   VPATH_MORE+=
 endif
+ifdef LIB_ASYNCDMA
+  C_SYS_SRCS+=libs/AsyncDMA/glcdfont_t3.c \
+    libs/AsyncDMA/st7735_t3_font_Arial.c \
+    libs/AsyncDMA/st7735_t3_font_ComicSansMS.c
+  CPP_SYS_SRCS+=libs/AsyncDMA/ST7735_t3.cpp \
+    libs/AsyncDMA/ST7789_t3.cpp
+  SYS_INCLUDES+=-Ilibs/AsyncDMA
+  VPATH_MORE+=libs/AsyncDMA
+endif
 SYS_SRC=${C_SYS_SRCS} ${CPP_SYS_SRCS} ${S_SYS_SRCS}
 USER_SRC=${USER_C_SRCS} ${USER_CPP_SRCS} ${USER_S_SRCS}
 ALL_SRC=${SYS_SRC} ${USER_SRC}
