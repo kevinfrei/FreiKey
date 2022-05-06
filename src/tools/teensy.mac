@@ -2011,7 +2011,7 @@ ifdef LIB_AUDIO
   S_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/memcpy_audio.S
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/utility
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/extras/miditones:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/extras/wav2sketch:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/utility
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/extras/miditones /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/extras/wav2sketch /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/utility
 endif
 ifdef LIB_BOUNCE2
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Bounce2/src/Bounce2.cpp
@@ -2064,7 +2064,7 @@ ifdef LIB_ETHERNET
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Ethernet/src/utility/w5100.cpp
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Ethernet/src \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Ethernet/src/utility
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Ethernet/src:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Ethernet/src/utility
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Ethernet/src /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Ethernet/src/utility
 endif
 ifdef LIB_FNET
   C_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/port/cpu/fnet_cpu.c \
@@ -2249,14 +2249,14 @@ ifdef LIB_FNET
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/configs \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/doxygen/input \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/mbedtls
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/port/cpu:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/port/cpu/mimxrt:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/port:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/port/netif/fec:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/autoip:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/azure:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/bench:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/dhcp:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/dns:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/flash:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/fs:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/http:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/link:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/llmnr:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/mdns:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/ping:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/serial:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/shell:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/sntp:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/telnet:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/tftp:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/tls:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/stack:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/port/cpu /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/port/cpu/mimxrt /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/port /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/port/netif/fec /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/autoip /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/azure /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/bench /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/dhcp /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/dns /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/flash /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/fs /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/http /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/link /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/llmnr /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/mdns /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/ping /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/serial /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/shell /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/sntp /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/telnet /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/tftp /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/tls /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/stack /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src
 endif
 ifdef LIB_FASTCRC
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastCRC/FastCRChw.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastCRC/FastCRCsw.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastCRC/examples_PC/test.cpp
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastCRC
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastCRC:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastCRC/examples_PC
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastCRC /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastCRC/examples_PC
 endif
 ifdef LIB_FASTLED
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/FastLED.cpp \
@@ -2288,7 +2288,7 @@ ifdef LIB_FASTLED
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/esp/32 \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/esp/8266 \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/esp/32
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/esp/32
 endif
 ifdef LIB_FLEXIO_T4
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FlexIO_t4/src/FlexIOSPI.cpp \
@@ -2315,7 +2315,7 @@ ifdef LIB_FREQMEASURE
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FreqMeasure \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FreqMeasure/util \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FreqMeasureMulti
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FreqMeasure:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FreqMeasureMulti
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FreqMeasure /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FreqMeasureMulti
 endif
 ifdef LIB_FREQMEASUREMULTI
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FreqMeasureMulti/FreqMeasureMulti.cpp \
@@ -2335,7 +2335,7 @@ ifdef LIB_ILI9341_T3
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9341_t3/glcdfont.c
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9341_t3/ILI9341_t3.cpp
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9341_t3
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9341_t3/extras:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9341_t3
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9341_t3/extras /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9341_t3
 endif
 ifdef LIB_ILI9488_T3
   C_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9488_t3/src/glcdfont.c \
@@ -2346,7 +2346,7 @@ ifdef LIB_ILI9488_T3
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9488_t3/src/ILI9488_t3.cpp
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9488_t3 \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9488_t3/src
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9488_t3/src:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9488_t3
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9488_t3/src /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9488_t3
 endif
 ifdef LIB_IRREMOTE
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/IRremote/src \
@@ -2376,7 +2376,7 @@ ifdef LIB_LIQUIDCRYSTAL
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LiquidCrystal \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LiquidCrystal/src \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LiquidCrystalFast
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LiquidCrystal:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LiquidCrystal/src:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LiquidCrystalFast
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LiquidCrystal /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LiquidCrystal/src /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LiquidCrystalFast
 endif
 ifdef LIB_LITTLEFS
   C_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LittleFS/src/littlefs/lfs.c \
@@ -2385,7 +2385,7 @@ ifdef LIB_LITTLEFS
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LittleFS/src/LittleFS_NAND.cpp
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LittleFS/src \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LittleFS/src/littlefs
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LittleFS/src/littlefs:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LittleFS/src
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LittleFS/src/littlefs /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LittleFS/src
 endif
 ifdef LIB_MFRC522
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MFRC522/src/MFRC522.cpp \
@@ -2412,7 +2412,7 @@ ifdef LIB_MIDI
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/test/mocks \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/test/unit-tests
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/src:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/test/mocks:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/test/unit-tests
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/src /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/test/mocks /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/test/unit-tests
 endif
 ifdef LIB_MSTIMER2
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MsTimer2/MsTimer2.cpp
@@ -2457,7 +2457,7 @@ ifdef LIB_OCTOWS2811
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OctoWS2811/OctoWS2811.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OctoWS2811/OctoWS2811_imxrt.cpp
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OctoWS2811
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OctoWS2811/extras/VideoSDcard/addaudio:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OctoWS2811
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OctoWS2811/extras/VideoSDcard/addaudio /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OctoWS2811
 endif
 ifdef LIB_ONEWIRE
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OneWire/OneWire.cpp
@@ -2512,7 +2512,7 @@ ifdef LIB_RA8875
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875 \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875/_includes \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875/_settings
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875/fonts:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875/fonts /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875
 endif
 ifdef LIB_RADIOHEAD
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/RHCRC.cpp \
@@ -2555,7 +2555,7 @@ ifdef LIB_RADIOHEAD
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/RHutil \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/RHutil_pigpio \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/STM32ArduinoCompat
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/RHutil:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/RHutil_pigpio:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/STM32ArduinoCompat:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/tools
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/RHutil /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/RHutil_pigpio /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/STM32ArduinoCompat /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/tools
 endif
 ifdef LIB_RESPONSIVEANALOGREAD
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ResponsiveAnalogRead/src/ResponsiveAnalogRead.cpp
@@ -2572,7 +2572,7 @@ ifdef LIB_SPI
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SPIFlash/SPIFlash.cpp
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SPI \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SPIFlash
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SPI:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SPIFlash
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SPI /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SPIFlash
 endif
 ifdef LIB_ST7735_T3
   C_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ST7735_t3/glcdfont.c \
@@ -2644,7 +2644,7 @@ ifdef LIB_SDFAT
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/SpiDriver \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/common \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/iostream
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/extras/attic:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/ExFatLib:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/FatLib:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/FsLib:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/SdCard:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/SpiDriver:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/common:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/iostream
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/extras/attic /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/ExFatLib /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/FatLib /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/FsLib /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/SdCard /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/SpiDriver /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/common /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/iostream
 endif
 ifdef LIB_SERIALFLASH
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SerialFlash/SerialFlashChip.cpp \
@@ -2709,7 +2709,7 @@ ifdef LIB_SNOOZE
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_36 \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_40 \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_35:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_36:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_40:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32 /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_35 /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_36 /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_40 /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src
 endif
 ifdef LIB_SOFTPWM
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SoftPWM/SoftPWM.cpp
@@ -2750,7 +2750,7 @@ ifdef LIB_TIME
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TimerOne/config \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TimerThree \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TimerThree/config
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Time:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TimeAlarms:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TimerOne:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TimerThree
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Time /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TimeAlarms /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TimerOne /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TimerThree
 endif
 ifdef LIB_TIMEALARMS
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TimeAlarms/TimeAlarms.cpp
@@ -2806,7 +2806,7 @@ ifdef LIB_WIRE
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Wire/WireKinetis.cpp
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Wire \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Wire/utility
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Wire/utility:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Wire
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Wire/utility /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Wire
 endif
 ifdef LIB_XPT2046_TOUCHSCREEN
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/XPT2046_Touchscreen/XPT2046_Touchscreen.cpp
@@ -2818,7 +2818,7 @@ ifdef LIB_SSD1351
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ssd1351/glcdfont.c
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ssd1351/Fonts \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ssd1351
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ssd1351/fontconvert:/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ssd1351
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ssd1351/fontconvert /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ssd1351
 endif
 ifdef LIB_GFX
   C_SYS_SRCS+=libs/GFX/fontconvert/fontconvert.c \
@@ -2828,12 +2828,7 @@ ifdef LIB_GFX
     libs/GFX/Adafruit_SPITFT.cpp
   SYS_INCLUDES+=-Ilibs/GFX \
     -Ilibs/GFX/Fonts
-  VPATH_MORE+=libs/GFX/fontconvert:libs/GFX
-endif
-ifdef LIB_SSD1306
-  CPP_SYS_SRCS+=libs/SSD1306/Adafruit_SSD1306.cpp
-  SYS_INCLUDES+=-Ilibs/SSD1306
-  VPATH_MORE+=libs/SSD1306
+  VPATH_MORE+=libs/GFX/fontconvert libs/GFX
 endif
 ifdef LIB_ST77XX
   CPP_SYS_SRCS+=libs/ST77XX/Adafruit_ST7735.cpp \
@@ -2849,6 +2844,24 @@ ifdef LIB_BUSIO
   SYS_INCLUDES+=-Ilibs/BusIO
   VPATH_MORE+=libs/BusIO
 endif
+ifdef LIB_T4_PXP
+  CPP_SYS_SRCS+=libs/T4_PXP/src/T4_PXP.cpp
+  SYS_INCLUDES+=-Ilibs/T4_PXP/src
+  VPATH_MORE+=libs/T4_PXP/src
+endif
+ifdef LIB_GFX_BUFFER
+  SYS_INCLUDES+=-Ilibs/GFX_Buffer/src
+  VPATH_MORE+=
+endif
+ifdef LIB_ASYNCDMA
+  C_SYS_SRCS+=libs/AsyncDMA/glcdfont_t3.c \
+    libs/AsyncDMA/st7735_t3_font_Arial.c \
+    libs/AsyncDMA/st7735_t3_font_ComicSansMS.c
+  CPP_SYS_SRCS+=libs/AsyncDMA/ST7735_t3.cpp \
+    libs/AsyncDMA/ST7789_t3.cpp
+  SYS_INCLUDES+=-Ilibs/AsyncDMA
+  VPATH_MORE+=libs/AsyncDMA
+endif
 SYS_SRC=${C_SYS_SRCS} ${CPP_SYS_SRCS} ${S_SYS_SRCS}
 USER_SRC=${USER_C_SRCS} ${USER_CPP_SRCS} ${USER_S_SRCS}
 ALL_SRC=${SYS_SRC} ${USER_SRC}
@@ -2857,17 +2870,31 @@ SYS_OBJS=\
   $(addprefix ${BUILD_PATH}/, \
     $(patsubst %.c, %.c.o, \
       $(patsubst %.cpp, %.cpp.o, \
-        $(patsubst %.S, %.S.o, $(notdir ${SYS_SRC})))))
+        $(patsubst %.ino, %.ino.o, \
+          $(patsubst %.S, %.S.o, $(notdir ${SYS_SRC}))))))
 USER_OBJS=\
   $(addprefix ${BUILD_PATH}/, \
     $(patsubst %.c, %.c.o, \
       $(patsubst %.cpp, %.cpp.o, \
-        $(patsubst %.S, %.S.o, $(notdir ${USER_SRC})))))
+        $(patsubst %.ino, %.ino.o, \
+          $(patsubst %.S, %.S.o, $(notdir ${USER_SRC}))))))
 ALL_OBJS=${USER_OBJS} ${SYS_OBJS}
+SYS_JSON=\
+  $(addprefix ${BUILD_PATH}/, \
+    $(patsubst %.c, %.c.json, \
+      $(patsubst %.cpp, %.cpp.json, \
+        $(patsubst %.ino, %.ino.json, \
+          $(patsubst %.S, %.S.json, $(notdir ${SYS_SRC}))))))
+USER_JSON=\
+  $(addprefix ${BUILD_PATH}/, \
+    $(patsubst %.c, %.c.json, \
+      $(patsubst %.cpp, %.cpp.json, \
+        $(patsubst %.ino, %.ino.json, \
+          $(patsubst %.S, %.S.json, $(notdir ${USER_SRC}))))))
 
 # And now the build rules!
 
-# First, the phony rules that don't product things
+# First, the phony rules that don't produce things
 .PHONY: ${PROJ_NAME} flash clean allclean
 
 # Now the default target
@@ -2875,7 +2902,7 @@ all: ${BUILD_PATH} ${PROJ_NAME}
 
 # Some house keeping
 clean:
-	-rm ${USER_OBJS} ${USER_CLEAN}
+	-rm ${USER_OBJS} ${USER_EXTRA}
 
 allclean: clean
 	-rm -rf ${BUILD_PATH}
@@ -2888,53 +2915,80 @@ ${USER_OBJS} : $(MAKEFILE_LIST)
 -include $(ALL_OBJS:.o=.d)
 
 # Next, the project name shortcut, because it's easier
-${PROJ_NAME}: ${BUILD_PATH}/${PROJ_NAME}.hex
+${PROJ_NAME}: ${BUILD_PATH} ${BUILD_PATH}/${PROJ_NAME}.hex
 
 # Add a 'flash' target
 flash: ${BUILD_PATH}/${PROJ_NAME}.flash
 
 # And finally, create the directory
-# TODO: This no worky on Windows fer sure
 ${BUILD_PATH}:
-	test -d "$@" || mkdir -p "$@"
+ifeq ($(OS),Windows_NT)
+	-@mkdir "$@"
+else
+	@test -d "$@" || mkdir -p "$@"
+endif
 
 # Now, on to the actual rules
 
 ${BUILD_PATH}/%.S.o : %.S
 	"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_GCC}" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_S} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_S_EXTRA_FLAGS} "$<" -o "$@"
 
-${BUILD_PATH}/s_compile_commands.json: $(USER_S_SRCS) $(S_SYS_SRCS)
-	echo > $@
-	for i in $^ ; do \
-	echo "{ \"directory\": \"${PWD}\",\"file\":\"$$i\",\"command\":" >> $@ ; \
-	echo "\"\\\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_GCC}\\\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_S} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_S_EXTRA_FLAGS} \\\"$$i\\\" -o \\\"$$i.o\\\"\"}," >> $@ ;\
-	done
+${BUILD_PATH}/%.S.json : %.S
+ifeq ($(OS),Windows_NT)
+	@echo { "directory":"$(<D)", "file":"$(<F)", "command": > $@
+	@echo "\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_GCC}\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_S} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_S_EXTRA_FLAGS} \"$<\" -o \"$@\"" >> $@
+	@echo }, >> $@
+else
+	@echo "{ \"directory\": \"$(<D)\",\"file\":\"$(<F)\","
+	@echo "\"command\":\"\\\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_GCC}\\\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_S} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_S_EXTRA_FLAGS} \\\"$<\\\" -o \\\"$@\\\"\"}," >> $@
+endif
 
 ${BUILD_PATH}/%.c.o : %.c
 	"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_GCC}" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_C} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_C_EXTRA_FLAGS} "$<" -o "$@"
 
-${BUILD_PATH}/c_compile_commands.json: $(USER_C_SRCS) $(C_SYS_SRCS)
-	echo > $@
-	for i in $^ ; do \
-	echo "{ \"directory\": \"${PWD}\",\"file\":\"$$i\",\"command\":" >> $@ ; \
-	echo "\"\\\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_GCC}\\\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_C} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_C_EXTRA_FLAGS} \\\"$$i\\\" -o \\\"$$i.o\\\"\"}," >> $@ ;\
-	done
+${BUILD_PATH}/%.c.json : %.c
+ifeq ($(OS),Windows_NT)
+	@echo { "directory":"$(<D)", "file":"$(<F)", "command": > $@
+	@echo "\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_GCC}\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_C} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_C_EXTRA_FLAGS} \"$<\" -o \"$@\"" >> $@
+	@echo }, >> $@
+else
+	@echo "{ \"directory\": \"$(<D)\",\"file\":\"$(<F)\","
+	@echo "\"command\":\"\\\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_GCC}\\\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_C} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_C_EXTRA_FLAGS} \\\"$<\\\" -o \\\"$@\\\"\"}," >> $@
+endif
+
+${BUILD_PATH}/%.ino.o : %.ino
+	"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_G__}" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_CPP} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} "-I${BUILD_PATH}/pch" ${SYS_INCLUDES} ${USER_INCLUDES} -x c++ ${COMPILER_INO_EXTRA_FLAGS} "$<" -o "$@"
+
+${BUILD_PATH}/%.ino.json : %.ino
+ifeq ($(OS),Windows_NT)
+	@echo { "directory":"$(<D)", "file":"$(<F)", "command": > $@
+	@echo "\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_G__}\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_CPP} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} \"-I${BUILD_PATH}/pch\" ${SYS_INCLUDES} ${USER_INCLUDES} -x c++ ${COMPILER_INO_EXTRA_FLAGS} \"$<\" -o \"$@\"" >> $@
+	@echo }, >> $@
+else
+	@echo "{ \"directory\": \"$(<D)\",\"file\":\"$(<F)\","
+	@echo "\"command\":\"\\\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_G__}\\\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_CPP} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} \\\"-I${BUILD_PATH}/pch\\\" ${SYS_INCLUDES} ${USER_INCLUDES} -x c++ ${COMPILER_INO_EXTRA_FLAGS} \\\"$<\\\" -o \\\"$@\\\"\"}," >> $@
+endif
 
 ${BUILD_PATH}/%.cpp.o : %.cpp
 	"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_G__}" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_CPP} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} "-I${BUILD_PATH}/pch" ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_CPP_EXTRA_FLAGS} "$<" -o "$@"
 
-${BUILD_PATH}/cpp_compile_commands.json: $(USER_CPP_SRCS) $(CPP_SYS_SRCS)
-	echo > $@
-	for i in $^ ; do \
-	echo "{ \"directory\": \"${PWD}\",\"file\":\"$$i\",\"command\":" >> $@ ; \
-	echo "\"\\\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_G__}\\\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_CPP} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} \\\"-I${BUILD_PATH}/pch\\\" ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_CPP_EXTRA_FLAGS} \\\"$$i\\\" -o \\\"$$i.o\\\"\"}," >> $@ ;\
-	done
+${BUILD_PATH}/%.cpp.json : %.cpp
+ifeq ($(OS),Windows_NT)
+	@echo { "directory":"$(<D)", "file":"$(<F)", "command": > $@
+	@echo "\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_G__}\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_CPP} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} \"-I${BUILD_PATH}/pch\" ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_CPP_EXTRA_FLAGS} \"$<\" -o \"$@\"" >> $@
+	@echo }, >> $@
+else
+	@echo "{ \"directory\": \"$(<D)\",\"file\":\"$(<F)\","
+	@echo "\"command\":\"\\\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_G__}\\\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_CPP} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} \\\"-I${BUILD_PATH}/pch\\\" ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_CPP_EXTRA_FLAGS} \\\"$<\\\" -o \\\"$@\\\"\"}," >> $@
+endif
 
 ${BUILD_PATH}/system.a : ${SYS_OBJS}
-	"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_AR}" rcs "$@" $^
+	"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_AR}" ${COMPILER_AR_EXTRA_FLAGS} rcs "$@" $^
+
 
 ${BUILD_PATH}/${BUILD_PROJECT_NAME}.elf : ${BUILD_PATH}/system.a ${USER_OBJS}
-	"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_LINKER}" ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_LD} ${BUILD_FLAGS_LDSPECS} ${BUILD_FLAGS_CPU} -o "$@" ${USER_OBJS} "${BUILD_PATH}/system.a" "-L${BUILD_PATH}" ${BUILD_FLAGS_LIBS}
+	"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_LINKER}" ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_LD} ${BUILD_FLAGS_LDSPECS} ${BUILD_FLAGS_CPU} ${COMPILER_ELF_EXTRA_FLAGS} -o "$@" ${USER_OBJS} "${BUILD_PATH}/system.a" "-L${BUILD_PATH}" ${BUILD_FLAGS_LIBS}
+
 
 ${BUILD_PATH}/${BUILD_PROJECT_NAME}.hex : ${BUILD_PATH}/${BUILD_PROJECT_NAME}.elf
 	"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_OBJCOPY}" ${COMPILER_ELF2HEX_FLAGS} "$<" "$@"
@@ -2942,10 +2996,17 @@ ${BUILD_PATH}/${BUILD_PROJECT_NAME}.hex : ${BUILD_PATH}/${BUILD_PROJECT_NAME}.el
 ${BUILD_PATH}/${BUILD_PROJECT_NAME}.flash : ${BUILD_PATH}/${BUILD_PROJECT_NAME}.hex
 	${UPLOAD_PATTERN} ${UPLOAD_EXTRA_FLAGS}
 
-${BUILD_PATH}/compile_commands.json: ${BUILD_PATH}/s_compile_commands.json ${BUILD_PATH}/c_compile_commands.json ${BUILD_PATH}/cpp_compile_commands.json
-	echo "[" > $@.tmp
-	cat $^ >> $@.tmp
-	echo "]" >> $@.tmp
-	sed -e ':a' -e 'N' -e '$$!ba' -e 's/},\n]/}]/g' $@.tmp > $@
 
-compile_commands: ${BUILD_PATH}/compile_commands.json
+${BUILD_PATH}/compile_commands.json: ${USER_JSON} ${SYS_JSON}
+ifeq ($(OS),Windows_NT)
+	@echo [ > $@
+	@sed -e "s/ / /" $^ >> $@
+	@echo {}] >> $@
+else
+	@echo "[" > $@.tmp
+	@sed -e "s/ / /" $^ >> $@.tmp
+	@echo "]" >> $@.tmp
+	@sed -e ':a' -e 'N' -e '$$!ba' -e 's/},\n]/}]/g' $@.tmp > $@
+endif
+
+compile_commands: ${BUILD_PATH} ${BUILD_PATH}/compile_commands.json

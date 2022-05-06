@@ -1,11 +1,13 @@
 # Some simple details
 ifeq ($(OS),Windows_NT)
+	SUF=win
 	ARD=${HOME}/AppData/Local
 	SERIAL_PORT=COM15
 	RUNTIME_HARDWARE_PATH=c:/PROGRA~2/Arduino/hardware/tools
 	CMD_PATH=${RUNTIME_HARDWARE_PATH}
 	BISON=win_bison
 else ifeq ($(shell uname -s), Darwin)
+	SUF=mac
 	ARD=/Applications/Teensyduino.app/Contents/Java/hardware
 	SERIAL_PORT=$(shell ls /dev/cu.usbmodem*401)
 	TOOLS_PATH=${ARD}/tools
@@ -45,15 +47,11 @@ LIB_EEPROM=1
 LIB_SDFAT=1
 LIB_T4_PXP=1
 LIB_GFX_BUFFER=1
+LIB_ASYNCDMA=1
 
 # USER_INCLUDES=-Iinclude/threepiece -Iinclude/remotescan -Iinclude/teensy -Iinclude
 
 USER_CPP_SRCS=\
 	test_gfx.cpp
-	
-ifeq ($(OS),Windows_NT)
-include tools/teensy.win
-else
-include tools/teensy.mk
-endif
 
+include tools/teensy.${SUF}
