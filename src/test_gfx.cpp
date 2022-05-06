@@ -1,5 +1,6 @@
 #include "Adafruit_GFX.h"
 #include <SPI.h>
+#include <algorithm>
 
 // #define BUFFER
 // #define NORMAL
@@ -149,22 +150,23 @@ float fps;
 float time = 0.0f;
 uint16_t angle = 0;
 uint32_t elapsed = 0;
+
 uint16_t getColor(uint8_t ofs) {
-  if (millis() - elapsed > 32) {
+  if (millis() - elapsed > 2) {
     angle = (angle + 1) % 360;
     elapsed = millis();
   }
-  return color(angle + ofs * 4);
+  return color(angle + ofs * 3);
 }
+
 void drawDisplay() {
   display.fillScreen(0);
-  for (uint8_t j = 0; j < 25; j++) {
-    uint8_t sz = 30 + j + (totals & 31);
-    display.drawRect(display.width() / 2 - sz,
-                     display.height() / 2 - sz,
-                     2 * sz,
-                     2 * sz,
-                     getColor(j));
+  for (uint8_t j = 0; j < std::min(display.height(), display.width()) / 3;
+       j++) {
+    uint8_t sz =
+      25 + j + ((totals & 31) < 16 ? (totals & 31) : 31 - (totals & 31));
+    display.drawCircle(
+      display.width() / 2, display.height() / 2, sz, getColor(j + 32));
     display.drawLine(
       0, j, display.width() - j - 1, display.height() - 1, getColor(j));
     display.drawLine(
