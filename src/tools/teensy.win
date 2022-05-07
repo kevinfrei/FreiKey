@@ -75,7 +75,7 @@ ifeq (${BOARD_NAME}, teensy41)
   BUILD_CORE=teensy4
   BUILD_FLAGS_LIBS=-larm_cortexM7lfsp_math -lm -lstdc++
   BUILD_FLAGS_S=-x assembler-with-cpp
-  BUILD_FLAGS_CPP=-std=gnu++14 -fno-exceptions -fpermissive -fno-rtti -fno-threadsafe-statics -felide-constructors -Wno-error=narrowing
+  BUILD_FLAGS_CPP=-std=gnu++17 --save-temps -fno-exceptions  -fpermissive -fno-rtti -fno-threadsafe-statics -felide-constructors -Wno-error=narrowing
   BUILD_FLAGS_DEFS=-D__IMXRT1062__ -DTEENSYDUINO=156
   BUILD_FLAGS_CPU=-mthumb -mcpu=cortex-m7 -mfloat-abi=hard -mfpu=fpv5-d16
   BUILD_FLAGS_OPTIMIZE=-Os
@@ -240,7 +240,7 @@ else ifeq (${BOARD_NAME}, teensyMM)
   BUILD_CORE=teensy4
   BUILD_FLAGS_LIBS=-larm_cortexM7lfsp_math -lm -lstdc++
   BUILD_FLAGS_S=-x assembler-with-cpp
-  BUILD_FLAGS_CPP=-std=gnu++14 -fno-exceptions -fpermissive -fno-rtti -fno-threadsafe-statics -felide-constructors -Wno-error=narrowing
+  BUILD_FLAGS_CPP=-std=gnu++17 --save-temps -fno-exceptions -fpermissive -fno-rtti -fno-threadsafe-statics -felide-constructors -Wno-error=narrowing
   BUILD_FLAGS_DEFS=-D__IMXRT1062__ -DTEENSYDUINO=156
   BUILD_FLAGS_CPU=-mthumb -mcpu=cortex-m7 -mfloat-abi=hard -mfpu=fpv5-d16
   BUILD_FLAGS_OPTIMIZE=-Os
@@ -405,7 +405,7 @@ else ifeq (${BOARD_NAME}, teensy40)
   BUILD_CORE=teensy4
   BUILD_FLAGS_LIBS=-larm_cortexM7lfsp_math -lm -lstdc++
   BUILD_FLAGS_S=-x assembler-with-cpp
-  BUILD_FLAGS_CPP=-std=gnu++14 -fno-exceptions -fpermissive -fno-rtti -fno-threadsafe-statics -felide-constructors -Wno-error=narrowing
+  BUILD_FLAGS_CPP=-std=gnu++17 --save-temps -fno-exceptions  -fpermissive -fno-rtti -fno-threadsafe-statics -felide-constructors -Wno-error=narrowing
   BUILD_FLAGS_DEFS=-D__IMXRT1062__ -DTEENSYDUINO=156
   BUILD_FLAGS_CPU=-mthumb -mcpu=cortex-m7 -mfloat-abi=hard -mfpu=fpv5-d16
   BUILD_FLAGS_OPTIMIZE=-Os
@@ -557,7 +557,7 @@ else ifeq (${BOARD_NAME}, teensy36)
   SERIAL_RESTART_CMD=false
   BUILD_FLAGS_LIBS=-larm_cortexM4lf_math -lm -lstdc++
   BUILD_FLAGS_S=-x assembler-with-cpp
-  BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++14 -Wno-error=narrowing -fno-rtti
+  BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++17 -Wno-error=narrowing -fno-rtti
   BUILD_FLAGS_DEFS=-D__MK66FX1M0__ -DTEENSYDUINO=156
   BUILD_FLAGS_CPU=-mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -fsingle-precision-constant
   BUILD_FLAGS_OPTIMIZE=-Os
@@ -758,7 +758,7 @@ else ifeq (${BOARD_NAME}, teensy35)
   SERIAL_RESTART_CMD=false
   BUILD_FLAGS_LIBS=-larm_cortexM4lf_math -lm -lstdc++
   BUILD_FLAGS_S=-x assembler-with-cpp
-  BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++14 -Wno-error=narrowing -fno-rtti
+  BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++17 -Wno-error=narrowing -fno-rtti
   BUILD_FLAGS_DEFS=-D__MK64FX512__ -DTEENSYDUINO=156
   BUILD_FLAGS_CPU=-mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -fsingle-precision-constant
   BUILD_FLAGS_OPTIMIZE=-Os
@@ -959,7 +959,7 @@ else ifeq (${BOARD_NAME}, teensy31)
   SERIAL_RESTART_CMD=false
   BUILD_FLAGS_LIBS=-larm_cortexM4l_math -lm -lstdc++
   BUILD_FLAGS_S=-x assembler-with-cpp
-  BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++14 -Wno-error=narrowing -fno-rtti
+  BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++17 -Wno-error=narrowing -fno-rtti
   BUILD_FLAGS_DEFS=-D__MK20DX256__ -DTEENSYDUINO=156
   BUILD_FLAGS_CPU=-mthumb -mcpu=cortex-m4 -fsingle-precision-constant
   BUILD_FLAGS_OPTIMIZE=-Os
@@ -1151,7 +1151,7 @@ else ifeq (${BOARD_NAME}, teensy30)
   BUILD_FLAGS_LIBS=-larm_cortexM4l_math -lm -lstdc++
   BUILD_FLAGS_LDSPECS=--specs=nano.specs
   BUILD_FLAGS_S=-x assembler-with-cpp
-  BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++14 -Wno-error=narrowing -fno-rtti
+  BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++17 -Wno-error=narrowing -fno-rtti
   BUILD_FLAGS_DEFS=-D__MK20DX128__ -DTEENSYDUINO=156
   BUILD_FLAGS_CPU=-mthumb -mcpu=cortex-m4 -fsingle-precision-constant
   BUILD_FLAGS_OPTIMIZE=-Os
@@ -1302,7 +1302,7 @@ else ifeq (${BOARD_NAME}, teensyLC)
   SERIAL_RESTART_CMD=false
   BUILD_FLAGS_LIBS=-larm_cortexM0l_math -lm -lstdc++
   BUILD_FLAGS_S=-x assembler-with-cpp
-  BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++14 -Wno-error=narrowing -fno-rtti
+  BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++17 -Wno-error=narrowing -fno-rtti
   BUILD_FLAGS_DEFS=-D__MKL26Z64__ -DTEENSYDUINO=156
   BUILD_FLAGS_CPU=-mthumb -mcpu=cortex-m0plus -fsingle-precision-constant
   BUILD_FLAGS_DEP=-MMD
@@ -1451,7 +1451,7 @@ else ifeq (${BOARD_NAME}, teensypp2)
   BUILD_FLAGS_LIBS=-lm
   BUILD_FLAGS_LD=-Wl,--gc-sections,--relax
   BUILD_FLAGS_S=-x assembler-with-cpp
-  BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++11
+  BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++17
   BUILD_FLAGS_DEFS=-DTEENSYDUINO=156 -DARDUINO_ARCH_AVR
   BUILD_FLAGS_CPU=-mmcu=at90usb1286
   BUILD_FLAGS_OPTIMIZE=-Os
@@ -1566,7 +1566,7 @@ else ifeq (${BOARD_NAME}, teensy2)
   BUILD_FLAGS_LIBS=-lm
   BUILD_FLAGS_LD=-Wl,--gc-sections,--relax
   BUILD_FLAGS_S=-x assembler-with-cpp
-  BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++11
+  BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++17
   BUILD_FLAGS_DEFS=-DTEENSYDUINO=156 -DARDUINO_ARCH_AVR
   BUILD_FLAGS_CPU=-mmcu=atmega32u4
   BUILD_FLAGS_OPTIMIZE=-Os

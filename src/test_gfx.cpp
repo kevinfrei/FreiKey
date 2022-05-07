@@ -1,6 +1,7 @@
 #include "Adafruit_GFX.h"
 #include <SPI.h>
 #include <algorithm>
+#include <cmath>
 
 // #define BUFFER
 // #define NORMAL
@@ -109,31 +110,52 @@ bool shouldDraw() {
 
 bool initSerial = false;
 
-uint16_t color(uint16_t angle) {
-  byte red, green, blue;
-  angle = angle % 360;
-  if (angle < 60) {
-    red = 255;
-    green = round(angle * 4.25 - 0.01);
-    blue = 0;
-  } else if (angle < 120) {
-    red = round((120 - angle) * 4.25 - 0.01);
-    green = 255;
-    blue = 0;
-  } else if (angle < 180) {
-    red = 0, green = 255;
-    blue = round((angle - 120) * 4.25 - 0.01);
-  } else if (angle < 240) {
-    red = 0, green = round((240 - angle) * 4.25 - 0.01);
-    blue = 255;
-  } else if (angle < 300) {
-    red = round((angle - 240) * 4.25 - 0.01), green = 0;
-    blue = 255;
-  } else {
-    red = 255, green = 0;
-    blue = round((360 - angle) * 4.25 - 0.01);
-  }
-  return ((red << 8) & 0xF800) | ((green << 3) & 0x07E0) | (blue >> 3);
+float fclamp(float a) {
+  return (a < 0.0f) ? 0.0f : (a > 1.0f) ? 1.0f : a;
+}
+
+uint16_t calcHue(float hue, float br) {
+  // vec3 rgb = clamp(abs(mod(hue*6.0+vec3(0,4,2),6) - 3) - 1, 0, 1);
+  float r = fclamp(fabsf(fmodf(hue * 6.0f + 0.0f, 6.0f) - 3.0f) - 1.0f);
+  float g = fclamp(fabsf(fmodf(hue * 6.0f + 4.0f, 6.0f) - 3.0f) - 1.0f);
+  float b = fclamp(fabsf(fmodf(hue * 6.0f + 2.0f, 6.0f) - 3.0f) - 1.0f);
+  r = r * r * r * (r * (r * 6.0f - 15.0f) + 10.0f);
+  g = g * g * g * (g * (g * 6.0f - 15.0f) + 10.0f);
+  b = b * b * b * (b * (b * 6.0f - 15.0f) + 10.0f);
+  uint16_t redPart = 31 * r * br;
+  uint16_t grnPart = 63 * g * br;
+  uint16_t bluPart = 31 * b * br;
+  return (redPart << 11) | (grnPart << 5) | bluPart;
+}
+
+uint16_t color(uint16_t angle, uint8_t br) {
+  return calcHue(static_cast<float>(angle) / 359.0f, br / 31.0f);
+  /*
+    byte red, green, blue;
+    angle = angle % 360;
+    if (angle < 60) {
+      red = 255;
+      green = round(angle * 4.25 - 0.01);
+      blue = 0;
+    } else if (angle < 120) {
+      red = round((120 - angle) * 4.25 - 0.01);
+      green = 255;
+      blue = 0;
+    } else if (angle < 180) {
+      red = 0, green = 255;
+      blue = round((angle - 120) * 4.25 - 0.01);
+    } else if (angle < 240) {
+      red = 0, green = round((240 - angle) * 4.25 - 0.01);
+      blue = 255;
+    } else if (angle < 300) {
+      red = round((angle - 240) * 4.25 - 0.01), green = 0;
+      blue = 255;
+    } else {
+      red = 255, green = 0;
+      blue = round((360 - angle) * 4.25 - 0.01);
+    }
+    return ((red << 8) & 0xF800) | ((green << 3) & 0x07E0) | (blue >> 3);
+    */
 }
 
 extern "C" void setup() {
@@ -150,23 +172,36 @@ float fps;
 float time = 0.0f;
 uint16_t angle = 0;
 uint32_t elapsed = 0;
-
+uint8_t brightness = 0;
+int8_t delta = 1;
+uint32_t brelap = 0;
 uint16_t getColor(uint8_t ofs) {
   if (millis() - elapsed > 2) {
     angle = (angle + 1) % 360;
     elapsed = millis();
   }
-  return color(angle + ofs * 3);
+  if (millis() - brelap > 100) {
+    brightness += delta;
+    if (brightness > 31) {
+      delta = -delta;
+      brightness += delta;
+    }
+    brelap = millis();
+  }
+
+  return color(angle + ofs * 3, ofs % std::max(1, (brightness - 1)) + 1);
 }
 
 void drawDisplay() {
   display.fillScreen(0);
-  for (uint8_t j = 0; j < std::min(display.height(), display.width()) / 3;
+  for (uint8_t j = 0; j < std::max(display.height(), display.width()) * 9 / 10;
        j++) {
+    /*
     uint8_t sz =
       25 + j + ((totals & 31) < 16 ? (totals & 31) : 31 - (totals & 31));
     display.drawCircle(
       display.width() / 2, display.height() / 2, sz, getColor(j + 32));
+     */
     display.drawLine(
       0, j, display.width() - j - 1, display.height() - 1, getColor(j));
     display.drawLine(
