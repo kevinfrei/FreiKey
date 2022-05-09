@@ -2,10 +2,10 @@
 #include <array>
 #include <cstring>
 
-#include "tetrisboard.h"
 #include "display.h"
 #include "enumtypes.h"
 #include "tetris.h"
+#include "tetrisboard.h"
 #include "usbenums.h"
 
 namespace tetris {

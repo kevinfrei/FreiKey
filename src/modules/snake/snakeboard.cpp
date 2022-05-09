@@ -291,4 +291,4 @@ void Board::rotCCW() {
   }
 }
 
-} // namespace tetris
+} // namespace snake

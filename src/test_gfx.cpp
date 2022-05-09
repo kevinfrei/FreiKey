@@ -196,12 +196,6 @@ void drawDisplay() {
   display.fillScreen(0);
   for (uint8_t j = 0; j < std::max(display.height(), display.width()) * 9 / 10;
        j++) {
-    /*
-    uint8_t sz =
-      25 + j + ((totals & 31) < 16 ? (totals & 31) : 31 - (totals & 31));
-    display.drawCircle(
-      display.width() / 2, display.height() / 2, sz, getColor(j + 32));
-     */
     display.drawLine(
       0, j, display.width() - j - 1, display.height() - 1, getColor(j));
     display.drawLine(
