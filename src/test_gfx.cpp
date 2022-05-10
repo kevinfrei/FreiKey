@@ -189,12 +189,12 @@ uint16_t getColor(uint8_t ofs) {
     brelap = millis();
   }
 
-  return color(angle + ofs * 3, ofs % std::max(1, (brightness - 1)) + 1);
+  return color(angle + ofs * 2, ofs % std::max(1, (brightness - 1)) + 1);
 }
 
 void drawDisplay() {
   display.fillScreen(0);
-  for (uint8_t j = 0; j < std::max(display.height(), display.width()) * 9 / 10;
+  for (uint8_t j = 0; j < std::max(display.height(), display.width()) * 3 / 4;
        j++) {
     display.drawLine(
       0, j, display.width() - j - 1, display.height() - 1, getColor(j));
