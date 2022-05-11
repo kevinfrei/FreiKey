@@ -17,7 +17,11 @@ RM=del /s /q
 else
 SFX=
 SEP=/
-BISON=/opt/homebrew/opt/bison/bin/bison
+ifeq ($(shell uname -p), i386)
+	BISON=/usr/local/opt/bison/bin/bison
+else
+	BISON=/opt/homebrew/opt/bison/bin/bison
+endif
 CLEANPATHS=$(subst *,@,$1)
 MKDIRPATH=-p $1
 rm=rm -rf

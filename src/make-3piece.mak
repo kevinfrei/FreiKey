@@ -13,7 +13,11 @@ else ifeq ($(shell uname -s), Darwin)
 	TOOLS_PATH=${ARD}/tools
 	RUNTIME_HARDWARE_PATH=${TOOLS_PATH}
 	CMD_PATH=${TOOLS_PATH}
-	BISON=/opt/homebrew/opt/bison/bin/bison
+	ifeq ($(shell uname -p), i386)
+		BISON=/usr/local/opt/bison/bin/bison
+	else
+		BISON=/opt/homebrew/opt/bison/bin/bison
+	endif
 else ifeq ($(shell uname -s), Linux)
 	SUF=lin
 	ARD=${HOME}/Apps/arduino-1.8.19/hardware

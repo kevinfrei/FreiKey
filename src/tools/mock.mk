@@ -6,7 +6,11 @@ MKDIRPATH=$(subst /,${SEP},$1)
 else
 SFX=
 SEP=/
-BISON=/opt/homebrew/opt/bison/bin/bison
+ifeq ($(shell uname -p), i386)
+	BISON=/usr/local/opt/bison/bin/bison
+else
+	BISON=/opt/homebrew/opt/bison/bin/bison
+endif
 MKDIRPATH=-p $1
 endif
 
