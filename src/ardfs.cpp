@@ -3,7 +3,13 @@
 namespace ard {
 namespace filesystem {
 
+namespace {
+
+// File-local stuff
+
 path cur("/");
+
+} // namespace
 
 path current_path() {
   return cur;
