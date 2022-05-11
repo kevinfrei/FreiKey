@@ -2,6 +2,8 @@
 #if !defined(__ARDUINO_CPPFILESYSTEM_PATH)
 #define __ARDUINO_CPPFILESYSTEM_PATH
 
+#include <iomanip>
+#include <ostream>
 #include <string>
 #include <unordered_set>
 
@@ -49,7 +51,9 @@ class path {
   path(string_type&& source) noexcept : value(std::move(source)) {}
   template <class Source>
   path(const Source& source) : value(source) {}
-  ~path() {}
+  template <class InputIt>
+  path(InputIt first, InputIt last) : value(first, last) {}
+  ~path() = default;
   path& operator=(const path& p) {
     this->value = p.value;
     return *this;
@@ -203,8 +207,12 @@ class path {
             class Traits = std::char_traits<CharT>,
             class Alloc = std::allocator<CharT> >
   std::basic_string<CharT, Traits, Alloc> string(
-    const Alloc& a = Alloc()) const;
-  std::string string() const;
+    const Alloc& a = Alloc()) const {
+    return std::basic_string<CharT, Traits, Alloc>(this->value);
+  }
+  std::string string() const {
+    return this->value;
+  }
   template <class CharT,
             class Traits = std::char_traits<CharT>,
             class Alloc = std::allocator<CharT> >
@@ -228,7 +236,16 @@ class path {
   }
 
   // Decomposition:
-  path root_name() const;
+  path root_name() const {
+    // TODO: Maybe the "root name" should be some string identifier to support
+    // potential mulitple SPI channel & CS pins, or I2C or some other bus
+    // as well as supporting multiple SD cards on the same SPI channel?
+    // Something like "<SPI2:19>/dir/file.txt" so that things are extensible?
+    // I like using <> as delimeters just to make it likely not easy to do
+    // stupid stuff... Not initially, but maybe in the future, just for
+    // shiggles...
+    return path{};
+  }
   path root_directory() const;
   path root_path() const;
   path relative_path() const;
@@ -245,13 +262,6 @@ class path {
     return !this->empty() && this->value[0] == '/';
   }
   bool has_root_name() const {
-    // TODO: Maybe the "root name" should be some string identifier to support
-    // potential mulitple SPI channel & CS pins, or I2C or some other bus
-    // as well as supporting multiple SD cards on the same SPI channel?
-    // Something like "<SPI2:19>/dir/file.txt" so that things are extensible?
-    // I like using <> as delimeters just to make it likely not easy to do
-    // stupid stuff... Not initially, but maybe in the future, just for
-    // shiggles...
     return false;
   }
   bool has_root_directory() const {
@@ -276,6 +286,13 @@ class path {
   iterator end() const {
     return this->value.cend();
   }
+
+  template <class CharT, class Traits>
+  friend std::basic_ostream<CharT, Traits>& operator<<(
+    std::basic_ostream<CharT, Traits>& os, const path& p);
+  template <class CharT, class Traits>
+  friend std::basic_istream<CharT, Traits>& operator>>(
+    std::basic_istream<CharT, Traits>& is, path& p);
 };
 
 // helper functions:
@@ -305,18 +322,22 @@ inline path operator/(const path& lhs, const path& rhs) {
   path res{lhs};
   return res /= rhs;
 }
+
 template <class CharT, class Traits>
 std::basic_ostream<CharT, Traits>& operator<<(
   std::basic_ostream<CharT, Traits>& os, const path& p) {
-  os << p.c_str();
+  return os << std::quoted(p.string<CharT, Traits>());
 }
+
 template <class CharT, class Traits>
 std::basic_istream<CharT, Traits>& operator>>(
   std::basic_istream<CharT, Traits>& is, path& p) {
-  std::string str;
-  is >> str;
-  p.assign(str);
+  std::basic_string<CharT, Traits> t;
+  is >> std::quoted(t);
+  p = t;
+  return is;
 }
+
 // C++20 can't get supported soon enough...
 // friend std::strong_ordering operator<=>(const path& lhs, const path& rhs)
 // noexcept;
