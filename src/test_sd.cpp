@@ -73,7 +73,7 @@ void printDir(File dir, int numSpaces) {
     display.print(entry.name());
     if (entry.isDirectory()) {
       display.println("/");
-      //printDir(entry, numSpaces + 2);
+      // printDir(entry, numSpaces + 2);
     } else {
       // files have sizes, directories do not
       unsigned int n = log10(entry.size());
@@ -94,6 +94,10 @@ void printDir(File dir, int numSpaces) {
   }
 }
 
+unsigned short toUpcase(uint16_t v) {
+  return toupper(v);
+}
+
 extern "C" void loop() {
   if (Serial && !initSerial) {
     Serial.begin(115200);
@@ -102,7 +106,23 @@ extern "C" void loop() {
   if (failed) {
     return;
   }
+  for (const ard::filesystem::directory_entry& de :
+       ard::filesystem::directory_iterator("/")) {
+    display.print(de.path().c_str());
+    if (de.is_directory()) {
+      display.println(" <DIR>");
+    } else {
+      display.print(": ");
+      display.print(de.file_size());
+      ard::filesystem::file_time_type mod_time = de.last_write_time();
+      display.print(" (");
+      printTime(mod_time);
+      display.println(")");
+    }
+  }
+  /*
   File root = SD.open("/");
   printDir(root, 0);
+  */
   failed = true;
 }

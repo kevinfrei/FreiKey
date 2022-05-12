@@ -18,7 +18,7 @@ namespace ard {
 namespace filesystem {
 
 #if defined(ARDUINO)
-using file_type_type = DateTimeFields;
+using file_time_type = DateTimeFields;
 #else
 using file_time_type = uint64_t;
 #endif
@@ -61,11 +61,11 @@ class directory_entry {
   }
 
  protected:
-  directory_entry(const path& p, File& f) noexcept
+  directory_entry(const ard::filesystem::path& p, File& f) noexcept
     : location(p / f.name()), file(f) {
     refresh_nofile();
   }
-  friend class directory_container;
+  friend class dir_container;
   friend class directory_iterator;
   friend class recursive_directory_iterator;
 #endif
@@ -74,27 +74,28 @@ class directory_entry {
   directory_entry() noexcept = default;
   directory_entry(const directory_entry&) = default;
   directory_entry(directory_entry&&) noexcept = default;
-  explicit directory_entry(const path& p) : location(p) {
+  explicit directory_entry(const ard::filesystem::path& p) : location(p) {
     refresh();
   }
-  directory_entry(const path& p, std::error_code& ec) noexcept : location(p) {
+  directory_entry(const ard::filesystem::path& p, std::error_code& ec) noexcept
+    : location(p) {
     refresh();
   }
   directory_entry& operator=(const directory_entry& other) = default;
   directory_entry& operator=(directory_entry&& other) noexcept = default;
-  void assign(const path& p) {
+  void assign(const ard::filesystem::path& p) {
     location = p;
     refresh();
   }
-  void assign(const path& p, std::error_code& ec) {
+  void assign(const ard::filesystem::path& p, std::error_code& ec) {
     location = p;
     refresh();
   }
-  void replace_filename(const path& p) {
+  void replace_filename(const ard::filesystem::path& p) {
     location = location.parent_path() / p;
     refresh();
   }
-  void replace_filename(const path& p, std::error_code& ec) {
+  void replace_filename(const ard::filesystem::path& p, std::error_code& ec) {
     location = location.parent_path() / p;
     refresh();
   }
@@ -109,7 +110,7 @@ class directory_entry {
     // TODO: Deal with error codes
   }
 
-  const path& path() const noexcept {
+  const ard::filesystem::path& path() const noexcept {
     return location;
   }
   operator const ard::filesystem::path&() const noexcept {
@@ -188,7 +189,7 @@ class dir_container {
 #if defined(ARDUINO)
   File dir_file;
 #endif
-  path dir_path;
+  ard::filesystem::path dir_path;
   size_t cur_pos;
   bool done;
   // This should grow to contain all the directories
@@ -206,6 +207,9 @@ class dir_container {
 #if defined(ARDUINO)
     done = !dir_file;
 #endif
+  }
+  const ard::filesystem::path& get_path() const {
+    return dir_path;
   }
   directory_entry* get_entry(size_t pos) {
     if (pos < cur_pos) {
@@ -239,6 +243,12 @@ class directory_iterator {
   bool the_end;
   bool err;
 
+ protected:
+  void rewind() {
+    cur_file_index = 0;
+  }
+  friend directory_iterator begin(directory_iterator iter) noexcept;
+
  public:
   using value_type = directory_entry;
   using difference_type = std::ptrdiff_t;
@@ -247,63 +257,72 @@ class directory_iterator {
   using iterator_category = std::input_iterator_tag;
 
   directory_iterator() noexcept
-    : the_end(true),
-      err(false),
-      the_dir(nullptr),
-      cur_file_index(~static_cast<size_t>(0)) {}
-  explicit directory_iterator(const path& p)
-    : the_dir(new dir_container(p)), cur_file_index(0), the_end(false), err(false) {
-
-  }
-  directory_iterator(const path& p, directory_options options)
-    : the_dir(new dir_container(p)), cur_file_index(0), the_end(false) {
-#if defined(ARDUINO)
-    dir = SD.open(p.c_str());
-    if (!dir) {
-      err = true;
-    } else {
-      ref_count = 1;
-      File fl = dir.openNextFile();
-      if (fl) {
-        cur_file = directory_entry{dir_path, fl};
-      } else {
-        the_end = !fl;
-      }
-    }
-#endif
-  }
-  directory_iterator(const path& p, std::error_code& ec)
-    : dir_path(p), the_end(false) {
-#if defined(ARDUINO)
-    dir = SD.open(p.c_str());
-    if (!dir) {
-      err = true;
-    }
-#endif
-  }
-  directory_iterator(const path& p,
+    : the_dir(nullptr),
+      cur_file_index(~static_cast<size_t>(0)),
+      the_end(true),
+      err(false) {}
+  explicit directory_iterator(const ard::filesystem::path& p)
+    : the_dir(new dir_container(p)),
+      cur_file_index(0),
+      the_end(false),
+      err(false) {}
+  directory_iterator(const ard::filesystem::path& p, directory_options options)
+    : the_dir(new dir_container(p)),
+      cur_file_index(0),
+      the_end(false),
+      err(false) {}
+  directory_iterator(const ard::filesystem::path& p, std::error_code& ec)
+    : the_dir(new dir_container(p)),
+      cur_file_index(0),
+      the_end(false),
+      err(false) {}
+  directory_iterator(const ard::filesystem::path& p,
                      directory_options options,
                      std::error_code& ec)
-    : dir_path(p), the_end(false) {
-#if defined(ARDUINO)
-    dir = SD.open(p.c_str());
-    if (!dir) {
-      err = true;
-    }
-#endif
-  }
+    : the_dir(new dir_container(p)),
+      cur_file_index(0),
+      the_end(false),
+      err(false) {}
   directory_iterator(const directory_iterator&) = default;
   directory_iterator(directory_iterator&&) = default;
   ~directory_iterator() = default;
   directory_iterator& operator=(const directory_iterator&) = default;
   directory_iterator& operator=(directory_iterator&&) = default;
-  const directory_entry& operator*() const {}
-  const directory_entry* operator->() const;
-  directory_iterator& operator++();
-  directory_iterator& increment(std::error_code& ec);
+  const directory_entry& operator*() const {
+    return *the_dir->get_entry(cur_file_index);
+  }
+  const directory_entry* operator->() const {
+    return the_dir->get_entry(cur_file_index);
+  }
+  directory_iterator& operator++() {
+    the_end = the_dir->get_entry(++this->cur_file_index) == nullptr;
+    return *this;
+  }
+  directory_iterator& increment(std::error_code& ec) {
+    the_end = the_dir->get_entry(++this->cur_file_index) == nullptr;
+    return *this;
+  }
+  bool operator==(const directory_iterator& iter) const {
+    if (this->the_end && iter.the_end) {
+      return true;
+    }
+    return this->cur_file_index == iter.cur_file_index &&
+           this->the_dir->get_path() == iter.the_dir->get_path();
+  }
+  bool operator!=(const directory_iterator& iter) const {
+    return !(*this == iter);
+  }
 };
-directory_iterator begin(directory_iterator iter) noexcept;
-directory_iterator end(directory_iterator) noexcept;
+
+inline directory_iterator begin(directory_iterator iter) noexcept {
+  directory_iterator res{iter};
+  res.rewind();
+  return res;
+}
+
+inline directory_iterator end(directory_iterator iter) noexcept {
+  return directory_iterator{};
+}
 
 class recursive_directory_iterator {
  public:
@@ -317,11 +336,13 @@ class recursive_directory_iterator {
   recursive_directory_iterator(const recursive_directory_iterator& rhs);
   recursive_directory_iterator(recursive_directory_iterator&& rhs) noexcept;
   explicit recursive_directory_iterator(const path& p);
-  recursive_directory_iterator(const path& p, directory_options options);
-  recursive_directory_iterator(const path& p,
+  recursive_directory_iterator(const ard::filesystem::path& p,
+                               directory_options options);
+  recursive_directory_iterator(const ard::filesystem::path& p,
                                directory_options options,
                                std::error_code& ec);
-  recursive_directory_iterator(const path& p, std::error_code& ec);
+  recursive_directory_iterator(const ard::filesystem::path& p,
+                               std::error_code& ec);
   ~recursive_directory_iterator() = default;
   const directory_entry& operator*() const;
   const directory_entry* operator->() const;
