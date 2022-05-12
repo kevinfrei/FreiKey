@@ -246,13 +246,78 @@ class path {
     // shiggles...
     return path{};
   }
-  path root_directory() const;
-  path root_path() const;
-  path relative_path() const;
-  path parent_path() const;
-  path filename() const;
-  path stem() const;
-  path extension() const;
+  path root_directory() const {
+    if (empty() || *this->begin() != '/') {
+      return path{};
+    } else {
+      return path{"/"};
+    }
+  }
+  path root_path() const {
+    return root_directory();
+  }
+  path relative_path() const {
+    if (empty() || *this->begin() != '/') {
+      return *this;
+    }
+    return path{++this->begin(), this->end()};
+  }
+  path parent_path() const {
+    // ""
+    if (empty()) {
+      return *this;
+    }
+    // "/"
+    if (this->value.size() == 1 && *this->begin() == '/') {
+      return *this;
+    }
+    size_t e = this->value.find_last_of('/');
+    // "/justOnePathPiece"
+    if (e == 0) {
+      return path{"/"};
+    }
+    // "/more/than/one"
+    if (e != std::string::npos) {
+      return path{this->value.substr(0, e)};
+    }
+    // "noSlashes.txt"
+    return path{};
+  }
+  path filename() const {
+    size_t e = this->value.find_last_of('/');
+    if (e == std::string::npos) {
+      return *this;
+    }
+    return path{this->value.substr(e+1)};
+  }
+  path extension() const {
+    path p = filename();
+    if (empty()) {
+      return p;
+    }
+    // Handle '.' & '..'
+    if (p.value.size() == 1 && p.value[0] == '.') {
+      return path{};
+    }
+    // Handle '..'
+    if (p.value.size() == 2 && p.value[0] == '.' && p.value[1] == '.') {
+      return path{};
+    }
+    size_t lastDot = p.value.find_last_of('.');
+    // No extension, or it's a hidden [dot] file
+    if (lastDot == std::string::npos || lastDot == 0) {
+      return path{};
+    }
+    // Everything else, return the suffix:
+    return path{p.value.substr(lastDot)};
+  }
+  // AKA "basename"
+  path stem() const {
+    // Filename, minus extension
+    path fn = filename();
+    path ext = fn.extension();
+    return path{fn.begin(), fn.end() - ext.value.size()};
+  }
 
   // Queries:
   bool empty() const noexcept {
@@ -270,14 +335,24 @@ class path {
   bool has_relative_path() const {
     return !this->empty() && !this->has_root_path();
   }
-  bool has_parent_path() const;
-  bool has_filename() const;
-  bool has_stem() const;
-  bool has_extension() const;
+  bool has_parent_path() const {
+    return !parent_path().empty();
+  }
+  bool has_filename() const{
+    return !filename().empty();
+  }
+  bool has_stem() const{
+    return !stem().empty();
+  }
+  bool has_extension() const {
+    return !extension().empty();
+  }
   bool is_absolute() const {
     return this->has_root_path();
   }
-  bool is_relative() const;
+  bool is_relative() const {
+    return !is_absolute();
+  }
 
   // Iterators:
   iterator begin() const {
