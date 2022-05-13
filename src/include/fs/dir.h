@@ -2,26 +2,20 @@
 #if !defined(__ARDUINO_CPPFILESYSTEM_DIR)
 #define __ARDUINO_CPPFILESYSTEM_DIR
 
+#include <SD.h>
 #include <cstddef>
+#include <forward_list>
 #include <memory>
 #include <system_error>
 #include <vector>
 
 #include "path.h"
 
-// Hide this, to allow desktop testing
-#if defined(ARDUINO)
-#include <SD.h>
-#endif
-
 namespace ard {
 namespace filesystem {
 
-#if defined(ARDUINO)
+// This is a stop-gap.
 using file_time_type = DateTimeFields;
-#else
-using file_time_type = uint64_t;
-#endif
 
 enum class directory_options {
   none,
@@ -35,7 +29,6 @@ class directory_entry {
   bool is_dir;
   bool is_file;
   size_t size;
-#if defined(ARDUINO)
   File& file;
   void refresh_nofile() {
     // Called from refresh, or from anywhere else that wants to re-open the file
@@ -68,7 +61,6 @@ class directory_entry {
   friend class dir_container;
   friend class directory_iterator;
   friend class recursive_directory_iterator;
-#endif
 
  public:
   directory_entry() noexcept = default;
@@ -100,10 +92,8 @@ class directory_entry {
     refresh();
   }
   void refresh() noexcept {
-#if defined(ARDUINO)
     file = SD.open(location.c_str());
     refresh_nofile();
-#endif
   }
   void refresh(std::error_code& ec) noexcept {
     refresh();
@@ -117,44 +107,33 @@ class directory_entry {
     return location;
   }
   bool exists() const {
-    // TODO: Get this implemented using SD.h stuff
     return is_dir || is_file;
   }
   bool exists(std::error_code& ec) const noexcept {
-    // TODO: Get this implemented using SD.h stuff
     return is_dir || is_file;
   }
   bool is_regular_file() const {
-    // TODO: Get this implemented using SD.h stuff
     return is_file;
   }
   bool is_regular_file(std::error_code& ec) const noexcept {
-    // TODO: Get this implemented using SD.h stuff
     return is_file;
   }
   bool is_directory() const {
-    // TODO: Get this implemented using SD.h stuff
     return is_dir;
   }
   bool is_directory(std::error_code& ec) const noexcept {
-    // TODO: Get this implemented using SD.h stuff
     return is_dir;
   }
   std::uintmax_t file_size() const {
-    // TODO: Get this implemented using SD.h stuff
     return size;
   }
   std::uintmax_t file_size(std::error_code& ec) const noexcept {
-    // TODO: Get this implemented using SD.h stuff
     return size;
   }
-  ard::filesystem::file_time_type last_write_time() const {
-    // TODO:
+  file_time_type last_write_time() const {
     return mod_time;
   }
-  ard::filesystem::file_time_type last_write_time(
-    std::error_code& ec) const noexcept {
-    // TODO:
+  file_time_type last_write_time(std::error_code& ec) const noexcept {
     return mod_time;
   }
   bool operator==(const directory_entry& rhs) const noexcept {
@@ -186,9 +165,7 @@ std::basic_ostream<CharT, Traits>& operator<<(
 }
 
 class dir_container {
-#if defined(ARDUINO)
   File dir_file;
-#endif
   ard::filesystem::path dir_path;
   size_t cur_pos;
   bool done;
@@ -197,16 +174,8 @@ class dir_container {
 
  public:
   dir_container(const path& p)
-    :
-#if defined(ARDUINO)
-      dir_file(SD.open(p.c_str())),
-#endif
-      dir_path(p),
-      cur_pos(0),
-      done(false) {
-#if defined(ARDUINO)
+    : dir_file(SD.open(p.c_str())), dir_path(p), cur_pos(0), done(false) {
     done = !dir_file;
-#endif
   }
   const ard::filesystem::path& get_path() const {
     return dir_path;
@@ -216,7 +185,6 @@ class dir_container {
       return &files[pos];
     }
     while (cur_pos <= pos && !done) {
-#if defined(ARDUINO)
       File nxt = dir_file.openNextFile();
       if (nxt) {
         files.push_back(directory_entry{dir_path, nxt});
@@ -224,16 +192,11 @@ class dir_container {
       } else {
         done = true;
       }
-#else
-      done = true;
-#endif
     }
     return (cur_pos <= pos) ? nullptr : &files[pos];
   }
   ~dir_container() {
-#if defined(ARDUINO)
     dir_file.close();
-#endif
   }
 };
 
@@ -325,6 +288,9 @@ inline directory_iterator end(directory_iterator iter) noexcept {
 }
 
 class recursive_directory_iterator {
+  // Just nest directory_iterators, yeah?
+  std::forward_list<director_iterator> iter_stack;
+
  public:
   using value_type = directory_entry;
   using difference_type = std::ptrdiff_t;
@@ -332,9 +298,11 @@ class recursive_directory_iterator {
   using reference = const directory_entry&;
   using iterator_category = std::input_iterator_tag;
 
-  recursive_directory_iterator() noexcept;
-  recursive_directory_iterator(const recursive_directory_iterator& rhs);
-  recursive_directory_iterator(recursive_directory_iterator&& rhs) noexcept;
+  recursive_directory_iterator() noexcept : iter_stack() {}
+  recursive_directory_iterator(const recursive_directory_iterator& rhs)
+    : iter_stack(rhs.iter_stack) {}
+  recursive_directory_iterator(recursive_directory_iterator&& rhs) noexcept
+    : iter_stack(std::move(rhs.iter_stack)) {}
   explicit recursive_directory_iterator(const path& p);
   recursive_directory_iterator(const ard::filesystem::path& p,
                                directory_options options);
