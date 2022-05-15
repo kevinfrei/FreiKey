@@ -2,8 +2,6 @@
 #if !defined(TETRIS_BOARD_H)
 #define TETRIS_BOARD_H
 
-#include "Adafruit_GFX.h"
-
 #include "enumhelpers.h"
 #include <array>
 #include <cstdint>
@@ -26,7 +24,6 @@ class Board {
   static constexpr uint8_t BOARD_LEFT_OFFSET = 20;
   static constexpr uint8_t BOARD_TOP_OFFSET = 0;
 
-  Adafruit_GFX& display;
   uint16_t PieceWidth;
   uint16_t PieceHeight;
 
@@ -62,12 +59,12 @@ class Board {
   void clearBoard();
 
  public:
-  Board(Adafruit_GFX& dsp, uint8_t w, uint8_t h);
+  Board(uint8_t w, uint8_t h);
   bool active();
   void splash();
   void draw(uint32_t now);
   void drawPiece(PieceName piece, uint8_t rot, uint8_t xc, uint8_t yc);
-  void down(uint32_t now);
+  bool down(uint32_t now);
   void left();
   void right();
   void rotCW();

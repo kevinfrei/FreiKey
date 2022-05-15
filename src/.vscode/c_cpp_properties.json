@@ -27,7 +27,8 @@
                     "${workspaceFolder}/out/laptype/"
                 ],
                 "databaseFilename": ""
-            }
+            },
+            "configurationProvider": "ms-vscode.makefile-tools"
         },
         {
             "name": "3piece-win",

@@ -14,17 +14,18 @@ typedef Adafruit_ST7789 display_t;
 
 display_t display = display_t(TFT_CS, TFT_DC, TFT_RESET);
 bool failed = true;
+
 void configure() {
-  display.setSPISpeed(60000000);
+  display.setSPISpeed(60*1048576);
   display.init(240, 320);
   display.setRotation(1);
-  display.fillScreen(0x3000);
+  display.fillScreen(0x4000);
   if (!SD.begin(SD_CS)) {
     display.fillRect(50, 50, 100, 100, 0xFF00);
   } else {
     failed = false;
   }
-  display.setCursor(0, 7);
+  display.setCursor(0, 0);
   display.setTextColor(0xFFFF);
 }
 
@@ -93,9 +94,32 @@ void printDir(File dir, int numSpaces) {
     entry.close();
   }
 }
-
+/*
 unsigned short toUpcase(uint16_t v) {
   return toupper(v);
+}
+*/
+
+void showDir(const ard::filesystem::path& p) {
+  uint8_t count = 0;
+  for (const ard::filesystem::directory_entry& de :
+       ard::filesystem::directory_iterator(p)) {
+    display.print(de.path().filename().c_str());
+    if (de.is_directory()) {
+      display.println(" <DIR>");
+      if (de.path().filename().string().size() < 15)
+        showDir(de.path());
+    } else {
+      display.print(":");
+      display.print(de.file_size());
+      ard::filesystem::file_time_type mod_time = de.last_write_time();
+      display.print("|");
+      printTime(mod_time);
+      display.println();
+    }
+    if (++count > 3)
+      break;
+  }
 }
 
 extern "C" void loop() {
@@ -106,20 +130,7 @@ extern "C" void loop() {
   if (failed) {
     return;
   }
-  for (const ard::filesystem::directory_entry& de :
-       ard::filesystem::directory_iterator("/")) {
-    display.print(de.path().c_str());
-    if (de.is_directory()) {
-      display.println(" <DIR>");
-    } else {
-      display.print(": ");
-      display.print(de.file_size());
-      ard::filesystem::file_time_type mod_time = de.last_write_time();
-      display.print(" (");
-      printTime(mod_time);
-      display.println(")");
-    }
-  }
+  showDir("/");
   /*
   File root = SD.open("/");
   printDir(root, 0);

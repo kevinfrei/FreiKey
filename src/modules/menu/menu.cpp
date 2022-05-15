@@ -30,9 +30,8 @@ uint8_t fontSize;
 int8_t yoffset;
 
 void CalcMenuDimension() {
-  Adafruit_SPITFT* d = disp::raw();
-  uint16_t w = d->width();
-  uint16_t h = d->height();
+  uint16_t w = disp::GetWidth();
+  uint16_t h = disp::GetHeight();
   size_t elems = modes.size();
   mw = 0;
   mh = 0;
@@ -44,12 +43,11 @@ void CalcMenuDimension() {
     fontSize++;
     mw = lw;
     mh = lh;
-    d->setTextSize(fontSize);
     uint16_t maxw = 0, maxh = 0;
     for (auto& m : modes) {
       // Calculate the size for the element selected
       int16_t xp, yp;
-      d->getTextBounds(names[m], 0, 0, &xp, &yp, &lh, &lw);
+      disp::GetTextBounds(names[m], 0, 0, xp, yp, lh, lw, fontSize);
       yoffset = -yp;
       maxw = std::max((int)maxw, lw - xp);
       maxh = std::max((int)maxh, lh - yp);
@@ -61,37 +59,37 @@ void CalcMenuDimension() {
 }
 
 void DrawScreen(std::size_t newSel = 0xFFFFFF) {
-  Adafruit_SPITFT* d = disp::raw();
-  uint16_t vPad = (d->height() - modes.size() * mh) / modes.size();
+  uint16_t height = disp::GetHeight();
+  uint16_t width = disp::GetWidth();
+  uint16_t vPad = (height - modes.size() * mh) / modes.size();
   int16_t startY = vPad / 3;
   if (newSel == 0xFFFFFF) {
-    d->fillScreen(0);
+    disp::ClearScreen(0);
   }
-  d->setTextSize(fontSize);
   uint8_t border = 3;
   uint16_t highlight = 0xFFF0;
   for (std::size_t c = 0; c < modes.size(); c++) {
     auto m = modes[c];
     int16_t xp, yp;
     uint16_t lh, lw;
-    d->getTextBounds(names[m], 0, startY + yoffset, &xp, &yp, &lw, &lh);
-    d->setCursor((d->width() - lw) / 2, startY + yoffset);
+    disp::GetTextBounds(
+      names[m], 0, startY + yoffset, xp, yp, lw, lh, fontSize);
+    uint16_t color = 0;
     if (c == newSel || c == curSel) {
-      d->getTextBounds(
-        names[m], (d->width() - lw) / 2, startY + yoffset, &xp, &yp, &lw, &lh);
-      d->fillRoundRect(xp - border,
-                       yp - border,
-                       lw + border * 2,
-                       lh + border * 2,
-                       border,
-                       (c == newSel || newSel == 0xFFFFFF) ? highlight : 0);
-      d->setTextColor(
-        (c == newSel || (newSel == 0xFFFFff && c == curSel)) ? 0 : 0xFFFF);
+      disp::GetTextBounds(
+        names[m], (width - lw) / 2, startY + yoffset, xp, yp, lw, lh, fontSize);
+      disp::FillRoundRect(xp - border,
+                          yp - border,
+                          lw + border * 2,
+                          lh + border * 2,
+                          border,
+                          (c == newSel || newSel == 0xFFFFFF) ? highlight : 0);
+      color = (c == newSel || (newSel == 0xFFFFFF && c == curSel)) ? 0 : 0xFFFF;
     } else {
-      d->setTextColor(0xFFFF);
+      color = 0xFFFF;
     }
     if (newSel == 0xFFFFFF || c == newSel || c == curSel) {
-      d->print(names[m]);
+      disp::DrawText(names[m], 1, color, (width - lw) / 2, startY + yoffset);
     }
     // Draw a box around the current selection
     startY += mh + vPad;

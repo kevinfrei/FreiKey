@@ -21,7 +21,7 @@ typedef Adafruit_GFX_Buffer<display_t> GFXBuffer;
 GFXBuffer display = GFXBuffer(240, 320, display_t(TFT_CS, TFT_DC, TFT_RESET));
 
 void configure() {
-  display.setSPISpeed(60000000);
+  display.setSPISpeed(0x1000000);
   display.setRotation(1);
   display.init(240, 320);
 }
@@ -42,7 +42,7 @@ typedef Adafruit_ST7789 display_t;
 display_t display = display_t(TFT_CS, TFT_DC, TFT_RESET);
 
 void configure() {
-  display.setSPISpeed(60000000);
+  display.setSPISpeed(0x1000000);
   display.setRotation(1);
   display.init(240, 320);
 }
@@ -59,7 +59,7 @@ bool shouldDraw() {
 #include "ST7735_t3.h"
 #include "ST7789_t3.h"
 
-SPISettings settings(60000000, MSBFIRST, SPI_MODE0);
+SPISettings settings(0x1000000, MSBFIRST, SPI_MODE0);
 
 typedef ST7789_t3 display_t;
 

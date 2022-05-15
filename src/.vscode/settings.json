@@ -109,7 +109,8 @@
     "variant": "cpp",
     "xtr1common": "cpp",
     "*.rh": "cpp",
-    "__memory": "cpp"
+    "__memory": "cpp",
+    "filesystem": "cpp"
   },
   "files.exclude": {
     "out": true,

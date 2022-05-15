@@ -2,7 +2,6 @@
 #include "sysstuff.h"
 #include <array>
 
-#include "Adafruit_ST7789.h"
 #include "Calculator.h"
 #include "boardio.h"
 #include "display.h"
@@ -20,9 +19,8 @@
 constexpr uint8_t TFT_CS = 8;
 constexpr uint8_t TFT_DC = 15;
 constexpr uint8_t TFT_RST = 6;
-constexpr uint8_t BACKLIGHT_PIN = 17;
+constexpr uint8_t TFT_BL = 17;
 
-static Adafruit_ST7789* tft = nullptr;
 static uint32_t lastShownLayerTime = 0;
 static layer_num lastShownLayer = layer_num::Base;
 
@@ -41,9 +39,9 @@ const enum_array<layer_num, const image_descriptor*> layer_to_image = {
 
 void BoardIO::Configure() {
   ConfigMatrix();
-  tft = disp::Init(135, 240, 60, 1, TFT_CS, TFT_DC, TFT_RST, BACKLIGHT_PIN);
+  disp::Init(135, 240, 60, 1, TFT_CS, TFT_DC, TFT_RST, TFT_BL);
   disp::SetBacklight(true, millis());
-  ShowImage(tft, gfx_amy);
+  ShowImage(gfx_amy);
   edit::Initialize();
   calc::Initialize();
   tetris::Initialize();
@@ -95,7 +93,7 @@ void BoardIO::Changed(uint32_t now, GeneralState& state) {
     if (img == nullptr) {
       img = reaccs[now % 7];
     }
-    ShowImage(tft, img);
+    ShowImage(img);
   }
 }
 
@@ -112,7 +110,7 @@ KeyboardMode BoardIO::Mode(uint32_t now, KeyboardMode mode) {
       menu::SetupModeList(KeyboardMode::Calculator, KeyboardMode::Tetris);
       return ModuleKeyboardHandler(KeyboardMode::Menu, menu::Handler);
     case KeyboardMode::Calculator:
-      ShowImage(tft, gfx_calcpic);
+      ShowImage(gfx_calcpic);
       return ModuleKeyboardHandler(KeyboardMode::Calculator, calc::Handler);
       break;
     case KeyboardMode::Tetris:
@@ -127,5 +125,5 @@ KeyboardMode BoardIO::Mode(uint32_t now, KeyboardMode mode) {
 void BoardIO::ShowScanCode(uint16_t sc) {}
 
 void BoardIO::ReturnFromMode() {
-  ShowImage(tft, gfx_keyb);
+  ShowImage(gfx_keyb);
 }

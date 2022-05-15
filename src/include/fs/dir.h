@@ -287,9 +287,11 @@ inline directory_iterator end(directory_iterator iter) noexcept {
   return directory_iterator{};
 }
 
+#if 0
 class recursive_directory_iterator {
   // Just nest directory_iterators, yeah?
-  std::forward_list<director_iterator> iter_stack;
+  std::forward_list<directory_iterator> iter_stack;
+  bool is_recursion_pending;
 
  public:
   using value_type = directory_entry;
@@ -303,32 +305,86 @@ class recursive_directory_iterator {
     : iter_stack(rhs.iter_stack) {}
   recursive_directory_iterator(recursive_directory_iterator&& rhs) noexcept
     : iter_stack(std::move(rhs.iter_stack)) {}
-  explicit recursive_directory_iterator(const path& p);
+  explicit recursive_directory_iterator(const path& p)
+    : iter_stack({directory_iterator{p}}) {}
   recursive_directory_iterator(const ard::filesystem::path& p,
-                               directory_options options);
+                               directory_options options)
+    : iter_stack({directory_iterator{p}}) {}
   recursive_directory_iterator(const ard::filesystem::path& p,
                                directory_options options,
-                               std::error_code& ec);
+                               std::error_code& ec)
+    : iter_stack({directory_iterator{p}}) {}
   recursive_directory_iterator(const ard::filesystem::path& p,
-                               std::error_code& ec);
+                               std::error_code& ec)
+    : iter_stack({directory_iterator{p}}) {}
   ~recursive_directory_iterator() = default;
-  const directory_entry& operator*() const;
-  const directory_entry* operator->() const;
+  const directory_entry& operator*() const {
+    return *iter_stack.front();
+  }
+  const directory_entry* operator->() const {
+    return iter_stack.front().operator->();
+  }
   directory_options options() const;
-  int depth() const;
-  bool recursion_pending() const;
+  int depth() const {
+    int d = 0;
+    for (const directory_iterator& _ : iter_stack) {
+      d++;
+    }
+    return d;
+  }
+  bool recursion_pending() const {
+    return is_recursion_pending;
+  }
   recursive_directory_iterator& operator=(
     const recursive_directory_iterator& other) = default;
   recursive_directory_iterator& operator=(
     recursive_directory_iterator&& other) = default;
-  recursive_directory_iterator& operator++();
-  recursive_directory_iterator& increment(std::error_code& ec);
-  void pop();
-  void pop(std::error_code& ec);
-  void disable_recursion_pending();
+  recursive_directory_iterator& operator++() {
+    if (is_recursion_pending) {
+      // TODO: Recurse
+      return *this;
+    }
+    auto it = ++iter_stack.front();
+    if (it == end(iter_stack.front())) {
+      iter_stack.pop_front();
+      if (!iter_stack.empty()){
+        // TODO: Advance to the next entry
+        // 
+      }
+    }
+    return *this;
+  }
+  recursive_directory_iterator& increment(std::error_code& ec) {
+    return this->operator++();
+  }
+  void pop() {
+    disable_recursion_pending();
+    iter_stack.pop_front();
+  }
+  void pop(std::error_code& ec) {
+    this->pop();
+  }
+  void disable_recursion_pending() {
+    is_recursion_pending = false;
+  }
+  bool operator==(const recursive_directory_iterator& iter) const {
+    if (this->iter_stack.empty() && iter.iter_stack.empty()) {
+      return true;
+    }
+    if (this->iter_stack.empty() || iter.iter_stack.empty()) {
+      return false;
+    }
+    // TODO: Finish this off...
+    return false;
+  }
+  bool operator!=(const recursive_directory_iterator& iter) const {
+    return !(*this == iter);
+  }
 };
+
 recursive_directory_iterator begin(recursive_directory_iterator iter) noexcept;
-recursive_directory_iterator end(recursive_directory_iterator) noexcept;
+recursive_directory_iterator end(recursive_directory_iterator iter) noexcept;
+#endif
 
 } // namespace filesystem
 } // namespace ard

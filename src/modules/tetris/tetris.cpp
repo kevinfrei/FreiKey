@@ -1,4 +1,4 @@
-#include "Adafruit_ST7789.h"
+#include "Arduino.h"
 #include <array>
 #include <cstring>
 
@@ -39,7 +39,7 @@ void Initialize() {
   if (brd) {
     delete brd;
   }
-  brd = new Board(*disp::raw(), 5, 5);
+  brd = new Board(5, 5);
 }
 
 void KeyDown(Button k, uint32_t now) {
@@ -47,7 +47,7 @@ void KeyDown(Button k, uint32_t now) {
     case GameFlowState::FirstTime:
       brd->splash();
       delay(1000);
-      disp::raw()->fillScreen(0);
+      disp::ClearScreen(0);
       gameState = GameFlowState::NotPlaying;
       break;
     case GameFlowState::NotPlaying:
@@ -72,14 +72,20 @@ void KeyDown(Button k, uint32_t now) {
         case Button::RotateLeft:
           brd->rotCCW();
           break;
+        case Button::Drop:
+          while (!brd->down(millis())) {
+            delay(25);
+          }
+          break;
         case Button::Down:
           brd->down(now);
           break;
         case Button::Quit:
           gameState = GameFlowState::NotPlaying;
           break;
-          // TODO: case Button::Pause:
-          // TODO: case Button::Drop:
+        case Button::Pause:
+          // TODO
+          break;
       }
       break;
     case GameFlowState::Completed:

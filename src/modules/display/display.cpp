@@ -16,16 +16,17 @@ uint32_t backlightOnTime = 0;
 uint32_t timeout = 10000;
 uint8_t backlightPin = 0;
 
-Adafruit_ST7789* Init(uint16_t w,
-                      uint16_t h,
-                      uint8_t mhz,
-                      uint8_t rotation,
-                      uint8_t TFT_CS,
-                      uint8_t TFT_DC,
-                      uint8_t TFT_Reset,
-                      uint8_t TFT_Backlight,
-                      uint8_t SD_CS,
-                      uint8_t SPKR) {
+/*Adafruit_ST7789* */
+void Init(uint16_t w,
+          uint16_t h,
+          uint8_t mhz,
+          uint8_t rotation,
+          uint8_t TFT_CS,
+          uint8_t TFT_DC,
+          uint8_t TFT_Reset,
+          uint8_t TFT_Backlight,
+          uint8_t SD_CS,
+          uint8_t SPKR) {
   Dbg << "Initializing Display Module" << sfmt::endl;
   tft = new Adafruit_ST7789(TFT_CS, TFT_DC, TFT_Reset);
   backlightPin = TFT_Backlight;
@@ -45,7 +46,6 @@ Adafruit_ST7789* Init(uint16_t w,
     pinMode(SPKR, OUTPUT);
   }
   SetBacklight(true, millis());
-  return tft;
 }
 
 void SetBacklight(bool turnOn, uint32_t now) {
@@ -186,8 +186,66 @@ void DrawKeyboard(uint16_t scancode, uint16_t l, uint16_t t) {
   tft->fillRect(l + xo + x * 8 + (left ? -8 : 8), t + y * 7 + yo, w, 6, c);
 }
 
+void ClearScreen(uint16_t color) {
+  tft->fillScreen(color);
+}
+
+void GetTextBounds(const char* str,
+                   int16_t x,
+                   int16_t y,
+                   int16_t& xp,
+                   int16_t& yp,
+                   uint16_t& w,
+                   uint16_t& h,
+                   uint8_t fontSize) {
+  tft->setTextSize(fontSize);
+  tft->getTextBounds(str, x, y, &xp, &yp, &w, &h);
+}
+
+void DrawText(
+  const char* str, uint8_t size, uint16_t color, int16_t x, int16_t y) {
+  tft->setTextSize(size);
+  tft->setTextColor(color);
+  tft->setCursor(x, y);
+  tft->print(str);
+}
+
+void FillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color) {
+  tft->fillRect(x, y, w, h, color);
+}
+
+void FillRoundRect(
+  int16_t x, int16_t y, int16_t w, int16_t h, uint16_t r, uint16_t color) {
+  tft->fillRoundRect(x, y, w, h, r, color);
+}
+
+void DrawLine(int16_t sx, int16_t sy, int16_t ex, int16_t ey, uint16_t color) {
+  if (sx == ex) {
+    tft->drawFastVLine(sx, sy, ey - sy, color);
+  } else if (sy == ey) {
+    tft->drawFastHLine(sx, sy, ex - ey, color);
+  } else {
+    tft->drawLine(sx, sy, ex, ey, color);
+  }
+}
+
+void Draw16BitBitmap(
+  const uint16_t* buffer, int16_t x, int16_t y, uint16_t w, uint16_t h) {
+  tft->drawRGBBitmap(x, y, buffer, w, h);
+}
+
+uint16_t GetWidth() {
+  return tft->width();
+}
+
+uint16_t GetHeight() {
+  return tft->height();
+}
+
+/*
 Adafruit_SPITFT* raw() {
   return tft;
 }
+*/
 
 } // namespace disp

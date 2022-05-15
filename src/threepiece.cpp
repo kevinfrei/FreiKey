@@ -3,7 +3,6 @@
 #include <HardwareSerial.h>
 #include <array>
 
-#include "Adafruit_ST7789.h"
 #include "Calculator.h"
 #include "boardio.h"
 #include "display.h"
@@ -21,7 +20,7 @@
 #define left Serial4
 
 // Display stuff
-static constexpr uint8_t BACKLIGHT_PIN = 18;
+static constexpr uint8_t TFT_BL = 18;
 static constexpr uint8_t TFT_CS = 10;
 static constexpr uint8_t TFT_DC = 20;
 static constexpr uint8_t TFT_RST = 21;
@@ -33,7 +32,6 @@ static constexpr uint8_t SPKR_SIGNAL = 4;
 // Finally, the data for the SD card on the back of the Adafruit display
 static constexpr uint8_t SD_CS = 19;
 
-static Adafruit_ST7789* tft = nullptr;
 static uint32_t lastShownLayerTime = 0;
 static layer_num lastShownLayer = layer_num::Base;
 
@@ -53,21 +51,13 @@ static const enum_array<layer_num, const image_descriptor*> layer_to_image = {
 void BoardIO::Configure() {
   right.begin(1 << 20);
   left.begin(1 << 20);
-  tft = disp::Init(240,
-                   320,
-                   60,
-                   1,
-                   TFT_CS,
-                   TFT_DC,
-                   TFT_RST,
-                   BACKLIGHT_PIN,
-                   SD_CS,
-                   SPKR_SIGNAL);
+  disp::Init(
+    240, 320, 60, 1, TFT_CS, TFT_DC, TFT_RST, TFT_BL, SD_CS, SPKR_SIGNAL);
   disp::SetBacklight(true, millis());
   // This is the fastest speed that worked
   // (72mhz also worked, but seemed to be the same speed)
   Dbg2 << "Attempting first image render" << sfmt::endl;
-  ShowImage(tft, gfx_amy);
+  ShowImage(gfx_amy);
   Dbg2 << "Screen Initialized" << sfmt::endl;
   // Backlight(false);
   pinMode(SPKR_GND, OUTPUT);
@@ -108,7 +98,7 @@ void BoardIO::Changed(uint32_t now, GeneralState&) {
     if (img == nullptr) {
       img = reaccs[now % 7];
     }
-    ShowImage(tft, img);
+    ShowImage(img);
   }
 }
 
@@ -151,5 +141,5 @@ void BoardIO::ShowScanCode(uint16_t scancode) {
 }
 
 void BoardIO::ReturnFromMode() {
-  ShowImage(tft, gfx_keyb);
+  ShowImage(gfx_keyb);
 }

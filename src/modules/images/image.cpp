@@ -1,7 +1,7 @@
 #include "image.h"
 #include "bitmap.h"
 #include "dbgcfg.h"
-#include <Adafruit_ST7789.h>
+#include "display.h"
 #include <cmath>
 #include <vector>
 
@@ -108,10 +108,7 @@ void append_bytes(bytestream buf, uint16_t bytes) {
   curOffset += bytes;
 }
 
-void drawImage(const image_descriptor* id,
-               uint16_t x,
-               uint16_t y,
-               Adafruit_ST7789* tft) {
+void drawImage(const image_descriptor* id, uint16_t x, uint16_t y) {
   uint32_t size = id->width * id->height * sizeof(uint16_t);
   buffer = (uint8_t*)malloc(size);
   if (buffer) {
@@ -137,7 +134,7 @@ void drawImage(const image_descriptor* id,
       Dbg << "Invalid output: Erp " << curOffset << " bytes instead of " << size
           << " (from " << id->byte_count << ")" << sfmt::endl;
     } else {
-      tft->drawRGBBitmap(x, y, (uint16_t*)buffer, id->width, id->height);
+      disp::Draw16BitBitmap((uint16_t*)buffer, x, y, id->width, id->height);
     }
     if (id->compression != image_compression::RAW) {
       free(buffer);
@@ -157,15 +154,15 @@ constexpr uint8_t hi(uint16_t a) {
 constexpr uint8_t lo(uint16_t a) {
   return a & 0xFF;
 }
-void ShowImage(Adafruit_ST7789* tft, const image_descriptor* img) {
-  tft->fillRect(prevX, prevY, prevWidth, prevHeight, ST77XX_BLACK);
+void ShowImage(const image_descriptor* img) {
+  disp::FillRect(prevX, prevY, prevWidth, prevHeight, 0);
   uint16_t w = img->width;
   uint16_t h = img->height;
-  uint16_t sw = tft->width();
-  uint16_t sh = tft->height();
+  uint16_t sw = disp::GetWidth();
+  uint16_t sh = disp::GetHeight();
   prevX = ((sw - w) > 0) ? micros() % (sw - w + 1) : 0;
   prevY = ((sh - h) > 0) ? (sh * micros()) % (sh - h + 1) : 0;
-  drawImage(img, prevX, prevY, tft);
+  drawImage(img, prevX, prevY);
   prevHeight = h;
   prevWidth = w;
 #if false
