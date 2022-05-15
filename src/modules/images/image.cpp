@@ -5,9 +5,6 @@
 #include <cmath>
 #include <vector>
 
-// Note to self: Using the Adafruit_GFX header/display instead is *visibly*
-// slower
-
 uint8_t interp(
   double dx, double dy, uint8_t lu, uint8_t ru, uint8_t ld, uint8_t rd) {
   // use the relative distances to decide this color value
@@ -148,12 +145,15 @@ uint16_t prevX = 0, prevWidth = 0, prevY = 0, prevHeight = 0;
 
 constexpr uint8_t ST77XX_VSCRDEF = 0x33;
 constexpr uint8_t ST77XX_VSCSAD = 0x37;
+
 constexpr uint8_t hi(uint16_t a) {
   return (a >> 8) & 0xFF;
 }
+
 constexpr uint8_t lo(uint16_t a) {
   return a & 0xFF;
 }
+
 void ShowImage(const image_descriptor* img) {
   disp::FillRect(prevX, prevY, prevWidth, prevHeight, 0);
   uint16_t w = img->width;

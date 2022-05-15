@@ -2,11 +2,6 @@
 
 #include <cstdint>
 
-/*
-class Adafruit_ST7789;
-class Adafruit_SPITFT;
-*/
-
 namespace disp {
 
 struct rect_t {
@@ -30,7 +25,7 @@ enum class TextAlignment : uint8_t {
 /*Adafruit_ST7789* */
 void Init(uint16_t w,
           uint16_t h,
-          uint8_t mhz,
+          int mhz,
           uint8_t rotation,
           uint8_t TFT_CS,
           uint8_t TFT_DC,
@@ -66,7 +61,6 @@ void GetTextBounds(const char* str,
 uint16_t GetWidth();
 uint16_t GetHeight();
 void Draw16BitBitmap(
-  const uint16_t* buffer, int16_t x, int16_t y, uint16_t w, uint16_t h);
-// Adafruit_SPITFT* raw();
+  uint16_t* buffer, int16_t x, int16_t y, uint16_t w, uint16_t h);
 
 } // namespace disp

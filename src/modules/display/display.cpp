@@ -19,7 +19,7 @@ uint8_t backlightPin = 0;
 /*Adafruit_ST7789* */
 void Init(uint16_t w,
           uint16_t h,
-          uint8_t mhz,
+          int mhz,
           uint8_t rotation,
           uint8_t TFT_CS,
           uint8_t TFT_DC,
@@ -34,7 +34,7 @@ void Init(uint16_t w,
   tft->init(w, h);
   // This is the fastest speed that worked
   // (72mhz also worked, but seemed to be the same observable speed)
-  tft->setSPISpeed(mhz * 1000000);
+  tft->setSPISpeed(mhz << 20);
   tft->setRotation(rotation);
   tft->fillScreen(ST77XX_BLACK);
   tft->setFont(&FreeSansBold12pt7b);
@@ -230,7 +230,7 @@ void DrawLine(int16_t sx, int16_t sy, int16_t ex, int16_t ey, uint16_t color) {
 }
 
 void Draw16BitBitmap(
-  const uint16_t* buffer, int16_t x, int16_t y, uint16_t w, uint16_t h) {
+  uint16_t* buffer, int16_t x, int16_t y, uint16_t w, uint16_t h) {
   tft->drawRGBBitmap(x, y, buffer, w, h);
 }
 
