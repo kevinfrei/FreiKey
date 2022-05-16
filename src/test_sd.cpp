@@ -94,11 +94,10 @@ void printDir(File dir, int numSpaces) {
     entry.close();
   }
 }
-/*
+
 unsigned short toUpcase(uint16_t v) {
   return toupper(v);
 }
-*/
 
 void showDir(const ard::filesystem::path& p) {
   uint8_t count = 0;
