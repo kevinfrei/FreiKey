@@ -86,6 +86,9 @@ class action_t {
   static constexpr action_t NoAction() {
     return action_t{};
   }
+  static constexpr action_t Macro(uint16_t num) {
+    return action_t{KeyAction::Macro, num};
+  }
   static constexpr action_t TapAndHold(action_t tap, action_t hold) {
     return action_t{action_t{KeyAction::TapHold, tap.data}, hold};
   }
@@ -123,6 +126,10 @@ class action_t {
 
   KeyboardMode getMode() const {
     return enum_cast<KeyboardMode>(data & 0xff);
+  }
+
+  uint16_t getMacro() const {
+    return data & 0xFFF;
   }
 
   // This is for flagging consumer keycodes, as I have to handle them

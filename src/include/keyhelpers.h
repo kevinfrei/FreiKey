@@ -187,4 +187,4 @@ DK(M_LOCK, 0xF9);
 #define LYR_MWL \
   LYR_ROT(layer_num::MacBase, layer_num::WinBase, layer_num::LinBase)
 
-// #define LYR_MWL LYR_ROTATE(LAYER_MAC_BASE, LAYER_WIN_BASE, LAYER_LIN_BASE)
+#define MAC(n) action_t::Macro(n)

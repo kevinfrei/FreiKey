@@ -26,7 +26,8 @@ enum class KeyAction : uint8_t {
   LayerToggle = 6,
   LayerSwitch = 7,
   LayerRotate = 8,
-  Mode = 9 // "mode switch"
+  Mode = 9, // "mode switch"
+  Macro = 10,
   // MaxActions = 15
 };
 

@@ -6,6 +6,8 @@
 #include "keystate.h"
 #include "scanning.h"
 
+#include "secrets.h"
+
 // Declarations
 constexpr uint32_t TapAndHoldTimeLimit = 100;
 
@@ -123,6 +125,34 @@ void ProcessConsumer(keystate& state, kb_reporter& rpt) {
   }
 }
 
+char rotr(char c, int num) {
+  if (num > 7 || num < 1)
+    return 0;
+  return static_cast<char>((static_cast<uint8_t>(c) >> num) |
+                           (static_cast<uint8_t>(c) << (8 - num)));
+}
+
+// Dump the secrets in a header file that has a silly "just don't have this
+// stuff sitting around in plain text" cypher (use make_secrets.cpp to generate
+// the data) just don't add it to the repo: Put it somewhere else (like in
+// SyncThing :D )
+void TypeMacro(uint16_t macroNumber) {
+  if (macroNumber < secrets.size()) {
+    const char* sec = secrets[macroNumber];
+    int r = 1;
+    for (char s = *sec++; s; s = *sec++) {
+      char c = rotr(s, r);
+      r = (r + c) % 6 + 1;
+      Keyboard.print(c);
+      // Add a little randomness in to the typing, for shiggles, I guess...
+      delay(r * (c & 7));
+    }
+  } else {
+    Keyboard.print("Unrecognized macro number ");
+    Keyboard.print(macroNumber);
+  }
+}
+
 KeyboardMode ProcessKeys(uint32_t now, kb_reporter& rpt) {
   Modifiers mods = Modifiers::None;
   KeyboardMode mode = KeyboardMode::Normal;
@@ -207,6 +237,10 @@ KeyboardMode ProcessKeys(uint32_t now, kb_reporter& rpt) {
       case KeyAction::LayerToggle:
       case KeyAction::LayerRotate:
         // These are all handled during preprocessing
+        break;
+      case KeyAction::Macro:
+        if (state.down)
+          TypeMacro(state.action.getMacro());
         break;
     }
   }
