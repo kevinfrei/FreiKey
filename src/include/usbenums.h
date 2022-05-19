@@ -154,10 +154,12 @@ enum class Consumer : uint16_t {
   Stop = 0xB7,
   VolumeUp = 0xE9,
   VolumeDown = 0xEA,
-  Mute = 0xE2,
+  Mute = 0xE2
+  /*,
   BrowserBack = 0x224,
   BrowserForward = 0x225,
   Sleep = 0x82
+  */
 };
 
 enum class Modifiers : uint8_t {
@@ -205,7 +207,7 @@ inline uint8_t getUSBCode(Keystroke k) {
 }
 
 inline uint16_t getConsumerUSBCode(Consumer a) {
-  return value_cast(a);
+  return 0xE400 | value_cast(a);
 }
 
 inline uint8_t getUSBCode(Modifiers m) {
