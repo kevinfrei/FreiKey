@@ -84,8 +84,8 @@ LROW1(KEY(F12), KEY(F1), KEY(F2), KEY(F3), KEY(F4), KEY(F5)), RROW1(  KEY(F6), K
 LROW2(KEY(F11), ___,     ___,     ___,     ___,     ___),     RROW2(  ___,     ___,     ___,     ___,     ___,      KEY(F12)),
 LROW3(MODE(1),  ___,     ___,     ___,     ___,     ___),     RROW3(  ___,     ___,     ___,     ___,     ___,      ___),
 LROW4(___,      ___,     ___,     ___,     ___,     ___),     RROW4(  ___,     ___,     ___,     ___,     ___,      ___),
-LROW5(LCTL,___,  ___,      ___,             ___,     ___),    RROW5( ___,     ___,          VOLUP_,      ___,  LYR_MWL, MODE(2)),
-LROW6(              PRVT_, PLAY_, NXTT_,              ___),   RROW6(___,               ___, VOLDN_, ___),
+LROW5(LCTL,___,  ___,      ___,             ___,     ___),    RROW5( ___,     ___,          VOLUP_,      ___,  LYR_MWL, CAPSLK),
+LROW6(              PRVT_, PLAY_, NXTT_,              ___),   RROW6(___,             MUTE_, VOLDN_, MUTE_),
 },
 {// LAYER_MAC_CAP (4)
 // Mostly just cmd + key (CMK(a)), with exceptions for some window
@@ -94,8 +94,8 @@ LROW1(CMK(Esc), CMN(1), CMN(2), CMN(3), CMN(4), CMN(5)),     RROW1(  CMN(6), CMN
 LROW2(CMK(Tab), CMK(Q), CMK(W), CMK(E), CMK(R), CMK(T)),     RROW2(  CMK(Y), CMK(U), CMK(I), CMK(O), CMK(P),  CMK(Backslash)),
 LROW3(___,      CMK(A), CMK(S), CMK(D), CMK(F), CMK(G)),     RROW3(  CMK(H), CMK(J), CMK(K), CMK(L), CM_SEMI, CM_QUOTE),
 LROW4(SHFTCM,   CMK(Z), CMK(X), CMK(C), CMK(V), CMK(B)),     RROW4(  CMK(N), CMK(M), CM_CMA, CM_DOT, CM_SLSH, CM_SPC),
-LROW5(CTLCM, OPTCM, ___,   CM_PUP,      CM_OBRC, OPK(BKSP)),  RROW5( CM_SPC, CM_EQ,   CM_UP,    ___, CMK(DEL), CMK(Grave)),
-LROW6(          CMK(Home), CM_PDN, CMK(End),       CM_CBRC), RROW6(CM_ENT,  OP_LEFT, CM_DN, OP_RIGHT),
+LROW5(CTLCM, OPTCM, ___,   CM_PUP,      CM_OBRC, OPK(BKSP)), RROW5( CM_SPC, CM_EQ,   CM_UP,    ___, CMK(DEL), CMK(Grave)),
+LROW6(          CMK(Home), CM_PDN, CMK(End),       CM_CBRC), RROW6(CM_ENT,   OP_LEFT, CM_DN, OP_RIGHT),
 },
 {// LAYER_WIN_CAP (5)
 // This is magic to get a bunch of mac commands to send their Windows
@@ -104,10 +104,10 @@ LROW6(          CMK(Home), CM_PDN, CMK(End),       CM_CBRC), RROW6(CM_ENT,  OP_L
 // TODO: Support key sequences so that gui-left, up/down works for quadrant
 // window docking. Alternatively, try to do it from AutoHotKey because the
 // way Windows 10 natively handles it is shit.
-LROW1(CTK(Esc), CTN(1),  CTN(2),  CTN(3), CTN(4), CTN(5)),      RROW1(  CTN(6), CTN(7), CTN(8), CTN(9),   CTN(0),   CTK(Minus)),
-LROW2(CTK(Tab), ALK(F4), CTK(F4), CTK(E), CTK(R), CTK(T)),      RROW2(  CTK(Y), CTK(U), CTK(I), CTK(O),   CTK(P),   CTK(Backslash)),
-LROW3(___,      CTK(A),  CTK(S),  CTK(D), CTK(F), CTK(G)),      RROW3(  CTK(H), CTK(J), CTK(K), CTK(L),   CT_SEMI,  CT_QUOTE),
-LROW4(SHFTCT,   CTK(Z),  CTK(X),  CTK(C), CTK(V), CTK(B)),      RROW4(  CTK(N), CTK(M), CT_CMA, KEY(Esc), CT_SLSH,  RGUI),
+LROW1(CTK(Esc), CTN(1),  CTN(2),  CTN(3), CTN(4), CTN(5)),      RROW1(  CTN(6), CTN(7), CTN(8), CTN(9),   CTN(0),    CTK(Minus)),
+LROW2(CTK(Tab), ALK(F4), CTK(F4), CTK(E), CTK(R), CTK(T)),      RROW2(  CTK(Y), CTK(U), CTK(I), CTK(O),   CTK(P),    CTK(Backslash)),
+LROW3(___,      CTK(A),  CTK(S),  CTK(D), CTK(F), CTK(G)),      RROW3(  CTK(H), CTK(J), CTK(K), CTK(L),   PRSCR,     CT_QUOTE),
+LROW4(SHFTCT,   CTK(Z),  CTK(X),  CTK(C), CTK(V), CTK(B)),      RROW4(  CTK(N), CTK(M), CT_CMA, KEY(Esc), KEY(Menu), RGUI),
 LROW5(LCTL, GUICT, ALTCT,  CT_PUP,      CTK(OBRC), CTK(BKSP)),  RROW5( CT_SPC, CT_EQ,        CT_UP,   ___, CTK(DEL), CTK(Grave)),
 LROW6(          CTK(Home), CT_PDN, CTK(End),        CTK(CBRC)), RROW6(CT_ENT,       CT_LEFT, CT_DN, CT_RIGHT),
 },

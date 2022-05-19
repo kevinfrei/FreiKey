@@ -88,6 +88,8 @@ DK(M_LOCK, 0xF9);
 #define DEL Delete
 #define PGUP PageUp
 #define PGDN PageDown
+#define PRSCR KEY(PrintScreen)
+#define CAPSLK KEY(CapsLock)
 #define EQ_ KEY(Equal)
 #define SEMI_ KEY(Semicolon)
 #define COMMA_ KEY(Comma)
@@ -99,7 +101,7 @@ DK(M_LOCK, 0xF9);
 #define LEFT_ KEY(Left)
 #define RIGHT_ KEY(Right)
 #define SPACE_ KEY(Space)
-#define MUTE_ KEY(M_MUTE)
+#define MUTE_ CONS(Mute)
 #define VOLUP_ CONS(VolumeUp)
 #define VOLDN_ CONS(VolumeDown)
 
