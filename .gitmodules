@@ -26,3 +26,6 @@
 [submodule "src/libs/AsyncDMA"]
 	path = src/libs/AsyncDMA
 	url = https://github.com/kevinfrei/AsyncDMA_ST77XX
+[submodule "src/libs/8875"]
+	path = src/libs/8875
+	url = https://github.com/adafruit/Adafruit_RA8875.git

@@ -2,7 +2,7 @@
 # it's just, perhaps, better than a shell script
 
 # phony rules cus there are no dependencies
-.PHONY: clean laptype lt l ltf lf flaptype laptypef 3 3p three threepiece 3f 3pf threef threepiecef f3 f3p fthree fthreepiece img calc edit test testf ftest tf ft t sd sdf fsd
+.PHONY: clean laptype lt l ltf lf flaptype laptypef 3 3p three threepiece 3f 3pf threef threepiecef f3 f3p fthree fthreepiece img calc edit test testf ftest tf ft t sd sdf fsd 41 41f f41
 
 flags=-j
 
@@ -41,6 +41,12 @@ sd:
 
 sdf fds:
 	$(MAKE) ${flags} -f make-sd.mak flash
+
+41:
+	$(MAKE) ${flags} -f make-41.mak all
+
+41f f41:
+	$(MAKE) ${flags} -f make-41.mak flash
 
 mock m:
 	$(MAKE) ${flags} -f make-mock.mak all compile_commands

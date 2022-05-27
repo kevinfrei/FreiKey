@@ -1,1 +1,1 @@
-./libs/Arduino2Make/ar2mak.js $HOME/Apps/arduino-1.8.19/hardware/teensy/avr libs/GFX libs/ST77XX libs/BusIO libs/T4_PXP libs/GFX_Buffer > ./tools/teensy.lin
+./libs/Arduino2Make/ar2mak.js --config:tools/teensy-make-config.json $HOME/Apps/arduino-1.8.19/hardware/teensy/avr libs/GFX libs/ST77XX libs/BusIO libs/T4_PXP libs/GFX_Buffer libs/8875 > ./tools/teensy.lin

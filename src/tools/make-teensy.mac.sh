@@ -1,1 +1,1 @@
-./libs/Arduino2Make/ar2mak.js /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr libs/GFX libs/ST77XX libs/BusIO libs/T4_PXP libs/GFX_Buffer libs/AsyncDMA > ./tools/teensy.mac
+./libs/Arduino2Make/ar2mak.js --config:tools/teensy-make-config.json /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr libs/GFX libs/ST77XX libs/BusIO libs/T4_PXP libs/GFX_Buffer libs/AsyncDMA libs/8875 > ./tools/teensy.mac

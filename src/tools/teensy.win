@@ -75,7 +75,7 @@ ifeq (${BOARD_NAME}, teensy41)
   BUILD_CORE=teensy4
   BUILD_FLAGS_LIBS=-larm_cortexM7lfsp_math -lm -lstdc++
   BUILD_FLAGS_S=-x assembler-with-cpp
-  BUILD_FLAGS_CPP=-std=gnu++17 -fno-exceptions  -fpermissive -fno-rtti -fno-threadsafe-statics -felide-constructors -Wno-error=narrowing
+  BUILD_FLAGS_CPP=-std=gnu++17 -fno-exceptions -fpermissive -fno-rtti -fno-threadsafe-statics -felide-constructors -Wno-error=narrowing
   BUILD_FLAGS_DEFS=-D__IMXRT1062__ -DTEENSYDUINO=156
   BUILD_FLAGS_CPU=-mthumb -mcpu=cortex-m7 -mfloat-abi=hard -mfpu=fpv5-d16
   BUILD_FLAGS_OPTIMIZE=-Os
@@ -405,7 +405,7 @@ else ifeq (${BOARD_NAME}, teensy40)
   BUILD_CORE=teensy4
   BUILD_FLAGS_LIBS=-larm_cortexM7lfsp_math -lm -lstdc++
   BUILD_FLAGS_S=-x assembler-with-cpp
-  BUILD_FLAGS_CPP=-std=gnu++17 -fno-exceptions  -fpermissive -fno-rtti -fno-threadsafe-statics -felide-constructors -Wno-error=narrowing
+  BUILD_FLAGS_CPP=-std=gnu++17 -fno-exceptions -fpermissive -fno-rtti -fno-threadsafe-statics -felide-constructors -Wno-error=narrowing
   BUILD_FLAGS_DEFS=-D__IMXRT1062__ -DTEENSYDUINO=156
   BUILD_FLAGS_CPU=-mthumb -mcpu=cortex-m7 -mfloat-abi=hard -mfpu=fpv5-d16
   BUILD_FLAGS_OPTIMIZE=-Os
@@ -2861,6 +2861,11 @@ ifdef LIB_ASYNCDMA
     libs/AsyncDMA/ST7789_t3.cpp
   SYS_INCLUDES+=-Ilibs/AsyncDMA
   VPATH_MORE+=libs/AsyncDMA
+endif
+ifdef LIB_8875
+  CPP_SYS_SRCS+=libs/8875/Adafruit_RA8875.cpp
+  SYS_INCLUDES+=-Ilibs/8875
+  VPATH_MORE+=libs/8875
 endif
 SYS_SRC=${C_SYS_SRCS} ${CPP_SYS_SRCS} ${S_SYS_SRCS}
 USER_SRC=${USER_C_SRCS} ${USER_CPP_SRCS} ${USER_S_SRCS}
