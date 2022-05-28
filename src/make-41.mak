@@ -2,7 +2,7 @@
 ifeq ($(OS),Windows_NT)
 	SUF=win
 	ARD=${HOME}/AppData/Local
-	SERIAL_PORT=COM15
+	SERIAL_PORT=COM4
 	RUNTIME_HARDWARE_PATH=c:/PROGRA~2/Arduino/hardware/tools
 	CMD_PATH=${RUNTIME_HARDWARE_PATH}
 else ifeq ($(shell uname -s), Darwin)
@@ -36,7 +36,7 @@ COMPILER_CPP_EXTRA_FLAGS=
 LIB_BUSIO=1
 LIB_SPI=1
 LIB_GFX=1
-LIB_ST77XX=1
+LIB_8875=1
 LIB_WIRE=1
 LIB_SD=1
 LIB_SDFAT=1

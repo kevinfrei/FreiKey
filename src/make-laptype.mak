@@ -35,9 +35,9 @@ endif
 # things are buttery smooth, so not running at 600MHz helps overheating, right?
 IN_SPEED=150
 # For debug:
-IN_USB=serialhid
+# IN_USB=serialhid
 # For optimized:
-# IN_USB=keyboard
+IN_USB=keyboard
 IN_OPT=osstd
 IN_KEYS=en-us
 EXTRA_TIME_LOCAL=0
