@@ -14,7 +14,7 @@ GeneralState curState{};
 void resetTheWorld() {
   Dbg2 << "Resetting the world!" << sfmt::endl;
   curState.reset();
-  memset(keyStates, null_scan_code, sizeof(keyStates));
+  std::fill(std::begin(keyStates), std::end(keyStates), empty_keystate);
   Scanner::Reset();
   Dbg2 << "World reset!" << sfmt::endl;
   BoardIO::Reset(curState);

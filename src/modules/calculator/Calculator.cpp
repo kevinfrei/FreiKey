@@ -32,7 +32,7 @@ int yylex() {
 namespace calc {
 
 void Initialize() {
-  memset(showBuffer, 0, 128);
+  std::fill(std::begin(showBuffer), std::end(showBuffer), 0);
   context.clear();
 }
 

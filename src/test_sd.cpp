@@ -16,7 +16,7 @@ display_t display = display_t(TFT_CS, TFT_DC, TFT_RESET);
 bool failed = true;
 
 void configure() {
-  display.setSPISpeed(60*1048576);
+  display.setSPISpeed(60 * 1048576);
   display.init(240, 320);
   display.setRotation(1);
   display.fillScreen(0x4000);

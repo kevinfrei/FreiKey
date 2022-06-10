@@ -73,6 +73,8 @@ struct keystate {
   };
 };
 
+constexpr keystate empty_keystate = {0, no_action, null_scan_code, false};
+
 inline SerialStream& operator<<(SerialStream& s, const keystate& ks) {
   s << "ScanCode=" << sfmt::hex << ks.scanCode << " down=" << ks.down
     << " lastChange=" << ks.lastChange << " action=" << ks.action << sfmt::endl;

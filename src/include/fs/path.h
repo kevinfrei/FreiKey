@@ -288,7 +288,7 @@ class path {
     if (e == std::string::npos) {
       return *this;
     }
-    return path{this->value.substr(e+1)};
+    return path{this->value.substr(e + 1)};
   }
   path extension() const {
     path p = filename();
@@ -338,10 +338,10 @@ class path {
   bool has_parent_path() const {
     return !parent_path().empty();
   }
-  bool has_filename() const{
+  bool has_filename() const {
     return !filename().empty();
   }
-  bool has_stem() const{
+  bool has_stem() const {
     return !stem().empty();
   }
   bool has_extension() const {

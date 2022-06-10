@@ -7,7 +7,7 @@
 #include "dongle.h"
 
 kb_reporter::kb_reporter() : mods(0), repsize(0) {
-  memset(&report[0], 0, 6);
+  std::fill(std::begin(report), std::end(report), 0);
 }
 
 void kb_reporter::set_modifier(uint8_t m) {
@@ -34,7 +34,7 @@ void kb_reporter::send_keys() {
 #elif defined(TEENSY) || defined(MOCK)
 
 kb_reporter::kb_reporter() : mods(0), repsize(0) {
-  memset(report, 0, 6);
+  std::fill(std::begin(report), std::end(report), 0);
 }
 
 void kb_reporter::set_modifier(Modifiers mod) {

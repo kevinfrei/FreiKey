@@ -10,8 +10,7 @@
 
 namespace calc {
 
-char backing[128] = {0};
-char* showBuffer = &backing[0];
+char showBuffer[128] = {0};
 
 double CalcExpr::asFloat() const {
   switch (type) {
