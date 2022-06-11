@@ -194,13 +194,15 @@ void drawThing1() {
   }
   */
   for (int i = 0; i < 480; i++) {
-    display.drawRect(i, i, (800 - i * 3 / 2 ), (480 - i * 3 / 2), color(i % 360, 255));
+    display.drawRect(
+      i, i, (800 - i * 3 / 2), (480 - i * 3 / 2), color(i % 360, 255));
   }
 }
 
 void drawThing2() {
   for (int i = 0; i < 480; i++) {
-    display.drawRect(i, i, (800 - i * 2), (480 - i * 2), color((479 - i) % 360, 191));
+    display.drawRect(
+      i, i, (800 - i * 2), (480 - i * 2), color((479 - i) % 360, 191));
   }
 }
 
