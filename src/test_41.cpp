@@ -22,6 +22,7 @@ void configure() {
     }
   }
   display.displayOn(true);
+  display.touchEnable(false);
   display.GPIOX(true); // Enable TFT - display enable tied to GPIOX
   display.PWM1config(true, RA8875_PWM_CLK_DIV1024); // PWM output for backlight
   display.PWM1out(255);
@@ -31,8 +32,6 @@ void configure() {
   } else {
     failed = false;
   }
-  /*  display.setCursor(0, 0);
-    display.setTextColor(0xFFFF);*/
 }
 
 bool initSerial = false;
@@ -88,7 +87,7 @@ void printNum(std::uintmax_t val) {
   do {
     buffer[pos--] = '0' + (val % 10);
     val /= 10;
-    if (dig == 3 && pos >= 0) {
+    if (dig == 2 && pos >= 0) {
       buffer[pos--] = ',';
       dig = 0;
     } else {
@@ -170,34 +169,59 @@ uint16_t calcHue(float hue, float br) {
   g = g * g * g * (g * (g * 6.0f - 15.0f) + 10.0f);
   b = b * b * b * (b * (b * 6.0f - 15.0f) + 10.0f);
   uint16_t redPart = 31 * r * br;
-  uint16_t grnPart = 63 * g * br;
+  uint16_t grnPart = 31 * g * br;
   uint16_t bluPart = 31 * b * br;
+  grnPart = ((grnPart >> 2) << 3) | (grnPart & 3);
   return (redPart << 11) | (grnPart << 5) | bluPart;
 }
 
 uint16_t color(uint16_t angle, uint8_t br) {
-  return calcHue(static_cast<float>(angle) / 359.0f, 15.0f);
+  return calcHue(static_cast<float>(angle) / 359.0f,
+                 static_cast<float>(br) / 255.0f);
+}
+
+uint16_t fixGreen(uint8_t g) {
+  return (((g >> 2) << 3) | (g & 3)) << 5;
+}
+
+void drawThing1() {
+  /*
+  for (int y = 0; y < 32; y++) {
+    for (int x = 0; x < 33; x++) {
+      display.fillRect(
+        x * 800 / 33, y * 480 / 32, 1 + 800 / 33, 1 + 480 / 32, (x + y) << 5);
+    }
+  }
+  */
+  for (int i = 0; i < 480; i++) {
+    display.drawRect(i, i, (800 - i * 3 / 2 ), (480 - i * 3 / 2), color(i % 360, 255));
+  }
+}
+
+void drawThing2() {
+  for (int i = 0; i < 480; i++) {
+    display.drawRect(i, i, (800 - i * 2), (480 - i * 2), color((479 - i) % 360, 191));
+  }
 }
 
 uint32_t last = 0;
 uint32_t count = 0;
 bool shown = false;
-
+// This was fun to slowly reverse engineer...
+// uint16_t greenVals[] = {0, 4, 1, 5, 2, 6, 3, 7};
 extern "C" void loop() {
   if (failed) {
     Serial.println("Failed, so not trying...");
-  } else if (!shown) {
-    showDir("/");
-    shown = true;
   }
+  if (!shown) {
+    // showDir("/");
+    drawThing1();
+  } else {
+    drawThing2();
+  }
+  shown = !shown;
   /*
   File root = SD.open("/");
   printDir(root, 0);
   */
-  // failed = true;
-  if (millis() - last > 50) {
-    count++;
-    display.fillScreen(color(count % 360, 31));
-    last = millis();
-  }
 }
