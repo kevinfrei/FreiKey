@@ -1,0 +1,32 @@
+{
+  "name": "freikey",
+  "version": "1.0.0",
+  "repository": "https://github.com/kevinfrei/FreiKey.git",
+  "author": "Kevin Frei <kevinfrei@hotmail.com>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "note": "putting stuff in here means you can run it from anywhere in the repo :)",
+    "format": "prettier --write  \"*.md\" \"*.json\" \"src/.vscode/*.json\" \".vscode/*.json\" \"src/tools/*.json\" && cd src && make format",
+    "make": "cd src && make",
+    "laptype": "cd src && make laptype",
+    "lt": "cd src && make laptype",
+    "ltf": "cd src && make laptypef",
+    "threepiece": "cd src && make threepiece",
+    "3pf": "cd src && make threepiecef",
+    "f3p": "cd src && make threepiecef",
+    "3p": "cd src && make threepiece",
+    "calc": "cd src && make calc",
+    "mock": "cd src && make mock",
+    "img": "cd src && make img",
+    "test": "cd src && make test",
+    "sd": "cd src && make sd",
+    "sdf": "cd src && make sdf",
+    "41": "cd src && make 41",
+    "41f": "cd src && make 41f",
+    "clean": "cd src && make clean"
+  },
+  "devDependencies": {
+    "prettier": "^2.7.1"
+  }
+}

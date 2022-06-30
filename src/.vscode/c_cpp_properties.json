@@ -1,128 +1,104 @@
 {
-    "env": {
-        "gccRoot": "/usr/local/opt/gcc-arm-none-eabi",
-        "gccVer": "8.3.2",
-        "srcRoot": "${workspaceFolder}",
-        "variableReference": "https://code.visualstudio.com/docs/editor/variables-reference",
-        "fileReference": "https://github.com/Microsoft/vscode-cpptools/blob/master/Documentation/LanguageServer/c_cpp_properties.json.md"
+  "env": {
+    "gccRoot": "/usr/local/opt/gcc-arm-none-eabi",
+    "gccVer": "8.3.2",
+    "srcRoot": "${workspaceFolder}",
+    "variableReference": "https://code.visualstudio.com/docs/editor/variables-reference",
+    "fileReference": "https://github.com/Microsoft/vscode-cpptools/blob/master/Documentation/LanguageServer/c_cpp_properties.json.md"
+  },
+  "configurations": [
+    {
+      "name": "Laptype-win",
+      "intelliSenseMode": "windows-gcc-arm",
+      "compileCommands": "${workspaceFolder}/out/laptype/compile_commands.json",
+      "browse": {
+        "path": ["${workspaceFolder}/out/laptype/"],
+        "databaseFilename": ""
+      }
     },
-    "configurations": [
-        {
-            "name": "Laptype-win",
-            "intelliSenseMode": "windows-gcc-arm",
-            "compileCommands": "${workspaceFolder}/out/laptype/compile_commands.json",
-            "browse": {
-                "path": [
-                    "${workspaceFolder}/out/laptype/"
-                ],
-                "databaseFilename": ""
-            }
-        },
-        {
-            "name": "Laptype-mac",
-            "intelliSenseMode": "macos-gcc-arm",
-            "compileCommands": "${workspaceFolder}/out/laptype/compile_commands.json",
-            "browse": {
-                "path": [
-                    "${workspaceFolder}/out/laptype/"
-                ],
-                "databaseFilename": ""
-            },
-            "configurationProvider": "ms-vscode.makefile-tools"
-        },
-        {
-            "name": "3piece-win",
-            "intelliSenseMode": "windows-gcc-arm",
-            "compileCommands": "${workspaceFolder}/out/threepiece/compile_commands.json",
-            "browse": {
-                "path": [
-                    "${workspaceFolder}/out/threepiece/"
-                ],
-                "databaseFilename": ""
-            }
-        },
-        {
-            "name": "3piece-mac",
-            "intelliSenseMode": "macos-gcc-arm",
-            "compileCommands": "${workspaceFolder}/out/threepiece/compile_commands.json",
-            "browse": {
-                "path": [
-                    "${workspaceFolder}/out/threepiece/"
-                ],
-                "databaseFilename": ""
-            },
-            "configurationProvider": "ms-vscode.makefile-tools"
-        },
-        {
-            "name": "Mock-mac",
-            "intelliSenseMode": "macos-clang-arm64",
-            "compileCommands": "${workspaceFolder}/out/mock-host/compile_commands.json",
-            "browse": {
-                "path": [
-                    "${workspaceFolder}/out/mock-host/"
-                ],
-                "databaseFilename": ""
-            }
-        },
-        {
-            "name": "Mock-win",
-            "intelliSenseMode": "clang-x64",
-            "compileCommands": "${workspaceFolder}/out/mock-host/compile_commands.json",
-            "browse": {
-                "path": [
-                    "${workspaceFolder}/out/mock-host/"
-                ],
-                "databaseFilename": ""
-            }
-        },
-        {
-            "name": "ImageComp (Win)",
-            "includePath": [
-                "${workspaceFolder}/include"
-            ],
-            "defines": [
-                "COMPRESSOR"
-            ],
-            "windowsSdkVersion": "10.0.19041.0",
-            "compilerPath": "C:\\Program Files\\LLVM\\bin\\clang.exe",
-            "cStandard": "c17",
-            "cppStandard": "c++17",
-            "intelliSenseMode": "windows-clang-x64"
-        },
-        {
-            "name": "ImageComp (Mac)",
-            "includePath": [
-                "${workspaceFolder}/include"
-            ],
-            "defines": [],
-            "cStandard": "c17",
-            "cppStandard": "c++17",
-            "intelliSenseMode": "macos-clang-arm64"
-        },
-        {
-            "name": "Calc (Win)",
-            "includePath": [
-                "${workspaceFolder}/include"
-            ],
-            "defines": [
-                "CALC_TEST"
-            ],
-            "windowsSdkVersion": "10.0.19041.0",
-            "compilerPath": "C:\\Program Files\\LLVM\\bin\\clang.exe",
-            "cStandard": "c11",
-            "cppStandard": "c++20",
-            "intelliSenseMode": "windows-clang-x64"
-        },
-        {
-            "name": "Calc (Mac)",
-            "includePath": [
-                "${workspaceFolder}/include"
-            ],
-            "defines": [],
-            "cStandard": "c11",
-            "cppStandard": "c++20",
-            "intelliSenseMode": "macos-clang-arm64"
-        }
-    ],
-    "version": 4
+    {
+      "name": "Laptype-mac",
+      "intelliSenseMode": "macos-gcc-arm",
+      "compileCommands": "${workspaceFolder}/out/laptype/compile_commands.json",
+      "browse": {
+        "path": ["${workspaceFolder}/out/laptype/"],
+        "databaseFilename": ""
+      },
+      "configurationProvider": "ms-vscode.makefile-tools"
+    },
+    {
+      "name": "3piece-win",
+      "intelliSenseMode": "windows-gcc-arm",
+      "compileCommands": "${workspaceFolder}/out/threepiece/compile_commands.json",
+      "browse": {
+        "path": ["${workspaceFolder}/out/threepiece/"],
+        "databaseFilename": ""
+      }
+    },
+    {
+      "name": "3piece-mac",
+      "intelliSenseMode": "macos-gcc-arm",
+      "compileCommands": "${workspaceFolder}/out/threepiece/compile_commands.json",
+      "browse": {
+        "path": ["${workspaceFolder}/out/threepiece/"],
+        "databaseFilename": ""
+      },
+      "configurationProvider": "ms-vscode.makefile-tools"
+    },
+    {
+      "name": "Mock-mac",
+      "intelliSenseMode": "macos-clang-arm64",
+      "compileCommands": "${workspaceFolder}/out/mock-host/compile_commands.json",
+      "browse": {
+        "path": ["${workspaceFolder}/out/mock-host/"],
+        "databaseFilename": ""
+      }
+    },
+    {
+      "name": "Mock-win",
+      "intelliSenseMode": "clang-x64",
+      "compileCommands": "${workspaceFolder}/out/mock-host/compile_commands.json",
+      "browse": {
+        "path": ["${workspaceFolder}/out/mock-host/"],
+        "databaseFilename": ""
+      }
+    },
+    {
+      "name": "ImageComp (Win)",
+      "includePath": ["${workspaceFolder}/include"],
+      "defines": ["COMPRESSOR"],
+      "windowsSdkVersion": "10.0.19041.0",
+      "compilerPath": "C:\\Program Files\\LLVM\\bin\\clang.exe",
+      "cStandard": "c17",
+      "cppStandard": "c++17",
+      "intelliSenseMode": "windows-clang-x64"
+    },
+    {
+      "name": "ImageComp (Mac)",
+      "includePath": ["${workspaceFolder}/include"],
+      "defines": [],
+      "cStandard": "c17",
+      "cppStandard": "c++17",
+      "intelliSenseMode": "macos-clang-arm64"
+    },
+    {
+      "name": "Calc (Win)",
+      "includePath": ["${workspaceFolder}/include"],
+      "defines": ["CALC_TEST"],
+      "windowsSdkVersion": "10.0.19041.0",
+      "compilerPath": "C:\\Program Files\\LLVM\\bin\\clang.exe",
+      "cStandard": "c11",
+      "cppStandard": "c++20",
+      "intelliSenseMode": "windows-clang-x64"
+    },
+    {
+      "name": "Calc (Mac)",
+      "includePath": ["${workspaceFolder}/include"],
+      "defines": [],
+      "cStandard": "c11",
+      "cppStandard": "c++20",
+      "intelliSenseMode": "macos-clang-arm64"
+    }
+  ],
+  "version": 4
 }

@@ -27,7 +27,7 @@
       "type": "lldb",
       "request": "launch",
       "name": "Debug Calculator",
-      "program": "${workspaceFolder}/out/calc/calculator",
+      "program": "${workspaceFolder}/out/calculator/calculator",
       "cwd": "${workspaceFolder}"
     }
   ]

@@ -1,8 +1,4 @@
 {
-  "transforms":[
-    [ "_CPP_FLAGS", "-std=gnu++11", "-std=gnu++17" ]
-  ],
-  "filters": [
-    [ "CPP_SYS_SRCS", "BLEMidi.cpp" ]
-  ]
+  "transforms": [["_CPP_FLAGS", "-std=gnu++11", "-std=gnu++17"]],
+  "filters": [["CPP_SYS_SRCS", "BLEMidi.cpp"]]
 }
