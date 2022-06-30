@@ -8,8 +8,9 @@
   "scripts": {
     "prepare": "husky install",
     "41": "cd src && make 41",
-    "note": "putting stuff in here means you can run it from anywhere in the repo :)",
+    "___": "putting stuff in here means you can run it from anywhere in the repo :)",
     "format": "prettier --write  \"*.md\" \"*.json\" \"src/.vscode/*.json\" \".vscode/*.json\" \"src/tools/*.json\" && cd src && make format",
+    "__ ": "You can pass extra args in by doing 'yarn make -- <args>",
     "make": "cd src && make",
     "laptype": "cd src && make laptype",
     "lt": "cd src && make laptype",
