@@ -6,6 +6,8 @@
   "license": "MIT",
   "private": false,
   "scripts": {
+    "prepare": "husky install",
+    "41": "cd src && make 41",
     "note": "putting stuff in here means you can run it from anywhere in the repo :)",
     "format": "prettier --write  \"*.md\" \"*.json\" \"src/.vscode/*.json\" \".vscode/*.json\" \"src/tools/*.json\" && cd src && make format",
     "make": "cd src && make",
@@ -22,11 +24,11 @@
     "test": "cd src && make test",
     "sd": "cd src && make sd",
     "sdf": "cd src && make sdf",
-    "41": "cd src && make 41",
     "41f": "cd src && make 41f",
     "clean": "cd src && make clean"
   },
   "devDependencies": {
+    "husky": "^8.0.1",
     "prettier": "^2.7.1"
   }
 }
