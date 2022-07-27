@@ -1,0 +1,26 @@
+System State:
+Caps/Num/Scroll Lock?
+Cur Time
+Switch states/time
+Layer state
+
+Extensions:
+    Screen(s)
+    Storage
+    LED's
+
+Modules:
+    Edit Line
+    Images
+    Menu
+    Calculator
+    Apple IIe/6502 Emulator
+    Games
+
+Games:
+        Tetris
+        Snake
+        Bubble Popper?
+        Traffic?
+        Sudoku?
+
