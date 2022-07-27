@@ -1,0 +1,53 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build",
+      "type": "shell",
+      "command": "yarn make",
+      "problemMatcher": "$gcc",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "options": { "cwd": "${workspaceFolder}/src" }
+    },
+    {
+      "label": "Clean",
+      "type": "shell",
+      "command": "yarn clean",
+      "problemMatcher": "$gcc",
+      "group": "build"
+    },
+    {
+      "label": "Make 3-Piece",
+      "type": "shell",
+      "command": "yarn threepiece",
+      "problemMatcher": "$gcc",
+      "group": "build"
+    },
+    {
+      "label": "Make Laptype",
+      "type": "shell",
+      "command": "yarn laptype",
+      "problemMatcher": "$gcc",
+      "group": "build"
+    },
+    {
+      "label": "Flash 3-Piece",
+      "type": "shell",
+      "command": "yarn 3pf",
+      "problemMatcher": "$gcc",
+      "group": "build"
+    },
+    {
+      "label": "Flash Laptype",
+      "type": "shell",
+      "command": "yarn ltf",
+      "problemMatcher": "$gcc",
+      "group": "build"
+    }
+  ]
+}

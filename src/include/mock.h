@@ -153,5 +153,8 @@ class KeyboardMock {
   void set_key6(uint8_t);
   void set_modifier(uint8_t);
   void send_now();
+  void print(const char*);
+  void print(char);
+  void print(int);
 };
 extern KeyboardMock Keyboard;

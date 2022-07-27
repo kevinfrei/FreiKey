@@ -10,18 +10,18 @@
     {
       "name": "Laptype-win",
       "intelliSenseMode": "windows-gcc-arm",
-      "compileCommands": "${workspaceFolder}/out/laptype/compile_commands.json",
+      "compileCommands": "${workspaceFolder}/src/out/laptype/compile_commands.json",
       "browse": {
-        "path": ["${workspaceFolder}/out/laptype/"],
+        "path": ["${workspaceFolder}/src/out/laptype/"],
         "databaseFilename": ""
       }
     },
     {
       "name": "Laptype-mac",
       "intelliSenseMode": "macos-gcc-arm",
-      "compileCommands": "${workspaceFolder}/out/laptype/compile_commands.json",
+      "compileCommands": "${workspaceFolder}/src/out/laptype/compile_commands.json",
       "browse": {
-        "path": ["${workspaceFolder}/out/laptype/"],
+        "path": ["${workspaceFolder}/src/out/laptype/"],
         "databaseFilename": ""
       },
       "configurationProvider": "ms-vscode.makefile-tools"
@@ -29,18 +29,18 @@
     {
       "name": "3piece-win",
       "intelliSenseMode": "windows-gcc-arm",
-      "compileCommands": "${workspaceFolder}/out/threepiece/compile_commands.json",
+      "compileCommands": "${workspaceFolder}/src/out/threepiece/compile_commands.json",
       "browse": {
-        "path": ["${workspaceFolder}/out/threepiece/"],
+        "path": ["${workspaceFolder}/src/out/threepiece/"],
         "databaseFilename": ""
       }
     },
     {
       "name": "3piece-mac",
       "intelliSenseMode": "macos-gcc-arm",
-      "compileCommands": "${workspaceFolder}/out/threepiece/compile_commands.json",
+      "compileCommands": "${workspaceFolder}/src/out/threepiece/compile_commands.json",
       "browse": {
-        "path": ["${workspaceFolder}/out/threepiece/"],
+        "path": ["${workspaceFolder}/src/out/threepiece/"],
         "databaseFilename": ""
       },
       "configurationProvider": "ms-vscode.makefile-tools"
@@ -48,24 +48,20 @@
     {
       "name": "Mock-mac",
       "intelliSenseMode": "macos-clang-arm64",
-      "compileCommands": "${workspaceFolder}/out/mock-host/compile_commands.json",
+      "compileCommands": "${workspaceFolder}/src/out/mock-host/compile_commands.json",
       "browse": {
-        "path": ["${workspaceFolder}/out/mock-host/"],
+        "path": ["${workspaceFolder}/src/out/mock-host/"],
         "databaseFilename": ""
       }
     },
     {
       "name": "Mock-win",
       "intelliSenseMode": "clang-x64",
-      "compileCommands": "${workspaceFolder}/out/mock-host/compile_commands.json",
-      "browse": {
-        "path": ["${workspaceFolder}/out/mock-host/"],
-        "databaseFilename": ""
-      }
+      "compileCommands": "${workspaceFolder}/src/out/mock-host/compile_commands.json"
     },
     {
       "name": "ImageComp (Win)",
-      "includePath": ["${workspaceFolder}/include"],
+      "includePath": ["${workspaceFolder}/src/include"],
       "defines": ["COMPRESSOR"],
       "windowsSdkVersion": "10.0.19041.0",
       "compilerPath": "C:\\Program Files\\LLVM\\bin\\clang.exe",
@@ -75,7 +71,7 @@
     },
     {
       "name": "ImageComp (Mac)",
-      "includePath": ["${workspaceFolder}/include"],
+      "includePath": ["${workspaceFolder}/src/include"],
       "defines": [],
       "cStandard": "c17",
       "cppStandard": "c++17",
@@ -83,7 +79,7 @@
     },
     {
       "name": "Calc (Win)",
-      "includePath": ["${workspaceFolder}/include"],
+      "includePath": ["${workspaceFolder}/src/include"],
       "defines": ["CALC_TEST"],
       "windowsSdkVersion": "10.0.19041.0",
       "compilerPath": "C:\\Program Files\\LLVM\\bin\\clang.exe",
@@ -93,7 +89,7 @@
     },
     {
       "name": "Calc (Mac)",
-      "includePath": ["${workspaceFolder}/include"],
+      "includePath": ["${workspaceFolder}/src/include"],
       "defines": [],
       "cStandard": "c11",
       "cppStandard": "c++20",

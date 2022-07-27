@@ -138,6 +138,9 @@ void KeyboardMock::set_key5(uint8_t) {}
 void KeyboardMock::set_key6(uint8_t) {}
 void KeyboardMock::set_modifier(uint8_t) {}
 void KeyboardMock::send_now() {}
+void KeyboardMock::print(const char*) {}
+void KeyboardMock::print(char) {}
+void KeyboardMock::print(int) {}
 
 void BoardIO::Configure() {
   switches.reset();

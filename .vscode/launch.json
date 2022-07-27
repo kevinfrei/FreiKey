@@ -8,7 +8,7 @@
       "name": "Debug Tetris (win)",
       "type": "cppvsdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/out/tetris/tetris.exe",
+      "program": "${workspaceFolder}/src/out/tetris/tetris.exe",
       "args": [],
       "stopAtEntry": false,
       "cwd": "${fileDirname}",
@@ -19,7 +19,7 @@
       "type": "lldb",
       "request": "launch",
       "name": "Debug ImageComp",
-      "program": "${workspaceFolder}/out/imagecomp",
+      "program": "${workspaceFolder}/src/out/imagecomp",
       "args": ["-w:174", "-h:174", "bitmaps/love.bin"],
       "cwd": "${workspaceFolder}"
     },
@@ -27,7 +27,7 @@
       "type": "lldb",
       "request": "launch",
       "name": "Debug Calculator",
-      "program": "${workspaceFolder}/out/calculator/calculator",
+      "program": "${workspaceFolder}/src/out/calculator/calculator",
       "cwd": "${workspaceFolder}"
     }
   ]
