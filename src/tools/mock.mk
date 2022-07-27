@@ -117,7 +117,7 @@ ifeq ($(OS),Windows_NT)
 	@echo {}] >> $@
 else
 	@echo "[" > $@.tmp
-	@sed -e "s/ / /" $^ >> $@.tmp
+	@cat $^ >> $@.tmp
 	@echo "]" >> $@.tmp
 	@sed -e ':a' -e 'N' -e '$$!ba' -e 's/},\n]/}]/g' $@.tmp > $@
 endif
