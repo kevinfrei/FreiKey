@@ -6,12 +6,11 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "41": "cd src && make 41",
     "prepare": "husky install",
     "___": "putting stuff in here means you can run it from anywhere in the repo :)",
     "format": "prettier --write  \"*.md\" \"*.json\" \"*.js\" \".vscode/*.json\" \"src/tools/*.json\" && cd src && make format",
     "fixcc": "node fix_compile_commands.js",
-    "__ ": "You can pass extra args in by doing 'yarn make -- <args>",
+    "__ ": "You can pass extra args in by doing 'yarn make -- <args>' - Actually, I don't think this works with the follow-on fixcc",
     "make": "cd src && make && yarn fixcc",
     "laptype": "cd src && make laptype && yarn fixcc",
     "lt": "cd src && make laptype && yarn fixcc",
@@ -27,6 +26,7 @@
     "sd": "cd src && make sd && yarn fixcc",
     "sdf": "cd src && make sdf && yarn fixcc",
     "41f": "cd src && make 41f && yarn fixcc",
+    "41": "cd src && make 41",
     "clean": "cd src && make clean"
   },
   "devDependencies": {

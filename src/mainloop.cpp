@@ -59,3 +59,18 @@ extern "C" void loop() {
     mode = newmode;
   }
 }
+
+/*
+Pseudocode:
+
+SystemState newLoop(SystemState &systemState) {
+  KeyState keyState = acquireCurrentKeyState();
+  LayerState layerState = determineLayer(keyState, &systemState);
+  ActionList actionList = calculateActions(keyState, layerState, &systemState);
+  OutputActions outputActions = aggregateActions(actionList, &systemState);
+  performLocalActions(outputActions.local, &systemState);
+  reportKeyboardActions(outputActions.keyboard);
+  return systemState;
+}
+
+*/

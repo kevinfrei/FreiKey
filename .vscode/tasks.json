@@ -36,6 +36,13 @@
       "group": "build"
     },
     {
+      "label": "Make 41",
+      "type": "shell",
+      "command": "yarn 41",
+      "problemMatcher": "$gcc",
+      "group": "build"
+    },
+    {
       "label": "Flash 3-Piece",
       "type": "shell",
       "command": "yarn 3pf",
@@ -46,6 +53,13 @@
       "label": "Flash Laptype",
       "type": "shell",
       "command": "yarn ltf",
+      "problemMatcher": "$gcc",
+      "group": "build"
+    },
+    {
+      "label": "Flash 41",
+      "type": "shell",
+      "command": "yarn 41f",
       "problemMatcher": "$gcc",
       "group": "build"
     }
