@@ -1,26 +1,38 @@
 System State:
-Caps/Num/Scroll Lock?
-Cur Time
-Switch states/time
-Layer state
+  Caps/Num/Scroll Lock?
+  Cur Time
+  Switch states/time
+  Layer state
 
 Extensions:
-    Screen(s)
-    Storage
-    LED's
+  Screen(s)
+  Storage
+  LED's
 
 Modules:
-    Edit Line
-    Images
-    Menu
-    Calculator
-    Apple IIe/6502 Emulator
-    Games
+  Edit Line
+  Images
+  Menu
+  Calculator
+  Apple IIe/6502 Emulator
+  Games
 
 Games:
-        Tetris
-        Snake
-        Bubble Popper?
-        Traffic?
-        Sudoku?
+  Tetris
+  Snake
+  Bubble Popper?
+  Traffic?
+  Sudoku?
 
+KeyMatrix/RemoteMatrix static stuff:
+  uint8_t matrix_size;
+  typedef std::bitset<K> bits;
+  void Configure();
+  bits Read();
+
+BoardIO:
+  void Configure();
+  void Changed(time, state)
+  void Tick(time)
+  KeyboardMode Mode(time, curMode)
+  void Reset(State)

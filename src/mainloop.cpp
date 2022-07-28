@@ -60,11 +60,75 @@ extern "C" void loop() {
   }
 }
 
-/*
-Pseudocode:
+// New 'thing'
+struct KeyState {
+  static KeyState acquire() {
+    return KeyState{};
+  }
+};
 
-SystemState newLoop(SystemState &systemState) {
-  KeyState keyState = acquireCurrentKeyState();
+struct KeyboardInput {
+  bool needsReported() const {
+    return true;
+  }
+};
+
+// TODO: Fix these, as they aren't correct
+constexpr uint8_t num_switches = 76;
+constexpr uint8_t max_layers = 16;
+
+using LayerStates = std::array<layer_num, max_layers>;
+using SwitchStates = std::array<uint32_t, num_switches>;
+
+struct SystemState {
+  uint32_t curMillis;
+  uint8_t capslock : 1;
+  uint8_t numlock : 1;
+  uint8_t scrollLock : 1;
+  KeyboardMode mode : 5; // THere are up to 32 modes, right?
+  LayerStates layers;
+  SwitchStates switches;
+};
+
+struct ActionResult {
+  KeyboardInput input;
+  SystemState state;
+};
+
+ActionResult determineAction(const KeyState&, const SystemState&) {
+  return ActionResult{};
+}
+void reportInput(const KeyboardInput&) {}
+
+SystemState normalLoop(const SystemState& systemState) {
+  KeyState keyState = KeyState::acquire();
+  ActionResult actionResult = determineAction(keyState, systemState);
+  if (actionResult.input.needsReported()) {
+    reportInput(actionResult.input);
+  }
+  return actionResult.state;
+}
+
+SystemState modeLoop(const SystemState& systemState) {
+  /* TODO: Continue from here
+      auto newmode = runMode(systemState);
+      if (newmode == KeyboardMode::Normal) {
+        resetAndClear();
+      }
+      */
+  return systemState;
+}
+
+SystemState state;
+void newMasterLoop() {
+  state = normalLoop(state);
+  while (state.mode != KeyboardMode::Normal) {
+    state = modeLoop(state);
+  }
+}
+
+/*
+ActionResult determineAction(SystemState) {
   LayerState layerState = determineLayer(keyState, &systemState);
   ActionList actionList = calculateActions(keyState, layerState, &systemState);
   OutputActions outputActions = aggregateActions(actionList, &systemState);
@@ -72,5 +136,4 @@ SystemState newLoop(SystemState &systemState) {
   reportKeyboardActions(outputActions.keyboard);
   return systemState;
 }
-
 */
