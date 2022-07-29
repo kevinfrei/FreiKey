@@ -57,7 +57,7 @@ out/${MODNAME}:
 ifeq ($(OS),Windows_NT)
 	@if not exist $(call MKDIRPATH, ${DESTDIR}) mkdir $(call MKDIRPATH,${DESTDIR}) 2> NUL 1> NUL
 else
-	test -d ${DESTDIR} || mkdir p ${DESTDIR} 2>&1 > /dev/null
+	test -d ${DESTDIR} || mkdir -p ${DESTDIR} 2>&1 > /dev/null
 endif
 
 CPP_OBJS = $(addprefix ${DESTDIR}, $(patsubst %.cpp, %.${OSUFFIX}, ${CPP_SRC}))
