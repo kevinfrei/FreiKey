@@ -1,13 +1,7 @@
-System State:
-  Caps/Num/Scroll Lock?
-  Cur Time
-  Switch states/time
-  Layer state
-
 Extensions:
-  Screen(s)
-  Storage
   LED's
+  Display(s)
+  Storage
 
 Modules:
   Edit Line
@@ -15,14 +9,12 @@ Modules:
   Menu
   Calculator
   Apple IIe/6502 Emulator
-  Games
-
-Games:
-  Tetris
-  Snake
-  Bubble Popper?
-  Traffic?
-  Sudoku?
+  Games:
+    Tetris
+    Snake
+    Bubble Popper?
+    Traffic?
+    Sudoku?
 
 KeyMatrix/RemoteMatrix static stuff:
   uint8_t matrix_size;
@@ -36,3 +28,5 @@ BoardIO:
   void Tick(time)
   KeyboardMode Mode(time, curMode)
   void Reset(State)
+
+

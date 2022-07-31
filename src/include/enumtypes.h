@@ -54,3 +54,14 @@ enum class KeyboardMode : uint8_t {
   Diagnostics, // Maybe?
   NumElems
 };
+
+enum class ModuleId : uint8_t {
+  // These are all the random modules that are available
+  LineEditor,
+  Display, // Maybe different displays?
+  Calculator,
+  Image,
+  Menu,
+  Snake,
+  Tetris
+};
