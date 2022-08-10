@@ -25,8 +25,8 @@
     "test": "cd src && make test && yarn fixcc",
     "sd": "cd src && make sd && yarn fixcc",
     "sdf": "cd src && make sdf && yarn fixcc",
+    "41": "cd src && make 41 && yarn fixcc",
     "41f": "cd src && make 41f && yarn fixcc",
-    "41": "cd src && make 41",
     "clean": "cd src && make clean"
   },
   "devDependencies": {
