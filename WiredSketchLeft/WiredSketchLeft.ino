@@ -1,4 +1,6 @@
+// This include is to work around an issue with linking with some Adafruit libraries
 #include "Adafruit_TinyUSB.h"
+// This one is actually *used*
 #include <Adafruit_DotStar.h>
 
 // This runs on Adafruit nRF52840 devices
