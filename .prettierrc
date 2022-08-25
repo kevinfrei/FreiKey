@@ -4,5 +4,15 @@
   "singleQuote": true,
   "proseWrap": "always",
   "tabWidth": 2,
-  "useTabs": false
+  "useTabs": false,
+  "overrides": [
+    {
+      "files": ".prettierrc",
+      "options": { "parser": "json" }
+    },
+    {
+      "files": "*.json",
+      "options": { "parser": "json" }
+    }
+  ]
 }

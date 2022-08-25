@@ -1,6 +1,14 @@
 {
   "transforms": [
-    ["_FLAGS_CPP", "-std=gnu++14", "-std=gnu++17"],
-    ["_FLAGS_CPP", "-std=gnu++11", "-std=gnu++17"]
+    {
+      "defmatch": "_FLAGS_CPP",
+      "text": "-std=gnu++14",
+      "replace": "-std=gnu++17"
+    },
+    {
+      "defmatch": "_FLAGS_CPP",
+      "text": "-std=gnu++11",
+      "replace": "-std=gnu++17"
+    }
   ]
 }
