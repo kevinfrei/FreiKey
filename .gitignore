@@ -33,6 +33,7 @@
 *.out
 *.app
 
+
 # Custom
 src/out-*
 src/Makefile
@@ -40,3 +41,6 @@ src/out*
 src/.vs
 src/*.bin
 src/include/secrets.h
+
+# Cmake build directories
+**/build
