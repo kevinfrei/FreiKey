@@ -23,7 +23,7 @@ set(targettriple arm-none-eabi)
 
 # *Prepended* to the search directories
 if(CMAKE_HOST_WIN32)
-  set(CMAKE_FIND_ROOT_PATH "c:/program files (x86)/Arm GNU Toolchain arm-none-eabi" "c:/program files (x86)/Arduino/hardware/tools/arm")
+  set(CMAKE_FIND_ROOT_PATH "c:/program files (x86)/Arm GNU Toolchain arm-none-eabi/11.2 2022.02" "c:/program files (x86)/Arduino/hardware/tools/arm")
   set(CMAKE_C_COMPILER "c:/program files (x86)/Arm GNU Toolchain arm-none-eabi/11.2 2022.02/bin/arm-none-eabi-gcc.exe")
   set(CMAKE_CXX_COMPILER "c:/program files (x86)/Arm GNU Toolchain arm-none-eabi/11.2 2022.02/bin/arm-none-eabi-g++.exe")
   set(ARDUINO_ADAFRUIT_DIR "$ENV{HOME}/AppData/Local/Arduino15/packages/adafruit")
@@ -32,7 +32,7 @@ if(CMAKE_HOST_WIN32)
 # set (CMAKE_CXX_COMPILER g++)
 elseif(CMAKE_HOST_APPLE)
   # Definitely wrong currently
-  set(CMAKE_FIND_ROOT_PATH "$ENV{HOME}/Library/Arduino15/packages/adafruit/tools/arm-none-eabi-gcc")
+  set(CMAKE_FIND_ROOT_PATH "$ENV{HOME}/Library/Arduino15/packages/adafruit/tools/arm-none-eabi-gcc/9-2019q4/")
   set(CMAKE_C_COMPILER "$ENV{HOME}/Library/Arduino15/packages/adafruit/tools/arm-none-eabi-gcc/9-2019q4/bin/arm-none-eabi-gcc")
   set(CMAKE_CXX_COMPILER "$ENV{HOME}/Library/Arduino15/packages/adafruit/tools/arm-none-eabi-gcc/9-2019q4/bin/arm-none-eabi-g++")
   set(ARDUINO_ADAFRUIT_DIR "$ENV{HOME}/Library/Arduino15/packages/adafruit")

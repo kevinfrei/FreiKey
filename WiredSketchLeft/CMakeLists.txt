@@ -28,3 +28,7 @@ set_source_files_properties(${MY_SOURCE_FILES} PROPERTIES LANGUAGE CXX)
 add_definitions("-x c++")
 
 add_executable(leftFirmware ${MY_SOURCE_FILES})
+
+# This should let me create a Flash target :)
+# ninja Test (case sensitive!) echos "Hello-there"
+add_custom_target(Test echo Hello-there)
