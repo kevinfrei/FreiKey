@@ -16,7 +16,7 @@ set(CMKARD_SERIAL_PORT_LABEL ${CMKARD_SERIAL_PORT})
 set(CMKARD_SERIAL_PORT_PROTOCOL serial)
 
 # Must be before the project command:
-set(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/../Toolchain-Adafruit-nRF52480.cmake)
+set(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/../Toolchain-Teensy40.cmake)
 
 project(LeftKeyboardClientWire)
 

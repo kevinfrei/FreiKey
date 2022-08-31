@@ -14,6 +14,9 @@ set(CMAKE_SYSTEM_VERSION 1.8.19)
 # generated & installed in a global (or user-global) location, right?
 set(CMAKE_SYSTEM_PROCESSOR Teensy40)
 
+function(set_board boardName inUsb inSpeed inOpt inKeys)
+  set(CMKARD_)
+endfunction(set_board boardName inUsb inSpeed inOpt inKeys)
 # You can use CMAKE_HOST_* (SYSTEM/SYSTEM_NAME/SYST EM_VERSION/SYSTEM_PROCESSOR/WIN32/UNIX/APPLE)
 # for host dependent stuff in here if you want...
 
