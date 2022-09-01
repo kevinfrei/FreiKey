@@ -16,11 +16,11 @@ set(CMKARD_SERIAL_PORT_LABEL ${CMKARD_SERIAL_PORT})
 set(CMKARD_SERIAL_PORT_PROTOCOL serial)
 
 # Must be before the project command:
-set(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/tools/Toolchain-Teensy40.cmake)
+set(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/tools/Toolchain-Teensy40-bare.cmake)
 
 project(Laptype)
 
-set(MY_SOURCE_FILES
+add_executable(Laptype
   dbgcfg.cpp
   kbreporter.cpp
   mainloop.cpp
@@ -29,13 +29,6 @@ set(MY_SOURCE_FILES
   modulekeyboard.cpp
   laptype.cpp
 )
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/tools/teensy40)
-
-# It's annoying that I can't configure this in the toolchain file
-# This makes .ino files compile as C++ files
-# set_source_files_properties(${MY_SOURCE_FILES} PROPERTIES LANGUAGE CXX)
-# add_definitions("-x c++")
-add_executable(Laptype ${MY_SOURCE_FILES})
 target_include_directories(Laptype
   AFTER PRIVATE
   ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -44,3 +37,10 @@ target_include_directories(Laptype
   ${CMAKE_CURRENT_SOURCE_DIR}/include/localscan
 )
 target_link_libraries(Laptype PRIVATE teensy4corelib)
+
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/tools/teensy40)
+
+# It's annoying that I can't configure this in the toolchain file
+# This makes .ino files compile as C++ files
+# set_source_files_properties(${MY_SOURCE_FILES} PROPERTIES LANGUAGE CXX)
+# add_definitions("-x c++")

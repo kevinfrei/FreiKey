@@ -88,7 +88,7 @@ elseif(${CMKARD_IN_OPT} EQUAL o3std)
 elseif(${CMKARD_IN_OPT} EQUAL ogstd)
   set(CMKARD_BUILD_FLAGS_OPTIMIZE -Og)
 elseif(${CMKARD_IN_OPT} EQUAL osstd)
-  set(CMKARD_BUILD_FLAGS_OPTIMIZE=-Os --specs nano.specs)
+  set(CMKARD_BUILD_FLAGS_OPTIMIZE -Os --specs nano.specs)
 endif()
 
 if(${CMKARD_IN_KEYS} EQUAL en-us)
