@@ -6,7 +6,6 @@
 #include "display.h"
 #include "enumhelpers.h"
 #include "enumtypes.h"
-#include "image.h"
 #include "keymap.h"
 
 namespace disp {

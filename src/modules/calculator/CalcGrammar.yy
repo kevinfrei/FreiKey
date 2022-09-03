@@ -12,8 +12,9 @@ int yylex(void);
 
 %no-lines
 
-%defines "include/CalcParser.h"
-%output "CalcParser.cpp"
+// CMake handles setting these things, which is very handy, honestly
+// %defines "include/CalcParser.h"
+// %output "CalcParser.cpp"
 
 %code requires {
 #include "CalcExpr.h"

@@ -18,5 +18,4 @@
 
 struct image_descriptor;
 
-void drawImage(const image_descriptor* id, uint16_t x, uint16_t y);
 void ShowImage(const image_descriptor* img);

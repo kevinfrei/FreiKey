@@ -17,6 +17,7 @@ endmacro(add_arduino_library)
 # This is the set of menu options for the teensy40 board
 macro(teensy40_menu_selections A2CM_IN_USB A2CM_IN_SPEED A2CM_IN_OPT A2CM_IN_KEYS)
   set(A2CM_BUILD_BOARD, TEENSY40)
+
   if(${A2CM_IN_USB} STREQUAL serial)
     set(A2CM_BUILD_USBTYPE USB_SERIAL)
   elseif(${A2CM_IN_USB} STREQUAL serial2)
@@ -168,5 +169,6 @@ macro(teensy40_menu_selections A2CM_IN_USB A2CM_IN_SPEED A2CM_IN_OPT A2CM_IN_KEY
   else()
     message(FATAL_ERROR "Invalid A2CM_IN_KEYS (4th) argument to arduino_menu_selections")
   endif()
+
   # message(NOTICE "Cur Location: ${CMAKE_CURRENT_SOURCE_DIR}")
 endmacro(teensy40_menu_selections)
