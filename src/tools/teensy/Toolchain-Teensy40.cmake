@@ -11,10 +11,14 @@ set(CMAKE_SYSTEM_PROCESSOR Teensy40)
 # You can use CMAKE_HOST_* (SYSTEM/SYSTEM_NAME/SYST EM_VERSION/SYSTEM_PROCESSOR/WIN32/UNIX/APPLE)
 # for host dependent stuff in here if you want...
 if(CMAKE_HOST_WIN32)
+  message(NOTICE "Selecting Windows globally installed ARM EABI None toolchain")
   set(TOOLCHAIN_ROOT_LOCATION "c:/program files (x86)/Arm GNU Toolchain arm-none-eabi/11.2 2022.02/bin")
   set(HOST_EXE_SUFFIX .exe)
+  set(A2CM_RUNTIME_PLATFORM_PATH "c:/program files (x86)/Arduino/hardware/teensy/avr")
 elseif(CMAKE_HOST_APPLE)
   set(TOOLCHAIN_ROOT_LOCATION "$ENV{HOME}/Library/Arduino15/packages/adafruit/tools/arm-none-eabi-gcc/9-2019q4/bin")
+  # This is wrong:
+  set(A2CM_RUNTIME_PLATFORM_PATH "/Applications/Teensyduino.app/Contents/MacOS/Arduino/hardware/teensy/avr")
 elseif(CMAKE_HOST_UNIX)
   # Definitely wrong currently
   set(TOOLCHAIN_ROOT_LOCATION "$ENV{HOME}/.arduino")
@@ -38,31 +42,25 @@ set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 
-set(CMKARD_BUILD_BOARD TEENSY40)
-set(CMKARD_RUNTIME_IDE_VERSION 1.8.19)
-
 # And now, the initial compiler flags to be used
-set(TMP_ASM_FLAGS
+set(A2CM_ASM_FLAGS
   -x assembler-with-cpp
-  -DARDUINO=${CMKARD_RUNTIME_IDE_VERSION}
-  -DARDUINO_${CMKARD_BUILD_BOARD}
 )
-string(JOIN " " CMAKE_ASM_FLAGS_INIT ${TMP_ASM_FLAGS})
-set(TMP_CXX_FLAGS
+string(JOIN " " CMAKE_ASM_FLAGS_INIT ${A2CM_ASM_FLAGS})
+set(A2CM_CXX_FLAGS
   -fno-exceptions
   -fpermissive
   -fno-rtti
   -fno-threadsafe-statics
   -felide-constructors
   -Wno-error=narrowing
-  -DARDUINO=${CMKARD_RUNTIME_IDE_VERSION}
-  -DARDUINO_${CMKARD_BUILD_BOARD}
 )
-string(JOIN " " CMAKE_CXX_FLAGS_INIT ${TMP_CXX_FLAGS})
-set(TMP_C_FLAGS
+string(JOIN " " CMAKE_CXX_FLAGS_INIT ${A2CM_CXX_FLAGS})
+set(A2CM_C_FLAGS
   -Wno-error=narrowing
-  -DARDUINO=${CMKARD_RUNTIME_IDE_VERSION}
-  -DARDUINO_${CMKARD_BUILD_BOARD}
 )
-string(JOIN " " CMAKE_C_FLAGS_INIT ${TMP_C_FLAGS})
-set(CMAKE_EXE_LINKER_FLAGS_INIT "-larm_cortexM7lfsp_math -lm -lstdc++")
+string(JOIN " " CMAKE_C_FLAGS_INIT ${A2CM_C_FLAGS})
+#set(A2CM_EXE_LINKER_FLAGS  
+#  \"-T${A2CM_RUNTIME_PLATFORM_PATH}cores/teensy4/imxrt1062_mm.ld\"
+#)
+set(CMAKE_EXE_LINKER_FLAGS_INIT -Wl,--gc-sections,--relax)
