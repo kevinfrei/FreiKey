@@ -1,5 +1,6 @@
-#include "EEPROM.h"
 #include "sysstuff.h"
+
+#include "EEPROM.h"
 #include <array>
 
 #include "Calculator.h"
