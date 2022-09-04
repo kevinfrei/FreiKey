@@ -6,6 +6,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
+    "41": "cd src && make 41 && yarn fixcc",
     "prepare": "husky install",
     "___": "putting stuff in here means you can run it from anywhere in the repo :)",
     "format": "prettier --write  \"*.md\" \"*.json\" \"*.js\" \".vscode/*.json\" \"src/tools/*.json\" && cd src && make format",
@@ -25,12 +26,14 @@
     "test": "cd src && make test && yarn fixcc",
     "sd": "cd src && make sd && yarn fixcc",
     "sdf": "cd src && make sdf && yarn fixcc",
-    "41": "cd src && make 41 && yarn fixcc",
     "41f": "cd src && make 41f && yarn fixcc",
-    "clean": "cd src && make clean"
+    "clean": "cd src && make clean",
+    "cmake": "rimraf build && cmake -S src -B build -G Ninja -DCMAKE_TOOLCHAIN_FILE=tools/toolchains/Teensy40.cmake",
+    "build": "cd build && ninja"
   },
   "devDependencies": {
     "husky": "^8.0.1",
-    "prettier": "^2.7.1"
+    "prettier": "^2.7.1",
+    "rimraf": "^3.0.2"
   }
 }

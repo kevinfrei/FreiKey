@@ -14,6 +14,22 @@ macro(add_arduino_library libname hdrPath)
   endif()
 endmacro(add_arduino_library)
 
+macro(add_arduino_executable binary)
+  add_executable(${binary} ${ARGN})
+  string(REGEX REPLACE "\.elf$" "" RAW_TARGET_${binary} ${binary})
+  add_custom_target(
+  ${RAW_TARGET_${binary}}.hex
+  ALL
+  ${CMAKE_OBJCOPY}
+  -O ihex
+  -R .eeprom
+  ${CMAKE_CURRENT_BINARY_DIR}/${binary}
+  ${RAW_TARGET_${binary}}.hex
+  DEPENDS ${binary}
+  VERBATIM
+)
+endmacro()
+
 # This is the set of menu options for the teensy40 board
 macro(teensy40_menu_selections A2CM_IN_USB A2CM_IN_SPEED A2CM_IN_OPT A2CM_IN_KEYS)
   set(A2CM_BUILD_BOARD, TEENSY40)
