@@ -17,7 +17,7 @@ endif()
 # I guess I could make a static library, but OBJECT feels consistent...
 add_library(
   teensy4_syslib
-  OBJECT
+  STATIC
   ${TEENSY4_LIB_ROOT_DIR}/analog.c
   ${TEENSY4_LIB_ROOT_DIR}/bootdata.c
   ${TEENSY4_LIB_ROOT_DIR}/clockspeed.c
@@ -101,6 +101,7 @@ add_library(
   ${TEENSY4_LIB_ROOT_DIR}/memcpy-armv7m.S
   ${TEENSY4_LIB_ROOT_DIR}/memset.S
 )
+
 #[[
 BUILD_MCU=imxrt1062
 BUILD_CORE=teensy4
@@ -117,7 +118,6 @@ REWRITING=disabled
 VERSION=1.8.5
 NAME=Teensyduino
 ]]
-
 target_include_directories(
   teensy4_syslib
   PUBLIC
@@ -142,7 +142,7 @@ target_compile_options(
   -Wall
   -ffunction-sections
   -fdata-sections
-  -nostdlib 
+  -nostdlib
   -MMD
   -mthumb
   -mcpu=cortex-m7
@@ -152,10 +152,29 @@ target_compile_options(
   ${BUILD_FLAGS_CPP}
   ${BUILD_FLAGS_S}
 )
+target_compile_features(teensy4_syslib PUBLIC cxx_std_14)
+target_link_options(
+  teensy4_syslib
+  PUBLIC
+  -mthumb
+  -mcpu=cortex-m7
+  -mfloat-abi=hard
+  -mfpu=fpv5-d16
+  -Wl,--gc-sections,--relax
+  -fno-exceptions
+  -fpermissive
+  -fno-rtti
+  -fno-threadsafe-statics
+  -felide-constructors
+  -Wno-error=narrowing
+  "-T${A2CM_TEENSY4_LIB_ROOT_DIR}/imxrt1062.ld"
+)
+find_library(ARM_MATH_LIB arm_cortexM7lfsp_math "${A2CM_RUNTIME_PLATFORM_PATH}/../../tools/arm/arm-none-eabi/lib")
+message(NOTICE "Location: ${ARM_MATH_LIB} (from ${A2CM_RUNTIME_PLATFORM_PATH}/../../tools/arm/arm-none-eabi/lib)")
 target_link_libraries(
   teensy4_syslib
   PUBLIC
-  arm_cortexM7lfsp_math
+  ${ARM_MATH_LIB}
   m
   stdc++
 )

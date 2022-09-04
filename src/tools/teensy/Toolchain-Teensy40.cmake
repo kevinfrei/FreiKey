@@ -11,8 +11,10 @@ set(CMAKE_SYSTEM_PROCESSOR Teensy40)
 # You can use CMAKE_HOST_* (SYSTEM/SYSTEM_NAME/SYST EM_VERSION/SYSTEM_PROCESSOR/WIN32/UNIX/APPLE)
 # for host dependent stuff in here if you want...
 if(CMAKE_HOST_WIN32)
-  message(NOTICE "Selecting Windows globally installed ARM EABI None toolchain")
-  set(TOOLCHAIN_ROOT_LOCATION "c:/program files (x86)/Arm GNU Toolchain arm-none-eabi/11.2 2022.02/bin")
+  #message(NOTICE "Selecting Windows globally installed ARM EABI None toolchain")
+  #set(TOOLCHAIN_ROOT_LOCATION "c:/program files (x86)/Arm GNU Toolchain arm-none-eabi/11.2 2022.02/bin")
+  message(NOTICE "Selecting Windows Arduino installed ARM EABI None toolchain")
+  set(TOOLCHAIN_ROOT_LOCATION "c:/program files (x86)/Arduino/hardware/tools/arm/bin")
   set(HOST_EXE_SUFFIX .exe)
   set(A2CM_RUNTIME_PLATFORM_PATH "c:/program files (x86)/Arduino/hardware/teensy/avr")
 elseif(CMAKE_HOST_APPLE)
@@ -29,6 +31,7 @@ endif()
 set(CMAKE_ASM_COMPILER "${TOOLCHAIN_ROOT_LOCATION}/arm-none-eabi-gcc${HOST_EXE_SUFFIX}")
 set(CMAKE_C_COMPILER "${TOOLCHAIN_ROOT_LOCATION}/arm-none-eabi-gcc${HOST_EXE_SUFFIX}")
 set(CMAKE_CXX_COMPILER "${TOOLCHAIN_ROOT_LOCATION}/arm-none-eabi-g++${HOST_EXE_SUFFIX}")
+set(CMAKE_AR "${TOOLCHAIN_ROOT_LOCATION}/arm-none-eabi-gcc-ar${HOST_EXE_SUFFIX}")
 
 # This prevents the compile test from trying to link
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
@@ -56,6 +59,7 @@ set(A2CM_CXX_FLAGS
   -Wno-error=narrowing
 )
 string(JOIN " " CMAKE_CXX_FLAGS_INIT ${A2CM_CXX_FLAGS})
+#set(CMAKE_CXX_FLAGS_INIT ${A2CM_CXX_FLAGS})
 set(A2CM_C_FLAGS
   -Wno-error=narrowing
 )
