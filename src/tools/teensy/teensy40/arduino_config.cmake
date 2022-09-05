@@ -31,11 +31,23 @@ macro(add_arduino_executable binary)
     VERBATIM
   )
 
+
   # Without the 'ALL' this won't be run by default
   add_custom_target(flash # ALL
-    echo FLASH ${RAW_TARGET_${binary}}.hex
+    echo FLASHING ${RAW_TARGET_${binary}}.hex
+    COMMAND
+    ${A2CM_CMD_PATH}/teensy_post_compile
+    -file=${RAW_TARGET_${binary}}.hex
+    -path=${CMAKE_CURRENT_BINARY_DIR}
+    -tools=${A2CM_CMD_PATH}
+    -board=TEENSY40 -reboot -port=serial
+    -portlabel=${A2CM_SERIAL_PORT}
+    -portprotocol=${A2CM_SERIAL_PORT}
+    --touch 1200
     DEPENDS ${RAW_TARGET_${binary}}.hex
+    VERBATIM
   )
+  
 endmacro()
 
 # This is the set of menu options for the teensy40 board

@@ -17,6 +17,7 @@ if(CMAKE_HOST_WIN32)
   set(TOOLCHAIN_ROOT_LOCATION "c:/program files (x86)/Arduino/hardware/tools/arm/bin")
   set(HOST_EXE_SUFFIX .exe)
   set(A2CM_RUNTIME_PLATFORM_PATH "c:/program files (x86)/Arduino/hardware/teensy/avr")
+  set(A2CM_CMD_PATH "c:/program files (x86)/Arduino/hardware/tools")
 elseif(CMAKE_HOST_APPLE)
   set(TOOLCHAIN_ROOT_LOCATION "$ENV{HOME}/Library/Arduino15/packages/adafruit/tools/arm-none-eabi-gcc/9-2019q4/bin")
   # This is wrong:
