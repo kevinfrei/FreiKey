@@ -17,17 +17,25 @@ endmacro(add_arduino_library)
 macro(add_arduino_executable binary)
   add_executable(${binary} ${ARGN})
   string(REGEX REPLACE "\.elf$" "" RAW_TARGET_${binary} ${binary})
+
+  # The ObjCopy ELF->HEX translation target
   add_custom_target(
-  ${RAW_TARGET_${binary}}.hex
-  ALL
-  ${CMAKE_OBJCOPY}
-  -O ihex
-  -R .eeprom
-  ${CMAKE_CURRENT_BINARY_DIR}/${binary}
-  ${RAW_TARGET_${binary}}.hex
-  DEPENDS ${binary}
-  VERBATIM
-)
+    ${RAW_TARGET_${binary}}.hex
+    ALL
+    ${CMAKE_OBJCOPY}
+    -O ihex
+    -R .eeprom
+    ${CMAKE_CURRENT_BINARY_DIR}/${binary}
+    ${RAW_TARGET_${binary}}.hex
+    DEPENDS ${binary}
+    VERBATIM
+  )
+
+  # Without the 'ALL' this won't be run by default
+  add_custom_target(flash # ALL
+    echo FLASH ${RAW_TARGET_${binary}}.hex
+    DEPENDS ${RAW_TARGET_${binary}}.hex
+  )
 endmacro()
 
 # This is the set of menu options for the teensy40 board
