@@ -21,4 +21,3 @@ std::uintmax_t remove_all(const ard::filesystem::path& p, std::error_code& ec);
 } // namespace ard
 
 #endif // __ARDUINO_CPPFILESYSTEM
-

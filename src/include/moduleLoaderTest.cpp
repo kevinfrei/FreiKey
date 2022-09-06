@@ -62,7 +62,8 @@ class FakeLineEditor : public Registerable {
 class FakeCalculator : public Registerable {
   FakeLineEditor* edit;
   FakeDisplay* disp;
-bool ready;
+  bool ready;
+
  public:
   FakeCalculator()
     : edit(nullptr),

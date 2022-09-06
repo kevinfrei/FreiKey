@@ -219,7 +219,6 @@ void Dongle::updateClientStatus(uint32_t now,
     uint8_t r = vals[(now >> 10) & 15];
     Dongle::setRGB(r, g, b);
   }
-
 }
 
 // Called when we find a UART host to connect with
