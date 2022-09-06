@@ -42,9 +42,11 @@ namespace state {
 uint32_t scans_since_last_time = 0;
 #endif
 
-hw::hw(uint8_t bl) : switches {}
+hw::hw(uint8_t bl)
+  : switches{}
 #if defined(HAS_BATTERY)
-, battery_level(bl)
+    ,
+    battery_level(bl)
 #endif
 {
 }

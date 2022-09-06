@@ -8,7 +8,7 @@
   "scripts": {
     "prepare": "husky install",
     "___": "putting stuff in here means you can run it from anywhere in the repo :)",
-    "format": "prettier --write  \"*.md\" \"*.json\" \"*.js\" \".vscode/*.json\" \"src/tools/*.json\" && cd src && make format",
+    "format": "er format",
     "fixcc": "node fix_compile_commands.js",
     "__ ": "You can pass extra args in by doing 'yarn make -- <args>' - Actually, I don't think this works with the follow-on fixcc",
     "make": "cd src && make && yarn fixcc",
@@ -30,6 +30,7 @@
     "clean": "cd src && make clean"
   },
   "devDependencies": {
+    "@freik/build-tools": "^3.2.4",
     "husky": "^8.0.1",
     "prettier": "^2.7.1"
   }
