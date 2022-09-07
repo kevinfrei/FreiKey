@@ -1,6 +1,22 @@
 cmake_minimum_required(VERSION 3.12)
 
-find_package(BISON) 
+if(CMAKE_HOST_APPLE)
+  # On macOS, search Homebrew for keg-only versions of Bison (and Flex).
+  # Xcode does not provide new enough versions for us to use.
+  execute_process(
+    COMMAND brew --prefix bison
+    RESULT_VARIABLE BREW_BISON
+    OUTPUT_VARIABLE BREW_BISON_PREFIX
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+  )
+
+  if(BREW_BISON EQUAL 0 AND EXISTS "${BREW_BISON_PREFIX}")
+    message(STATUS "Found Bison keg installed by Homebrew at ${BREW_BISON_PREFIX}")
+    set(BISON_EXECUTABLE "${BREW_BISON_PREFIX}/bin/bison")
+  endif()
+endif()
+
+find_package(BISON)
 BISON_TARGET(
   CalcParser
   CalcGrammar.yy

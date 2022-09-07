@@ -2,12 +2,20 @@ cmake_minimum_required(VERSION 3.12)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Locations other parts of the system require...
+if(CMAKE_HOST_WIN32)
+  set(TEENSY4_LIB_ROOT_DIR "C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4")
+  set(A2CM_TEENSY4_LIB_ROOT_DIR ${TEENSY4_LIB_ROOT_DIR})
+  set(A2CM_DEFAULT_LIB_PATH "C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries")
+elseif(CMAKE_HOST_APPLE)
+  set(TEENSY4_LIB_ROOT_DIR "/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4")
+  set(A2CM_TEENSY4_LIB_ROOT_DIR ${TEENSY4_LIB_ROOT_DIR})
+  set(A2CM_DEFAULT_LIB_PATH "/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries")
+elseif(CMAKE_HOST_UNIX)
+  message(FATAL_ERROR "Not implemented for Unix yet")
+else()
+  message(FATAL_ERROR "Unknown host machine")
+endif()
 
-# Used by the Teensy40 library
-set(TEENSY4_LIB_ROOT_DIR "C:/PROGRA~2/Arduino/hardware/teensy/avr/cores/teensy4")
-
-# Used by the Arduino Library CMakeLists.txt files
-set(A2CM_DEFAULT_LIB_PATH "C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries")
 set(A2CM_ST77XX_LIB_PATH "${CMAKE_CURRENT_SOURCE_DIR}/libs/ST77xx")
 set(A2CM_BusIO_LIB_PATH "${CMAKE_CURRENT_SOURCE_DIR}/libs/BusIO")
 set(A2CM_GFX_LIB_PATH "${CMAKE_CURRENT_SOURCE_DIR}/libs/GFX")
