@@ -1080,20 +1080,20 @@
   resolved "https://registry.yarnpkg.com/@freik/core-utils/-/core-utils-1.2.0.tgz#dd4fa01d7a4c5e1bad17455d385ed941d358b8bb"
   integrity sha512-1BLIy8/2eLXqUlIFotyPiYzKhFNrDdB2zg0PfM98XVIEEagJ+UiHAfW+DCEuCDvhgwxV18KjmWvV04tPou6lyw==
 
-"@freik/is-hidden-file@^0.3.1":
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/@freik/is-hidden-file/-/is-hidden-file-0.3.1.tgz#073d860be8886940156076e8397738c6f2de0aff"
-  integrity sha512-7x+pEn1BcdAuTEMDld0UTaVHdmIU+6MZHtm//TI3SJ9q8Gh6VILfAdB4a0N5NUnfXoScdsxCS/hrrZiKWGcmQA==
+"@freik/is-hidden-file@^0.3.2":
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/@freik/is-hidden-file/-/is-hidden-file-0.3.2.tgz#a397bd3923c783c127fb366081d2e986ab9788f8"
+  integrity sha512-VxVxn2vKMyRjFWhtgxdjf8c5WFNkGz3tWTFfLrZIgerfa3UXsY8MKtHXwzHF85iyPh+4tjJTIYZuK5xe9jREag==
   dependencies:
     cmake-js "^6.3.2"
     run-script-os "^1.1.6"
 
 "@freik/node-utils@>=1.1.3":
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/@freik/node-utils/-/node-utils-1.1.3.tgz#1970590f4cdb847a51dff098fece9909072b3281"
-  integrity sha512-W5xSwwpRg8wqmd0w5dTMO6PJ8oCTu3pK0reYVYUb2hHkGxpUo907x6qq3jUYPBhiE5dNjQupSuN5+3KQDgw7Vg==
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/@freik/node-utils/-/node-utils-1.1.4.tgz#0bb2d743929f7e1cf156aa6c75b9cd89ce19a617"
+  integrity sha512-DZUpDmvRutE3qTa3Ba4mRPVTtxlyz9ECSuLWKsctjmNMDLoBcpMg0Ac/wEbmTjOu+3wLZhkAqmI42+AVf49+Lw==
   dependencies:
-    "@freik/is-hidden-file" "^0.3.1"
+    "@freik/is-hidden-file" "^0.3.2"
 
 "@hapi/hoek@^9.0.0":
   version "9.3.0"
@@ -1444,9 +1444,9 @@
   integrity sha512-RNiOoTPkptFtSVzQevY/yWtZwf/RxyVnPy/OcA9HBM3MlGDnBEYL5B41H0MTn0Uec8Hi+2qUtTfG2WWZBmMejQ==
 
 "@sinclair/typebox@^0.24.1":
-  version "0.24.35"
-  resolved "https://registry.yarnpkg.com/@sinclair/typebox/-/typebox-0.24.35.tgz#7b5ca127aefe3ed482bb60f874bebbe3143e82f5"
-  integrity sha512-iN6ehuDndiTiDz2F+Orv/+oHJR+PrGv+38oghCddpsW4YEZl5qyLsWxSwYUWrKEOfjpGtXDFW6scJtjpzSLeSw==
+  version "0.24.37"
+  resolved "https://registry.yarnpkg.com/@sinclair/typebox/-/typebox-0.24.37.tgz#3ea4cf8f3cf8a943c17baf5bb7b33587afa5f76b"
+  integrity sha512-8xuD57tNMHs7R0YUzFp0xqIVOTJDbFHnEN/JTej5d5o/dTx4OSsURKTT9dkWl6ghMk4zs3AYe1bi7UK0NnJ4oA==
 
 "@sinonjs/commons@^1.7.0":
   version "1.8.3"
@@ -5224,9 +5224,9 @@ supports-color@^8.0.0, supports-color@^8.1.0:
     has-flag "^4.0.0"
 
 supports-hyperlinks@^2.0.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/supports-hyperlinks/-/supports-hyperlinks-2.2.0.tgz#4f77b42488765891774b70c79babd87f9bd594bb"
-  integrity sha512-6sXEzV5+I5j8Bmq9/vUphGRM/RJNT9SCURJLjwfOg51heRtguGWDzcaBlgAzKhQa0EVNpPEKzQuBwZ8S8WaCeQ==
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/supports-hyperlinks/-/supports-hyperlinks-2.3.0.tgz#3943544347c1ff90b15effb03fc14ae45ec10624"
+  integrity sha512-RpsAZlpWcDwOPQA22aCH4J0t7L8JmAvsCxfOSEwm7cQs3LshN36QaTkwd70DnBOXDWGssw2eUoc8CaRWT0XunA==
   dependencies:
     has-flag "^4.0.0"
     supports-color "^7.0.0"
@@ -5420,7 +5420,7 @@ typedarray-to-buffer@^3.1.5:
   dependencies:
     is-typedarray "^1.0.0"
 
-typescript@~4:
+typescript@^4.8.2, typescript@~4:
   version "4.8.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.8.2.tgz#e3b33d5ccfb5914e4eeab6699cf208adee3fd790"
   integrity sha512-C0I1UsrrDHo2fYI5oaCGbSejwX4ch+9Y5jTQELvovfmFkK3HHSZJB8MSJcWLmCUBzQBchCrZ9rMRV6GuNrvGtw==

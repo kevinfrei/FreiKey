@@ -35,6 +35,7 @@
     "@freik/build-tools": "^3.2.4",
     "husky": "^8.0.1",
     "prettier": "^2.7.1",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "typescript": "^4.8.2"
   }
 }
