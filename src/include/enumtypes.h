@@ -26,11 +26,13 @@ enum class KeyAction : uint8_t {
   LayerShift = 5,
   LayerToggle = 6,
   LayerSwitch = 7,
-  LayerRotate3 = 8,
-  LayerRotate4 = 9,
-  Mode = 10, // "mode switch"
-  Macro = 11,
-  // MaxActions = 15
+  Mode = 8, // "mode switch"
+  Macro = 9,
+  LayerRotate3 = 10,
+  // LayerRotate4 (or more) requires 'moreData' in a single blob
+  LayerRotate4 = 11,
+  // Could make more LayerRotate actions
+  // MaxActions = 15 << MUST FIT IN 4 BITS!
 };
 
 // Layer changing stuff

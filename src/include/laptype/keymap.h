@@ -80,12 +80,12 @@ LROW6(              ___, ___, ___,   ___),RROW6(___, ___, ___, ___),
 // Nothing too exciting here. I might perhaps go add my Rocksmith
 // keybindings, and perhaps put the function keys in a more 'debugger
 // binding friendly' order...
-LROW1(KEY(F12), KEY(F1), KEY(F2), KEY(F3), KEY(F4), KEY(F5)), RROW1(  KEY(F6), KEY(F7), KEY(F8), KEY(F9), KEY(F10), KEY(F11)),
-LROW2(KEY(F11), MAC(0),  MAC(1),  MAC(2),  MAC(3),  MAC(4)),  RROW2(  ___,     ___,     ___,     ___,     ___,      KEY(F12)),
-LROW3(MODE(1),  ___,     ___,     ___,     ___,     ___),     RROW3(  ___,     ___,     ___,     ___,     ___,      ___),
-LROW4(___,      ___,     ___,     ___,     ___,     ___),     RROW4(  ___,     ___,     ___,     ___,     ___,      ___),
-LROW5(LCTL,___,  ___,      ___,             ___,     ___),    RROW5( ___,     ___,          VOLUP_,      ___,  LYR_MWL, CAPSLK),
-LROW6(              PRVT_, PLAY_, NXTT_,              ___),   RROW6(___,             MUTE_, VOLDN_, MUTE_),
+LROW1(KEY(F12),   KEY(F1), KEY(F2), KEY(F3), KEY(F4), KEY(F5)), RROW1(  KEY(F6), KEY(F7), KEY(F8), KEY(F9), KEY(F10), KEY(F11)),
+LROW2(KEY(F11),   MAC(0),  MAC(1),  MAC(2),  MAC(3),  MAC(4)),  RROW2(  ___,     ___,     ___,     ___,     ___,      KEY(F12)),
+LROW3(MODE(Menu), ___,     ___,     ___,     ___,     ___),     RROW3(  ___,     ___,     ___,     ___,     ___,      ___),
+LROW4(___,        ___,     ___,     ___,     ___,     ___),     RROW4(  ___,     ___,     ___,     ___,     ___,      ___),
+LROW5(LCTL,___,    ___,      ___,             ___,     ___),    RROW5( ___,     ___,          VOLUP_,      ___,  LYR_MWL, CAPSLK),
+LROW6(                PRVT_, PLAY_, NXTT_,              ___),   RROW6(___,             MUTE_, VOLDN_, MUTE_),
 },
 {// LAYER_MAC_CAP (4)
 // Mostly just cmd + key (CMK(a)), with exceptions for some window
@@ -142,7 +142,7 @@ LROW1(KEY(Esc), NUM(1), NUM(2), NUM(3), NUM(4), NUM(5)),         RROW1(NUM(6), N
 LROW2(KEY(Tab), KEY(Q), KEY(W), KEY(E), KEY(R), KEY(T)),         RROW2(KEY(Y), KEY(U), KEY(I), KEY(O), KEY(P),     KEY(Backslash)),
 LROW3(RCTL,     KEY(A), KEY(S), KEY(D), KEY(F), KEY(G)),         RROW3(KEY(H), KEY(J), KEY(K), KEY(L), SEMI_,      QUOTE_),
 LROW4(LSHFT,    KEY(Z), KEY(X), KEY(C), KEY(V), KEY(B)),         RROW4(KEY(N), KEY(M), COMMA_, DOT_,   KEY(Slash), RSHFT),
-LROW5(LCTL, LOPT, LCMD, KEY(PgUp),    KEY(OBRC), KEY(BKSP)),    RROW5(SPACE_, EQ_,     UP_,      MODE(0), KEY(Del), KEY(Grave)),
+LROW5(LCTL, LOPT, LCMD, KEY(PgUp),    KEY(OBRC), KEY(BKSP)),    RROW5(SPACE_, EQ_,     UP_,      MODE(Normal), KEY(Del), KEY(Grave)),
 LROW6(       KEY(Home), KEY(PgDn), KEY(End),       KEY(CBRC)), RROW6(ENTER_,    LEFT_, DOWN_, RIGHT_),
 };
 

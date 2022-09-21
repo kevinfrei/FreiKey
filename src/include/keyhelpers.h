@@ -41,7 +41,7 @@
 #define LYR_SET(n) layerSwitch(n)
 #define LYR_ROT3(a, b, c) layerRotate3(a, b, c)
 #define LYR_ROT4(a, b, c, d) layerRotate4(a, b, c, d)
-#define MODE(n) modeKey(n)
+#define MODE(n) modeKey(KeyboardMode::n)
 
 // Some missing keycodes from the Arduino/AdaFruit API's that I need. You can
 // find these from the QMK firmware HIDClassCommon.h file. I also find them in

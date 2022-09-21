@@ -81,12 +81,12 @@ LROW6(              ___, ___, ___,   ___),RROW6(___, ___, ___, ___),
 // Nothing too exciting here. I might perhaps go add my Rocksmith
 // keybindings, and perhaps put the function keys in a more 'debugger
 // binding friendly' order...
-LROW1(KEY(F12), KEY(F1), KEY(F2), KEY(F3), KEY(F4), KEY(F5)), RROW1(  KEY(F6), KEY(F7), KEY(F8), KEY(F9), KEY(F10), KEY(F11)),
-LROW2(KEY(F11), MAC(0),  MAC(1),  MAC(2),  MAC(3),  MAC(4)),  RROW2(  ___,     ___,     ___,     ___,     ___,      KEY(F12)),
-LROW3(MODE(1),  ___,     ___,     ___,     ___,     ___),     RROW3(  ___,     ___,     ___,     ___,     ___,      ___),
-LROW4(___,      ___,     ___,     ___,     ___,     ___),     RROW4(  ___,     ___,     ___,     ___,     ___,      ___),
-LROW5(LCTL,___,  ___,      ___,             ___,     ___),    RROW5( ___,     ___,          VOLUP_,      ___,  LYR_ALL, MODE(2)),
-LROW6(              PRVT_, PLAY_, NXTT_,              ___),   RROW6(___,               ___, VOLDN_, ___),
+LROW1(KEY(F12),   KEY(F1), KEY(F2), KEY(F3), KEY(F4), KEY(F5)), RROW1(  KEY(F6), KEY(F7), KEY(F8), KEY(F9), KEY(F10), KEY(F11)),
+LROW2(KEY(F11),   MAC(0),  MAC(1),  MAC(2),  MAC(3),  MAC(4)),  RROW2(  ___,     ___,     ___,     ___,     ___,      KEY(F12)),
+LROW3(MODE(Menu), ___,     ___,     ___,     ___,     ___),     RROW3(  ___,     ___,     ___,     ___,     ___,      ___),
+LROW4(___,        ___,     ___,     ___,     ___,     ___),     RROW4(  ___,     ___,     ___,     ___,     ___,      ___),
+LROW5(LCTL,___,    ___,      ___,             ___,     ___),    RROW5( ___,     ___,          VOLUP_,      ___,  LYR_ALL, MODE(Calculator)),
+LROW6(                PRVT_, PLAY_, NXTT_,              ___),   RROW6(___,               ___, VOLDN_, ___),
 },
 {// LAYER_MAC_CAP (4)
 // Mostly just cmd + key (CMK(a)), with exceptions for some window

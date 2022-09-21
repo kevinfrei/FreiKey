@@ -2,6 +2,7 @@
 
 #include "enumtypes.h"
 #include "usbenums.h"
+#include <cassert>
 
 #if defined(DEBUG) && defined(ARDUINO)
 #include "Arduino.h"
@@ -12,102 +13,165 @@ class action_t {
   // Logically data is this:
   // uint8_t action : 4;
   // uint16_t LayerOrKeyOrMods : 11;
-  uint16_t data;
-  uint16_t moreData;
+  // uint16_t data;
+  // uint16_t moreData;
+  uint8_t _action : 4;
+  uint16_t _data : 12;
+  uint16_t _moreData;
 
-  constexpr void setKeyAction(KeyAction ka) {
-    data = value_cast(ka) << 12 | (data & 0xFFF);
+  constexpr static uint8_t ka(KeyAction a) {
+    assert(value_cast(a) < (1 << 4)); // KeyAction must fit in 4 bits
+    return value_cast(a);
   }
-  constexpr void setLayer(uint8_t layerNum) {
-    data = (data & 0xF000) | layerNum;
+  constexpr static uint16_t ks(Keystroke k) {
+    assert(value_cast(k) < (1 << 12)); // Keystroke must fit in 12 bits
+    return value_cast(k);
   }
-  constexpr void setMods(Modifiers mods) {
-    data = (data & 0xFF00) | value_cast(mods);
+  constexpr static uint16_t mod(Modifiers m) {
+    assert(value_cast(m) < (1 << 12)); // Modifiers must fit in 12 bits
+    return value_cast(m);
   }
-  void setKeyPress(uint16_t keycode) {
-    // TODO: Should I try to detect consumer code here?
-    data = (data & 0xF800) | (keycode & 0x7ff);
+  constexpr static uint16_t cns(Consumer c) {
+    assert(value_cast(c) < (1 << 12)); // Consumer keycode must fit in 12 bits
+    return value_cast(c);
+  }
+  constexpr static uint16_t lyr(layer_num l) {
+    assert(value_cast(l) < (1 << 12)); // Layer numbers must fit in 12 bits for
+                                       // normal usage
+    return value_cast(l);
+  }
+  constexpr static uint16_t rl(layer_num l, uint8_t pos) {
+    assert(value_cast(l) < (1 << 4)); // Layer numbers must fit in 4 bits for
+                                      // Layer Rotation usage
+    return value_cast(l) << (pos * 4);
+  }
+  constexpr static uint16_t mode(KeyboardMode m) {
+    assert(value_cast(m) < (1 << 12)); // KeyboardMode must fit in 12 bits
+    return value_cast(m);
   }
 
-  constexpr action_t(KeyAction ka, uint16_t otherData)
-    : data(0), moreData(otherData) {
-    setKeyAction(ka);
+  constexpr action_t() : _action(0), _data(0), _moreData(0) {}
+
+  // combine simple actions:
+  // TODO: Should have a static assert that there's no moreData!
+  constexpr action_t(action_t a, action_t b)
+    : _action(a._action),
+      _data(a._data),
+      _moreData((b._action << 12) | b._data) {
+    // Combined actions can't already be compound actions
+    assert(a._moreData == 0 && b._moreData == 0);
+  }
+  constexpr action_t(KeyAction a, Keystroke k)
+    : _action(ka(a)), _data(ks(k)), _moreData(0) {
+    // Keystrokes can't be combined with non-Keystroke actions
+    assert(a == KeyAction::KeyPress || a == KeyAction::TapHold ||
+           a == KeyAction::KeyAndMods);
+  }
+  constexpr action_t(KeyAction a, Modifiers m)
+    : _action(ka(a)), _data(mod(m)), _moreData(0) {
+    // Modifiers can only be used with Modifier, TapHold, and KeyAndMods
+    // KeyActions
+    assert(a == KeyAction::Modifier || a == KeyAction::TapHold ||
+           a == KeyAction::KeyAndMods);
   }
 
-  constexpr action_t() : data(0), moreData(0) {}
-  // combine keys
-  constexpr action_t(action_t a, action_t b) : data(a.data), moreData(b.data) {}
-  constexpr action_t(uint16_t d, uint16_t m) : data(d), moreData(m) {}
+  constexpr action_t(KeyAction a, Consumer m)
+    : _action(ka(a)), _data(cns(m)), _moreData(0) {
+    // Consumer keys can only be used with TapHold, and Consumer KeyActions
+    assert(a == KeyAction::Consumer || a == KeyAction::TapHold);
+  }
+
+  constexpr action_t(KeyAction a, layer_num l)
+    : _action(ka(a)), _data(lyr(l)), _moreData(0) {
+    // Layer_num actions can only be used with Shift, Switch, and Toggle
+    // KeyActions
+    assert(a == KeyAction::LayerShift || a == KeyAction::LayerSwitch ||
+           a == KeyAction::LayerToggle);
+  }
+  constexpr action_t(layer_num a, layer_num b, layer_num c)
+    : _action(ka(KeyAction::LayerRotate3)),
+      _data(rl(a, 0) | rl(b, 1) | rl(c, 2)),
+      _moreData(0) {}
+
+  constexpr action_t(layer_num a, layer_num b, layer_num c, layer_num d)
+    : _action(ka(KeyAction::LayerRotate4)),
+      _data(rl(a, 0) | rl(b, 1) | rl(c, 2)),
+      _moreData(rl(d, 0)) {
+    // 4th rotation layer cannot be layer 0 to prevent combining
+    assert(rl(d, 0) > 0);
+  }
+
+  constexpr action_t(KeyboardMode m)
+    : _action(ka(KeyAction::Mode)), _data(mode(m)), _moreData(0) {}
+  constexpr action_t(Modifiers m) : action_t(KeyAction::Modifier, m) {}
+  constexpr action_t(Consumer c) : action_t(KeyAction::Consumer, c) {}
+  constexpr action_t(Keystroke keyPress)
+    : action_t(KeyAction::KeyPress, keyPress) {}
+  constexpr action_t(uint16_t macro)
+    : _action(ka(KeyAction::Macro)), _data(macro), _moreData(0) {
+    assert(macro < (1 << 12)); // macros have to fit in 12 bits
+  }
+  constexpr action_t(KeyAction a, uint16_t data)
+    : _action(ka(a)), _data(data), _moreData(0) {
+    // Only allow this constructor for TapHold creations
+    assert(a == KeyAction::TapHold);
+    assert(data < (1 << 12)); // Bit fit
+  }
 
  public:
-  constexpr action_t(Modifiers mods) : data(value_cast(mods)), moreData(0) {
-    setKeyAction(KeyAction::Modifier);
-  }
-  static constexpr action_t Keypress(uint16_t keyPress) {
-    return action_t{KeyAction::KeyPress, keyPress};
-  }
   static constexpr action_t Keypress(Keystroke keyPress) {
-    return action_t{KeyAction::KeyPress, value_cast(keyPress)};
+    return action_t{keyPress};
   }
-  static constexpr action_t Keypress(action_t keyPress) {
-    return action_t{KeyAction::KeyPress, keyPress.data};
-  }
+
   static constexpr action_t Modifier(Modifiers mod1,
                                      Modifiers mod2 = Modifiers::None,
                                      Modifiers mod3 = Modifiers::None,
                                      Modifiers mod4 = Modifiers::None) {
     return action_t{mod1 | mod2 | mod3 | mod4};
   }
-  static constexpr action_t Modifier(action_t mods) {
-    return action_t{enum_cast<Modifiers>(mods.data & 0xFF)};
-  }
-  static constexpr action_t Modifier(Modifiers mods) {
-    return action_t{mods};
-  }
+  // static constexpr action_t Modifier(action_t mods) {
+  //   return action_t{enum_cast<Modifiers>(mods.data & 0xFF)};
+  // }
   static constexpr action_t ConsumerPress(Consumer keyPress) {
-    return action_t{KeyAction::Consumer, value_cast(keyPress)};
+    return action_t{keyPress};
   }
-  static constexpr action_t Layer(KeyAction ka,
-                                  layer_num layerNum = layer_num::Base) {
-    return action_t{ka, value_cast(layerNum)};
+  static constexpr action_t Layer(KeyAction ka, layer_num layerNum) {
+    return action_t{ka, layerNum};
   }
   static constexpr action_t LayerRotate3(layer_num a,
                                          layer_num b,
                                          layer_num c) {
-    return action_t{KeyAction::LayerRotate3,
-                    static_cast<uint16_t>(value_cast(a) | (value_cast(b) << 4) |
-                                          (value_cast(c) << 8))};
+    return action_t{a, b, c};
   }
   static constexpr action_t LayerRotate4(layer_num a,
                                          layer_num b,
                                          layer_num c,
                                          layer_num d) {
-    return action_t{
-      KeyAction::LayerRotate4,
-      static_cast<uint16_t>(value_cast(a) | (value_cast(b) << 4) |
-                            (value_cast(c) << 8) | (value_cast(d) << 12))};
+    return action_t{a, b, c, d};
   }
   static constexpr action_t Combine(action_t a, action_t b) {
     return action_t{a, b};
   }
-  static constexpr action_t Mode(uint16_t info) {
-    return action_t{KeyAction::Mode, info};
+  static constexpr action_t Mode(KeyboardMode mode) {
+    return action_t{mode};
   }
   static constexpr action_t NoAction() {
     return action_t{};
   }
   static constexpr action_t Macro(uint16_t num) {
-    return action_t{KeyAction::Macro, num};
+    // TODO: Make sure this macro exists?
+    return action_t{num};
   }
   static constexpr action_t TapAndHold(action_t tap, action_t hold) {
-    return action_t{action_t{KeyAction::TapHold, tap.data}, hold};
+    // TODO: validate that tap._action is compatible, yeah?
+    return action_t{action_t{KeyAction::TapHold, tap._data}, hold};
   }
   static constexpr action_t KeyAndMods(Keystroke key,
                                        Modifiers mod1,
                                        Modifiers mod2 = Modifiers::None,
                                        Modifiers mod3 = Modifiers::None,
                                        Modifiers mod4 = Modifiers::None) {
-    return action_t{action_t{KeyAction::KeyAndMods, value_cast(key)},
+    return action_t{action_t{KeyAction::KeyAndMods, key},
                     action_t::Modifier(mod1, mod2, mod3, mod4)};
   }
   static constexpr action_t KeyAndMods(action_t key,
@@ -115,61 +179,64 @@ class action_t {
                                        Modifiers mod2 = Modifiers::None,
                                        Modifiers mod3 = Modifiers::None,
                                        Modifiers mod4 = Modifiers::None) {
-    return action_t{action_t{KeyAction::KeyAndMods, key.data},
+    // TODO: Make sure this is only a Consumer or normal key, yeah?
+    return action_t{action_t{KeyAction::KeyAndMods, key.getKeystroke()},
                     action_t::Modifier(mod1, mod2, mod3, mod4)};
   }
-  bool isNoAction() const {
-    return data == 0 && moreData == 0;
+  constexpr bool isNoAction() const {
+    return _action == 0 && _data == 0 && _moreData == 0;
   }
 
-  KeyAction getAction() const {
-    return enum_cast<KeyAction>(data >> 12);
+  constexpr KeyAction getAction() const {
+    return enum_cast<KeyAction>(_action);
   }
 
-  Keystroke getKeystroke() const {
-    return enum_cast<Keystroke>(data & 0xff);
+  constexpr Keystroke getKeystroke() const {
+    return enum_cast<Keystroke>(_data);
   }
 
-  Consumer getConsumer() const {
-    return enum_cast<Consumer>(data & 0xfff);
+  constexpr Consumer getConsumer() const {
+    return enum_cast<Consumer>(_data);
   }
 
-  KeyboardMode getMode() const {
-    return enum_cast<KeyboardMode>(data & 0xff);
+  constexpr KeyboardMode getMode() const {
+    return enum_cast<KeyboardMode>(_data);
   }
 
-  uint16_t getMacro() const {
-    return data & 0xFFF;
+  constexpr uint16_t getMacro() const {
+    return _data;
   }
 
+  // ?? TODO: I don't grok this comment above this function.
   // This is for flagging consumer keycodes, as I have to handle them
   // differently
-  Modifiers getModifiers() const {
-    return enum_cast<Modifiers>(data & 0xFF);
+  constexpr Modifiers getModifiers() const {
+    return enum_cast<Modifiers>(_data);
   }
 
-  Modifiers getExtraMods() const {
-    return enum_cast<Modifiers>(moreData & 0xFF);
+  // TODO: This is only used for TapHold, and is broken...
+  constexpr Modifiers getExtraMods() const {
+    return enum_cast<Modifiers>(_moreData);
   }
 
   layer_num getLayer() const {
-    return enum_cast<layer_num>(data & 0xF);
+    return enum_cast<layer_num>(_data);
   }
 
   layer_num getLayer1() const {
-    return enum_cast<layer_num>(data & 0xF);
+    return enum_cast<layer_num>(_data & 0xF);
   }
 
   layer_num getLayer2() const {
-    return enum_cast<layer_num>((data >> 4) & 0xF);
+    return enum_cast<layer_num>((_data >> 4) & 0xF);
   }
 
   layer_num getLayer3() const {
-    return enum_cast<layer_num>((data >> 8) & 0xF);
+    return enum_cast<layer_num>((_data >> 8) & 0xF);
   }
 
   layer_num getLayer4() const {
-    return enum_cast<layer_num>((data >> 12) & 0xF);
+    return enum_cast<layer_num>(_moreData & 0xF);
   }
 
   friend SerialStream& operator<<(SerialStream& s, const action_t& a);
@@ -205,11 +272,13 @@ inline constexpr action_t layerRotate4(layer_num a,
 }
 
 inline constexpr action_t keyPress(action_t a) {
-  return action_t::Keypress(a);
+  assert(a.getAction() == KeyAction::KeyPress);
+  return action_t::Keypress(a.getKeystroke());
 }
 
 inline constexpr action_t modPress(action_t a) {
-  return action_t::Modifier(a);
+  assert(a.getAction() == KeyAction::Modifier);
+  return action_t::Modifier(a.getModifiers());
 }
 inline constexpr action_t modPress(Modifiers mod1,
                                    Modifiers mod2 = Modifiers::None,
@@ -235,17 +304,18 @@ inline constexpr action_t keyAndModifiers(action_t key,
                                           Modifiers mod2 = Modifiers::None,
                                           Modifiers mod3 = Modifiers::None,
                                           Modifiers mod4 = Modifiers::None) {
-  return action_t::KeyAndMods(key, mod1, mod2, mod3, mod4);
+  assert(key.getAction() == KeyAction::KeyPress);
+  return action_t::KeyAndMods(key.getKeystroke(), mod1, mod2, mod3, mod4);
 }
 
-inline constexpr action_t modeKey(uint16_t info) {
-  return action_t::Mode(info);
+inline constexpr action_t modeKey(KeyboardMode mode) {
+  return action_t::Mode(mode);
 }
 
 inline SerialStream& operator<<(SerialStream& s, const action_t& a) {
-  s << a.getAction() << ":" << sfmt::hex << (a.data & 0xFFF);
-  if (a.moreData != 0) {
-    s << "|" << sfmt::hex << a.moreData;
+  s << a.getAction() << ":" << sfmt::hex << a._data;
+  if (a._moreData != 0) {
+    s << "|" << sfmt::hex << a._moreData;
   }
   return s;
 }
