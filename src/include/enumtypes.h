@@ -12,7 +12,8 @@ enum class layer_num : uint8_t {
   WinCap = 5,
   WinCtl = 6,
   LinCap = 7,
-  NumElems = 8
+  Apple = 8,
+  NumElems = 9
 };
 
 // This needs to fit in 4 bits
@@ -25,9 +26,10 @@ enum class KeyAction : uint8_t {
   LayerShift = 5,
   LayerToggle = 6,
   LayerSwitch = 7,
-  LayerRotate = 8,
-  Mode = 9, // "mode switch"
-  Macro = 10,
+  LayerRotate3 = 8,
+  LayerRotate4 = 9,
+  Mode = 10, // "mode switch"
+  Macro = 11,
   // MaxActions = 15
 };
 
@@ -38,7 +40,8 @@ enum class layer_t : uint8_t {
   Pop = 2,
   Toggle = 3,
   Switch = 4,
-  Rotate = 5
+  Rotate3 = 5,
+  Rotate4 = 6
 };
 
 enum class KeyboardMode : uint8_t {

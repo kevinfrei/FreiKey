@@ -108,7 +108,7 @@ struct GeneralState {
   void rotate_layers(layer_num a, layer_num b, layer_num c) {
     // assumes that if you're rotating through the base layer,
     // it's the first one. This should be asserted in the ctor...
-    Dbg << "Rotate: ";
+    Dbg << "Rotate3: " << a << ", " << b << ", " << c << sfmt::endl;
     layer_num which = b;
     while (find_layer(a) > 0) {
       toggle_layer(a);
@@ -120,6 +120,32 @@ struct GeneralState {
     while (find_layer(c) > 0) {
       which = a;
       toggle_layer(c);
+    }
+    // At this point, we have no layers a,b,c unless one is the base layer
+    if (find_layer(which) != 0) {
+      toggle_layer(which);
+    }
+  }
+  void rotate_layers(layer_num a, layer_num b, layer_num c, layer_num d) {
+    // assumes that if you're rotating through the base layer,
+    // it's the first one. This should be asserted in the ctor...
+    Dbg << "Rotate4: " << a << ", " << b << ", " << c << ", " << d
+        << sfmt::endl;
+    layer_num which = b;
+    while (find_layer(a) > 0) {
+      toggle_layer(a);
+    }
+    while (find_layer(b) > 0) {
+      which = c;
+      toggle_layer(b);
+    }
+    while (find_layer(c) > 0) {
+      which = d;
+      toggle_layer(c);
+    }
+    while (find_layer(d) > 0) {
+      which = a;
+      toggle_layer(d);
     }
     // At this point, we have no layers a,b,c unless one is the base layer
     if (find_layer(which) != 0) {

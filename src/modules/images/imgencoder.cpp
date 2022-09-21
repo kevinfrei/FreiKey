@@ -263,7 +263,7 @@ int main(int argc, const char* argv[]) {
   } else {
     // Image came from the converter thing. Pull data from the file
     inBuf = &buf[4];
-    if ((buf[0] != 4 && buf[0] != 5) || buf[sz - 1] != 0xa) {
+    if (buf[0] != 4 && buf[0] != 5) {
       std::cerr << "Unrecognized format" << std::endl;
       return 1;
     }

@@ -39,7 +39,8 @@
 #define LYR_TOG(n) layerToggle(n)
 #define LYR_SHIFT(n) layerShift(n)
 #define LYR_SET(n) layerSwitch(n)
-#define LYR_ROT(a, b, c) layerRotate(a, b, c)
+#define LYR_ROT3(a, b, c) layerRotate3(a, b, c)
+#define LYR_ROT4(a, b, c, d) layerRotate4(a, b, c, d)
 #define MODE(n) modeKey(n)
 
 // Some missing keycodes from the Arduino/AdaFruit API's that I need. You can
@@ -104,6 +105,7 @@ DK(M_LOCK, 0xF9);
 #define MUTE_ CONS(Mute)
 #define VOLUP_ CONS(VolumeUp)
 #define VOLDN_ CONS(VolumeDown)
+#define CAPS KEY(CapsLock)
 
 #define PLAY_ CONS(PlayPause)
 #define PRVT_ CONS(PrevTrack)
@@ -187,6 +189,11 @@ DK(M_LOCK, 0xF9);
 #define WIN_CTL LYR_SHIFT(layer_num::WinCtl)
 #define SHFT_FN LYR_SHIFT(layer_num::Func)
 #define LYR_MWL \
-  LYR_ROT(layer_num::MacBase, layer_num::WinBase, layer_num::LinBase)
+  LYR_ROT3(layer_num::MacBase, layer_num::WinBase, layer_num::LinBase)
+#define LYR_ALL                \
+  LYR_ROT4(layer_num::MacBase, \
+           layer_num::WinBase, \
+           layer_num::LinBase, \
+           layer_num::Apple)
 
 #define MAC(n) action_t::Macro(n)

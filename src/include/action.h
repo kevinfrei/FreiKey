@@ -9,11 +9,10 @@
 
 class action_t {
   // 4 bits of action, 1 bit 'is consumer', 11 bits of 'data'
+  // Logically data is this:
+  // uint8_t action : 4;
+  // uint16_t LayerOrKeyOrMods : 11;
   uint16_t data;
-  /*
-  uint8_t action : 4;
-  uint16_t LayerOrKeyOrMods : 11;
-  */
   uint16_t moreData;
 
   constexpr void setKeyAction(KeyAction ka) {
@@ -31,7 +30,7 @@ class action_t {
   }
 
   constexpr action_t(KeyAction ka, uint16_t otherData)
-    : data(otherData), moreData(0) {
+    : data(0), moreData(otherData) {
     setKeyAction(ka);
   }
 
@@ -72,10 +71,21 @@ class action_t {
                                   layer_num layerNum = layer_num::Base) {
     return action_t{ka, value_cast(layerNum)};
   }
-  static constexpr action_t LayerRotate(layer_num a, layer_num b, layer_num c) {
-    return action_t{KeyAction::LayerRotate,
+  static constexpr action_t LayerRotate3(layer_num a,
+                                         layer_num b,
+                                         layer_num c) {
+    return action_t{KeyAction::LayerRotate3,
                     static_cast<uint16_t>(value_cast(a) | (value_cast(b) << 4) |
                                           (value_cast(c) << 8))};
+  }
+  static constexpr action_t LayerRotate4(layer_num a,
+                                         layer_num b,
+                                         layer_num c,
+                                         layer_num d) {
+    return action_t{
+      KeyAction::LayerRotate4,
+      static_cast<uint16_t>(value_cast(a) | (value_cast(b) << 4) |
+                            (value_cast(c) << 8) | (value_cast(d) << 12))};
   }
   static constexpr action_t Combine(action_t a, action_t b) {
     return action_t{a, b};
@@ -157,6 +167,11 @@ class action_t {
   layer_num getLayer3() const {
     return enum_cast<layer_num>((data >> 8) & 0xF);
   }
+
+  layer_num getLayer4() const {
+    return enum_cast<layer_num>((data >> 12) & 0xF);
+  }
+
   friend SerialStream& operator<<(SerialStream& s, const action_t& a);
 };
 
@@ -178,8 +193,15 @@ inline constexpr action_t layerSwitch(layer_num n) {
   return action_t::Layer(KeyAction::LayerSwitch, n);
 }
 
-inline constexpr action_t layerRotate(layer_num a, layer_num b, layer_num c) {
-  return action_t::LayerRotate(a, b, c);
+inline constexpr action_t layerRotate3(layer_num a, layer_num b, layer_num c) {
+  return action_t::LayerRotate3(a, b, c);
+}
+
+inline constexpr action_t layerRotate4(layer_num a,
+                                       layer_num b,
+                                       layer_num c,
+                                       layer_num d) {
+  return action_t::LayerRotate4(a, b, c, d);
 }
 
 inline constexpr action_t keyPress(action_t a) {

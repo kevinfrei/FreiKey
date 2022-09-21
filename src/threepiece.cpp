@@ -46,7 +46,8 @@ static const enum_array<layer_num, const image_descriptor*> layer_to_image = {
   {layer_num::MacCap, nullptr},
   {layer_num::WinCap, nullptr},
   {layer_num::WinCtl, gfx_batman},
-  {layer_num::LinCap, nullptr}};
+  {layer_num::LinCap, nullptr},
+  {layer_num::Apple, gfx_apple_ii}};
 
 void BoardIO::Configure() {
   right.begin(1 << 20);
@@ -96,8 +97,10 @@ void BoardIO::Changed(uint32_t now, GeneralState&) {
     lastShownLayerTime = now;
     const image_descriptor* img = layer_to_image[lyr];
     if (img == nullptr) {
-      img = reaccs[now % 7];
+      // Show a random image from the reaccs array
+      img = reaccs[now % reaccs.size()];
     }
+    Dbg << "Trying to show the image for layer " << lyr << sfmt::endl;
     ShowImage(img);
   }
 }

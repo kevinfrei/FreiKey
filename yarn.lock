@@ -1044,9 +1044,9 @@
     "@freik/core-utils" "^1.2.0"
 
 "@freik/build-tools@^3.3.0":
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/@freik/build-tools/-/build-tools-3.3.0.tgz#510d40b3150b7379bde461b8a40ff97e3a9385f7"
-  integrity sha512-BVOAlT2L05W7JR0g3WYceUTAyEdM4UNg0zp8l+R0EzKZ2y9rOUoWxxUqhi75Navg42wTr+blfYVyUBenhFEyGQ==
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/@freik/build-tools/-/build-tools-3.4.0.tgz#79f85a705f5a8eda50a420a22743796a91ebc80b"
+  integrity sha512-pOSy14LEGzxeRFUTppmieNb4efRAjLmVwcTrMqcxp1KLQepAjRvqdrxmJAYiiZdPAYTFxNHbbpWMkNnPhVMUNA==
   dependencies:
     "@babel/cli" "~7"
     "@babel/core" "~7"
@@ -2008,9 +2008,9 @@ camelcase@^6.2.0:
   integrity sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==
 
 caniuse-lite@^1.0.30001400:
-  version "1.0.30001406"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001406.tgz#d0146e7919635479f873b4507517b627f66ab269"
-  integrity sha512-bWTlaXUy/rq0BBtYShc/jArYfBPjEV95euvZ8JVtO43oQExEN/WquoqpufFjNu4kSpi5cy5kMbNvzztWDfv1Jg==
+  version "1.0.30001409"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001409.tgz#6135da9dcab34cd9761d9cdb12a68e6740c5e96e"
+  integrity sha512-V0mnJ5dwarmhYv8/MzhJ//aW68UpvnQBXv8lJ2QUsvn2pHcmAuNtu8hQEDz37XnA1iE+lRR9CIfGWWpgJ5QedQ==
 
 chainsaw@~0.1.0:
   version "0.1.0"
@@ -2366,9 +2366,9 @@ ejs@^3.1.5:
     jake "^10.8.5"
 
 electron-to-chromium@^1.4.251:
-  version "1.4.254"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.254.tgz#c6203583890abf88dfc0be046cd72d3b48f8beb6"
-  integrity sha512-Sh/7YsHqQYkA6ZHuHMy24e6TE4eX6KZVsZb9E/DvU1nQRIrH4BflO/4k+83tfdYvDl+MObvlqHPRICzEdC9c6Q==
+  version "1.4.256"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.256.tgz#c735032f412505e8e0482f147a8ff10cfca45bf4"
+  integrity sha512-x+JnqyluoJv8I0U9gVe+Sk2st8vF0CzMt78SXxuoWCooLLY2k5VerIBdpvG7ql6GKI4dzNnPjmqgDJ76EdaAKw==
 
 emittery@^0.10.2:
   version "0.10.2"

@@ -55,8 +55,8 @@ action_t resolveActionForScanCodeOnActiveLayer(uint8_t scanCode) {
     --s;
   }
   Dbg << "Resolving scancode " << scanCode << " on layer "
-      << curState.layer_stack[s] << keymap[curState.getLayerVal(s)][scanCode]
-      << sfmt::endl;
+      << curState.layer_stack[s] << ":"
+      << keymap[curState.getLayerVal(s)][scanCode] << sfmt::endl;
   return resolve(s, scanCode);
 }
 
@@ -95,9 +95,15 @@ void preprocessScanCode(scancode_t sc, bool pressed, uint32_t now) {
     case layer_t::Switch:
       curState.switch_layer(state->get_layer());
       break;
-    case layer_t::Rotate:
+    case layer_t::Rotate3:
       curState.rotate_layers(
         state->get_layer1(), state->get_layer2(), state->get_layer3());
+      break;
+    case layer_t::Rotate4:
+      curState.rotate_layers(state->get_layer1(),
+                             state->get_layer2(),
+                             state->get_layer3(),
+                             state->get_layer4());
       break;
     case layer_t::None:
       break;
@@ -235,7 +241,8 @@ KeyboardMode ProcessKeys(uint32_t now, kb_reporter& rpt) {
       case KeyAction::LayerShift:
       case KeyAction::LayerSwitch:
       case KeyAction::LayerToggle:
-      case KeyAction::LayerRotate:
+      case KeyAction::LayerRotate3:
+      case KeyAction::LayerRotate4:
         // These are all handled during preprocessing
         break;
       case KeyAction::Macro:

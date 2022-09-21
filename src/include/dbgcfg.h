@@ -159,8 +159,10 @@ inline SerialStream& operator<<(SerialStream& o, layer_num ln) {
       return o << "Win Ctrl";
     case layer_num::LinCap:
       return o << "Linux Caps";
+    case layer_num::Apple:
+      return o << "Apple IIgs";
     default:
-      return o << "Unknown Layer!";
+      return o << "Unknown Layer (" << value_cast(ln) << ")";
   }
 }
 
@@ -187,6 +189,10 @@ inline SerialStream& operator<<(SerialStream& o, KeyAction ka) {
       return o << "LayerSwitch";
     case KeyAction::Mode:
       return o << "Mode Switch";
+    case KeyAction::LayerRotate3:
+      return o << "3 Layer Rotate";
+    case KeyAction::LayerRotate4:
+      return o << "4 Layer Rotate";
     default:
       return o << "Unknown KeyAction:" << sfmt::hex
                << static_cast<uint32_t>(ka);

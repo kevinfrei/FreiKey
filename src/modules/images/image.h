@@ -2,6 +2,7 @@
 #include <cstdint>
 
 #include "bitmaps/amy.h"
+#include "bitmaps/apple-ii.h"
 #include "bitmaps/batman.h"
 #include "bitmaps/calc.h"
 #include "bitmaps/haha.h"
