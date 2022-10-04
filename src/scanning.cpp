@@ -151,7 +151,7 @@ void TypeMacro(uint16_t macroNumber) {
       r = (r + c) % 6 + 1;
       Keyboard.print(c);
       // Add a little randomness in to the typing, for shiggles, I guess...
-      delay(r * (c & 7));
+      delay(r * (c & 3) + 10);
     }
   } else {
     Keyboard.print("Unrecognized macro number ");
