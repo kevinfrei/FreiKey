@@ -60,7 +60,7 @@ void loop() {
   uint32_t now = millis();
   for (uint8_t c = 0; c < COLS; c++) {
     digitalWrite(colPins[c], LOW);
-    delayMicroseconds(250); // This is irritating, but it seems to take a little while to stabilize...
+    delayMicroseconds(500); // This is irritating, but it seems to take a little while to stabilize...
     for (uint8_t r = 0; r < ROWS; r++) {
       bool p = digitalRead(rowPins[r]) == LOW;
       if (p != pressed[r * 6 + c] &&
