@@ -24,7 +24,7 @@
 #define MOD(a) modPress(PM(a))
 #define CONS(a) consPress(PC(a))
 
-//#define TMOD(a) kToggleMod | PM(a)
+// #define TMOD(a) kToggleMod | PM(a)
 #define TAPH(a, b) tapAndHold(a, b)
 #define KMOD(a, b) keyAndModifiers(PK(a), PM(b))
 #define NMOD(a, b) keyAndModifiers(PN(a), PM(b))
