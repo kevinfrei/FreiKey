@@ -4,26 +4,17 @@
 
 // This runs on Adafruit ItsyBitsy RP2040 devices
 
-// Left wire schematic from key matrix:
+constexpr byte ROWS = 6;
+constexpr byte COLS = 6;
 
-// Top left to right (viewed from above)
-// C3, C4, R3_R3, R4, C5, R5
-// Bottom left to right
-// C0, C1, C2_C2, R2_R2, R0, R1 
+// Top Pins, left to right:
+// C5, R2, R0, R5, R4, R3, C4, C3
+// Bottom pins, left to right:
+// C0, R1, NC, NC, NC, C2, C1
 
-// Top pins
-// C3 = D2/GPIO12, C4 = MISO/GPIO20, R3x = MOSI/GPIO19,
-// R3y = SCK/GPIO18, R4 = D25/GPIO25, C5 = D24/GPIO24, R5 = A3/GPIO29
-// Bottom pins
-// C0 = SDA/GPIO2, C1 = SCL/GPIO3, C2x = D13/GPIO11, C2y = D7, GPIO6
-// R2x = D9/GPIO7, R2y = D10/GPIO8, R0 = D11/GPIO9, R1 = D12/GPIO10
-
-constexpr uint8_t ROWS = 6;
-constexpr uint8_t COLS = 6;
-// And now, I have to reverse the columns: C0 is the *center* column, so oops:
-constexpr uint8_t colPins[COLS] = {24, 20, 12, 6, 3, 2}; // ItsyBitsy RP2040
-constexpr uint8_t rowPins[ROWS] = {9, 10, 7, 18, 25, 29}; // ItsyBitsy RP2040
-constexpr uint32_t debounce_time = 40;
+constexpr byte colPins[COLS] = {28 , 20 , 19 , 3 , 2 , 11 }; // rp2040
+constexpr byte rowPins[ROWS] = {9 , 27 , 10 , 6 , 7 , 8 }; // rp2040
+constexpr uint32_t debounce_time = 25;
 
 uint32_t last_change[COLS * ROWS] = {0};
 bool pressed[COLS * ROWS] = {0};
