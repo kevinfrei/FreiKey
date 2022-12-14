@@ -27,7 +27,7 @@ constexpr uint8_t COLS = 6;
 // And now, I have to reverse the columns: C0 is the *center* column, so oops:
 constexpr uint8_t colPins[COLS] = {24, 20, 12, 6, 3, 2}; // ItsyBitsy RP2040
 constexpr uint8_t rowPins[ROWS] = {9, 10, 7, 18, 25, 29}; // ItsyBitsy RP2040
-constexpr uint32_t debounce_time = 40;
+constexpr uint32_t debounce_time = 25;
 
 uint32_t last_change[COLS * ROWS] = {0};
 bool pressed[COLS * ROWS] = {0};
@@ -80,7 +80,7 @@ void setupIndicators() {
   digitalWrite(PIN_LED, LOW);
 }
 
-float sat = 0.9f;
+float sat = 0.8f;
 
 uint32_t getColor(uint32_t number) {
   float hue = (number % 360) / 360.0f; 
@@ -97,15 +97,12 @@ uint8_t encodeValue(uint8_t row, uint8_t col, bool pressed) {
   return code * 3 + code % 3 + 1;
 }
 
-void indicateChange(uint8_t r, uint8_t c, uint8_t p) {
-  pixels.clear();
-  pixels.setPixelColor(0, p ? pixels.Color(16, 45 + r * 42, 45 + c * 42) : pixels.Color(0,0,0));
-  pixels.show();
+void indicateChange(uint8_t r, uint8_t c, uint8_t p, uint32_t now) {
+  sat = (sat < .5f) ? .8f : .2f;
 }
 
 void reportChange(uint8_t r, uint8_t c, uint8_t p) {
   Serial1.write(encodeValue(r, c, p));
-  indicateChange(r, c, p);
 }
 
 bool debouncedChange(uint8_t r, uint8_t c, bool p, uint32_t now) {
@@ -118,6 +115,7 @@ void recordChange(uint8_t r, uint8_t c, bool p, uint32_t now) {
   uint8_t idx = index(r, c);
   pressed[idx] = p;
   last_change[idx] = now;
+  indicateChange(r, c, p, now);
 }
 
 void setup() {
@@ -134,12 +132,11 @@ void loop() {
     // the output change a little while to stabilize on the input pins
     delayMicroseconds(1250);
     for (uint8_t r = 0; r < ROWS; r++) {
-      bool p = digitalRead(rowPins[r]) == LOW;      
-      if (debouncedChange(r, c, p, now)) {        
+      bool p = digitalRead(rowPins[r]) == LOW;
+      if (debouncedChange(r, c, p, now)) {
         // Report the change up the wire
         reportChange(r, c, p);
         recordChange(r, c, p, now);
-        sat = (sat > .5f) ? .2f : .9f;
       }
     }
     digitalWrite(colPins[c], HIGH);
