@@ -1,12 +1,11 @@
 // This include is to work around an issue with linking with some Adafruit
 // libraries
 
-// #include "Adafruit_TinyUSB.h"
+#include "Adafruit_TinyUSB.h"
 
 // This one is actually *used*
 
-// #include <Adafruit_DotStar.h>
-
+#include <Adafruit_DotStar.h>
 #include <Arduino.h>
 #include <stdint.h>
 
@@ -32,21 +31,32 @@ const uint8_t BLUE_LED = 3;
 const uint8_t NumDotStarPixels = 1;
 const uint8_t DotStarData = 8;
 const uint8_t DotStarClock = 6;
-/*
+
 Adafruit_DotStar pixel(NumDotStarPixels,
                        DotStarData,
                        DotStarClock,
                        DOTSTAR_GBR);
-*/
+
+
+void flicker(int count) {
+	while (count-- > 0) {
+		digitalWrite(BLUE_LED, HIGH);
+		delay(10);
+		digitalWrite(BLUE_LED, LOW);
+	}
+}
+
 void setup() {
   // If you don't use the debug serial port
   // you have to double-click the reset button to get the device
   // to a flashable state
-  Serial.begin(9600);
-  // Run at 1Mbps, which seems both plenty fast, and is also reliable
-  Serial1.begin(1 << 20);
   pinMode(BLUE_LED, OUTPUT);
-  digitalWrite(BLUE_LED, HIGH);
+	flicker(10);
+  Serial.begin(115200);
+  // Run at 1Mbps, which seems both plenty fast, and is also reliable
+	flicker(20);
+  Serial1.begin(1 << 20);
+	digitalWrite(BLUE_LED, HIGH);
   for (uint8_t r : rowPins) {
     pinMode(r, INPUT_PULLUP);
   }
@@ -55,24 +65,23 @@ void setup() {
     digitalWrite(c, HIGH);
   }
   digitalWrite(BLUE_LED, LOW);
-  /*  pixel.begin();
-    pixel.setPixelColor(0, 0x10, 0x10, 0x10);
-    pixel.show();
-    delay(50);
-    pixel.setPixelColor(0, 0, 0, 0);
-    pixel.show();*/
+	pixel.begin();
+	pixel.setPixelColor(0, 0x10, 0x10, 0x10);
+	pixel.show();
+	delay(50);
+	pixel.setPixelColor(0, 0, 0, 0);
+	pixel.show();
 }
 
 void loop() {
   uint32_t now = millis();
   for (uint8_t c = 0; c < COLS; c++) {
     digitalWrite(colPins[c], LOW);
-    delay(1);
     for (uint8_t r = 0; r < ROWS; r++) {
       delay(1);
       bool p = digitalRead(rowPins[r]) == LOW;
       if (p != pressed[r * 6 + c] &&
-          last_change[r * 6 + c] < now + debounce_time) {
+          last_change[r * 6 + c] <= now - debounce_time) {
         uint8_t val = r * 6 + c + (p ? 0 : 36);
         Serial1.write((unsigned char)(val * 3 + val % 3 + 1));
         analogWrite(BLUE_LED, p ? 10 : 0);
@@ -82,4 +91,7 @@ void loop() {
     }
     digitalWrite(colPins[c], HIGH);
   }
+	pixel.begin();
+  pixel.setPixelColor(0, ((now & 0x300) == 0x100) ? 0x10: 0, ((now & 0x300) == 0x200) ? 0x10 : 0, ((now & 0x300) == 0x300) ? 0x10 : 0);
+	pixel.show();
 }
