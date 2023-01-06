@@ -1,6 +1,7 @@
 // This include is to work around an issue with linking with some Adafruit
 // libraries
 #include "Adafruit_TinyUSB.h"
+#include "Adafruit_DotStar.h"
 
 #include <Arduino.h>
 #include <stdint.h>
@@ -20,6 +21,15 @@ bool pressed[COLS * ROWS] = {0};
 const uint32_t debounce_time = 15;
 const uint8_t BLUE_LED = 3;
 
+const uint8_t NumDotStarPixels = 1;
+const uint8_t DotStarData = 8;
+const uint8_t DotStarClock = 6;
+
+Adafruit_DotStar pixel(NumDotStarPixels,
+                       DotStarData,
+                       DotStarClock,
+                       DOTSTAR_GBR);
+
 void setup() {
   // If you don't use the debug serial port
   // you have to double-click the reset button to get the device
@@ -37,13 +47,19 @@ void setup() {
     digitalWrite(c, HIGH);
   }
   digitalWrite(BLUE_LED, LOW);
+  pixel.begin();
+  pixel.setPixelColor(0, 0x10, 0x10, 0x10);
+  pixel.show();
+  delay(50);
+  pixel.setPixelColor(0, 0, 0, 0);
+  pixel.show();
 }
 
 void loop() {
   uint32_t now = millis();
   for (uint8_t c = 0; c < COLS; c++) {
     digitalWrite(colPins[c], LOW);
-    delay(1);
+    delay(1); 
     for (uint8_t r = 0; r < ROWS; r++) {
       bool p = digitalRead(rowPins[r]) == LOW;
       if (p != pressed[r * 6 + c] &&
