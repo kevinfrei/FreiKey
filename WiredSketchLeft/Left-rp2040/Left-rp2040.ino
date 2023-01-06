@@ -1,5 +1,5 @@
-#include <Arduino.h>
 #include <Adafruit_NeoPixel.h>
+#include <Arduino.h>
 #include <stdint.h>
 
 // This runs on Adafruit ItsyBitsy RP2040 devices
@@ -13,7 +13,7 @@ constexpr uint8_t RP2040_NEOPIXEL_POWER = 16;
 // Top left to right (viewed from above)
 // C3, C4, R3_R3, R4, C5, R5
 // Bottom left to right
-// C0, C1, C2_C2, R2_R2, R0, R1 
+// C0, C1, C2_C2, R2_R2, R0, R1
 // On the ItsyBitys rp2040:
 // Top pins
 // C3 = D2/GPIO12, C4 = MISO/GPIO20, R3x = MOSI/GPIO19,
@@ -32,30 +32,35 @@ constexpr uint32_t debounce_time = 25;
 uint32_t last_change[COLS * ROWS] = {0};
 bool pressed[COLS * ROWS] = {0};
 
-Adafruit_NeoPixel pixels(1, PIN_NEOPIXEL, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel pixels(1, RP2040_NEOPIXEL, NEO_GRB + NEO_KHZ800);
 
 uint32_t hsvToRgb(float h, float s, float v) {
-  float r=0, g=0, b=0;
+  float r = 0, g = 0, b = 0;
   int i = int(h * 6);
   float f = h * 6 - i;
   float p = v * (1 - s);
   float q = v * (1 - f * s);
   float t = v * (1 - (1 - f) * s);
-  switch(i % 6){
-    case 0: r = v; g = t; b = p; break;
-    case 1: r = q; g = v; b = p; break;
-    case 2: r = p; g = v; b = t; break;
-    case 3: r = p; g = q; b = v; break;
-    case 4: r = t; g = p; b = v; break;
-    case 5: r = v; g = p; b = q; break;
+  switch (i % 6) {
+    case 0:
+      r = v; g = t; b = p; break;
+    case 1:
+      r = q; g = v; b = p; break;
+    case 2:
+      r = p; g = v; b = t; break;
+    case 3:
+      r = p; g = q; b = v; break;
+    case 4:
+      r = t; g = p; b = v; break;
+    case 5:
+      r = v; g = p; b = q; break;
   }
-
   return (int(r * 255) << 16) | (int(g * 255) << 8) | int(b * 255);
 }
 
 void setupComms() {
   // Run at 1Mbps, which seems both plenty fast, and is also reliable
-  Serial1.begin(1 << 20);  
+  Serial1.begin(1 << 20);
 }
 
 void setupMatrix() {
@@ -66,28 +71,29 @@ void setupMatrix() {
   for (uint8_t c : colPins) {
     pinMode(c, OUTPUT);
     digitalWrite(c, HIGH);
-  }  
+  }
 }
 
-void setupIndicators() {  
+void setupIndicators() {
   // Configure the neopixel for silly debug info
-  pinMode(NEOPIXEL_POWER, OUTPUT);
-  digitalWrite(NEOPIXEL_POWER, HIGH);
+  pinMode(RP2040_NEOPIXEL_POWER, OUTPUT);
+  digitalWrite(RP2040_NEOPIXEL_POWER, HIGH);
   pixels.begin();
   pixels.setPixelColor(0, 0x404040);
   pixels.show();
-  pinMode(PIN_LED, OUTPUT);
-  digitalWrite(PIN_LED, LOW);
+  pinMode(RP2040_LED, OUTPUT);
+  digitalWrite(RP2040_LED, LOW);
 }
 
 float sat = 0.8f;
 
 uint32_t getColor(uint32_t number) {
-  float hue = (number % 360) / 360.0f; 
+  float hue = (number % 360) / 360.0f;
   return hsvToRgb(hue, .9f, .3f);
 }
 
-uint8_t index(uint8_t row, uint8_t col) {
+uint8_t
+index(uint8_t row, uint8_t col) {
   return row * 6 + col;
 }
 
@@ -141,8 +147,8 @@ void loop() {
     }
     digitalWrite(colPins[c], HIGH);
   }
-  digitalWrite(PIN_LED, (now & 0x200) ? LOW : HIGH);
+  digitalWrite(PIN_LED, (now & 0x700 == 0x100) ? HIGH : LOW);
   pixels.clear();
-  pixels.setPixelColor(0, getColor(now>>4));
+  pixels.setPixelColor(0, getColor(now >> 4));
   pixels.show();
 }
