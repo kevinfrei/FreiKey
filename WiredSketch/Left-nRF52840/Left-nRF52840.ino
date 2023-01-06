@@ -10,15 +10,14 @@
 
 const uint8_t ROWS = 6;
 const uint8_t COLS = 6;
+const uint32_t debounce_time = 15;
+
+#include "CoreCapability.hpp"
 
 // uint8_t colPins[COLS] = {12, 6, 5, A4, SCK, MOSI}; // Feather
 uint8_t colPins[COLS] = {A4, MISO, 2, 7, 22, 21}; // ItsyBitsy
 // uint8_t rowPins[ROWS] = {A1, A0, A2, 10, 11, 13}; // Feather
 uint8_t rowPins[ROWS] = {11, 12, 10, 25, A5, A3}; // ItsyBitsy
-
-uint32_t last_change[COLS * ROWS] = {0};
-bool pressed[COLS * ROWS] = {0};
-const uint32_t debounce_time = 15;
 const uint8_t BLUE_LED = 3;
 
 const uint8_t NumDotStarPixels = 1;
@@ -30,14 +29,16 @@ Adafruit_DotStar pixel(NumDotStarPixels,
                        DotStarClock,
                        DOTSTAR_GBR);
 
-void setup() {
+void setupComms() {
   // If you don't use the debug serial port
   // you have to double-click the reset button to get the device
   // to a flashable state
   Serial.begin(9600);
   // Run at 1Mbps, which seems both plenty fast, and is also reliable
   Serial1.begin(1 << 20);
-  pinMode(BLUE_LED, OUTPUT);
+}
+
+void setupMatrix() {
   digitalWrite(BLUE_LED, HIGH);
   for (uint8_t r : rowPins) {
     pinMode(r, INPUT_PULLUP);
@@ -46,6 +47,10 @@ void setup() {
     pinMode(c, OUTPUT);
     digitalWrite(c, HIGH);
   }
+}
+
+void setupIndicators() {
+  pinMode(BLUE_LED, OUTPUT);
   digitalWrite(BLUE_LED, LOW);
   pixel.begin();
   pixel.setPixelColor(0, 0x10, 0x10, 0x10);
@@ -53,24 +58,31 @@ void setup() {
   delay(50);
   pixel.setPixelColor(0, 0, 0, 0);
   pixel.show();
+
 }
 
-void loop() {
-  uint32_t now = millis();
-  for (uint8_t c = 0; c < COLS; c++) {
-    digitalWrite(colPins[c], LOW);
-    delay(1); 
-    for (uint8_t r = 0; r < ROWS; r++) {
-      bool p = digitalRead(rowPins[r]) == LOW;
-      if (p != pressed[r * 6 + c] &&
-          last_change[r * 6 + c] + debounce_time > now) {
-        uint8_t val = r * 6 + c + (p ? 0 : 36);
-        Serial1.write((unsigned char)(val * 3 + val % 3 + 1));
-        analogWrite(BLUE_LED, p ? 10 : 0);
-        pressed[r * 6 + c] = p;
-        last_change[r * 6 + c] = now;
-      }
-    }
-    digitalWrite(colPins[c], HIGH);
-  }
+void startColumn(uint8_t colIdx) {
+  digitalWrite(colPins[colIdx], LOW);
+  delay(1);   
+}
+
+bool readRow(uint8_t rowIdx) {
+  return digitalRead(rowPins[rowIdx]) == LOW;
+}
+
+void sendData(uint8_t val) {
+  Serial1.write(val);
+}
+
+void indicateChange(uint8_t r, uint8_t c, uint8_t p, uint32_t now){
+  analogWrite(BLUE_LED, p ? 10 : 0);
+}
+
+void endColumn(uint8_t colIdx) {
+  digitalWrite(colPins[colIdx], HIGH);
+}
+
+// Called for every loop: Indicate the passage of time
+void timeIndication(uint32_t now) {
+  
 }

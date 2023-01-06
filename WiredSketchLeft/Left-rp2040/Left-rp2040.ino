@@ -92,8 +92,7 @@ uint32_t getColor(uint32_t number) {
   return hsvToRgb(hue, .9f, .3f);
 }
 
-uint8_t
-index(uint8_t row, uint8_t col) {
+uint8_t index(uint8_t row, uint8_t col) {
   return row * 6 + col;
 }
 
@@ -133,22 +132,40 @@ void setup() {
 void loop() {
   uint32_t now = millis();
   for (uint8_t c = 0; c < COLS; c++) {
-    digitalWrite(colPins[c], LOW);
-    // This looks arbitrary but it seems to take
-    // the output change a little while to stabilize on the input pins
-    delayMicroseconds(1250);
+		startColumn(c)
     for (uint8_t r = 0; r < ROWS; r++) {
-      bool p = digitalRead(rowPins[r]) == LOW;
+      bool p = readRow(r];
       if (debouncedChange(r, c, p, now)) {
         // Report the change up the wire
         reportChange(r, c, p);
         recordChange(r, c, p, now);
       }
     }
-    digitalWrite(colPins[c], HIGH);
+		endColumn(c);
   }
-  digitalWrite(PIN_LED, (now & 0x700 == 0x100) ? HIGH : LOW);
+	timeIndication(now);
+}
+
+// Called for every loop: Indicate the passage of time
+void timeIndication(uint32_t now) {
+	digitalWrite(PIN_LED, (now & 0x700 == 0x100) ? HIGH : LOW);
   pixels.clear();
   pixels.setPixelColor(0, getColor(now >> 4));
   pixels.show();
+}
+
+// Called after every write to the column
+void prepColumn(uint8_t colIdx) {
+	digitalWrite(colPins[colIdx], LOW);
+	// This looks arbitrary but it seems to take
+	// the output change a little while to stabilize on the input pins
+	delayMicroseconds(1250);
+}
+
+void endColumn(uint8_t colIdx) {
+  digitalWrite(colPins[colIdx], HIGH);
+}
+
+bool readRow(uint8_t rowIdx) {
+	return digitalRead(rowPins[rowIdx]) == LOW;
 }
