@@ -8,7 +8,7 @@
   "scripts": {
     "prepare": "husky install",
     "___": "putting stuff in here means you can run it from anywhere in the repo :)",
-    "format": "ftool format",
+    "format": "ftool format && clang-format -i `git ls-files '*.ino'` `git ls-files '?*.h*'` `git ls-files '*.cpp'`",
     "fixcc": "node fix_compile_commands.js",
     "__ ": "You can pass extra args in by doing 'yarn make -- <args>' - Actually, I don't think this works with the follow-on fixcc",
     "make": "cd src && make && yarn fixcc",

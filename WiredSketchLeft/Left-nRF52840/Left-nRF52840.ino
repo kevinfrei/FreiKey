@@ -1,7 +1,7 @@
 // This include is to work around an issue with linking with some Adafruit
 // libraries
-#include "Adafruit_TinyUSB.h"
 #include "Adafruit_DotStar.h"
+#include "Adafruit_TinyUSB.h"
 
 #include <Arduino.h>
 #include <stdint.h>
@@ -59,7 +59,7 @@ void loop() {
   uint32_t now = millis();
   for (uint8_t c = 0; c < COLS; c++) {
     digitalWrite(colPins[c], LOW);
-    delay(1); 
+    delay(1);
     for (uint8_t r = 0; r < ROWS; r++) {
       bool p = digitalRead(rowPins[r]) == LOW;
       if (p != pressed[r * 6 + c] &&

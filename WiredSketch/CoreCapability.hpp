@@ -12,17 +12,35 @@ uint32_t hsvToRgb(float h, float s, float v) {
   float t = v * (1 - (1 - f) * s);
   switch (i % 6) {
     case 0:
-      r = v; g = t; b = p; break;
+      r = v;
+      g = t;
+      b = p;
+      break;
     case 1:
-      r = q; g = v; b = p; break;
+      r = q;
+      g = v;
+      b = p;
+      break;
     case 2:
-      r = p; g = v; b = t; break;
+      r = p;
+      g = v;
+      b = t;
+      break;
     case 3:
-      r = p; g = q; b = v; break;
+      r = p;
+      g = q;
+      b = v;
+      break;
     case 4:
-      r = t; g = p; b = v; break;
+      r = t;
+      g = p;
+      b = v;
+      break;
     case 5:
-      r = v; g = p; b = q; break;
+      r = v;
+      g = p;
+      b = q;
+      break;
   }
   return (int(r * 255) << 16) | (int(g * 255) << 8) | int(b * 255);
 }
@@ -86,7 +104,7 @@ void setup() {
 void loop() {
   uint32_t now = millis();
   for (uint8_t c = 0; c < COLS; c++) {
-		startColumn(c);
+    startColumn(c);
     for (uint8_t r = 0; r < ROWS; r++) {
       bool p = readRow(r);
       if (debouncedChange(r, c, p, now)) {
@@ -95,7 +113,7 @@ void loop() {
         recordChange(r, c, p, now);
       }
     }
-		endColumn(c);
+    endColumn(c);
   }
-	timeIndication(now);
+  timeIndication(now);
 }

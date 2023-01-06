@@ -12,17 +12,35 @@ uint32_t hsvToRgb(float h, float s, float v) {
   float t = v * (1 - (1 - f) * s);
   switch (i % 6) {
     case 0:
-      r = v; g = t; b = p; break;
+      r = v;
+      g = t;
+      b = p;
+      break;
     case 1:
-      r = q; g = v; b = p; break;
+      r = q;
+      g = v;
+      b = p;
+      break;
     case 2:
-      r = p; g = v; b = t; break;
+      r = p;
+      g = v;
+      b = t;
+      break;
     case 3:
-      r = p; g = q; b = v; break;
+      r = p;
+      g = q;
+      b = v;
+      break;
     case 4:
-      r = t; g = p; b = v; break;
+      r = t;
+      g = p;
+      b = v;
+      break;
     case 5:
-      r = v; g = p; b = q; break;
+      r = v;
+      g = p;
+      b = q;
+      break;
   }
   return (int(r * 255) << 16) | (int(g * 255) << 8) | int(b * 255);
 }
@@ -43,11 +61,15 @@ void sendData(uint8_t value);
 // You can indiate a key change in here:
 void indicateChange(uint8_t r, uint8_t c, uint8_t p, uint32_t now);
 
-float sat = 0.8f;
+uint32_t makeHSV(uint16_t hue, uint8_t sat, uint8_t val) {
+  return hue << 16 | sat << 8 | val;
+}
 
 uint32_t getColor(uint32_t number) {
-  float hue = (number % 360) / 360.0f;
-  return hsvToRgb(hue, .9f, .3f);
+  float val = (float)(number & 0xFF) / 255.0f;
+  float sat = (float)((number >> 8) & 0xFF) / 255.0f;
+  float hue = ((number >> 16) % 360) / 360.0f;
+  return hsvToRgb(hue, sat, val);
 }
 
 uint8_t index(uint8_t row, uint8_t col) {
@@ -86,7 +108,7 @@ void setup() {
 void loop() {
   uint32_t now = millis();
   for (uint8_t c = 0; c < COLS; c++) {
-		startColumn(c);
+    startColumn(c);
     for (uint8_t r = 0; r < ROWS; r++) {
       bool p = readRow(r);
       if (debouncedChange(r, c, p, now)) {
@@ -95,7 +117,7 @@ void loop() {
         recordChange(r, c, p, now);
       }
     }
-		endColumn(c);
+    endColumn(c);
   }
-	timeIndication(now);
+  timeIndication(now);
 }

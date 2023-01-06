@@ -43,17 +43,35 @@ uint32_t hsvToRgb(float h, float s, float v) {
   float t = v * (1 - (1 - f) * s);
   switch (i % 6) {
     case 0:
-      r = v; g = t; b = p; break;
+      r = v;
+      g = t;
+      b = p;
+      break;
     case 1:
-      r = q; g = v; b = p; break;
+      r = q;
+      g = v;
+      b = p;
+      break;
     case 2:
-      r = p; g = v; b = t; break;
+      r = p;
+      g = v;
+      b = t;
+      break;
     case 3:
-      r = p; g = q; b = v; break;
+      r = p;
+      g = q;
+      b = v;
+      break;
     case 4:
-      r = t; g = p; b = v; break;
+      r = t;
+      g = p;
+      b = v;
+      break;
     case 5:
-      r = v; g = p; b = q; break;
+      r = v;
+      g = p;
+      b = q;
+      break;
   }
   return (int(r * 255) << 16) | (int(g * 255) << 8) | int(b * 255);
 }
@@ -132,8 +150,7 @@ void setup() {
 void loop() {
   uint32_t now = millis();
   for (uint8_t c = 0; c < COLS; c++) {
-		startColumn(c)
-    for (uint8_t r = 0; r < ROWS; r++) {
+    startColumn(c) for (uint8_t r = 0; r < ROWS; r++) {
       bool p = readRow(r];
       if (debouncedChange(r, c, p, now)) {
         // Report the change up the wire
@@ -141,14 +158,14 @@ void loop() {
         recordChange(r, c, p, now);
       }
     }
-		endColumn(c);
+    endColumn(c);
   }
-	timeIndication(now);
+  timeIndication(now);
 }
 
 // Called for every loop: Indicate the passage of time
 void timeIndication(uint32_t now) {
-	digitalWrite(PIN_LED, (now & 0x700 == 0x100) ? HIGH : LOW);
+  digitalWrite(PIN_LED, (now & 0x700 == 0x100) ? HIGH : LOW);
   pixels.clear();
   pixels.setPixelColor(0, getColor(now >> 4));
   pixels.show();
@@ -156,10 +173,10 @@ void timeIndication(uint32_t now) {
 
 // Called after every write to the column
 void prepColumn(uint8_t colIdx) {
-	digitalWrite(colPins[colIdx], LOW);
-	// This looks arbitrary but it seems to take
-	// the output change a little while to stabilize on the input pins
-	delayMicroseconds(1250);
+  digitalWrite(colPins[colIdx], LOW);
+  // This looks arbitrary but it seems to take
+  // the output change a little while to stabilize on the input pins
+  delayMicroseconds(1250);
 }
 
 void endColumn(uint8_t colIdx) {
@@ -167,5 +184,5 @@ void endColumn(uint8_t colIdx) {
 }
 
 bool readRow(uint8_t rowIdx) {
-	return digitalRead(rowPins[rowIdx]) == LOW;
+  return digitalRead(rowPins[rowIdx]) == LOW;
 }

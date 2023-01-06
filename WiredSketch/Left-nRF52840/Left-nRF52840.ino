@@ -1,7 +1,7 @@
 // This include is to work around an issue with linking with some Adafruit
 // libraries
-#include "Adafruit_TinyUSB.h"
 #include "Adafruit_DotStar.h"
+#include "Adafruit_TinyUSB.h"
 
 #include <Arduino.h>
 #include <stdint.h>
@@ -58,12 +58,11 @@ void setupIndicators() {
   delay(50);
   pixel.setPixelColor(0, 0, 0, 0);
   pixel.show();
-
 }
 
 void startColumn(uint8_t colIdx) {
   digitalWrite(colPins[colIdx], LOW);
-  delay(1);   
+  delay(1);
 }
 
 bool readRow(uint8_t rowIdx) {
@@ -74,7 +73,7 @@ void sendData(uint8_t val) {
   Serial1.write(val);
 }
 
-void indicateChange(uint8_t r, uint8_t c, uint8_t p, uint32_t now){
+void indicateChange(uint8_t r, uint8_t c, uint8_t p, uint32_t now) {
   analogWrite(BLUE_LED, p ? 10 : 0);
 }
 
@@ -82,7 +81,15 @@ void endColumn(uint8_t colIdx) {
   digitalWrite(colPins[colIdx], HIGH);
 }
 
+uint32_t lastCol = 0;
 // Called for every loop: Indicate the passage of time
 void timeIndication(uint32_t now) {
-  
+  now = now >> 7;
+  if (now != lastCol) {
+    lastCol = now;
+    uint32_t hsv = makeHSV(now % 360, (now / 360) & 0xFF, 50);
+    uint32_t col = getColor(hsv);
+    pixel.setPixelColor(0, (col >> 16) & 0xFF, (col >> 8) & 0xFF, col & 0xFF);
+    pixel.show();
+  }
 }

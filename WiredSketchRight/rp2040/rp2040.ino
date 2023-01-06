@@ -1,5 +1,5 @@
-#include <Arduino.h>
 #include <Adafruit_NeoPixel.h>
+#include <Arduino.h>
 #include <stdint.h>
 
 // This runs on Adafruit ItsyBitsy RP2040 devices
@@ -12,8 +12,8 @@ constexpr byte COLS = 6;
 // Bottom pins, left to right:
 // C0, R1, NC, NC, NC, C2, C1
 
-constexpr byte colPins[COLS] = {28 , 20 , 19 , 3 , 2 , 11 }; // rp2040
-constexpr byte rowPins[ROWS] = {9 , 27 , 10 , 6 , 7 , 8 }; // rp2040
+constexpr byte colPins[COLS] = {28, 20, 19, 3, 2, 11}; // rp2040
+constexpr byte rowPins[ROWS] = {9, 27, 10, 6, 7, 8}; // rp2040
 constexpr uint32_t debounce_time = 25;
 
 uint32_t last_change[COLS * ROWS] = {0};
@@ -23,7 +23,7 @@ Adafruit_NeoPixel pixels(1, PIN_NEOPIXEL, NEO_GRB + NEO_KHZ800);
 
 void setupComms() {
   // Run at 1Mbps, which seems both plenty fast, and is also reliable
-  Serial1.begin(1 << 20);  
+  Serial1.begin(1 << 20);
 }
 
 void setupMatrix() {
@@ -34,10 +34,10 @@ void setupMatrix() {
   for (uint8_t c : colPins) {
     pinMode(c, OUTPUT);
     digitalWrite(c, HIGH);
-  }  
+  }
 }
 
-void setupIndicators() {  
+void setupIndicators() {
   // Configure the neopixel for silly debug info
   pinMode(NEOPIXEL_POWER, OUTPUT);
   digitalWrite(NEOPIXEL_POWER, HIGH);
@@ -56,7 +56,8 @@ uint8_t encodeValue(uint8_t row, uint8_t col, bool pressed) {
 
 void indicateChange(uint8_t r, uint8_t c, uint8_t p) {
   pixels.clear();
-  pixels.setPixelColor(0, p ? pixels.Color(16, 45 + r * 42, 45 + c * 42) : pixels.Color(0,0,0));
+  pixels.setPixelColor(
+    0, p ? pixels.Color(16, 45 + r * 42, 45 + c * 42) : pixels.Color(0, 0, 0));
   pixels.show();
 }
 
@@ -91,8 +92,8 @@ void loop() {
     delay(1);
     uint32_t now = millis();
     for (uint8_t r = 0; r < ROWS; r++) {
-      bool p = digitalRead(rowPins[r]) == LOW;      
-      if (debouncedChange(r, c, p, now)) {        
+      bool p = digitalRead(rowPins[r]) == LOW;
+      if (debouncedChange(r, c, p, now)) {
         // Report the change up the wire
         reportChange(r, c, p);
         recordChange(r, c, p, now);
