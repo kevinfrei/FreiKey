@@ -29,3 +29,6 @@
 [submodule "src/libs/8875"]
 	path = src/libs/8875
 	url = https://github.com/adafruit/Adafruit_RA8875.git
+[submodule "SdAda"]
+	path = src/libs/SdFat
+	url = https://github.com/adafruit/SdFat.git

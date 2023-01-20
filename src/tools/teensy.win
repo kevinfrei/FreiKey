@@ -55,13 +55,16 @@ else
 endif
 RUNTIME_OS?=linux
 RUNTIME_PLATFORM_PATH=C:/PROGRA~2/Arduino/hardware/teensy/avr
-RUNTIME_IDE_VERSION=10816
-IDE_VERSION=10816
+RUNTIME_IDE_VERSION=10819
+IDE_VERSION=10819
 BUILD_PROJECT_NAME=${PROJ_NAME}
 ifeq (${BOARD_NAME}, teensy41)
   SERIAL_RESTART_CMD=false
-  UPLOAD_PROTOCOL=halfkay
+  UPLOAD_PORT_MODELID=0x25
+  UPLOAD_PROTOCOL=teensy
   UPLOAD_TOOL=teensyloader
+  UPLOAD_TOOL_TEENSY=teensyloader
+  UPLOAD_TOOL_DEFAULT=teensyloader
   BUILD_COMMAND_SIZE=arm-none-eabi-size
   BUILD_COMMAND_LINKER=arm-none-eabi-gcc
   BUILD_COMMAND_OBJDUMP=arm-none-eabi-objdump
@@ -76,7 +79,7 @@ ifeq (${BOARD_NAME}, teensy41)
   BUILD_FLAGS_LIBS=-larm_cortexM7lfsp_math -lm -lstdc++
   BUILD_FLAGS_S=-x assembler-with-cpp
   BUILD_FLAGS_CPP=-std=gnu++17 -fno-exceptions -fpermissive -fno-rtti -fno-threadsafe-statics -felide-constructors -Wno-error=narrowing
-  BUILD_FLAGS_DEFS=-D__IMXRT1062__ -DTEENSYDUINO=156
+  BUILD_FLAGS_DEFS=-D__IMXRT1062__ -DTEENSYDUINO=157
   BUILD_FLAGS_CPU=-mthumb -mcpu=cortex-m7 -mfloat-abi=hard -mfpu=fpv5-d16
   BUILD_FLAGS_OPTIMIZE=-Os
   BUILD_FLAGS_DEP=-MMD
@@ -84,58 +87,82 @@ ifeq (${BOARD_NAME}, teensy41)
   BUILD_BOARD=TEENSY41
   NAME=Teensy 4.1
   ifeq (${IN_USB}, serial)
+    UPLOAD_PORT_USBTYPE=USB_SERIAL
     BUILD_USBTYPE=USB_SERIAL
   else ifeq (${IN_USB}, serial2)
+    UPLOAD_PORT_USBTYPE=USB_DUAL_SERIAL
     BUILD_USBTYPE=USB_DUAL_SERIAL
   else ifeq (${IN_USB}, serial3)
+    UPLOAD_PORT_USBTYPE=USB_TRIPLE_SERIAL
     BUILD_USBTYPE=USB_TRIPLE_SERIAL
   else ifeq (${IN_USB}, keyboard)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_KEYBOARDONLY
     BUILD_USBTYPE=USB_KEYBOARDONLY
   else ifeq (${IN_USB}, touch)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_TOUCHSCREEN
     BUILD_USBTYPE=USB_TOUCHSCREEN
   else ifeq (${IN_USB}, hidtouch)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_HID_TOUCHSCREEN
     BUILD_USBTYPE=USB_HID_TOUCHSCREEN
   else ifeq (${IN_USB}, hid)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_HID
     BUILD_USBTYPE=USB_HID
   else ifeq (${IN_USB}, serialhid)
+    UPLOAD_PORT_USBTYPE=USB_SERIAL_HID
     BUILD_USBTYPE=USB_SERIAL_HID
   else ifeq (${IN_USB}, midi)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_MIDI
     BUILD_USBTYPE=USB_MIDI
   else ifeq (${IN_USB}, midi4)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_MIDI4
     BUILD_USBTYPE=USB_MIDI4
   else ifeq (${IN_USB}, midi16)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_MIDI16
     BUILD_USBTYPE=USB_MIDI16
   else ifeq (${IN_USB}, serialmidi)
+    UPLOAD_PORT_USBTYPE=USB_MIDI_SERIAL
     BUILD_USBTYPE=USB_MIDI_SERIAL
   else ifeq (${IN_USB}, serialmidi4)
+    UPLOAD_PORT_USBTYPE=USB_MIDI4_SERIAL
     BUILD_USBTYPE=USB_MIDI4_SERIAL
   else ifeq (${IN_USB}, serialmidi16)
+    UPLOAD_PORT_USBTYPE=USB_MIDI16_SERIAL
     BUILD_USBTYPE=USB_MIDI16_SERIAL
   else ifeq (${IN_USB}, audio)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_AUDIO
     BUILD_USBTYPE=USB_AUDIO
   else ifeq (${IN_USB}, serialmidiaudio)
+    UPLOAD_PORT_USBTYPE=USB_MIDI_AUDIO_SERIAL
     BUILD_USBTYPE=USB_MIDI_AUDIO_SERIAL
   else ifeq (${IN_USB}, serialmidi16audio)
+    UPLOAD_PORT_USBTYPE=USB_MIDI16_AUDIO_SERIAL
     BUILD_USBTYPE=USB_MIDI16_AUDIO_SERIAL
   else ifeq (${IN_USB}, mtp)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_MTPDISK
     BUILD_USBTYPE=USB_MTPDISK
+  else ifeq (${IN_USB}, serialmtp)
+    UPLOAD_PORT_USBTYPE=USB_MTPDISK_SERIAL
+    BUILD_USBTYPE=USB_MTPDISK_SERIAL
   else ifeq (${IN_USB}, rawhid)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_RAWHID
     BUILD_USBTYPE=USB_RAWHID
   else ifeq (${IN_USB}, flightsim)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_FLIGHTSIM
     BUILD_USBTYPE=USB_FLIGHTSIM
   else ifeq (${IN_USB}, flightsimjoystick)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_FLIGHTSIM_JOYSTICK
     BUILD_USBTYPE=USB_FLIGHTSIM_JOYSTICK
   endif
   ifeq (${IN_SPEED}, 600)
@@ -225,8 +252,11 @@ ifeq (${BOARD_NAME}, teensy41)
   endif
 else ifeq (${BOARD_NAME}, teensyMM)
   SERIAL_RESTART_CMD=false
-  UPLOAD_PROTOCOL=halfkay
+  UPLOAD_PORT_MODELID=0x26
+  UPLOAD_PROTOCOL=teensy
   UPLOAD_TOOL=teensyloader
+  UPLOAD_TOOL_TEENSY=teensyloader
+  UPLOAD_TOOL_DEFAULT=teensyloader
   BUILD_COMMAND_SIZE=arm-none-eabi-size
   BUILD_COMMAND_LINKER=arm-none-eabi-gcc
   BUILD_COMMAND_OBJDUMP=arm-none-eabi-objdump
@@ -241,7 +271,7 @@ else ifeq (${BOARD_NAME}, teensyMM)
   BUILD_FLAGS_LIBS=-larm_cortexM7lfsp_math -lm -lstdc++
   BUILD_FLAGS_S=-x assembler-with-cpp
   BUILD_FLAGS_CPP=-std=gnu++17 -fno-exceptions -fpermissive -fno-rtti -fno-threadsafe-statics -felide-constructors -Wno-error=narrowing
-  BUILD_FLAGS_DEFS=-D__IMXRT1062__ -DTEENSYDUINO=156
+  BUILD_FLAGS_DEFS=-D__IMXRT1062__ -DTEENSYDUINO=157
   BUILD_FLAGS_CPU=-mthumb -mcpu=cortex-m7 -mfloat-abi=hard -mfpu=fpv5-d16
   BUILD_FLAGS_OPTIMIZE=-Os
   BUILD_FLAGS_DEP=-MMD
@@ -249,58 +279,82 @@ else ifeq (${BOARD_NAME}, teensyMM)
   BUILD_BOARD=TEENSY_MICROMOD
   NAME=Teensy MicroMod
   ifeq (${IN_USB}, serial)
+    UPLOAD_PORT_USBTYPE=USB_SERIAL
     BUILD_USBTYPE=USB_SERIAL
   else ifeq (${IN_USB}, serial2)
+    UPLOAD_PORT_USBTYPE=USB_DUAL_SERIAL
     BUILD_USBTYPE=USB_DUAL_SERIAL
   else ifeq (${IN_USB}, serial3)
+    UPLOAD_PORT_USBTYPE=USB_TRIPLE_SERIAL
     BUILD_USBTYPE=USB_TRIPLE_SERIAL
   else ifeq (${IN_USB}, keyboard)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_KEYBOARDONLY
     BUILD_USBTYPE=USB_KEYBOARDONLY
   else ifeq (${IN_USB}, touch)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_TOUCHSCREEN
     BUILD_USBTYPE=USB_TOUCHSCREEN
   else ifeq (${IN_USB}, hidtouch)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_HID_TOUCHSCREEN
     BUILD_USBTYPE=USB_HID_TOUCHSCREEN
   else ifeq (${IN_USB}, hid)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_HID
     BUILD_USBTYPE=USB_HID
   else ifeq (${IN_USB}, serialhid)
+    UPLOAD_PORT_USBTYPE=USB_SERIAL_HID
     BUILD_USBTYPE=USB_SERIAL_HID
   else ifeq (${IN_USB}, midi)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_MIDI
     BUILD_USBTYPE=USB_MIDI
   else ifeq (${IN_USB}, midi4)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_MIDI4
     BUILD_USBTYPE=USB_MIDI4
   else ifeq (${IN_USB}, midi16)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_MIDI16
     BUILD_USBTYPE=USB_MIDI16
   else ifeq (${IN_USB}, serialmidi)
+    UPLOAD_PORT_USBTYPE=USB_MIDI_SERIAL
     BUILD_USBTYPE=USB_MIDI_SERIAL
   else ifeq (${IN_USB}, serialmidi4)
+    UPLOAD_PORT_USBTYPE=USB_MIDI4_SERIAL
     BUILD_USBTYPE=USB_MIDI4_SERIAL
   else ifeq (${IN_USB}, serialmidi16)
+    UPLOAD_PORT_USBTYPE=USB_MIDI16_SERIAL
     BUILD_USBTYPE=USB_MIDI16_SERIAL
   else ifeq (${IN_USB}, audio)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_AUDIO
     BUILD_USBTYPE=USB_AUDIO
   else ifeq (${IN_USB}, serialmidiaudio)
+    UPLOAD_PORT_USBTYPE=USB_MIDI_AUDIO_SERIAL
     BUILD_USBTYPE=USB_MIDI_AUDIO_SERIAL
   else ifeq (${IN_USB}, serialmidi16audio)
+    UPLOAD_PORT_USBTYPE=USB_MIDI16_AUDIO_SERIAL
     BUILD_USBTYPE=USB_MIDI16_AUDIO_SERIAL
   else ifeq (${IN_USB}, mtp)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_MTPDISK
     BUILD_USBTYPE=USB_MTPDISK
+  else ifeq (${IN_USB}, serialmtp)
+    UPLOAD_PORT_USBTYPE=USB_MTPDISK_SERIAL
+    BUILD_USBTYPE=USB_MTPDISK_SERIAL
   else ifeq (${IN_USB}, rawhid)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_RAWHID
     BUILD_USBTYPE=USB_RAWHID
   else ifeq (${IN_USB}, flightsim)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_FLIGHTSIM
     BUILD_USBTYPE=USB_FLIGHTSIM
   else ifeq (${IN_USB}, flightsimjoystick)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_FLIGHTSIM_JOYSTICK
     BUILD_USBTYPE=USB_FLIGHTSIM_JOYSTICK
   endif
   ifeq (${IN_SPEED}, 600)
@@ -390,8 +444,11 @@ else ifeq (${BOARD_NAME}, teensyMM)
   endif
 else ifeq (${BOARD_NAME}, teensy40)
   SERIAL_RESTART_CMD=false
-  UPLOAD_PROTOCOL=halfkay
+  UPLOAD_PORT_MODELID=0x24
+  UPLOAD_PROTOCOL=teensy
   UPLOAD_TOOL=teensyloader
+  UPLOAD_TOOL_TEENSY=teensyloader
+  UPLOAD_TOOL_DEFAULT=teensyloader
   BUILD_COMMAND_SIZE=arm-none-eabi-size
   BUILD_COMMAND_LINKER=arm-none-eabi-gcc
   BUILD_COMMAND_OBJDUMP=arm-none-eabi-objdump
@@ -406,7 +463,7 @@ else ifeq (${BOARD_NAME}, teensy40)
   BUILD_FLAGS_LIBS=-larm_cortexM7lfsp_math -lm -lstdc++
   BUILD_FLAGS_S=-x assembler-with-cpp
   BUILD_FLAGS_CPP=-std=gnu++17 -fno-exceptions -fpermissive -fno-rtti -fno-threadsafe-statics -felide-constructors -Wno-error=narrowing
-  BUILD_FLAGS_DEFS=-D__IMXRT1062__ -DTEENSYDUINO=156
+  BUILD_FLAGS_DEFS=-D__IMXRT1062__ -DTEENSYDUINO=157
   BUILD_FLAGS_CPU=-mthumb -mcpu=cortex-m7 -mfloat-abi=hard -mfpu=fpv5-d16
   BUILD_FLAGS_OPTIMIZE=-Os
   BUILD_FLAGS_DEP=-MMD
@@ -414,58 +471,82 @@ else ifeq (${BOARD_NAME}, teensy40)
   BUILD_BOARD=TEENSY40
   NAME=Teensy 4.0
   ifeq (${IN_USB}, serial)
+    UPLOAD_PORT_USBTYPE=USB_SERIAL
     BUILD_USBTYPE=USB_SERIAL
   else ifeq (${IN_USB}, serial2)
+    UPLOAD_PORT_USBTYPE=USB_DUAL_SERIAL
     BUILD_USBTYPE=USB_DUAL_SERIAL
   else ifeq (${IN_USB}, serial3)
+    UPLOAD_PORT_USBTYPE=USB_TRIPLE_SERIAL
     BUILD_USBTYPE=USB_TRIPLE_SERIAL
   else ifeq (${IN_USB}, keyboard)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_KEYBOARDONLY
     BUILD_USBTYPE=USB_KEYBOARDONLY
   else ifeq (${IN_USB}, touch)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_TOUCHSCREEN
     BUILD_USBTYPE=USB_TOUCHSCREEN
   else ifeq (${IN_USB}, hidtouch)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_HID_TOUCHSCREEN
     BUILD_USBTYPE=USB_HID_TOUCHSCREEN
   else ifeq (${IN_USB}, hid)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_HID
     BUILD_USBTYPE=USB_HID
   else ifeq (${IN_USB}, serialhid)
+    UPLOAD_PORT_USBTYPE=USB_SERIAL_HID
     BUILD_USBTYPE=USB_SERIAL_HID
   else ifeq (${IN_USB}, midi)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_MIDI
     BUILD_USBTYPE=USB_MIDI
   else ifeq (${IN_USB}, midi4)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_MIDI4
     BUILD_USBTYPE=USB_MIDI4
   else ifeq (${IN_USB}, midi16)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_MIDI16
     BUILD_USBTYPE=USB_MIDI16
   else ifeq (${IN_USB}, serialmidi)
+    UPLOAD_PORT_USBTYPE=USB_MIDI_SERIAL
     BUILD_USBTYPE=USB_MIDI_SERIAL
   else ifeq (${IN_USB}, serialmidi4)
+    UPLOAD_PORT_USBTYPE=USB_MIDI4_SERIAL
     BUILD_USBTYPE=USB_MIDI4_SERIAL
   else ifeq (${IN_USB}, serialmidi16)
+    UPLOAD_PORT_USBTYPE=USB_MIDI16_SERIAL
     BUILD_USBTYPE=USB_MIDI16_SERIAL
   else ifeq (${IN_USB}, audio)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_AUDIO
     BUILD_USBTYPE=USB_AUDIO
   else ifeq (${IN_USB}, serialmidiaudio)
+    UPLOAD_PORT_USBTYPE=USB_MIDI_AUDIO_SERIAL
     BUILD_USBTYPE=USB_MIDI_AUDIO_SERIAL
   else ifeq (${IN_USB}, serialmidi16audio)
+    UPLOAD_PORT_USBTYPE=USB_MIDI16_AUDIO_SERIAL
     BUILD_USBTYPE=USB_MIDI16_AUDIO_SERIAL
   else ifeq (${IN_USB}, mtp)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_MTPDISK
     BUILD_USBTYPE=USB_MTPDISK
+  else ifeq (${IN_USB}, serialmtp)
+    UPLOAD_PORT_USBTYPE=USB_MTPDISK_SERIAL
+    BUILD_USBTYPE=USB_MTPDISK_SERIAL
   else ifeq (${IN_USB}, rawhid)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_RAWHID
     BUILD_USBTYPE=USB_RAWHID
   else ifeq (${IN_USB}, flightsim)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_FLIGHTSIM
     BUILD_USBTYPE=USB_FLIGHTSIM
   else ifeq (${IN_USB}, flightsimjoystick)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_FLIGHTSIM_JOYSTICK
     BUILD_USBTYPE=USB_FLIGHTSIM_JOYSTICK
   endif
   ifeq (${IN_SPEED}, 600)
@@ -558,7 +639,7 @@ else ifeq (${BOARD_NAME}, teensy36)
   BUILD_FLAGS_LIBS=-larm_cortexM4lf_math -lm -lstdc++
   BUILD_FLAGS_S=-x assembler-with-cpp
   BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++17 -Wno-error=narrowing -fno-rtti
-  BUILD_FLAGS_DEFS=-D__MK66FX1M0__ -DTEENSYDUINO=156
+  BUILD_FLAGS_DEFS=-D__MK66FX1M0__ -DTEENSYDUINO=157
   BUILD_FLAGS_CPU=-mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -fsingle-precision-constant
   BUILD_FLAGS_OPTIMIZE=-Os
   BUILD_FLAGS_DEP=-MMD
@@ -575,66 +656,94 @@ else ifeq (${BOARD_NAME}, teensy36)
   BUILD_MCU=mk66fx1m0
   BUILD_CORE=teensy3
   BUILD_BOARD=TEENSY36
-  UPLOAD_PROTOCOL=halfkay
+  UPLOAD_PORT_MODELID=0x22
+  UPLOAD_PROTOCOL=teensy
   UPLOAD_TOOL=teensyloader
+  UPLOAD_TOOL_TEENSY=teensyloader
+  UPLOAD_TOOL_DEFAULT=teensyloader
   UPLOAD_MAXIMUM_DATA_SIZE=262144
   UPLOAD_MAXIMUM_SIZE=1048576
   NAME=Teensy 3.6
   ifeq (${IN_USB}, serial)
+    UPLOAD_PORT_USBTYPE=USB_SERIAL
     BUILD_USBTYPE=USB_SERIAL
   else ifeq (${IN_USB}, serial2)
+    UPLOAD_PORT_USBTYPE=USB_DUAL_SERIAL
     BUILD_USBTYPE=USB_DUAL_SERIAL
   else ifeq (${IN_USB}, serial3)
+    UPLOAD_PORT_USBTYPE=USB_TRIPLE_SERIAL
     BUILD_USBTYPE=USB_TRIPLE_SERIAL
   else ifeq (${IN_USB}, keyboard)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_KEYBOARDONLY
     BUILD_USBTYPE=USB_KEYBOARDONLY
   else ifeq (${IN_USB}, touch)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_TOUCHSCREEN
     BUILD_USBTYPE=USB_TOUCHSCREEN
   else ifeq (${IN_USB}, hidtouch)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_HID_TOUCHSCREEN
     BUILD_USBTYPE=USB_HID_TOUCHSCREEN
   else ifeq (${IN_USB}, hid)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_HID
     BUILD_USBTYPE=USB_HID
   else ifeq (${IN_USB}, serialhid)
+    UPLOAD_PORT_USBTYPE=USB_SERIAL_HID
     BUILD_USBTYPE=USB_SERIAL_HID
   else ifeq (${IN_USB}, midi)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_MIDI
     BUILD_USBTYPE=USB_MIDI
   else ifeq (${IN_USB}, midi4)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_MIDI4
     BUILD_USBTYPE=USB_MIDI4
   else ifeq (${IN_USB}, midi16)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_MIDI16
     BUILD_USBTYPE=USB_MIDI16
   else ifeq (${IN_USB}, serialmidi)
+    UPLOAD_PORT_USBTYPE=USB_MIDI_SERIAL
     BUILD_USBTYPE=USB_MIDI_SERIAL
   else ifeq (${IN_USB}, serialmidi4)
+    UPLOAD_PORT_USBTYPE=USB_MIDI4_SERIAL
     BUILD_USBTYPE=USB_MIDI4_SERIAL
   else ifeq (${IN_USB}, serialmidi16)
+    UPLOAD_PORT_USBTYPE=USB_MIDI16_SERIAL
     BUILD_USBTYPE=USB_MIDI16_SERIAL
   else ifeq (${IN_USB}, audio)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_AUDIO
     BUILD_USBTYPE=USB_AUDIO
   else ifeq (${IN_USB}, serialmidiaudio)
+    UPLOAD_PORT_USBTYPE=USB_MIDI_AUDIO_SERIAL
     BUILD_USBTYPE=USB_MIDI_AUDIO_SERIAL
   else ifeq (${IN_USB}, serialmidi16audio)
+    UPLOAD_PORT_USBTYPE=USB_MIDI16_AUDIO_SERIAL
     BUILD_USBTYPE=USB_MIDI16_AUDIO_SERIAL
   else ifeq (${IN_USB}, mtp)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_MTPDISK
     BUILD_USBTYPE=USB_MTPDISK
+  else ifeq (${IN_USB}, serialmtp)
+    UPLOAD_PORT_USBTYPE=USB_MTPDISK_SERIAL
+    BUILD_USBTYPE=USB_MTPDISK_SERIAL
   else ifeq (${IN_USB}, rawhid)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_RAWHID
     BUILD_USBTYPE=USB_RAWHID
   else ifeq (${IN_USB}, flightsim)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_FLIGHTSIM
     BUILD_USBTYPE=USB_FLIGHTSIM
   else ifeq (${IN_USB}, flightsimjoystick)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_FLIGHTSIM_JOYSTICK
     BUILD_USBTYPE=USB_FLIGHTSIM_JOYSTICK
   else ifeq (${IN_USB}, everything)
+    UPLOAD_PORT_USBTYPE=USB_EVERYTHING
     BUILD_USBTYPE=USB_EVERYTHING
   else ifeq (${IN_USB}, disable)
     BUILD_USBTYPE=USB_DISABLED
@@ -759,7 +868,7 @@ else ifeq (${BOARD_NAME}, teensy35)
   BUILD_FLAGS_LIBS=-larm_cortexM4lf_math -lm -lstdc++
   BUILD_FLAGS_S=-x assembler-with-cpp
   BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++17 -Wno-error=narrowing -fno-rtti
-  BUILD_FLAGS_DEFS=-D__MK64FX512__ -DTEENSYDUINO=156
+  BUILD_FLAGS_DEFS=-D__MK64FX512__ -DTEENSYDUINO=157
   BUILD_FLAGS_CPU=-mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -fsingle-precision-constant
   BUILD_FLAGS_OPTIMIZE=-Os
   BUILD_FLAGS_DEP=-MMD
@@ -776,66 +885,94 @@ else ifeq (${BOARD_NAME}, teensy35)
   BUILD_MCU=mk64fx512
   BUILD_CORE=teensy3
   BUILD_BOARD=TEENSY35
-  UPLOAD_PROTOCOL=halfkay
+  UPLOAD_PORT_MODELID=0x1F
+  UPLOAD_PROTOCOL=teensy
   UPLOAD_TOOL=teensyloader
+  UPLOAD_TOOL_TEENSY=teensyloader
+  UPLOAD_TOOL_DEFAULT=teensyloader
   UPLOAD_MAXIMUM_DATA_SIZE=262136
   UPLOAD_MAXIMUM_SIZE=524288
   NAME=Teensy 3.5
   ifeq (${IN_USB}, serial)
+    UPLOAD_PORT_USBTYPE=USB_SERIAL
     BUILD_USBTYPE=USB_SERIAL
   else ifeq (${IN_USB}, serial2)
+    UPLOAD_PORT_USBTYPE=USB_DUAL_SERIAL
     BUILD_USBTYPE=USB_DUAL_SERIAL
   else ifeq (${IN_USB}, serial3)
+    UPLOAD_PORT_USBTYPE=USB_TRIPLE_SERIAL
     BUILD_USBTYPE=USB_TRIPLE_SERIAL
   else ifeq (${IN_USB}, keyboard)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_KEYBOARDONLY
     BUILD_USBTYPE=USB_KEYBOARDONLY
   else ifeq (${IN_USB}, touch)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_TOUCHSCREEN
     BUILD_USBTYPE=USB_TOUCHSCREEN
   else ifeq (${IN_USB}, hidtouch)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_HID_TOUCHSCREEN
     BUILD_USBTYPE=USB_HID_TOUCHSCREEN
   else ifeq (${IN_USB}, hid)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_HID
     BUILD_USBTYPE=USB_HID
   else ifeq (${IN_USB}, serialhid)
+    UPLOAD_PORT_USBTYPE=USB_SERIAL_HID
     BUILD_USBTYPE=USB_SERIAL_HID
   else ifeq (${IN_USB}, midi)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_MIDI
     BUILD_USBTYPE=USB_MIDI
   else ifeq (${IN_USB}, midi4)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_MIDI4
     BUILD_USBTYPE=USB_MIDI4
   else ifeq (${IN_USB}, midi16)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_MIDI16
     BUILD_USBTYPE=USB_MIDI16
   else ifeq (${IN_USB}, serialmidi)
+    UPLOAD_PORT_USBTYPE=USB_MIDI_SERIAL
     BUILD_USBTYPE=USB_MIDI_SERIAL
   else ifeq (${IN_USB}, serialmidi4)
+    UPLOAD_PORT_USBTYPE=USB_MIDI4_SERIAL
     BUILD_USBTYPE=USB_MIDI4_SERIAL
   else ifeq (${IN_USB}, serialmidi16)
+    UPLOAD_PORT_USBTYPE=USB_MIDI16_SERIAL
     BUILD_USBTYPE=USB_MIDI16_SERIAL
   else ifeq (${IN_USB}, audio)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_AUDIO
     BUILD_USBTYPE=USB_AUDIO
   else ifeq (${IN_USB}, serialmidiaudio)
+    UPLOAD_PORT_USBTYPE=USB_MIDI_AUDIO_SERIAL
     BUILD_USBTYPE=USB_MIDI_AUDIO_SERIAL
   else ifeq (${IN_USB}, serialmidi16audio)
+    UPLOAD_PORT_USBTYPE=USB_MIDI16_AUDIO_SERIAL
     BUILD_USBTYPE=USB_MIDI16_AUDIO_SERIAL
   else ifeq (${IN_USB}, mtp)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_MTPDISK
     BUILD_USBTYPE=USB_MTPDISK
+  else ifeq (${IN_USB}, serialmtp)
+    UPLOAD_PORT_USBTYPE=USB_MTPDISK_SERIAL
+    BUILD_USBTYPE=USB_MTPDISK_SERIAL
   else ifeq (${IN_USB}, rawhid)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_RAWHID
     BUILD_USBTYPE=USB_RAWHID
   else ifeq (${IN_USB}, flightsim)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_FLIGHTSIM
     BUILD_USBTYPE=USB_FLIGHTSIM
   else ifeq (${IN_USB}, flightsimjoystick)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_FLIGHTSIM_JOYSTICK
     BUILD_USBTYPE=USB_FLIGHTSIM_JOYSTICK
   else ifeq (${IN_USB}, everything)
+    UPLOAD_PORT_USBTYPE=USB_EVERYTHING
     BUILD_USBTYPE=USB_EVERYTHING
   else ifeq (${IN_USB}, disable)
     BUILD_USBTYPE=USB_DISABLED
@@ -960,7 +1097,7 @@ else ifeq (${BOARD_NAME}, teensy31)
   BUILD_FLAGS_LIBS=-larm_cortexM4l_math -lm -lstdc++
   BUILD_FLAGS_S=-x assembler-with-cpp
   BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++17 -Wno-error=narrowing -fno-rtti
-  BUILD_FLAGS_DEFS=-D__MK20DX256__ -DTEENSYDUINO=156
+  BUILD_FLAGS_DEFS=-D__MK20DX256__ -DTEENSYDUINO=157
   BUILD_FLAGS_CPU=-mthumb -mcpu=cortex-m4 -fsingle-precision-constant
   BUILD_FLAGS_OPTIMIZE=-Os
   BUILD_FLAGS_DEP=-MMD
@@ -977,66 +1114,95 @@ else ifeq (${BOARD_NAME}, teensy31)
   BUILD_MCU=mk20dx256
   BUILD_CORE=teensy3
   BUILD_BOARD=TEENSY32
-  UPLOAD_PROTOCOL=halfkay
+  UPLOAD_PORT_1_MODELID=0x1E
+  UPLOAD_PORT_0_MODELID=0x21
+  UPLOAD_PROTOCOL=teensy
   UPLOAD_TOOL=teensyloader
+  UPLOAD_TOOL_TEENSY=teensyloader
+  UPLOAD_TOOL_DEFAULT=teensyloader
   UPLOAD_MAXIMUM_DATA_SIZE=65536
   UPLOAD_MAXIMUM_SIZE=262144
   NAME=Teensy 3.2 / 3.1
   ifeq (${IN_USB}, serial)
+    UPLOAD_PORT_USBTYPE=USB_SERIAL
     BUILD_USBTYPE=USB_SERIAL
   else ifeq (${IN_USB}, serial2)
+    UPLOAD_PORT_USBTYPE=USB_DUAL_SERIAL
     BUILD_USBTYPE=USB_DUAL_SERIAL
   else ifeq (${IN_USB}, serial3)
+    UPLOAD_PORT_USBTYPE=USB_TRIPLE_SERIAL
     BUILD_USBTYPE=USB_TRIPLE_SERIAL
   else ifeq (${IN_USB}, keyboard)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_KEYBOARDONLY
     BUILD_USBTYPE=USB_KEYBOARDONLY
   else ifeq (${IN_USB}, touch)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_TOUCHSCREEN
     BUILD_USBTYPE=USB_TOUCHSCREEN
   else ifeq (${IN_USB}, hidtouch)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_HID_TOUCHSCREEN
     BUILD_USBTYPE=USB_HID_TOUCHSCREEN
   else ifeq (${IN_USB}, hid)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_HID
     BUILD_USBTYPE=USB_HID
   else ifeq (${IN_USB}, serialhid)
+    UPLOAD_PORT_USBTYPE=USB_SERIAL_HID
     BUILD_USBTYPE=USB_SERIAL_HID
   else ifeq (${IN_USB}, midi)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_MIDI
     BUILD_USBTYPE=USB_MIDI
   else ifeq (${IN_USB}, midi4)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_MIDI4
     BUILD_USBTYPE=USB_MIDI4
   else ifeq (${IN_USB}, midi16)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_MIDI16
     BUILD_USBTYPE=USB_MIDI16
   else ifeq (${IN_USB}, serialmidi)
+    UPLOAD_PORT_USBTYPE=USB_MIDI_SERIAL
     BUILD_USBTYPE=USB_MIDI_SERIAL
   else ifeq (${IN_USB}, serialmidi4)
+    UPLOAD_PORT_USBTYPE=USB_MIDI4_SERIAL
     BUILD_USBTYPE=USB_MIDI4_SERIAL
   else ifeq (${IN_USB}, serialmidi16)
+    UPLOAD_PORT_USBTYPE=USB_MIDI16_SERIAL
     BUILD_USBTYPE=USB_MIDI16_SERIAL
   else ifeq (${IN_USB}, audio)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_AUDIO
     BUILD_USBTYPE=USB_AUDIO
   else ifeq (${IN_USB}, serialmidiaudio)
+    UPLOAD_PORT_USBTYPE=USB_MIDI_AUDIO_SERIAL
     BUILD_USBTYPE=USB_MIDI_AUDIO_SERIAL
   else ifeq (${IN_USB}, serialmidi16audio)
+    UPLOAD_PORT_USBTYPE=USB_MIDI16_AUDIO_SERIAL
     BUILD_USBTYPE=USB_MIDI16_AUDIO_SERIAL
   else ifeq (${IN_USB}, mtp)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_MTPDISK
     BUILD_USBTYPE=USB_MTPDISK
+  else ifeq (${IN_USB}, serialmtp)
+    UPLOAD_PORT_USBTYPE=USB_MTPDISK_SERIAL
+    BUILD_USBTYPE=USB_MTPDISK_SERIAL
   else ifeq (${IN_USB}, rawhid)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_RAWHID
     BUILD_USBTYPE=USB_RAWHID
   else ifeq (${IN_USB}, flightsim)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_FLIGHTSIM
     BUILD_USBTYPE=USB_FLIGHTSIM
   else ifeq (${IN_USB}, flightsimjoystick)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_FLIGHTSIM_JOYSTICK
     BUILD_USBTYPE=USB_FLIGHTSIM_JOYSTICK
   else ifeq (${IN_USB}, everything)
+    UPLOAD_PORT_USBTYPE=USB_EVERYTHING
     BUILD_USBTYPE=USB_EVERYTHING
   else ifeq (${IN_USB}, disable)
     BUILD_USBTYPE=USB_DISABLED
@@ -1152,7 +1318,7 @@ else ifeq (${BOARD_NAME}, teensy30)
   BUILD_FLAGS_LDSPECS=--specs=nano.specs
   BUILD_FLAGS_S=-x assembler-with-cpp
   BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++17 -Wno-error=narrowing -fno-rtti
-  BUILD_FLAGS_DEFS=-D__MK20DX128__ -DTEENSYDUINO=156
+  BUILD_FLAGS_DEFS=-D__MK20DX128__ -DTEENSYDUINO=157
   BUILD_FLAGS_CPU=-mthumb -mcpu=cortex-m4 -fsingle-precision-constant
   BUILD_FLAGS_OPTIMIZE=-Os
   BUILD_FLAGS_DEP=-MMD
@@ -1169,47 +1335,64 @@ else ifeq (${BOARD_NAME}, teensy30)
   BUILD_MCU=mk20dx128
   BUILD_CORE=teensy3
   BUILD_BOARD=TEENSY30
-  UPLOAD_PROTOCOL=halfkay
+  UPLOAD_PORT_MODELID=0x1D
+  UPLOAD_PROTOCOL=teensy
   UPLOAD_TOOL=teensyloader
+  UPLOAD_TOOL_TEENSY=teensyloader
+  UPLOAD_TOOL_DEFAULT=teensyloader
   UPLOAD_MAXIMUM_DATA_SIZE=16384
   UPLOAD_MAXIMUM_SIZE=131072
   NAME=Teensy 3.0
   ifeq (${IN_USB}, serial)
+    UPLOAD_PORT_USBTYPE=USB_SERIAL
     BUILD_USBTYPE=USB_SERIAL
   else ifeq (${IN_USB}, keyboard)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_KEYBOARDONLY
     BUILD_USBTYPE=USB_KEYBOARDONLY
   else ifeq (${IN_USB}, hid)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_HID
     BUILD_USBTYPE=USB_HID
   else ifeq (${IN_USB}, serialhid)
+    UPLOAD_PORT_USBTYPE=USB_SERIAL_HID
     BUILD_USBTYPE=USB_SERIAL_HID
   else ifeq (${IN_USB}, touch)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_TOUCHSCREEN
     BUILD_USBTYPE=USB_TOUCHSCREEN
   else ifeq (${IN_USB}, midi)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_MIDI
     BUILD_USBTYPE=USB_MIDI
   else ifeq (${IN_USB}, midi4)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_MIDI4
     BUILD_USBTYPE=USB_MIDI4
   else ifeq (${IN_USB}, serialmidi)
+    UPLOAD_PORT_USBTYPE=USB_MIDI_SERIAL
     BUILD_USBTYPE=USB_MIDI_SERIAL
   else ifeq (${IN_USB}, serialmidi4)
+    UPLOAD_PORT_USBTYPE=USB_MIDI4_SERIAL
     BUILD_USBTYPE=USB_MIDI4_SERIAL
   else ifeq (${IN_USB}, audio)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_AUDIO
     BUILD_USBTYPE=USB_AUDIO
   else ifeq (${IN_USB}, serialmidiaudio)
+    UPLOAD_PORT_USBTYPE=USB_MIDI_AUDIO_SERIAL
     BUILD_USBTYPE=USB_MIDI_AUDIO_SERIAL
   else ifeq (${IN_USB}, mtp)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_MTPDISK
     BUILD_USBTYPE=USB_MTPDISK
   else ifeq (${IN_USB}, rawhid)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_RAWHID
     BUILD_USBTYPE=USB_RAWHID
   else ifeq (${IN_USB}, flightsim)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_FLIGHTSIM
     BUILD_USBTYPE=USB_FLIGHTSIM
   else ifeq (${IN_USB}, disable)
     BUILD_USBTYPE=USB_DISABLED
@@ -1303,7 +1486,7 @@ else ifeq (${BOARD_NAME}, teensyLC)
   BUILD_FLAGS_LIBS=-larm_cortexM0l_math -lm -lstdc++
   BUILD_FLAGS_S=-x assembler-with-cpp
   BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++17 -Wno-error=narrowing -fno-rtti
-  BUILD_FLAGS_DEFS=-D__MKL26Z64__ -DTEENSYDUINO=156
+  BUILD_FLAGS_DEFS=-D__MKL26Z64__ -DTEENSYDUINO=157
   BUILD_FLAGS_CPU=-mthumb -mcpu=cortex-m0plus -fsingle-precision-constant
   BUILD_FLAGS_DEP=-MMD
   BUILD_FLAGS_COMMON=-g -Wall -ffunction-sections -fdata-sections -nostdlib -mno-unaligned-access
@@ -1319,46 +1502,63 @@ else ifeq (${BOARD_NAME}, teensyLC)
   BUILD_MCU=mkl26z64
   BUILD_CORE=teensy3
   BUILD_BOARD=TEENSYLC
-  UPLOAD_PROTOCOL=halfkay
+  UPLOAD_PORT_MODELID=0x20
+  UPLOAD_PROTOCOL=teensy
   UPLOAD_TOOL=teensyloader
+  UPLOAD_TOOL_TEENSY=teensyloader
+  UPLOAD_TOOL_DEFAULT=teensyloader
   UPLOAD_MAXIMUM_DATA_SIZE=8192
   UPLOAD_MAXIMUM_SIZE=63488
   NAME=Teensy LC
   ifeq (${IN_USB}, serial)
+    UPLOAD_PORT_USBTYPE=USB_SERIAL
     BUILD_USBTYPE=USB_SERIAL
   else ifeq (${IN_USB}, serial2)
+    UPLOAD_PORT_USBTYPE=USB_DUAL_SERIAL
     BUILD_USBTYPE=USB_DUAL_SERIAL
   else ifeq (${IN_USB}, serial3)
+    UPLOAD_PORT_USBTYPE=USB_TRIPLE_SERIAL
     BUILD_USBTYPE=USB_TRIPLE_SERIAL
   else ifeq (${IN_USB}, keyboard)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_KEYBOARDONLY
     BUILD_USBTYPE=USB_KEYBOARDONLY
   else ifeq (${IN_USB}, hid)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_HID
     BUILD_USBTYPE=USB_HID
   else ifeq (${IN_USB}, serialhid)
+    UPLOAD_PORT_USBTYPE=USB_SERIAL_HID
     BUILD_USBTYPE=USB_SERIAL_HID
   else ifeq (${IN_USB}, touch)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_TOUCHSCREEN
     BUILD_USBTYPE=USB_TOUCHSCREEN
   else ifeq (${IN_USB}, midi)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_MIDI
     BUILD_USBTYPE=USB_MIDI
   else ifeq (${IN_USB}, midi4)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_MIDI4
     BUILD_USBTYPE=USB_MIDI4
   else ifeq (${IN_USB}, serialmidi)
+    UPLOAD_PORT_USBTYPE=USB_MIDI_SERIAL
     BUILD_USBTYPE=USB_MIDI_SERIAL
   else ifeq (${IN_USB}, serialmidi4)
+    UPLOAD_PORT_USBTYPE=USB_MIDI4_SERIAL
     BUILD_USBTYPE=USB_MIDI4_SERIAL
   else ifeq (${IN_USB}, mtp)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_MTPDISK
     BUILD_USBTYPE=USB_MTPDISK
   else ifeq (${IN_USB}, rawhid)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_RAWHID
     BUILD_USBTYPE=USB_RAWHID
   else ifeq (${IN_USB}, flightsim)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_FLIGHTSIM
     BUILD_USBTYPE=USB_FLIGHTSIM
   else ifeq (${IN_USB}, disable)
     BUILD_USBTYPE=USB_DISABLED
@@ -1452,7 +1652,7 @@ else ifeq (${BOARD_NAME}, teensypp2)
   BUILD_FLAGS_LD=-Wl,--gc-sections,--relax
   BUILD_FLAGS_S=-x assembler-with-cpp
   BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++17
-  BUILD_FLAGS_DEFS=-DTEENSYDUINO=156 -DARDUINO_ARCH_AVR
+  BUILD_FLAGS_DEFS=-DTEENSYDUINO=157 -DARDUINO_ARCH_AVR
   BUILD_FLAGS_CPU=-mmcu=at90usb1286
   BUILD_FLAGS_OPTIMIZE=-Os
   BUILD_FLAGS_DEP=-MMD
@@ -1469,33 +1669,44 @@ else ifeq (${BOARD_NAME}, teensypp2)
   BUILD_MCU=at90usb1286
   BUILD_CORE=teensy
   BUILD_BOARD=TEENSY2PP
-  UPLOAD_PROTOCOL=halfkay
+  UPLOAD_PORT_MODELID=0x1C
+  UPLOAD_PROTOCOL=teensy
   UPLOAD_TOOL=teensyloader
+  UPLOAD_TOOL_TEENSY=teensyloader
+  UPLOAD_TOOL_DEFAULT=teensyloader
   UPLOAD_MAXIMUM_DATA_SIZE=8192
   UPLOAD_MAXIMUM_SIZE=130048
   NAME=Teensy++ 2.0
   ifeq (${IN_USB}, serial)
+    UPLOAD_PORT_USBTYPE=USB_SERIAL
     BUILD_USBTYPE=USB_SERIAL
   else ifeq (${IN_USB}, hid)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_HID
     BUILD_USBTYPE=USB_HID
   else ifeq (${IN_USB}, serialhid)
+    UPLOAD_PORT_USBTYPE=USB_SERIAL_HID
     BUILD_USBTYPE=USB_SERIAL_HID
   else ifeq (${IN_USB}, int_disk)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_DISK
     BUILD_ELFPATCH=mktinyfat
     BUILD_USBTYPE=USB_DISK
   else ifeq (${IN_USB}, sd_disk)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_DISK_SDFLASH
     BUILD_USBTYPE=USB_DISK_SDFLASH
   else ifeq (${IN_USB}, midi)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_MIDI
     BUILD_USBTYPE=USB_MIDI
   else ifeq (${IN_USB}, rawhid)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_RAWHID
     BUILD_USBTYPE=USB_RAWHID
   else ifeq (${IN_USB}, flightsim)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_FLIGHTSIM
     BUILD_USBTYPE=USB_FLIGHTSIM
   endif
   ifeq (${IN_SPEED}, 16)
@@ -1567,7 +1778,7 @@ else ifeq (${BOARD_NAME}, teensy2)
   BUILD_FLAGS_LD=-Wl,--gc-sections,--relax
   BUILD_FLAGS_S=-x assembler-with-cpp
   BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++17
-  BUILD_FLAGS_DEFS=-DTEENSYDUINO=156 -DARDUINO_ARCH_AVR
+  BUILD_FLAGS_DEFS=-DTEENSYDUINO=157 -DARDUINO_ARCH_AVR
   BUILD_FLAGS_CPU=-mmcu=atmega32u4
   BUILD_FLAGS_OPTIMIZE=-Os
   BUILD_FLAGS_DEP=-MMD
@@ -1584,33 +1795,44 @@ else ifeq (${BOARD_NAME}, teensy2)
   BUILD_MCU=atmega32u4
   BUILD_CORE=teensy
   BUILD_BOARD=TEENSY2
-  UPLOAD_PROTOCOL=halfkay
+  UPLOAD_PORT_MODELID=0x1B
+  UPLOAD_PROTOCOL=teensy
   UPLOAD_TOOL=teensyloader
+  UPLOAD_TOOL_TEENSY=teensyloader
+  UPLOAD_TOOL_DEFAULT=teensyloader
   UPLOAD_MAXIMUM_DATA_SIZE=2560
   UPLOAD_MAXIMUM_SIZE=32256
   NAME=Teensy 2.0
   ifeq (${IN_USB}, serial)
+    UPLOAD_PORT_USBTYPE=USB_SERIAL
     BUILD_USBTYPE=USB_SERIAL
   else ifeq (${IN_USB}, hid)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_HID
     BUILD_USBTYPE=USB_HID
   else ifeq (${IN_USB}, serialhid)
+    UPLOAD_PORT_USBTYPE=USB_SERIAL_HID
     BUILD_USBTYPE=USB_SERIAL_HID
   else ifeq (${IN_USB}, int_disk)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_DISK
     BUILD_ELFPATCH=mktinyfat
     BUILD_USBTYPE=USB_DISK
   else ifeq (${IN_USB}, sd_disk)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_DISK_SDFLASH
     BUILD_USBTYPE=USB_DISK_SDFLASH
   else ifeq (${IN_USB}, midi)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_MIDI
     BUILD_USBTYPE=USB_MIDI
   else ifeq (${IN_USB}, rawhid)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_RAWHID
     BUILD_USBTYPE=USB_RAWHID
   else ifeq (${IN_USB}, flightsim)
     FAKE_SERIAL=teensy_gateway
+    UPLOAD_PORT_USBTYPE=USB_FLIGHTSIM
     BUILD_USBTYPE=USB_FLIGHTSIM
   endif
   ifeq (${IN_SPEED}, 16)
@@ -1695,6 +1917,7 @@ else ifeq (${BOARD_NAME}, teensyLC)
   BUILD_FLAGS_LD=-Wl,--gc-sections,--relax,--defsym=__rtc_localtime=${EXTRA_TIME_LOCAL} "-T${BUILD_CORE_PATH}/mkl26z64.ld"
 endif
 DISCOVERY_TEENSY_PATTERN="${RUNTIME_HARDWARE_PATH}/../tools/teensy_ports" -J2
+TEENSYTOOLS_PATH=${RUNTIME_HARDWARE_PATH}/../tools/
 COMPILER_ELF2HEX_FLAGS=-O ihex -R .eeprom
 COMPILER_OBJCOPY_EEP_FLAGS=-O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0
 COMPILER_PATH=${RUNTIME_HARDWARE_PATH}/../tools/
@@ -2041,6 +2264,24 @@ ifdef LIB_DS1307RTC
   CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/DS1307RTC/DS1307RTC.cpp
   SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/DS1307RTC
   VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/DS1307RTC
+endif
+ifdef LIB_EASYTRANSFER
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransfer/EasyTransfer.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransfer/src/EasyTransfer.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransferI2C/EasyTransferI2C.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransferI2C/src/EasyTransferI2C.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransfer \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransfer/src \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransferI2C \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransferI2C/src
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransfer C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransfer/src C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransferI2C C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransferI2C/src
+endif
+ifdef LIB_EASYTRANSFERI2C
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransferI2C/EasyTransferI2C.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransferI2C/src/EasyTransferI2C.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransferI2C \
+    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransferI2C/src
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransferI2C C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransferI2C/src
 endif
 ifdef LIB_EEPROM
   CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EEPROM/EEPROM.cpp
@@ -2577,6 +2818,7 @@ ifdef LIB_SDFAT
     C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/common/FsName.cpp \
     C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/common/FsStructs.cpp \
     C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/common/FsUtf.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/common/PrintBasic.cpp \
     C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/common/upcase.cpp \
     C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/ExFatLib/ExFatDbg.cpp \
     C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/ExFatLib/ExFatFile.cpp \
@@ -2801,7 +3043,8 @@ ifdef LIB_USBHOST_T36
     C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/USBHost_t36/print.cpp \
     C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/USBHost_t36/rawhid.cpp \
     C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/USBHost_t36/SerEMU.cpp \
-    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/USBHost_t36/serial.cpp
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/USBHost_t36/serial.cpp \
+    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/USBHost_t36/USBFilesystemFormatter.cpp
   SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/USBHost_t36 \
     -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/USBHost_t36/utility
   VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/USBHost_t36
@@ -2820,52 +3063,114 @@ ifdef LIB_XPT2046_TOUCHSCREEN
   SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/XPT2046_Touchscreen
   VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/XPT2046_Touchscreen
 endif
+ifdef LIB_SDFAT
+  CPP_SYS_SRCS+=src/libs/SdFat/extras/attic/PrintBasic.cpp \
+    src/libs/SdFat/extras/attic/SysCallBareUno.cpp \
+    src/libs/SdFat/src/common/FmtNumber.cpp \
+    src/libs/SdFat/src/common/FsCache.cpp \
+    src/libs/SdFat/src/common/FsDateTime.cpp \
+    src/libs/SdFat/src/common/FsName.cpp \
+    src/libs/SdFat/src/common/FsStructs.cpp \
+    src/libs/SdFat/src/common/FsUtf.cpp \
+    src/libs/SdFat/src/common/PrintBasic.cpp \
+    src/libs/SdFat/src/common/upcase.cpp \
+    src/libs/SdFat/src/ExFatLib/ExFatDbg.cpp \
+    src/libs/SdFat/src/ExFatLib/ExFatFile.cpp \
+    src/libs/SdFat/src/ExFatLib/ExFatFilePrint.cpp \
+    src/libs/SdFat/src/ExFatLib/ExFatFileWrite.cpp \
+    src/libs/SdFat/src/ExFatLib/ExFatFormatter.cpp \
+    src/libs/SdFat/src/ExFatLib/ExFatName.cpp \
+    src/libs/SdFat/src/ExFatLib/ExFatPartition.cpp \
+    src/libs/SdFat/src/ExFatLib/ExFatVolume.cpp \
+    src/libs/SdFat/src/FatLib/FatDbg.cpp \
+    src/libs/SdFat/src/FatLib/FatFile.cpp \
+    src/libs/SdFat/src/FatLib/FatFileLFN.cpp \
+    src/libs/SdFat/src/FatLib/FatFilePrint.cpp \
+    src/libs/SdFat/src/FatLib/FatFileSFN.cpp \
+    src/libs/SdFat/src/FatLib/FatFormatter.cpp \
+    src/libs/SdFat/src/FatLib/FatName.cpp \
+    src/libs/SdFat/src/FatLib/FatPartition.cpp \
+    src/libs/SdFat/src/FatLib/FatVolume.cpp \
+    src/libs/SdFat/src/FreeStack.cpp \
+    src/libs/SdFat/src/FsLib/FsFile.cpp \
+    src/libs/SdFat/src/FsLib/FsNew.cpp \
+    src/libs/SdFat/src/FsLib/FsVolume.cpp \
+    src/libs/SdFat/src/iostream/istream.cpp \
+    src/libs/SdFat/src/iostream/ostream.cpp \
+    src/libs/SdFat/src/iostream/StdioStream.cpp \
+    src/libs/SdFat/src/iostream/StreamBaseClass.cpp \
+    src/libs/SdFat/src/MinimumSerial.cpp \
+    src/libs/SdFat/src/SdCard/SdCardInfo.cpp \
+    src/libs/SdFat/src/SdCard/SdioTeensy.cpp \
+    src/libs/SdFat/src/SdCard/SdSpiCard.cpp \
+    src/libs/SdFat/src/SpiDriver/SdSpiArtemis.cpp \
+    src/libs/SdFat/src/SpiDriver/SdSpiChipSelect.cpp \
+    src/libs/SdFat/src/SpiDriver/SdSpiDue.cpp \
+    src/libs/SdFat/src/SpiDriver/SdSpiESP.cpp \
+    src/libs/SdFat/src/SpiDriver/SdSpiParticle.cpp \
+    src/libs/SdFat/src/SpiDriver/SdSpiSTM32.cpp \
+    src/libs/SdFat/src/SpiDriver/SdSpiSTM32Core.cpp \
+    src/libs/SdFat/src/SpiDriver/SdSpiTeensy3.cpp
+  SYS_INCLUDES+=-Isrc/libs/SdFat/doc \
+    -Isrc/libs/SdFat/extras/attic \
+    -Isrc/libs/SdFat/src \
+    -Isrc/libs/SdFat/src/common \
+    -Isrc/libs/SdFat/src/DigitalIO/boards \
+    -Isrc/libs/SdFat/src/DigitalIO \
+    -Isrc/libs/SdFat/src/ExFatLib \
+    -Isrc/libs/SdFat/src/FatLib \
+    -Isrc/libs/SdFat/src/FsLib \
+    -Isrc/libs/SdFat/src/iostream \
+    -Isrc/libs/SdFat/src/SdCard \
+    -Isrc/libs/SdFat/src/SpiDriver
+  VPATH_MORE+=src/libs/SdFat/extras/attic src/libs/SdFat/src/common src/libs/SdFat/src/ExFatLib src/libs/SdFat/src/FatLib src/libs/SdFat/src src/libs/SdFat/src/FsLib src/libs/SdFat/src/iostream src/libs/SdFat/src/SdCard src/libs/SdFat/src/SpiDriver
+endif
 ifdef LIB_GFX
-  C_SYS_SRCS+=libs/GFX/fontconvert/fontconvert.c \
-    libs/GFX/glcdfont.c
-  CPP_SYS_SRCS+=libs/GFX/Adafruit_GFX.cpp \
-    libs/GFX/Adafruit_GrayOLED.cpp \
-    libs/GFX/Adafruit_SPITFT.cpp
-  SYS_INCLUDES+=-Ilibs/GFX \
-    -Ilibs/GFX/Fonts
-  VPATH_MORE+=libs/GFX/fontconvert libs/GFX
+  C_SYS_SRCS+=src/libs/GFX/fontconvert/fontconvert.c \
+    src/libs/GFX/glcdfont.c
+  CPP_SYS_SRCS+=src/libs/GFX/Adafruit_GFX.cpp \
+    src/libs/GFX/Adafruit_GrayOLED.cpp \
+    src/libs/GFX/Adafruit_SPITFT.cpp
+  SYS_INCLUDES+=-Isrc/libs/GFX \
+    -Isrc/libs/GFX/Fonts
+  VPATH_MORE+=src/libs/GFX/fontconvert src/libs/GFX
 endif
 ifdef LIB_ST77XX
-  CPP_SYS_SRCS+=libs/ST77XX/Adafruit_ST7735.cpp \
-    libs/ST77XX/Adafruit_ST7789.cpp \
-    libs/ST77XX/Adafruit_ST77xx.cpp
-  SYS_INCLUDES+=-Ilibs/ST77XX
-  VPATH_MORE+=libs/ST77XX
+  CPP_SYS_SRCS+=src/libs/ST77XX/Adafruit_ST7735.cpp \
+    src/libs/ST77XX/Adafruit_ST7789.cpp \
+    src/libs/ST77XX/Adafruit_ST77xx.cpp
+  SYS_INCLUDES+=-Isrc/libs/ST77XX
+  VPATH_MORE+=src/libs/ST77XX
 endif
 ifdef LIB_BUSIO
-  CPP_SYS_SRCS+=libs/BusIO/Adafruit_BusIO_Register.cpp \
-    libs/BusIO/Adafruit_I2CDevice.cpp \
-    libs/BusIO/Adafruit_SPIDevice.cpp
-  SYS_INCLUDES+=-Ilibs/BusIO
-  VPATH_MORE+=libs/BusIO
+  CPP_SYS_SRCS+=src/libs/BusIO/Adafruit_BusIO_Register.cpp \
+    src/libs/BusIO/Adafruit_I2CDevice.cpp \
+    src/libs/BusIO/Adafruit_SPIDevice.cpp
+  SYS_INCLUDES+=-Isrc/libs/BusIO
+  VPATH_MORE+=src/libs/BusIO
 endif
 ifdef LIB_T4_PXP
-  CPP_SYS_SRCS+=libs/T4_PXP/src/T4_PXP.cpp
-  SYS_INCLUDES+=-Ilibs/T4_PXP/src
-  VPATH_MORE+=libs/T4_PXP/src
+  CPP_SYS_SRCS+=src/libs/T4_PXP/src/T4_PXP.cpp
+  SYS_INCLUDES+=-Isrc/libs/T4_PXP/src
+  VPATH_MORE+=src/libs/T4_PXP/src
 endif
 ifdef LIB_GFX_BUFFER
-  SYS_INCLUDES+=-Ilibs/GFX_Buffer/src
+  SYS_INCLUDES+=-Isrc/libs/GFX_Buffer/src
   VPATH_MORE+=
 endif
 ifdef LIB_ASYNCDMA
-  C_SYS_SRCS+=libs/AsyncDMA/glcdfont_t3.c \
-    libs/AsyncDMA/st7735_t3_font_Arial.c \
-    libs/AsyncDMA/st7735_t3_font_ComicSansMS.c
-  CPP_SYS_SRCS+=libs/AsyncDMA/ST7735_t3.cpp \
-    libs/AsyncDMA/ST7789_t3.cpp
-  SYS_INCLUDES+=-Ilibs/AsyncDMA
-  VPATH_MORE+=libs/AsyncDMA
+  C_SYS_SRCS+=src/libs/AsyncDMA/glcdfont_t3.c \
+    src/libs/AsyncDMA/st7735_t3_font_Arial.c \
+    src/libs/AsyncDMA/st7735_t3_font_ComicSansMS.c
+  CPP_SYS_SRCS+=src/libs/AsyncDMA/ST7735_t3.cpp \
+    src/libs/AsyncDMA/ST7789_t3.cpp
+  SYS_INCLUDES+=-Isrc/libs/AsyncDMA
+  VPATH_MORE+=src/libs/AsyncDMA
 endif
 ifdef LIB_8875
-  CPP_SYS_SRCS+=libs/8875/Adafruit_RA8875.cpp
-  SYS_INCLUDES+=-Ilibs/8875
-  VPATH_MORE+=libs/8875
+  CPP_SYS_SRCS+=src/libs/8875/Adafruit_RA8875.cpp
+  SYS_INCLUDES+=-Isrc/libs/8875
+  VPATH_MORE+=src/libs/8875
 endif
 SYS_SRC=${C_SYS_SRCS} ${CPP_SYS_SRCS} ${S_SYS_SRCS}
 USER_SRC=${USER_C_SRCS} ${USER_CPP_SRCS} ${USER_S_SRCS}
@@ -2970,7 +3275,7 @@ ifeq ($(OS),Windows_NT)
 	@echo "\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_G__}\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_CPP} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} \"-I${BUILD_PATH}/pch\" ${SYS_INCLUDES} ${USER_INCLUDES} -x c++ ${COMPILER_INO_EXTRA_FLAGS} \"$<\" -o \"$@\"" >> $@
 	@echo }, >> $@
 else
-	@echo "{ \"directory\": \"$(<D)\",\"file\":\"$(<F)\","
+	@echo "{ \"directory\": \"$(<D)\",\"file\":\"$(<F)\"," > $@
 	@echo "\"command\":\"\\\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_G__}\\\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_CPP} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} \\\"-I${BUILD_PATH}/pch\\\" ${SYS_INCLUDES} ${USER_INCLUDES} -x c++ ${COMPILER_INO_EXTRA_FLAGS} \\\"$<\\\" -o \\\"$@\\\"\"}," >> $@
 endif
 
@@ -2983,7 +3288,7 @@ ifeq ($(OS),Windows_NT)
 	@echo "\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_G__}\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_CPP} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} \"-I${BUILD_PATH}/pch\" ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_CPP_EXTRA_FLAGS} \"$<\" -o \"$@\"" >> $@
 	@echo }, >> $@
 else
-	@echo "{ \"directory\": \"$(<D)\",\"file\":\"$(<F)\","
+	@echo "{ \"directory\": \"$(<D)\",\"file\":\"$(<F)\"," > $@
 	@echo "\"command\":\"\\\"${COMPILER_PATH}${BUILD_TOOLCHAIN}${BUILD_COMMAND_G__}\\\" -c ${BUILD_FLAGS_OPTIMIZE} ${BUILD_FLAGS_COMMON} ${BUILD_FLAGS_DEP} ${BUILD_FLAGS_CPP} ${BUILD_FLAGS_CPU} ${BUILD_FLAGS_DEFS} -DARDUINO=${RUNTIME_IDE_VERSION} -DARDUINO_${BUILD_BOARD} -DF_CPU=${BUILD_FCPU} -D${BUILD_USBTYPE} -DLAYOUT_${BUILD_KEYLAYOUT} \\\"-I${BUILD_PATH}/pch\\\" ${SYS_INCLUDES} ${USER_INCLUDES} ${COMPILER_CPP_EXTRA_FLAGS} \\\"$<\\\" -o \\\"$@\\\"\"}," >> $@
 endif
 
