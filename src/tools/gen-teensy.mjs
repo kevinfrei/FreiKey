@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// import main from '@freik/arduino2proj/lib/main.js';
-import main from '../libs/Arduino2Make/lib/main.js';
+import main from '@freik/arduino2proj/lib/main.js';
+
 main(
 	'--out:src/tools/teensy.win',
   '--config:src/tools/teensy-make-config.json',

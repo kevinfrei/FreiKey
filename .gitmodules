@@ -1,10 +1,6 @@
 [submodule "src/libs/GFX"]
 	path = src/libs/GFX
 	url = https://github.com/adafruit/Adafruit-GFX-Library.git
-[submodule "src/libs/Arduino2Make"]
-	path = src/libs/Arduino2Make
-	url = https://github.com/kevinfrei/Arduino2Make.git
-	branch = master
 [submodule "src/libs/ArduinoCore"]
 	path = src/libs/ArduinoCore
 	url = https://github.com/arduino/ArduinoCore-avr.git
