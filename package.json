@@ -32,7 +32,7 @@
     "cfg-win": "node src/tools/gen-teensy.mjs"
   },
   "devDependencies": {
-    "@freik/arduino2proj": "^0.5.1",
+    "@freik/arduino2proj": "^0.5.2",
     "@freik/build-tools": "^3.4.5",
     "husky": "^8.0.3",
     "prettier": "^2.8.3",
