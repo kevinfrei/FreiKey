@@ -53,16 +53,16 @@ static const enum_array<layer_num, const image_descriptor*> layer_to_image = {
 void BoardIO::Configure() {
   right.begin(1 << 20);
   left.begin(1 << 20);
-/*  disp::Init(
-    240, 320, 60, 1, TFT_CS, TFT_DC, TFT_RST, TFT_BL, SD_CS, SPKR_SIGNAL);
-  disp::SetBacklight(true, millis());
-  // This is the fastest speed that worked
-  // (72mhz also worked, but seemed to be the same speed)
-  Dbg2 << "Attempting first image render" << sfmt::endl;
-  ShowImage(gfx_amy);
-  Dbg2 << "Screen Initialized" << sfmt::endl;
-  // Backlight(false);
-	*/
+  /*  disp::Init(
+      240, 320, 60, 1, TFT_CS, TFT_DC, TFT_RST, TFT_BL, SD_CS, SPKR_SIGNAL);
+    disp::SetBacklight(true, millis());
+    // This is the fastest speed that worked
+    // (72mhz also worked, but seemed to be the same speed)
+    Dbg2 << "Attempting first image render" << sfmt::endl;
+    ShowImage(gfx_amy);
+    Dbg2 << "Screen Initialized" << sfmt::endl;
+    // Backlight(false);
+    */
   pinMode(SPKR_GND, OUTPUT);
   digitalWrite(SPKR_GND, LOW);
   // pinMode(SPKR_SIGNAL, OUTPUT);
@@ -99,7 +99,7 @@ void BoardIO::Changed(uint32_t now, GeneralState&) {
     lastShownLayerTime = now;
     // const image_descriptor* img = layer_to_image[lyr];
     // if (img == nullptr) {
-      // img = reaccs[now % 7];
+    // img = reaccs[now % 7];
     // }
     // ShowImage(img);
   }
@@ -116,7 +116,6 @@ void BoardIO::Tick(uint32_t now) {
     SaveLayer();
   }
 }
-
 
 KeyboardMode BoardIO::Mode(uint32_t now, KeyboardMode mode) {
   // This should transition the board into whatever other mode you may
@@ -147,4 +146,3 @@ void BoardIO::ShowScanCode(uint16_t scancode) {
 void BoardIO::ReturnFromMode() {
   // ShowImage(gfx_keyb);
 }
-

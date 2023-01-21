@@ -1,32 +1,37 @@
-#include "Adafruit_ST7789.h"
+#include "Adafruit_RA8875.h"
 #include "SD.h"
 #include <algorithm>
 #include <cmath>
 
 #include "ardfs.h"
 
-constexpr uint8_t TFT_CS = 10;
-constexpr uint8_t TFT_DC = 20;
-constexpr uint8_t TFT_RESET = 21;
-constexpr uint8_t SD_CS = 19;
+constexpr uint8_t RA8875_CS = 10;
+constexpr uint8_t RA8875_RESET = 0;
+constexpr uint8_t SD_CS = BUILTIN_SDCARD;
 
-typedef Adafruit_ST7789 display_t;
+typedef Adafruit_RA8875 display_t;
 
-display_t display = display_t(TFT_CS, TFT_DC, TFT_RESET);
+display_t display = display_t(RA8875_CS, RA8875_RESET);
+
 bool failed = true;
 
 void configure() {
-  display.setSPISpeed(60 * 1048576);
-  display.init(240, 320);
-  display.setRotation(1);
-  display.fillScreen(0x4000);
+  if (!display.begin(RA8875_800x480)) {
+    Serial.println("RA8875 Not Found!");
+    while (1) {
+    }
+  }
+  display.displayOn(true);
+  display.touchEnable(false);
+  display.GPIOX(true); // Enable TFT - display enable tied to GPIOX
+  display.PWM1config(true, RA8875_PWM_CLK_DIV1024); // PWM output for backlight
+  display.PWM1out(128);
+  display.fillScreen(RA8875_GREEN);
   if (!SD.begin(SD_CS)) {
-    display.fillRect(50, 50, 100, 100, 0xFF00);
+    display.fillRect(50, 50, 100, 100, RA8875_WHITE);
   } else {
     failed = false;
   }
-  display.setCursor(0, 0);
-  display.setTextColor(0xFFFF);
 }
 
 bool initSerial = false;
