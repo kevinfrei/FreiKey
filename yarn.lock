@@ -1451,14 +1451,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@freik/arduino2proj@npm:^0.5.2":
-  version: 0.5.2
-  resolution: "@freik/arduino2proj@npm:0.5.2"
+"@freik/arduino2proj@npm:^0.5.3":
+  version: 0.5.3
+  resolution: "@freik/arduino2proj@npm:0.5.3"
   dependencies:
     "@freik/core-utils": ^1.2.0
   bin:
     arduino2proj: ar2mak.js
-  checksum: 6d28a867c2cd53c1158671a440d104f29e905f494632a8b59c71232c3e7af01a21b4b0888f66fd40a819ec3cea29bc3e8d7555321544e68f9b329fe2dadaf508
+  checksum: 2b6e424eed057f8182f98196e0463e4b660053900a7282bc6d7d407208b506a8c32e4ed9a36573521fa636512c475e50000ab48a2764243099df90f17d9fc6d3
   languageName: node
   linkType: hard
 
@@ -3942,7 +3942,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "freikey@workspace:."
   dependencies:
-    "@freik/arduino2proj": ^0.5.2
+    "@freik/arduino2proj": ^0.5.3
     "@freik/build-tools": ^3.4.5
     husky: ^8.0.3
     prettier: ^2.8.3

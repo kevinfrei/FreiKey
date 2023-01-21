@@ -36,6 +36,12 @@ test t:
 testf tf ftest ft:
 	$(MAKE) ${flags} -f make-test.mak flash
 
+big bigscreen:
+	$(MAKE) ${flags} -f make-bigscreen.mak all
+
+bigf bigscreenf:
+	$(MAKE) ${flags} -f make-bigscreen.mak flash
+
 sd:
 	$(MAKE) ${flags} -f make-sd.mak all
 

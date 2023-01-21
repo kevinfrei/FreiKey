@@ -18,6 +18,8 @@
     "3pf": "cd src && make threepiecef && yarn fixcc",
     "f3p": "cd src && make threepiecef && yarn fixcc",
     "3p": "cd src && make threepiece && yarn fixcc",
+    "big": "cd src && make big && yarn fixcc",
+    "bigf": "cd src && make bigf && yarn fixcc",
     "calc": "cd src && make calc && yarn fixcc",
     "mock": "cd src && make mock && yarn fixcc",
     "img": "cd src && make img && yarn fixcc",
@@ -29,10 +31,10 @@
     "clean": "cd src && make clean",
     "cmake": "rimraf build && cmake -S src -B build -G Ninja -DCMAKE_TOOLCHAIN_FILE=tools/toolchains/Teensy40.cmake",
     "build": "cd build && ninja",
-    "cfg": "node src/tools/gen-teensy.mjs"
+    "cfg": "node src/tools/gen-makefiles.mjs"
   },
   "devDependencies": {
-    "@freik/arduino2proj": "^0.5.2",
+    "@freik/arduino2proj": "^0.5.3",
     "@freik/build-tools": "^3.4.5",
     "husky": "^8.0.3",
     "prettier": "^2.8.3",

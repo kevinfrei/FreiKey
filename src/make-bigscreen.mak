@@ -2,7 +2,7 @@
 ifeq ($(OS),Windows_NT)
 	SUF=win
 	ARD=${HOME}/AppData/Local
-	SERIAL_PORT=COM15
+	SERIAL_PORT=COM4
 	RUNTIME_HARDWARE_PATH=c:/PROGRA~2/Arduino/hardware/tools
 	CMD_PATH=${RUNTIME_HARDWARE_PATH}
 	BISON=win_bison
@@ -42,8 +42,8 @@ EXTRA_TIME_LOCAL=0
 BOARD_NAME=teensy41
 SERIAL_PORT_LABEL=${SERIAL_PORT}
 SERIAL_PORT_PROTOCOL=serial
-PROJ_NAME=threepiece
-BUILD_PATH=out/threepiece
+PROJ_NAME=bigscreen
+BUILD_PATH=out/bigscreen
 
 # My custom flags
 COMPILER_CPP_EXTRA_FLAGS=-DDEBUG=2
@@ -54,14 +54,15 @@ COMPILER_CPP_EXTRA_FLAGS=-DDEBUG=2
 LIB_BUSIO=1
 LIB_SPI=1
 LIB_GFX=1
-LIB_ST77XX=1
-LIB_WIRE=1
 LIB_EEPROM=1
+LIB_8875=1
+LIB_SD=1
 LIB_SDFAT=1
 LIB_T4_PXP=1
 LIB_GFX_BUFFER=1
+LIB_WIRE=1
 
-USER_INCLUDES=-Iinclude/bitscreen -Iinclude/remotescan -Iinclude/teensy -Iinclude
+USER_INCLUDES=-Iinclude/bigscreen -Iinclude/remotescan -Iinclude/teensy -Iinclude
 
 USER_CPP_SRCS=\
 	dbgcfg.cpp \
@@ -72,13 +73,13 @@ USER_CPP_SRCS=\
 	modulekeyboard.cpp \
 	bigscreen.cpp
 
-include modules/display/include.mk
-include modules/calculator/include.mk
-include modules/images/include.mk
-include modules/editline/include.mk
-include modules/tetris/maketetris.mk
-include modules/menu/include.mk
-include apple2.mk
+#include modules/display/include.mk
+#include modules/calculator/include.mk
+#include modules/images/include.mk
+#include modules/editline/include.mk
+#include modules/tetris/maketetris.mk
+#include modules/menu/include.mk
+#include apple2.mk
 
 include tools/teensy.${SUF}
 

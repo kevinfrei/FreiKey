@@ -1,19 +1,20 @@
-#include "EEPROM.h"
 #include "sysstuff.h"
+
+#include "EEPROM.h"
 #include <HardwareSerial.h>
 #include <array>
 
-#include "Calculator.h"
+// #include "Calculator.h"
 #include "boardio.h"
-#include "display.h"
-#include "editline.h"
+// #include "display.h"
+// #include "editline.h"
 #include "enumhelpers.h"
 #include "enumtypes.h"
 #include "generalstate.h"
-#include "image.h"
+// #include "image.h"
 #include "keymap.h"
-#include "menu.h"
-#include "modulekeyboard.h"
+// #include "menu.h"
+// #include "modulekeyboard.h"
 #include "scanning.h"
 
 #define right Serial2
@@ -35,9 +36,9 @@ static constexpr uint8_t SD_CS = 19;
 static uint32_t lastShownLayerTime = 0;
 static layer_num lastShownLayer = layer_num::Base;
 
+/*
 static const std::array<const image_descriptor*, 7> reaccs = {
   gfx_like, gfx_love, gfx_hug, gfx_haha, gfx_sad, gfx_mad, gfx_wow};
-
 static const enum_array<layer_num, const image_descriptor*> layer_to_image = {
   {layer_num::MacBase, gfx_mac},
   {layer_num::WinBase, gfx_win},
@@ -47,11 +48,12 @@ static const enum_array<layer_num, const image_descriptor*> layer_to_image = {
   {layer_num::WinCap, nullptr},
   {layer_num::WinCtl, gfx_batman},
   {layer_num::LinCap, nullptr}};
+*/
 
 void BoardIO::Configure() {
   right.begin(1 << 20);
   left.begin(1 << 20);
-  disp::Init(
+/*  disp::Init(
     240, 320, 60, 1, TFT_CS, TFT_DC, TFT_RST, TFT_BL, SD_CS, SPKR_SIGNAL);
   disp::SetBacklight(true, millis());
   // This is the fastest speed that worked
@@ -60,12 +62,13 @@ void BoardIO::Configure() {
   ShowImage(gfx_amy);
   Dbg2 << "Screen Initialized" << sfmt::endl;
   // Backlight(false);
+	*/
   pinMode(SPKR_GND, OUTPUT);
   digitalWrite(SPKR_GND, LOW);
   // pinMode(SPKR_SIGNAL, OUTPUT);
   // digitalWrite(SPKR_SIGNAL, LOW);
-  edit::Initialize();
-  calc::Initialize();
+  // edit::Initialize();
+  // calc::Initialize();
 }
 
 void BoardIO::SaveLayer() {
@@ -91,14 +94,14 @@ void BoardIO::Reset(GeneralState& curState) {
 void BoardIO::Changed(uint32_t now, GeneralState&) {
   layer_num lyr = getCurrentLayer();
   if (lyr != lastShownLayer) {
-    disp::SetBacklight(true, now);
+    // disp::SetBacklight(true, now);
     lastShownLayer = lyr;
     lastShownLayerTime = now;
-    const image_descriptor* img = layer_to_image[lyr];
-    if (img == nullptr) {
-      img = reaccs[now % 7];
-    }
-    ShowImage(img);
+    // const image_descriptor* img = layer_to_image[lyr];
+    // if (img == nullptr) {
+      // img = reaccs[now % 7];
+    // }
+    // ShowImage(img);
   }
 }
 
@@ -106,7 +109,7 @@ void BoardIO::Tick(uint32_t now) {
   if (now & 0x10) {
     // digitalWrite(SPKR_SIGNAL, (now & 0x20) ? HIGH : LOW);
   }
-  disp::Tick(now);
+  // disp::Tick(now);
   if (now - lastShownLayerTime > 10000 && now - lastShownLayerTime < 10100) {
     // This is a *really* slow debounce of layer switches :D
     // Only save a layer if we've had it set > 10 seconds
@@ -114,32 +117,34 @@ void BoardIO::Tick(uint32_t now) {
   }
 }
 
+
 KeyboardMode BoardIO::Mode(uint32_t now, KeyboardMode mode) {
   // This should transition the board into whatever other mode you may
   // want to
-  switch (mode) {
-    case KeyboardMode::Calculator:
-      return ModuleKeyboardHandler(KeyboardMode::Calculator, calc::Handler);
-      break;
-    case KeyboardMode::Menu:
-      menu::SetupModeList(KeyboardMode::Calculator, KeyboardMode::Tetris);
-      return ModuleKeyboardHandler(KeyboardMode::Menu, menu::Handler);
-      break;
-    default:
-      break;
-  }
+  // switch (mode) {
+  //   case KeyboardMode::Calculator:
+  //     return ModuleKeyboardHandler(KeyboardMode::Calculator, calc::Handler);
+  //     break;
+  //   case KeyboardMode::Menu:
+  //     menu::SetupModeList(KeyboardMode::Calculator, KeyboardMode::Tetris);
+  //     return ModuleKeyboardHandler(KeyboardMode::Menu, menu::Handler);
+  //     break;
+  //   default:
+  //     break;
+  // }
   return KeyboardMode::Normal;
 }
 
 void BoardIO::ShowScanCode(uint16_t scancode) {
   if (false) {
-    disp::SetBacklight(true, millis());
+    // disp::SetBacklight(true, millis());
     lastShownLayerTime = millis();
     // This is good stuff for debugging:
-    disp::DrawKeyboard(scancode, 112, 2);
+    // disp::DrawKeyboard(scancode, 112, 2);
   }
 }
 
 void BoardIO::ReturnFromMode() {
-  ShowImage(gfx_keyb);
+  // ShowImage(gfx_keyb);
 }
+
