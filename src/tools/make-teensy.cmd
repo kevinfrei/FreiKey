@@ -1,1 +1,0 @@
-node libs\Arduino2Make\ar2mak.js --config:tools\teensy-make-config.json C:\PROGRA~2\Arduino\hardware\teensy\avr libs/SdFat libs/GFX libs/ST77XX libs/BusIO libs/T4_PXP libs/GFX_Buffer libs/AsyncDMA libs/8875 > tools\teensy.win

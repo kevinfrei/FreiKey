@@ -5,7 +5,6 @@
   "author": "Kevin Frei <kevinfrei@hotmail.com>",
   "license": "MIT",
   "scripts": {
-    "41": "cd src && make 41 && yarn fixcc",
     "postinstall": "husky install",
     "___": "putting stuff in here means you can run it from anywhere in the repo :)",
     "format": "ftool format",
@@ -25,11 +24,12 @@
     "test": "cd src && make test && yarn fixcc",
     "sd": "cd src && make sd && yarn fixcc",
     "sdf": "cd src && make sdf && yarn fixcc",
+    "41": "cd src && make 41 && yarn fixcc",
     "41f": "cd src && make 41f && yarn fixcc",
     "clean": "cd src && make clean",
     "cmake": "rimraf build && cmake -S src -B build -G Ninja -DCMAKE_TOOLCHAIN_FILE=tools/toolchains/Teensy40.cmake",
     "build": "cd build && ninja",
-    "cfg-win": "node src/tools/gen-teensy.mjs"
+    "cfg": "node src/tools/gen-teensy.mjs"
   },
   "devDependencies": {
     "@freik/arduino2proj": "^0.5.2",
