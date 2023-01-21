@@ -2266,22 +2266,14 @@ ifdef LIB_DS1307RTC
   VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/DS1307RTC
 endif
 ifdef LIB_EASYTRANSFER
-  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransfer/EasyTransfer.cpp \
-    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransfer/src/EasyTransfer.cpp \
-    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransferI2C/EasyTransferI2C.cpp \
-    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransferI2C/src/EasyTransferI2C.cpp
-  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransfer \
-    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransfer/src \
-    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransferI2C \
-    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransferI2C/src
-  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransfer C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransfer/src C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransferI2C C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransferI2C/src
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransfer/src/EasyTransfer.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransfer/src
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransfer/src
 endif
 ifdef LIB_EASYTRANSFERI2C
-  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransferI2C/EasyTransferI2C.cpp \
-    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransferI2C/src/EasyTransferI2C.cpp
-  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransferI2C \
-    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransferI2C/src
-  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransferI2C C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransferI2C/src
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransferI2C/src/EasyTransferI2C.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransferI2C/src
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EasyTransferI2C/src
 endif
 ifdef LIB_EEPROM
   CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/EEPROM/EEPROM.cpp
@@ -2583,11 +2575,9 @@ ifdef LIB_ILI9488_T3
     C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ILI9488_t3/src/ili9488_t3_font_Arial.c \
     C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ILI9488_t3/src/ili9488_t3_font_ArialBold.c \
     C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ILI9488_t3/src/ili9488_t3_font_ComicSansMS.c
-  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ILI9488_t3/ILI9488_t3..cpp \
-    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ILI9488_t3/src/ILI9488_t3.cpp
-  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ILI9488_t3 \
-    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ILI9488_t3/src
-  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ILI9488_t3/src C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ILI9488_t3
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ILI9488_t3/src/ILI9488_t3.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ILI9488_t3/src
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/ILI9488_t3/src
 endif
 ifdef LIB_IRREMOTE
   SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/IRremote/src \
@@ -2611,13 +2601,9 @@ ifdef LIB_LEDDISPLAY
   VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LedDisplay
 endif
 ifdef LIB_LIQUIDCRYSTAL
-  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LiquidCrystal/LiquidCrystal.cpp \
-    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LiquidCrystal/src/LiquidCrystal.cpp \
-    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LiquidCrystalFast/LiquidCrystalFast.cpp
-  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LiquidCrystal \
-    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LiquidCrystal/src \
-    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LiquidCrystalFast
-  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LiquidCrystal C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LiquidCrystal/src C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LiquidCrystalFast
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LiquidCrystal/src/LiquidCrystal.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LiquidCrystal/src
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LiquidCrystal/src
 endif
 ifdef LIB_LITTLEFS
   C_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/LittleFS/src/littlefs/lfs.c \
@@ -2637,23 +2623,9 @@ ifdef LIB_MFRC522
   VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MFRC522/src
 endif
 ifdef LIB_MIDI
-  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/src/MIDI.cpp \
-    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/test/mocks/test-mocks.cpp \
-    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/test/mocks/test-mocks_SerialMock.cpp \
-    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests/unit-tests_MidiInput.cpp \
-    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests/unit-tests_MidiInputCallbacks.cpp \
-    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests/unit-tests_MidiMessage.cpp \
-    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests/unit-tests_MidiOutput.cpp \
-    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests/unit-tests_MidiThru.cpp \
-    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests/unit-tests_Settings.cpp \
-    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests/unit-tests_SysExCodec.cpp \
-    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests/unit-tests.cpp
-  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/doc \
-    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/src \
-    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/test/mocks \
-    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests \
-    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests
-  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/src C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/test/mocks C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/test/unit-tests
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/src/MIDI.cpp
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/src
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MIDI/src
 endif
 ifdef LIB_MSTIMER2
   CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/MsTimer2/MsTimer2.cpp
@@ -2809,9 +2781,7 @@ ifdef LIB_SD
   VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SD/src
 endif
 ifdef LIB_SDFAT
-  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/extras/attic/PrintBasic.cpp \
-    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/extras/attic/SysCallBareUno.cpp \
-    C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/common/FmtNumber.cpp \
+  CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/common/FmtNumber.cpp \
     C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/common/FsCache.cpp \
     C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/common/FsDateTime.cpp \
     C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/common/FsGetPartitionInfo.cpp \
@@ -2858,9 +2828,7 @@ ifdef LIB_SDFAT
     C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/SpiDriver/SdSpiSTM32.cpp \
     C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/SpiDriver/SdSpiSTM32Core.cpp \
     C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/SpiDriver/SdSpiTeensy3.cpp
-  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/doc \
-    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/extras/attic \
-    -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src \
+  SYS_INCLUDES+=-IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src \
     -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/common \
     -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/DigitalIO/boards \
     -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/DigitalIO \
@@ -2870,7 +2838,7 @@ ifdef LIB_SDFAT
     -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/iostream \
     -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/SdCard \
     -IC:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/SpiDriver
-  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/extras/attic C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/common C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/ExFatLib C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/FatLib C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/FsLib C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/iostream C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/SdCard C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/SpiDriver
+  VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/common C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/ExFatLib C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/FatLib C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/FsLib C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/iostream C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/SdCard C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SdFat/src/SpiDriver
 endif
 ifdef LIB_SERIALFLASH
   CPP_SYS_SRCS+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/SerialFlash/SerialFlashChip.cpp \
@@ -3064,113 +3032,109 @@ ifdef LIB_XPT2046_TOUCHSCREEN
   VPATH_MORE+=C:/PROGRA~2/Arduino/hardware/teensy/avr/libraries/XPT2046_Touchscreen
 endif
 ifdef LIB_SDFAT
-  CPP_SYS_SRCS+=src/libs/SdFat/extras/attic/PrintBasic.cpp \
-    src/libs/SdFat/extras/attic/SysCallBareUno.cpp \
-    src/libs/SdFat/src/common/FmtNumber.cpp \
-    src/libs/SdFat/src/common/FsCache.cpp \
-    src/libs/SdFat/src/common/FsDateTime.cpp \
-    src/libs/SdFat/src/common/FsName.cpp \
-    src/libs/SdFat/src/common/FsStructs.cpp \
-    src/libs/SdFat/src/common/FsUtf.cpp \
-    src/libs/SdFat/src/common/PrintBasic.cpp \
-    src/libs/SdFat/src/common/upcase.cpp \
-    src/libs/SdFat/src/ExFatLib/ExFatDbg.cpp \
-    src/libs/SdFat/src/ExFatLib/ExFatFile.cpp \
-    src/libs/SdFat/src/ExFatLib/ExFatFilePrint.cpp \
-    src/libs/SdFat/src/ExFatLib/ExFatFileWrite.cpp \
-    src/libs/SdFat/src/ExFatLib/ExFatFormatter.cpp \
-    src/libs/SdFat/src/ExFatLib/ExFatName.cpp \
-    src/libs/SdFat/src/ExFatLib/ExFatPartition.cpp \
-    src/libs/SdFat/src/ExFatLib/ExFatVolume.cpp \
-    src/libs/SdFat/src/FatLib/FatDbg.cpp \
-    src/libs/SdFat/src/FatLib/FatFile.cpp \
-    src/libs/SdFat/src/FatLib/FatFileLFN.cpp \
-    src/libs/SdFat/src/FatLib/FatFilePrint.cpp \
-    src/libs/SdFat/src/FatLib/FatFileSFN.cpp \
-    src/libs/SdFat/src/FatLib/FatFormatter.cpp \
-    src/libs/SdFat/src/FatLib/FatName.cpp \
-    src/libs/SdFat/src/FatLib/FatPartition.cpp \
-    src/libs/SdFat/src/FatLib/FatVolume.cpp \
-    src/libs/SdFat/src/FreeStack.cpp \
-    src/libs/SdFat/src/FsLib/FsFile.cpp \
-    src/libs/SdFat/src/FsLib/FsNew.cpp \
-    src/libs/SdFat/src/FsLib/FsVolume.cpp \
-    src/libs/SdFat/src/iostream/istream.cpp \
-    src/libs/SdFat/src/iostream/ostream.cpp \
-    src/libs/SdFat/src/iostream/StdioStream.cpp \
-    src/libs/SdFat/src/iostream/StreamBaseClass.cpp \
-    src/libs/SdFat/src/MinimumSerial.cpp \
-    src/libs/SdFat/src/SdCard/SdCardInfo.cpp \
-    src/libs/SdFat/src/SdCard/SdioTeensy.cpp \
-    src/libs/SdFat/src/SdCard/SdSpiCard.cpp \
-    src/libs/SdFat/src/SpiDriver/SdSpiArtemis.cpp \
-    src/libs/SdFat/src/SpiDriver/SdSpiChipSelect.cpp \
-    src/libs/SdFat/src/SpiDriver/SdSpiDue.cpp \
-    src/libs/SdFat/src/SpiDriver/SdSpiESP.cpp \
-    src/libs/SdFat/src/SpiDriver/SdSpiParticle.cpp \
-    src/libs/SdFat/src/SpiDriver/SdSpiSTM32.cpp \
-    src/libs/SdFat/src/SpiDriver/SdSpiSTM32Core.cpp \
-    src/libs/SdFat/src/SpiDriver/SdSpiTeensy3.cpp
-  SYS_INCLUDES+=-Isrc/libs/SdFat/doc \
-    -Isrc/libs/SdFat/extras/attic \
-    -Isrc/libs/SdFat/src \
-    -Isrc/libs/SdFat/src/common \
-    -Isrc/libs/SdFat/src/DigitalIO/boards \
-    -Isrc/libs/SdFat/src/DigitalIO \
-    -Isrc/libs/SdFat/src/ExFatLib \
-    -Isrc/libs/SdFat/src/FatLib \
-    -Isrc/libs/SdFat/src/FsLib \
-    -Isrc/libs/SdFat/src/iostream \
-    -Isrc/libs/SdFat/src/SdCard \
-    -Isrc/libs/SdFat/src/SpiDriver
-  VPATH_MORE+=src/libs/SdFat/extras/attic src/libs/SdFat/src/common src/libs/SdFat/src/ExFatLib src/libs/SdFat/src/FatLib src/libs/SdFat/src src/libs/SdFat/src/FsLib src/libs/SdFat/src/iostream src/libs/SdFat/src/SdCard src/libs/SdFat/src/SpiDriver
+  CPP_SYS_SRCS+=libs/SdFat/src/common/FmtNumber.cpp \
+    libs/SdFat/src/common/FsCache.cpp \
+    libs/SdFat/src/common/FsDateTime.cpp \
+    libs/SdFat/src/common/FsName.cpp \
+    libs/SdFat/src/common/FsStructs.cpp \
+    libs/SdFat/src/common/FsUtf.cpp \
+    libs/SdFat/src/common/PrintBasic.cpp \
+    libs/SdFat/src/common/upcase.cpp \
+    libs/SdFat/src/ExFatLib/ExFatDbg.cpp \
+    libs/SdFat/src/ExFatLib/ExFatFile.cpp \
+    libs/SdFat/src/ExFatLib/ExFatFilePrint.cpp \
+    libs/SdFat/src/ExFatLib/ExFatFileWrite.cpp \
+    libs/SdFat/src/ExFatLib/ExFatFormatter.cpp \
+    libs/SdFat/src/ExFatLib/ExFatName.cpp \
+    libs/SdFat/src/ExFatLib/ExFatPartition.cpp \
+    libs/SdFat/src/ExFatLib/ExFatVolume.cpp \
+    libs/SdFat/src/FatLib/FatDbg.cpp \
+    libs/SdFat/src/FatLib/FatFile.cpp \
+    libs/SdFat/src/FatLib/FatFileLFN.cpp \
+    libs/SdFat/src/FatLib/FatFilePrint.cpp \
+    libs/SdFat/src/FatLib/FatFileSFN.cpp \
+    libs/SdFat/src/FatLib/FatFormatter.cpp \
+    libs/SdFat/src/FatLib/FatName.cpp \
+    libs/SdFat/src/FatLib/FatPartition.cpp \
+    libs/SdFat/src/FatLib/FatVolume.cpp \
+    libs/SdFat/src/FreeStack.cpp \
+    libs/SdFat/src/FsLib/FsFile.cpp \
+    libs/SdFat/src/FsLib/FsNew.cpp \
+    libs/SdFat/src/FsLib/FsVolume.cpp \
+    libs/SdFat/src/iostream/istream.cpp \
+    libs/SdFat/src/iostream/ostream.cpp \
+    libs/SdFat/src/iostream/StdioStream.cpp \
+    libs/SdFat/src/iostream/StreamBaseClass.cpp \
+    libs/SdFat/src/MinimumSerial.cpp \
+    libs/SdFat/src/SdCard/SdCardInfo.cpp \
+    libs/SdFat/src/SdCard/SdioTeensy.cpp \
+    libs/SdFat/src/SdCard/SdSpiCard.cpp \
+    libs/SdFat/src/SpiDriver/SdSpiArtemis.cpp \
+    libs/SdFat/src/SpiDriver/SdSpiChipSelect.cpp \
+    libs/SdFat/src/SpiDriver/SdSpiDue.cpp \
+    libs/SdFat/src/SpiDriver/SdSpiESP.cpp \
+    libs/SdFat/src/SpiDriver/SdSpiParticle.cpp \
+    libs/SdFat/src/SpiDriver/SdSpiSTM32.cpp \
+    libs/SdFat/src/SpiDriver/SdSpiSTM32Core.cpp \
+    libs/SdFat/src/SpiDriver/SdSpiTeensy3.cpp
+  SYS_INCLUDES+=-Ilibs/SdFat/src \
+    -Ilibs/SdFat/src/common \
+    -Ilibs/SdFat/src/DigitalIO/boards \
+    -Ilibs/SdFat/src/DigitalIO \
+    -Ilibs/SdFat/src/ExFatLib \
+    -Ilibs/SdFat/src/FatLib \
+    -Ilibs/SdFat/src/FsLib \
+    -Ilibs/SdFat/src/iostream \
+    -Ilibs/SdFat/src/SdCard \
+    -Ilibs/SdFat/src/SpiDriver
+  VPATH_MORE+=libs/SdFat/src/common libs/SdFat/src/ExFatLib libs/SdFat/src/FatLib libs/SdFat/src libs/SdFat/src/FsLib libs/SdFat/src/iostream libs/SdFat/src/SdCard libs/SdFat/src/SpiDriver
 endif
 ifdef LIB_GFX
-  C_SYS_SRCS+=src/libs/GFX/fontconvert/fontconvert.c \
-    src/libs/GFX/glcdfont.c
-  CPP_SYS_SRCS+=src/libs/GFX/Adafruit_GFX.cpp \
-    src/libs/GFX/Adafruit_GrayOLED.cpp \
-    src/libs/GFX/Adafruit_SPITFT.cpp
-  SYS_INCLUDES+=-Isrc/libs/GFX \
-    -Isrc/libs/GFX/Fonts
-  VPATH_MORE+=src/libs/GFX/fontconvert src/libs/GFX
+  C_SYS_SRCS+=libs/GFX/fontconvert/fontconvert.c \
+    libs/GFX/glcdfont.c
+  CPP_SYS_SRCS+=libs/GFX/Adafruit_GFX.cpp \
+    libs/GFX/Adafruit_GrayOLED.cpp \
+    libs/GFX/Adafruit_SPITFT.cpp
+  SYS_INCLUDES+=-Ilibs/GFX \
+    -Ilibs/GFX/Fonts
+  VPATH_MORE+=libs/GFX/fontconvert libs/GFX
 endif
 ifdef LIB_ST77XX
-  CPP_SYS_SRCS+=src/libs/ST77XX/Adafruit_ST7735.cpp \
-    src/libs/ST77XX/Adafruit_ST7789.cpp \
-    src/libs/ST77XX/Adafruit_ST77xx.cpp
-  SYS_INCLUDES+=-Isrc/libs/ST77XX
-  VPATH_MORE+=src/libs/ST77XX
+  CPP_SYS_SRCS+=libs/ST77XX/Adafruit_ST7735.cpp \
+    libs/ST77XX/Adafruit_ST7789.cpp \
+    libs/ST77XX/Adafruit_ST77xx.cpp
+  SYS_INCLUDES+=-Ilibs/ST77XX
+  VPATH_MORE+=libs/ST77XX
 endif
 ifdef LIB_BUSIO
-  CPP_SYS_SRCS+=src/libs/BusIO/Adafruit_BusIO_Register.cpp \
-    src/libs/BusIO/Adafruit_I2CDevice.cpp \
-    src/libs/BusIO/Adafruit_SPIDevice.cpp
-  SYS_INCLUDES+=-Isrc/libs/BusIO
-  VPATH_MORE+=src/libs/BusIO
+  CPP_SYS_SRCS+=libs/BusIO/Adafruit_BusIO_Register.cpp \
+    libs/BusIO/Adafruit_I2CDevice.cpp \
+    libs/BusIO/Adafruit_SPIDevice.cpp
+  SYS_INCLUDES+=-Ilibs/BusIO
+  VPATH_MORE+=libs/BusIO
 endif
 ifdef LIB_T4_PXP
-  CPP_SYS_SRCS+=src/libs/T4_PXP/src/T4_PXP.cpp
-  SYS_INCLUDES+=-Isrc/libs/T4_PXP/src
-  VPATH_MORE+=src/libs/T4_PXP/src
+  CPP_SYS_SRCS+=libs/T4_PXP/src/T4_PXP.cpp
+  SYS_INCLUDES+=-Ilibs/T4_PXP/src
+  VPATH_MORE+=libs/T4_PXP/src
 endif
 ifdef LIB_GFX_BUFFER
-  SYS_INCLUDES+=-Isrc/libs/GFX_Buffer/src
+  SYS_INCLUDES+=-Ilibs/GFX_Buffer/src
   VPATH_MORE+=
 endif
 ifdef LIB_ASYNCDMA
-  C_SYS_SRCS+=src/libs/AsyncDMA/glcdfont_t3.c \
-    src/libs/AsyncDMA/st7735_t3_font_Arial.c \
-    src/libs/AsyncDMA/st7735_t3_font_ComicSansMS.c
-  CPP_SYS_SRCS+=src/libs/AsyncDMA/ST7735_t3.cpp \
-    src/libs/AsyncDMA/ST7789_t3.cpp
-  SYS_INCLUDES+=-Isrc/libs/AsyncDMA
-  VPATH_MORE+=src/libs/AsyncDMA
+  C_SYS_SRCS+=libs/AsyncDMA/glcdfont_t3.c \
+    libs/AsyncDMA/st7735_t3_font_Arial.c \
+    libs/AsyncDMA/st7735_t3_font_ComicSansMS.c
+  CPP_SYS_SRCS+=libs/AsyncDMA/ST7735_t3.cpp \
+    libs/AsyncDMA/ST7789_t3.cpp
+  SYS_INCLUDES+=-Ilibs/AsyncDMA
+  VPATH_MORE+=libs/AsyncDMA
 endif
 ifdef LIB_8875
-  CPP_SYS_SRCS+=src/libs/8875/Adafruit_RA8875.cpp
-  SYS_INCLUDES+=-Isrc/libs/8875
-  VPATH_MORE+=src/libs/8875
+  CPP_SYS_SRCS+=libs/8875/Adafruit_RA8875.cpp
+  SYS_INCLUDES+=-Ilibs/8875
+  VPATH_MORE+=libs/8875
 endif
 SYS_SRC=${C_SYS_SRCS} ${CPP_SYS_SRCS} ${S_SYS_SRCS}
 USER_SRC=${USER_C_SRCS} ${USER_CPP_SRCS} ${USER_S_SRCS}

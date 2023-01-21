@@ -36,29 +36,30 @@ if (!fs.existsSync(plat)) {
   );
   process.exit(-2);
 }
+process.chdir('src');
 if (process.argv.length < 3 || process.argv.includes('teensy')) {
   main(
-    '--out:src/tools/teensy.' + outputSuffix,
-    '--config:src/tools/teensy-make-config.json',
+    '--out:tools/teensy.' + outputSuffix,
+    '--config:tools/teensy-make-config.json',
     plat,
-    'src/libs/SdFat',
-    'src/libs/GFX',
-    'src/libs/ST77XX',
-    'src/libs/BusIO',
-    'src/libs/T4_PXP',
-    'src/libs/GFX_Buffer',
-    'src/libs/AsyncDMA',
-    'src/libs/8875',
+    'libs/SdFat',
+    'libs/GFX',
+    'libs/ST77XX',
+    'libs/BusIO',
+    'libs/T4_PXP',
+    'libs/GFX_Buffer',
+    'libs/AsyncDMA',
+    'libs/8875',
   );
 }
 if (process.argv.length < 3 || process.argv.includes('nrf52')) {
   main(
-    '--out:src/tools/af_nrf52.' + outputSuffix,
-    '--config:src/tools/adafruit-make-config.json',
-    'src/libs/nRF52_Adafruit',
-    'src/libs/BusIO',
-    'src/libs/GFX',
-    'src/libs/NeoPixel',
-		'src/libs/SSD1306'
+    '--out:tools/af_nrf52.' + outputSuffix,
+    '--config:tools/adafruit-make-config.json',
+    'libs/nRF52_Adafruit',
+    'libs/BusIO',
+    'libs/GFX',
+    'libs/NeoPixel',
+		'libs/SSD1306'
   );
 }
