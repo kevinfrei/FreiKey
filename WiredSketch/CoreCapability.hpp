@@ -61,11 +61,15 @@ void sendData(uint8_t value);
 // You can indiate a key change in here:
 void indicateChange(uint8_t r, uint8_t c, uint8_t p, uint32_t now);
 
-float sat = 0.8f;
+uint32_t makeHSV(uint16_t hue, uint8_t sat, uint8_t val) {
+  return hue << 16 | sat << 8 | val;
+}
 
 uint32_t getColor(uint32_t number) {
-  float hue = (number % 360) / 360.0f;
-  return hsvToRgb(hue, .9f, .3f);
+  float val = (float)(number & 0xFF) / 255.0f;
+  float sat = (float)((number >> 8) & 0xFF) / 255.0f;
+  float hue = ((number >> 16) % 360) / 360.0f;
+  return hsvToRgb(hue, sat, val);
 }
 
 uint8_t index(uint8_t row, uint8_t col) {

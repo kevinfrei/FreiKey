@@ -1,10 +1,7 @@
-// This include is to work around an issue with linking with some Adafruit
-// libraries
-#include "Adafruit_DotStar.h"
-#include "Adafruit_TinyUSB.h"
-
 #include <Arduino.h>
 #include <stdint.h>
+
+#include "Adafruit_DotStar.h"
 
 // This runs on Adafruit nRF52840 devices
 
@@ -14,16 +11,21 @@ const uint32_t debounce_time = 15;
 
 #include "CoreCapability.hpp"
 
-// 5 => D2, 6 => MISO[D23], D13 => A3, D12 => A4, D11 => A5, D10 => SCK[D25]
-// MOSI[25] => SDA[D21], SCK[26] => SCL[D22], A5 => 5(!), A4 => 7, A3 => 9, A2
-// => 10, A1 => 11, A0 => 12
+/*
+ 13 12 11 10  9  7    21 22
+ C1 R3 R1 R6 R5 R4 __ C2 C3
+|=============================|
+          C6 R2 __ __ __ C4 C5
+          16 17          24 23
+*/
 
-byte colPins[COLS] = {A3, 2, 23, 21, 22, 12}; // Itsy Bitsy
-byte rowPins[ROWS] = {10, A4, 11, /*5*/ A1, 7, 9}; // connect to the row pinouts
-                                                   // of the keypad
+// C1:13, C2:21, C3:22, C4:24, C5:23, C6:16
+// R1:11, R2:17, R3:12, R4: 7, R5: 9, R6:10
+
+uint8_t colPins[COLS] = {16, 23, 24, 22, 21, 13};
+uint8_t rowPins[ROWS] = {11, 17, 12, 7, 9, 10};
 
 const uint8_t BLUE_LED = 3;
-
 const uint8_t NumDotStarPixels = 1;
 const uint8_t DotStarData = 8;
 const uint8_t DotStarClock = 6;
@@ -70,19 +72,30 @@ void startColumn(uint8_t colIdx) {
 }
 
 bool readRow(uint8_t rowIdx) {
+  // delay(1);
   return digitalRead(rowPins[rowIdx]) == LOW;
 }
 
 void sendData(uint8_t val) {
   Serial1.write(val);
+	// Serial.print("Sending data:");
+	// Serial.println(val);
 }
 
 void indicateChange(uint8_t r, uint8_t c, uint8_t p, uint32_t now) {
   analogWrite(BLUE_LED, p ? 10 : 0);
+	/*
+	Serial.print("Got row ");
+	Serial.print(r);
+	Serial.print(" col ");
+	Serial.print(c);
+	Serial.println(p ? " pressed": " released");
+	*/
 }
 
 void endColumn(uint8_t colIdx) {
   digitalWrite(colPins[colIdx], HIGH);
+	// delay(1);
 }
 
 uint32_t lastCol = 0;

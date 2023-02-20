@@ -10,7 +10,7 @@ endif
 SFX=.exe
 SEP=\\
 # Chocolatey install winflexbison3 :)
-BISON=win_bison
+BISON=bison
 CLEANPATHS=$(subst /,${SEP},$1)
 MKDIRPATH=$(subst /,${SEP},$1)
 RM=del /s /q

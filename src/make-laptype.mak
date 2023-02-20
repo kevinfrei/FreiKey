@@ -5,7 +5,7 @@ ifeq ($(OS),Windows_NT)
 	SERIAL_PORT=COM8
 	RUNTIME_HARDWARE_PATH=c:/PROGRA~2/Arduino/hardware/tools
 	CMD_PATH=${RUNTIME_HARDWARE_PATH}
-	BISON=win_bison
+	BISON=bison
 else ifeq ($(shell uname -s), Darwin)
 	SUF=mac
 	ARD=/Applications/Teensyduino.app/Contents/Java/hardware
