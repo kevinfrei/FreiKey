@@ -11,16 +11,17 @@ const uint32_t debounce_time = 15;
 
 #include "CoreCapability.hpp"
 
+
 /*
  13 12 11 10  9  7    21 22
- C1 R3 R1 R6 R5 R4 __ C2 C3
+ C5 R2 R0 R5 R4 R3 __ C4 C3
 |=============================|
-          C6 R2 __ __ __ C4 C5
+          C0 R1 __ __ __ C2 C1
           16 17          24 23
 */
 
-// C1:13, C2:21, C3:22, C4:24, C5:23, C6:16
-// R1:11, R2:17, R3:12, R4: 7, R5: 9, R6:10
+// C0:16 C1:23 C2:24 C3:22 C4:21 C5:13
+// R0:11 R1:17 R2:12 R3: 7 R4: 9 R5:10
 
 uint8_t colPins[COLS] = {16, 23, 24, 22, 21, 13};
 uint8_t rowPins[ROWS] = {11, 17, 12, 7, 9, 10};
@@ -104,7 +105,7 @@ void timeIndication(uint32_t now) {
   now = now >> 7;
   if (now != lastCol) {
     lastCol = now;
-    uint32_t hsv = makeHSV(now % 360, (now / 360) & 0xFF, 50);
+    uint32_t hsv = makeHSV(now % 360, (now / 360) & 0xFF, 20);
     uint32_t col = getColor(hsv);
     pixel.setPixelColor(0, (col >> 16) & 0xFF, (col >> 8) & 0xFF, col & 0xFF);
     pixel.show();
