@@ -39,8 +39,10 @@ if (!fs.existsSync(plat)) {
 process.chdir('src');
 if (process.argv.length < 3 || process.argv.includes('teensy')) {
   main(
-    '--out:tools/teensy.' + outputSuffix,
-    '--config:tools/teensy-make-config.json',
+    '--out',
+    'tools/teensy.' + outputSuffix,
+    '--config',
+    'tools/teensy-make-config.json',
     plat,
     'libs/SdFat',
     'libs/GFX',
@@ -52,14 +54,16 @@ if (process.argv.length < 3 || process.argv.includes('teensy')) {
     'libs/8875',
   );
 }
-if (process.argv.length < 3 || process.argv.includes('nrf52')) {
+if ((false && process.argv.length < 3) || process.argv.includes('nrf52')) {
   main(
-    '--out:tools/af_nrf52.' + outputSuffix,
-    '--config:tools/adafruit-make-config.json',
+    '--out',
+    'tools/af_nrf52.' + outputSuffix,
+    '--config',
+    'tools/adafruit-make-config.json',
     'libs/nRF52_Adafruit',
     'libs/BusIO',
     'libs/GFX',
     'libs/NeoPixel',
-		'libs/SSD1306'
+    'libs/SSD1306',
   );
 }
