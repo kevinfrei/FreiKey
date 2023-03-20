@@ -55,8 +55,8 @@ else
 endif
 RUNTIME_OS?=linux
 RUNTIME_PLATFORM_PATH=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr
-RUNTIME_IDE_VERSION=10816
-IDE_VERSION=10816
+RUNTIME_IDE_VERSION=10819
+IDE_VERSION=10819
 BUILD_PROJECT_NAME=${PROJ_NAME}
 ifeq (${BOARD_NAME}, teensy41)
   SERIAL_RESTART_CMD=false
@@ -1763,16 +1763,11 @@ ifeq (${BUILD_CORE}, teensy4)
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/HardwareSerial6.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/HardwareSerial7.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/HardwareSerial8.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/IPAddress.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/IntervalTimer.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/Print.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/Stream.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/Time.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/Tone.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/WMath.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/WString.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/IPAddress.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/main.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/new.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/Print.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/serialEvent.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/serialEvent1.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/serialEvent2.cpp \
@@ -1784,9 +1779,14 @@ ifeq (${BUILD_CORE}, teensy4)
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/serialEvent8.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/serialEventUSB1.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/serialEventUSB2.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/Stream.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/Time.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/Tone.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/usb_audio.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/usb_flightsim.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/usb_inst.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/WMath.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/WString.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/yield.cpp
   S_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/memcpy-armv7m.S \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy4/memset.S
@@ -1800,7 +1800,6 @@ else ifeq (${BUILD_CORE}, teensy3)
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/mk20dx128.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/nonstd.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/pins_teensy.c \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/ser_print.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/serial1.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/serial2.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/serial3.c \
@@ -1808,6 +1807,7 @@ else ifeq (${BUILD_CORE}, teensy3)
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/serial5.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/serial6.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/serial6_lpuart.c \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/ser_print.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/touch.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/usb_desc.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/usb_dev.c \
@@ -1824,6 +1824,7 @@ else ifeq (${BUILD_CORE}, teensy3)
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/usb_serial3.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/usb_touch.c
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/AudioStream.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/avr_emulation.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/CrashReport.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/DMAChannel.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/EventResponder.cpp \
@@ -1834,17 +1835,11 @@ else ifeq (${BUILD_CORE}, teensy3)
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/HardwareSerial4.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/HardwareSerial5.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/HardwareSerial6.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/IPAddress.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/IntervalTimer.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/Print.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/Stream.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/Time.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/Tone.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/WMath.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/WString.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/avr_emulation.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/IPAddress.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/main.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/new.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/Print.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/serialEvent.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/serialEvent1.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/serialEvent2.cpp \
@@ -1854,43 +1849,41 @@ else ifeq (${BUILD_CORE}, teensy3)
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/serialEvent6.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/serialEventUSB1.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/serialEventUSB2.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/Stream.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/Time.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/Tone.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/usb_audio.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/usb_flightsim.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/usb_inst.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/WMath.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/WString.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/yield.cpp
   S_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/memcpy-armv7m.S \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3/memset.S
   SYS_INCLUDES+= -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3
   VPATH_CORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy3
 else ifeq (${BUILD_CORE}, teensy)
-  C_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy/WInterrupts.c \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy/keylayouts.c \
+  C_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy/keylayouts.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy/malloc.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy/pins_teensy.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy/usb.c \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy/WInterrupts.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy/wiring.c
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy/CrashReport.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy/HardwareSerial.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy/IPAddress.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy/main.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy/new.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy/Print.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy/Stream.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy/Time.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy/Tone.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy/usb_api.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy/WMath.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy/WString.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy/main.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy/new.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy/usb_api.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy/yield.cpp
   SYS_INCLUDES+= -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy
   VPATH_CORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/cores/teensy
-endif
-ifdef LIB_ADC
-  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ADC/ADC.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ADC/ADC_Module.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ADC/AnalogBufferDMA.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ADC
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ADC
 endif
 ifdef LIB_ACCELSTEPPER
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/AccelStepper/src/AccelStepper.cpp \
@@ -1904,29 +1897,45 @@ ifdef LIB_ADAFRUIT_NEOPIXEL
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Adafruit_NeoPixel
   VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Adafruit_NeoPixel
 endif
+ifdef LIB_ADAFRUIT_NRF8001
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Adafruit_nRF8001/Adafruit_BLE_UART.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Adafruit_nRF8001
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Adafruit_nRF8001
+endif
 ifdef LIB_ADAFRUIT_STMPE610
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Adafruit_STMPE610/Adafruit_STMPE610.cpp
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Adafruit_STMPE610
   VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Adafruit_STMPE610
 endif
+ifdef LIB_ADAFRUIT_VS1053
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Adafruit_VS1053/Adafruit_VS1053.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Adafruit_VS1053
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Adafruit_VS1053
+endif
+ifdef LIB_ADC
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ADC/ADC.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ADC/ADC_Module.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ADC/AnalogBufferDMA.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ADC
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ADC
+endif
 ifdef LIB_ALTSOFTSERIAL
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/AltSoftSerial/AltSoftSerial.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/AltSoftSerial \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/AltSoftSerial/config
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/AltSoftSerial
   VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/AltSoftSerial
+endif
+ifdef LIB_ARTNET
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Artnet/Artnet.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Artnet
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Artnet
 endif
 ifdef LIB_AUDIO
   C_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/data_bandlimit_step.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/data_spdif.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/data_ulaw.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/data_waveforms.c \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/data_windows.c \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/extras/miditones/miditones.c \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/extras/wav2sketch/wav2sketch.c \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/utility/sqrt_integer.c
-  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/Quantizer.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/Resampler.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/analyze_fft1024.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/data_windows.c
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/analyze_fft1024.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/analyze_fft256.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/analyze_notefreq.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/analyze_peak.cpp \
@@ -1995,7 +2004,9 @@ ifdef LIB_AUDIO
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/play_sd_raw.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/play_sd_wav.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/play_serialflash_raw.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/Quantizer.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/record_queue.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/Resampler.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/spi_interrupt.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/synth_dc.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/synth_karplusstrong.cpp \
@@ -2006,12 +2017,15 @@ ifdef LIB_AUDIO
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/synth_tonesweep.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/synth_waveform.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/synth_wavetable.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/synth_whitenoise.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/utility/imxrt_hw.cpp
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/synth_whitenoise.cpp
   S_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/memcpy_audio.S
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/utility
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/extras/miditones /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/extras/wav2sketch /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio/utility
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Audio
+endif
+ifdef LIB_BOUNCE
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Bounce/Bounce.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Bounce
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Bounce
 endif
 ifdef LIB_BOUNCE2
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Bounce2/src/Bounce2.cpp
@@ -2032,15 +2046,30 @@ ifdef LIB_CRYPTOACCEL
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/CryptoAccel/src
   VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/CryptoAccel/src
 endif
+ifdef LIB_DMXSIMPLE
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/DmxSimple/DmxSimple.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/DmxSimple
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/DmxSimple
+endif
+ifdef LIB_DOGLCD
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/DogLcd/DogLcd.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/DogLcd
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/DogLcd
+endif
 ifdef LIB_DS1307RTC
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/DS1307RTC/DS1307RTC.cpp
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/DS1307RTC
   VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/DS1307RTC
 endif
-ifdef LIB_DMXSIMPLE
-  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/DmxSimple/DmxSimple.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/DmxSimple
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/DmxSimple
+ifdef LIB_EASYTRANSFER
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/EasyTransfer/EasyTransfer.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/EasyTransfer
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/EasyTransfer
+endif
+ifdef LIB_EASYTRANSFERI2C
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/EasyTransferI2C/EasyTransferI2C.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/EasyTransferI2C
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/EasyTransferI2C
 endif
 ifdef LIB_EEPROM
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/EEPROM/EEPROM.cpp
@@ -2049,9 +2078,13 @@ ifdef LIB_EEPROM
 endif
 ifdef LIB_ENCODER
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Encoder/Encoder.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Encoder \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Encoder/utility
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Encoder
   VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Encoder
+endif
+ifdef LIB_ENTROPY
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Entropy/Entropy.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Entropy
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Entropy
 endif
 ifdef LIB_ETHERNET
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Ethernet/src/Dhcp.cpp \
@@ -2065,6 +2098,64 @@ ifdef LIB_ETHERNET
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Ethernet/src \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Ethernet/src/utility
   VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Ethernet/src /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Ethernet/src/utility
+endif
+ifdef LIB_FASTCRC
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastCRC/FastCRChw.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastCRC/FastCRCsw.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastCRC
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastCRC
+endif
+ifdef LIB_FASTLED
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/bitswap.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/colorpalettes.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/colorutils.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/FastLED.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/hsv2rgb.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/lib8tion.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/noise.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/esp/32/clockless_rmt_esp32.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/power_mgt.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/wiring.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src \
+    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/lib8tion \
+    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/apollo3 \
+    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/common \
+    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/d21 \
+    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/d51 \
+    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/k20 \
+    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/k66 \
+    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/kl26 \
+    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/mxrt1062 \
+    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/nrf51 \
+    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/nrf52 \
+    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/sam \
+    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/stm32 \
+    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/avr \
+    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/esp/32 \
+    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/esp/8266 \
+    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/esp/32
+endif
+ifdef LIB_FLEXCAN
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FlexCAN/FlexCAN.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FlexCAN
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FlexCAN
+endif
+ifdef LIB_FLEXCAN_T4
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FlexCAN_T4
+endif
+ifdef LIB_FLEXIO_T4
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FlexIO_t4/src/FlexIOSPI.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FlexIO_t4/src/FlexIO_t4.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FlexIO_t4/src/FlexSerial.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FlexIO_t4/src
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FlexIO_t4/src
+endif
+ifdef LIB_FLEXITIMER2
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FlexiTimer2/FlexiTimer2.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FlexiTimer2
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FlexiTimer2
 endif
 ifdef LIB_FNET
   C_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/port/cpu/fnet_cpu.c \
@@ -2185,12 +2276,12 @@ ifdef LIB_FNET
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/padlock.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/pem.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/pk.c \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/pk_wrap.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/pkcs11.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/pkcs12.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/pkcs5.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/pkparse.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/pkwrite.c \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/pk_wrap.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/platform.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/platform_util.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/poly1305.c \
@@ -2212,12 +2303,12 @@ ifdef LIB_FNET
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/version.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/version_features.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/x509.c \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/x509write_crt.c \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/x509write_csr.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/x509_create.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/x509_crl.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/x509_crt.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/x509_csr.c \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/x509write_crt.c \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/x509write_csr.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/xtea.c
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/port/cpu/mimxrt/fnet_mimxrt_serial.cpp
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src \
@@ -2251,71 +2342,15 @@ ifdef LIB_FNET
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src/mbedtls
   VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/port/cpu /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/port/cpu/mimxrt /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/port /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/port/netif/fec /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/autoip /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/azure /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/bench /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/dhcp /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/dns /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/flash /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/fs /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/http /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/link /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/llmnr /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/mdns /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/ping /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/serial /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/shell /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/sntp /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/telnet /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/tftp /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/service/tls /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/stack /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FNET/src/third_party/mbedtls-2.12.0/src
 endif
-ifdef LIB_FASTCRC
-  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastCRC/FastCRChw.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastCRC/FastCRCsw.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastCRC/examples_PC/test.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastCRC
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastCRC /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastCRC/examples_PC
-endif
-ifdef LIB_FASTLED
-  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/FastLED.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/bitswap.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/colorpalettes.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/colorutils.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/hsv2rgb.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/lib8tion.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/noise.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/esp/32/clockless_rmt_esp32.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/power_mgt.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/wiring.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/lib8tion \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/apollo3 \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/common \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/d21 \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/d51 \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/k20 \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/k66 \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/kl26 \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/mxrt1062 \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/nrf51 \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/nrf52 \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/sam \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/arm/stm32 \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/avr \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/esp/32 \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/esp/8266 \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FastLED/src/platforms/esp/32
-endif
-ifdef LIB_FLEXIO_T4
-  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FlexIO_t4/src/FlexIOSPI.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FlexIO_t4/src/FlexIO_t4.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FlexIO_t4/src/FlexSerial.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FlexIO_t4/src
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FlexIO_t4/src
-endif
-ifdef LIB_FLEXITIMER2
-  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FlexiTimer2/FlexiTimer2.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FlexiTimer2
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FlexiTimer2
-endif
 ifdef LIB_FREQCOUNT
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FreqCount/FreqCount.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FreqCount \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FreqCount/util
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FreqCount
   VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FreqCount
 endif
 ifdef LIB_FREQMEASURE
-  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FreqMeasure/FreqMeasure.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FreqMeasureMulti/FreqMeasureMulti.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FreqMeasureMulti/FreqMeasureMultiIMXRT.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FreqMeasure \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FreqMeasure/util \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FreqMeasureMulti
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FreqMeasure /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FreqMeasureMulti
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FreqMeasure/FreqMeasure.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FreqMeasure
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FreqMeasure
 endif
 ifdef LIB_FREQMEASUREMULTI
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FreqMeasureMulti/FreqMeasureMulti.cpp \
@@ -2328,36 +2363,42 @@ ifdef LIB_FREQUENCYTIMER2
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FrequencyTimer2
   VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/FrequencyTimer2
 endif
+ifdef LIB_I2C_T3
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/i2c_t3/i2c_t3.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/i2c_t3
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/i2c_t3
+endif
 ifdef LIB_ILI9341_T3
-  C_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9341_t3/extras/bdf_to_ili9341.c \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9341_t3/font_Arial.c \
+  C_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9341_t3/font_Arial.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9341_t3/font_ArialBold.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9341_t3/glcdfont.c
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9341_t3/ILI9341_t3.cpp
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9341_t3
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9341_t3/extras /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9341_t3
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9341_t3
 endif
 ifdef LIB_ILI9488_T3
   C_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9488_t3/src/glcdfont.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9488_t3/src/ili9488_t3_font_Arial.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9488_t3/src/ili9488_t3_font_ArialBold.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9488_t3/src/ili9488_t3_font_ComicSansMS.c
-  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9488_t3/ILI9488_t3..cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9488_t3/src/ILI9488_t3.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9488_t3 \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9488_t3/src
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9488_t3/src /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9488_t3
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9488_t3/src/ILI9488_t3.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9488_t3/src
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ILI9488_t3/src
 endif
 ifdef LIB_IRREMOTE
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/IRremote/src \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/IRremote/src/private
-  VPATH_MORE+=
 endif
 ifdef LIB_KEYPAD
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Keypad/src/Key.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Keypad/src/Keypad.cpp
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Keypad/src
   VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Keypad/src
+endif
+ifdef LIB_KS0108
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ks0108/ks0108.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ks0108
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ks0108
 endif
 ifdef LIB_LEDCONTROL
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LedControl/src/LedControl.cpp
@@ -2370,22 +2411,33 @@ ifdef LIB_LEDDISPLAY
   VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LedDisplay
 endif
 ifdef LIB_LIQUIDCRYSTAL
-  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LiquidCrystal/LiquidCrystal.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LiquidCrystal/src/LiquidCrystal.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LiquidCrystalFast/LiquidCrystalFast.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LiquidCrystal \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LiquidCrystal/src \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LiquidCrystalFast
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LiquidCrystal /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LiquidCrystal/src /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LiquidCrystalFast
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LiquidCrystal/src/LiquidCrystal.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LiquidCrystal/src
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LiquidCrystal/src
+endif
+ifdef LIB_LIQUIDCRYSTALFAST
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LiquidCrystalFast/LiquidCrystalFast.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LiquidCrystalFast
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LiquidCrystalFast
 endif
 ifdef LIB_LITTLEFS
   C_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LittleFS/src/littlefs/lfs.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LittleFS/src/littlefs/lfs_util.c
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LittleFS/src/LittleFS.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LittleFS/src/LittleFS_NAND.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LittleFS/src \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LittleFS/src/littlefs
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LittleFS/src/littlefs \
+    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LittleFS/src
   VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LittleFS/src/littlefs /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LittleFS/src
+endif
+ifdef LIB_LOWPOWER
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LowPower/LowPower.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LowPower
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/LowPower
+endif
+ifdef LIB_METRO
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Metro/Metro.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Metro
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Metro
 endif
 ifdef LIB_MFRC522
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MFRC522/src/MFRC522.cpp \
@@ -2395,37 +2447,15 @@ ifdef LIB_MFRC522
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MFRC522/src
   VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MFRC522/src
 endif
-ifdef LIB_MIDI
-  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/src/MIDI.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/test/mocks/test-mocks.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/test/mocks/test-mocks_SerialMock.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests/unit-tests_MidiInput.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests/unit-tests_MidiInputCallbacks.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests/unit-tests_MidiMessage.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests/unit-tests_MidiOutput.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests/unit-tests_MidiThru.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests/unit-tests_Settings.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests/unit-tests_SysExCodec.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/test/unit-tests/unit-tests.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/doc \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/src \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/test/mocks \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/test/unit-tests
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/src /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/test/mocks /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/test/unit-tests/tests /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/test/unit-tests
+ifdef LIB_MIDI_LIBRARY
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/src/MIDI.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/src
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MIDI/src
 endif
 ifdef LIB_MSTIMER2
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MsTimer2/MsTimer2.cpp
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MsTimer2
   VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/MsTimer2
-endif
-ifdef LIB_NXPMOTIONSENSE
-  C_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/NXPMotionSense/matrix.c
-  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/NXPMotionSense/NXPMotionSense.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/NXPMotionSense/SensorFusion.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/NXPMotionSense \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/NXPMotionSense/utility
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/NXPMotionSense
 endif
 ifdef LIB_NATIVEETHERNET
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/NativeEthernet/src/NativeDns.cpp \
@@ -2439,6 +2469,24 @@ ifdef LIB_NATIVEETHERNET
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/NativeEthernet/src/utility
   VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/NativeEthernet/src
 endif
+ifdef LIB_NXPMOTIONSENSE
+  C_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/NXPMotionSense/matrix.c
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/NXPMotionSense/NXPMotionSense.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/NXPMotionSense/SensorFusion.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/NXPMotionSense
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/NXPMotionSense
+endif
+ifdef LIB_OCTOWS2811
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OctoWS2811/OctoWS2811.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OctoWS2811/OctoWS2811_imxrt.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OctoWS2811
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OctoWS2811
+endif
+ifdef LIB_ONEWIRE
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OneWire/OneWire.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OneWire
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OneWire
+endif
 ifdef LIB_OSC
   C_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OSC/OSCMatch.c
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OSC/OSCBundle.cpp \
@@ -2447,34 +2495,18 @@ ifdef LIB_OSC
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OSC/OSCTiming.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OSC/SLIPEncodedSerial.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OSC/SLIPEncodedUSBSerial.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OSC \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OSC/test/OSCBundle_test \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OSC/test/OSCMessage_encode_decode_test
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OSC
   VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OSC
 endif
-ifdef LIB_OCTOWS2811
-  C_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OctoWS2811/extras/VideoSDcard/addaudio/addaudio.c
-  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OctoWS2811/OctoWS2811.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OctoWS2811/OctoWS2811_imxrt.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OctoWS2811
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OctoWS2811/extras/VideoSDcard/addaudio /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OctoWS2811
-endif
-ifdef LIB_ONEWIRE
-  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OneWire/OneWire.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OneWire \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OneWire/util
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/OneWire
+ifdef LIB_PING
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Ping/Ping.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Ping
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Ping
 endif
 ifdef LIB_PS2KEYBOARD
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/PS2Keyboard/PS2Keyboard.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/PS2Keyboard \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/PS2Keyboard/utility
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/PS2Keyboard
   VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/PS2Keyboard
-endif
-ifdef LIB_PWMSERVO
-  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/PWMServo/PWMServo.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/PWMServo
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/PWMServo
 endif
 ifdef LIB_PULSEPOSITION
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/PulsePosition/PulsePosition.cpp \
@@ -2482,37 +2514,21 @@ ifdef LIB_PULSEPOSITION
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/PulsePosition
   VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/PulsePosition
 endif
+ifdef LIB_PWMSERVO
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/PWMServo/PWMServo.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/PWMServo
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/PWMServo
+endif
 ifdef LIB_QUADENCODER
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/QuadEncoder/QuadEncoder.cpp
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/QuadEncoder
   VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/QuadEncoder
 endif
 ifdef LIB_RA8875
-  C_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875/fonts/Rubic_36.c \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875/fonts/SquareOne_14.c \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875/fonts/SquareOne_24.c \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875/fonts/aerial_22.c \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875/fonts/aerial_48.c \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875/fonts/akashiSquared_36.c \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875/fonts/akashi_36.c \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875/fonts/bin_22.c \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875/fonts/block_22.c \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875/fonts/designerBlock_36.c \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875/fonts/dubstreptix_14.c \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875/fonts/genow_22.c \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875/fonts/heydings_36.c \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875/fonts/indieutka_22.c \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875/fonts/minipixel_24.c \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875/fonts/modo_36.c \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875/fonts/orbitron_16.c \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875/fonts/squarefont_14.c \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875/fonts/squarefuture_20.c \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875/glcdfont.c
+  C_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875/glcdfont.c
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875/RA8875.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875 \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875/_includes \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875/_settings
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875/fonts /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RA8875
 endif
 ifdef LIB_RADIOHEAD
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/RHCRC.cpp \
@@ -2527,8 +2543,8 @@ ifdef LIB_RADIOHEAD
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/RHNRFSPIDriver.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/RHReliableDatagram.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/RHRouter.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/RHSPIDriver.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/RHSoftwareSPI.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/RHSPIDriver.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/RH_ABZ.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/RH_ASK.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/RH_CC110.cpp \
@@ -2542,20 +2558,9 @@ ifdef LIB_RADIOHEAD
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/RH_RF69.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/RH_RF95.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/RH_Serial.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/RH_TCP.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/RHutil/HardwareSerial.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/RHutil/RasPi.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/RHutil_pigpio/RasPi.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/STM32ArduinoCompat/HardwareSPI.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/STM32ArduinoCompat/HardwareSerial.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/STM32ArduinoCompat/wirish.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/tools/simMain.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/RF24configs \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/RHutil \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/RHutil_pigpio \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/STM32ArduinoCompat
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/RHutil /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/RHutil_pigpio /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/STM32ArduinoCompat /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/tools
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead/RH_TCP.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/RadioHead
 endif
 ifdef LIB_RESPONSIVEANALOGREAD
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ResponsiveAnalogRead/src/ResponsiveAnalogRead.cpp
@@ -2567,25 +2572,15 @@ ifdef LIB_SD
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SD/src
   VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SD/src
 endif
-ifdef LIB_SPI
-  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SPI/SPI.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SPIFlash/SPIFlash.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SPI \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SPIFlash
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SPI /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SPIFlash
-endif
-ifdef LIB_ST7735_T3
-  C_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ST7735_t3/glcdfont.c \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ST7735_t3/st7735_t3_font_Arial.c \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ST7735_t3/st7735_t3_font_ComicSansMS.c
-  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ST7735_t3/ST7735_t3.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ST7735_t3/ST7789_t3.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ST7735_t3
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ST7735_t3
-endif
 ifdef LIB_SDFAT
-  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/extras/attic/PrintBasic.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/extras/attic/SysCallBareUno.cpp \
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/common/FmtNumber.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/common/FsCache.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/common/FsDateTime.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/common/FsGetPartitionInfo.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/common/FsName.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/common/FsStructs.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/common/FsUtf.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/common/upcase.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/ExFatLib/ExFatDbg.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/ExFatLib/ExFatFile.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/ExFatLib/ExFatFilePrint.cpp \
@@ -2608,10 +2603,14 @@ ifdef LIB_SDFAT
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/FsLib/FsFile.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/FsLib/FsNew.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/FsLib/FsVolume.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/iostream/istream.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/iostream/ostream.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/iostream/StdioStream.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/iostream/StreamBaseClass.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/MinimumSerial.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/SdCard/SdCardInfo.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/SdCard/SdSpiCard.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/SdCard/SdioTeensy.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/SdCard/SdSpiCard.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/SpiDriver/SdSpiArtemis.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/SpiDriver/SdSpiChipSelect.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/SpiDriver/SdSpiDue.cpp \
@@ -2619,38 +2618,23 @@ ifdef LIB_SDFAT
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/SpiDriver/SdSpiParticle.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/SpiDriver/SdSpiSTM32.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/SpiDriver/SdSpiSTM32Core.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/SpiDriver/SdSpiTeensy3.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/common/FmtNumber.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/common/FsCache.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/common/FsDateTime.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/common/FsGetPartitionInfo.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/common/FsName.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/common/FsStructs.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/common/FsUtf.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/common/upcase.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/iostream/StdioStream.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/iostream/StreamBaseClass.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/iostream/istream.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/iostream/ostream.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/doc \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/extras/attic \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/DigitalIO \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/SpiDriver/SdSpiTeensy3.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src \
+    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/common \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/DigitalIO/boards \
+    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/DigitalIO \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/ExFatLib \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/FatLib \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/FsLib \
+    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/iostream \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/SdCard \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/SpiDriver \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/common \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/iostream
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/extras/attic /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/ExFatLib /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/FatLib /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/FsLib /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/SdCard /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/SpiDriver /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/common /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/iostream
+    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/SpiDriver
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/common /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/ExFatLib /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/FatLib /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/FsLib /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/iostream /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/SdCard /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SdFat/src/SpiDriver
 endif
 ifdef LIB_SERIALFLASH
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SerialFlash/SerialFlashChip.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SerialFlash/SerialFlashDirectory.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SerialFlash \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SerialFlash/util
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SerialFlash
   VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SerialFlash
 endif
 ifdef LIB_SERVO
@@ -2658,15 +2642,18 @@ ifdef LIB_SERVO
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Servo
   VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Servo
 endif
+ifdef LIB_SHIFTPWM
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ShiftPWM/CShiftPWM.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ShiftPWM
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ShiftPWM
+endif
 ifdef LIB_SNOOZE
   C_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32/hal.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_35/hal.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_36/hal.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_40/hal.c \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC/hal.c
-  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/Snooze.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/SnoozeBlock.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32/SnoozeAlarm.cpp \
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32/SnoozeAlarm.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32/SnoozeAudio.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32/SnoozeCompare.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32/SnoozeDigital.cpp \
@@ -2698,17 +2685,19 @@ ifdef LIB_SNOOZE
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC/SnoozeAlarm.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC/SnoozeCompare.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC/SnoozeDigital.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC/Snoozelc5vBuffer.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC/SnoozeSPI.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC/SnoozeTimer.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC/SnoozeTouch.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC/SnoozeUSBSerial.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC/Snoozelc5vBuffer.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32 \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/Snooze.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/SnoozeBlock.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32 \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_35 \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_36 \
     -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_40 \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC
+    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC \
+    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src
   VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_32 /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_35 /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_36 /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_40 /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src/hal/TEENSY_LC /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Snooze/src
 endif
 ifdef LIB_SOFTPWM
@@ -2721,11 +2710,29 @@ ifdef LIB_SOFTWARESERIAL
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SoftwareSerial
   VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SoftwareSerial
 endif
-ifdef LIB_TFT_ILI9163C
-  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TFT_ILI9163C/TFT_ILI9163C.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TFT_ILI9163C \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TFT_ILI9163C/_settings
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TFT_ILI9163C
+ifdef LIB_SPI
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SPI/SPI.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SPI
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SPI
+endif
+ifdef LIB_SPIFLASH
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SPIFlash/SPIFlash.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SPIFlash
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/SPIFlash
+endif
+ifdef LIB_TEENSY_SSD1351
+  C_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ssd1351/glcdfont.c
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ssd1351
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ssd1351
+endif
+ifdef LIB_ST7735_T3
+  C_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ST7735_t3/glcdfont.c \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ST7735_t3/st7735_t3_font_Arial.c \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ST7735_t3/st7735_t3_font_ComicSansMS.c
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ST7735_t3/ST7735_t3.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ST7735_t3/ST7789_t3.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ST7735_t3
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ST7735_t3
 endif
 ifdef LIB_TALKIE
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Talkie/Talkie.cpp
@@ -2738,19 +2745,16 @@ ifdef LIB_TEENSYTHREADS
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TeensyThreads
   VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TeensyThreads
 endif
+ifdef LIB_TFT_ILI9163C
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TFT_ILI9163C/TFT_ILI9163C.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TFT_ILI9163C
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TFT_ILI9163C
+endif
 ifdef LIB_TIME
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Time/DateStrings.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Time/Time.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TimeAlarms/TimeAlarms.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TimerOne/TimerOne.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TimerThree/TimerThree.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Time \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TimeAlarms \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TimerOne \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TimerOne/config \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TimerThree \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TimerThree/config
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Time /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TimeAlarms /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TimerOne /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TimerThree
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Time/Time.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Time
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Time
 endif
 ifdef LIB_TIMEALARMS
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TimeAlarms/TimeAlarms.cpp
@@ -2759,26 +2763,31 @@ ifdef LIB_TIMEALARMS
 endif
 ifdef LIB_TIMERONE
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TimerOne/TimerOne.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TimerOne \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TimerOne/config
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TimerOne
   VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TimerOne
 endif
 ifdef LIB_TIMERTHREE
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TimerThree/TimerThree.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TimerThree \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TimerThree/config
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TimerThree
   VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TimerThree
+endif
+ifdef LIB_TINYGPS
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TinyGPS/TinyGPS.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TinyGPS
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TinyGPS
 endif
 ifdef LIB_TLC5940
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Tlc5940/Tlc5940.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Tlc5940 \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Tlc5940/pinouts
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Tlc5940
   VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Tlc5940
 endif
+ifdef LIB_TOUCHSCREEN
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TouchScreen/TouchScreen.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TouchScreen
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/TouchScreen
+endif
 ifdef LIB_USBHOST_T36
-  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36/MassStorageDriver.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36/SerEMU.cpp \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36/adk.cpp \
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36/adk.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36/antplus.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36/bluetooth.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36/digitizer.cpp \
@@ -2789,55 +2798,129 @@ ifdef LIB_USBHOST_T36
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36/joystick.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36/keyboard.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36/keyboardHIDExtras.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36/MassStorageDriver.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36/memory.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36/midi.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36/mouse.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36/print.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36/rawhid.cpp \
+    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36/SerEMU.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36/serial.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36 \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36/utility
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36
   VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/USBHost_t36
 endif
+ifdef LIB_UTFT
+  C_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/UTFT/DefaultFonts.c
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/UTFT/UTFT.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/UTFT
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/UTFT
+endif
+ifdef LIB_VIRTUALWIRE
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/VirtualWire/VirtualWire.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/VirtualWire
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/VirtualWire
+endif
 ifdef LIB_WIRE
-  C_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Wire/utility/twi.c
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Wire/Wire.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Wire/WireIMXRT.cpp \
     /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Wire/WireKinetis.cpp
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Wire \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Wire/utility
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Wire/utility /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Wire
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Wire
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/Wire
+endif
+ifdef LIB_WS2812SERIAL
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/WS2812Serial/WS2812Serial.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/WS2812Serial
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/WS2812Serial
+endif
+ifdef LIB_X10
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/x10/x10.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/x10
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/x10
+endif
+ifdef LIB_XBEE
+  CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/XBee/XBee.cpp
+  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/XBee
+  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/XBee
 endif
 ifdef LIB_XPT2046_TOUCHSCREEN
   CPP_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/XPT2046_Touchscreen/XPT2046_Touchscreen.cpp
   SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/XPT2046_Touchscreen
   VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/XPT2046_Touchscreen
 endif
-ifdef LIB_SSD1351
-  C_SYS_SRCS+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ssd1351/fontconvert/fontconvert.c \
-    /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ssd1351/glcdfont.c
-  SYS_INCLUDES+=-I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ssd1351/Fonts \
-    -I/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ssd1351
-  VPATH_MORE+=/Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ssd1351/fontconvert /Applications/Teensyduino.app/Contents/Java/hardware/teensy/avr/libraries/ssd1351
+ifdef LIB_SDFAT___ADAFRUIT_FORK
+  CPP_SYS_SRCS+=libs/SdFat/src/common/FmtNumber.cpp \
+    libs/SdFat/src/common/FsCache.cpp \
+    libs/SdFat/src/common/FsDateTime.cpp \
+    libs/SdFat/src/common/FsName.cpp \
+    libs/SdFat/src/common/FsStructs.cpp \
+    libs/SdFat/src/common/FsUtf.cpp \
+    libs/SdFat/src/common/PrintBasic.cpp \
+    libs/SdFat/src/common/upcase.cpp \
+    libs/SdFat/src/ExFatLib/ExFatDbg.cpp \
+    libs/SdFat/src/ExFatLib/ExFatFile.cpp \
+    libs/SdFat/src/ExFatLib/ExFatFilePrint.cpp \
+    libs/SdFat/src/ExFatLib/ExFatFileWrite.cpp \
+    libs/SdFat/src/ExFatLib/ExFatFormatter.cpp \
+    libs/SdFat/src/ExFatLib/ExFatName.cpp \
+    libs/SdFat/src/ExFatLib/ExFatPartition.cpp \
+    libs/SdFat/src/ExFatLib/ExFatVolume.cpp \
+    libs/SdFat/src/FatLib/FatDbg.cpp \
+    libs/SdFat/src/FatLib/FatFile.cpp \
+    libs/SdFat/src/FatLib/FatFileLFN.cpp \
+    libs/SdFat/src/FatLib/FatFilePrint.cpp \
+    libs/SdFat/src/FatLib/FatFileSFN.cpp \
+    libs/SdFat/src/FatLib/FatFormatter.cpp \
+    libs/SdFat/src/FatLib/FatName.cpp \
+    libs/SdFat/src/FatLib/FatPartition.cpp \
+    libs/SdFat/src/FatLib/FatVolume.cpp \
+    libs/SdFat/src/FreeStack.cpp \
+    libs/SdFat/src/FsLib/FsFile.cpp \
+    libs/SdFat/src/FsLib/FsNew.cpp \
+    libs/SdFat/src/FsLib/FsVolume.cpp \
+    libs/SdFat/src/iostream/istream.cpp \
+    libs/SdFat/src/iostream/ostream.cpp \
+    libs/SdFat/src/iostream/StdioStream.cpp \
+    libs/SdFat/src/iostream/StreamBaseClass.cpp \
+    libs/SdFat/src/MinimumSerial.cpp \
+    libs/SdFat/src/SdCard/SdCardInfo.cpp \
+    libs/SdFat/src/SdCard/SdioTeensy.cpp \
+    libs/SdFat/src/SdCard/SdSpiCard.cpp \
+    libs/SdFat/src/SpiDriver/SdSpiArtemis.cpp \
+    libs/SdFat/src/SpiDriver/SdSpiChipSelect.cpp \
+    libs/SdFat/src/SpiDriver/SdSpiDue.cpp \
+    libs/SdFat/src/SpiDriver/SdSpiESP.cpp \
+    libs/SdFat/src/SpiDriver/SdSpiParticle.cpp \
+    libs/SdFat/src/SpiDriver/SdSpiSTM32.cpp \
+    libs/SdFat/src/SpiDriver/SdSpiSTM32Core.cpp \
+    libs/SdFat/src/SpiDriver/SdSpiTeensy3.cpp
+  SYS_INCLUDES+=-Ilibs/SdFat/src \
+    -Ilibs/SdFat/src/common \
+    -Ilibs/SdFat/src/DigitalIO/boards \
+    -Ilibs/SdFat/src/DigitalIO \
+    -Ilibs/SdFat/src/ExFatLib \
+    -Ilibs/SdFat/src/FatLib \
+    -Ilibs/SdFat/src/FsLib \
+    -Ilibs/SdFat/src/iostream \
+    -Ilibs/SdFat/src/SdCard \
+    -Ilibs/SdFat/src/SpiDriver
+  VPATH_MORE+=libs/SdFat/src/common libs/SdFat/src/ExFatLib libs/SdFat/src/FatLib libs/SdFat/src libs/SdFat/src/FsLib libs/SdFat/src/iostream libs/SdFat/src/SdCard libs/SdFat/src/SpiDriver
 endif
-ifdef LIB_GFX
-  C_SYS_SRCS+=libs/GFX/fontconvert/fontconvert.c \
-    libs/GFX/glcdfont.c
+ifdef LIB_ADAFRUIT_GFX_LIBRARY
+  C_SYS_SRCS+=libs/GFX/glcdfont.c
   CPP_SYS_SRCS+=libs/GFX/Adafruit_GFX.cpp \
     libs/GFX/Adafruit_GrayOLED.cpp \
     libs/GFX/Adafruit_SPITFT.cpp
-  SYS_INCLUDES+=-Ilibs/GFX \
-    -Ilibs/GFX/Fonts
-  VPATH_MORE+=libs/GFX/fontconvert libs/GFX
+  SYS_INCLUDES+=-Ilibs/GFX
+  VPATH_MORE+=libs/GFX
 endif
-ifdef LIB_ST77XX
+ifdef LIB_ADAFRUIT_ST7735_AND_ST7789_LIBRARY
   CPP_SYS_SRCS+=libs/ST77XX/Adafruit_ST7735.cpp \
     libs/ST77XX/Adafruit_ST7789.cpp \
     libs/ST77XX/Adafruit_ST77xx.cpp
   SYS_INCLUDES+=-Ilibs/ST77XX
   VPATH_MORE+=libs/ST77XX
 endif
-ifdef LIB_BUSIO
+ifdef LIB_ADAFRUIT_BUSIO
   CPP_SYS_SRCS+=libs/BusIO/Adafruit_BusIO_Register.cpp \
     libs/BusIO/Adafruit_I2CDevice.cpp \
     libs/BusIO/Adafruit_SPIDevice.cpp
@@ -2849,11 +2932,10 @@ ifdef LIB_T4_PXP
   SYS_INCLUDES+=-Ilibs/T4_PXP/src
   VPATH_MORE+=libs/T4_PXP/src
 endif
-ifdef LIB_GFX_BUFFER
+ifdef LIB_ADAFRUIT_GFX_BUFFER
   SYS_INCLUDES+=-Ilibs/GFX_Buffer/src
-  VPATH_MORE+=
 endif
-ifdef LIB_ASYNCDMA
+ifdef LIB_ASYNCDMA_T3
   C_SYS_SRCS+=libs/AsyncDMA/glcdfont_t3.c \
     libs/AsyncDMA/st7735_t3_font_Arial.c \
     libs/AsyncDMA/st7735_t3_font_ComicSansMS.c
@@ -2861,6 +2943,11 @@ ifdef LIB_ASYNCDMA
     libs/AsyncDMA/ST7789_t3.cpp
   SYS_INCLUDES+=-Ilibs/AsyncDMA
   VPATH_MORE+=libs/AsyncDMA
+endif
+ifdef LIB_ADAFRUIT_RA8875
+  CPP_SYS_SRCS+=libs/8875/Adafruit_RA8875.cpp
+  SYS_INCLUDES+=-Ilibs/8875
+  VPATH_MORE+=libs/8875
 endif
 SYS_SRC=${C_SYS_SRCS} ${CPP_SYS_SRCS} ${S_SYS_SRCS}
 USER_SRC=${USER_C_SRCS} ${USER_CPP_SRCS} ${USER_S_SRCS}
