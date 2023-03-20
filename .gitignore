@@ -44,3 +44,11 @@ src/include/secrets.h
 
 # Cmake build directories
 **/build
+
+# Yarn stuff
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
