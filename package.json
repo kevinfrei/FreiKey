@@ -34,7 +34,7 @@
     "cfg": "node src/tools/gen-makefiles.mjs"
   },
   "devDependencies": {
-    "@freik/arduino2proj": "^0.7.1",
+    "@freik/arduino2proj": "^0.7.2",
     "@freik/build-tools": "^3.4.6",
     "husky": "^8.0.3",
     "prettier": "^2.8.6",
