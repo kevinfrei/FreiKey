@@ -8,7 +8,14 @@ import main from '@freik/arduino2proj/lib/main.js';
 const data = {
   win32: {
     outputSuffix: 'win',
-    platformPath: 'C:/PROGRA~2/Arduino',
+    // Updated for the Arduino IDE install location:
+    platformPath: path.join(
+      os.homedir(),
+      'AppData',
+      'Local',
+      'Arduino15',
+      'packages',
+    ),
   },
   darwin: {
     outputSuffix: 'mac',
@@ -20,6 +27,8 @@ const data = {
   },
 };
 
+const teensyLoc = ['teensy', 'hardware', 'avr', '1.57.2'];
+
 const key = os.platform();
 if (!Type.has(data, key)) {
   console.error(
@@ -29,7 +38,7 @@ if (!Type.has(data, key)) {
 }
 
 const { outputSuffix, platformPath } = data[key];
-const plat = path.join(platformPath, 'hardware', 'teensy', 'avr');
+const plat = path.join(...[platformPath, ...teensyLoc]);
 if (!fs.existsSync(plat)) {
   console.error(
     `${plat} doesn't exist: Make sure you've got stuff configured properly`,
@@ -38,9 +47,11 @@ if (!fs.existsSync(plat)) {
 }
 process.chdir('src');
 if (process.argv.length < 3 || process.argv.includes('teensy')) {
-  main(
-    '--out:tools/teensy.' + outputSuffix,
-    '--config:tools/teensy-make-config.json',
+  const args = [
+    '-o',
+    'tools/teensy.' + outputSuffix,
+    '-c',
+    'tools/teensy-make-config.json',
     plat,
     'libs/SdFat',
     'libs/GFX',
@@ -50,12 +61,16 @@ if (process.argv.length < 3 || process.argv.includes('teensy')) {
     'libs/GFX_Buffer',
     'libs/AsyncDMA',
     'libs/8875',
-  );
+  ];
+  console.log('Running with these args:');
+  console.log(args);
+  main(...args);
 }
+/*
 if (process.argv.length < 3 || process.argv.includes('nrf52')) {
   main(
-    '--out:tools/af_nrf52.' + outputSuffix,
-    '--config:tools/adafruit-make-config.json',
+    '-o', 'tools/af_nrf52.' + outputSuffix,
+    '-c','tools/adafruit-make-config.json',
     'libs/nRF52_Adafruit',
     'libs/BusIO',
     'libs/GFX',
@@ -63,3 +78,4 @@ if (process.argv.length < 3 || process.argv.includes('nrf52')) {
 		'libs/SSD1306'
   );
 }
+*/

@@ -44,3 +44,4 @@ src/include/secrets.h
 
 # Cmake build directories
 **/build
+local_tools

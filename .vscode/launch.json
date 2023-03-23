@@ -29,6 +29,18 @@
       "name": "Debug Calculator",
       "program": "${workspaceFolder}/src/out/calculator/calculator",
       "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "node",
+      "program": "node",
+      "name": "Fix Compile Commands",
+      "request": "launch",
+      "runtimeArgs": [
+        "--inspect-brk",
+        "${workspaceFolder}/fix_compile_commands.js"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "openOnSessionStart"
     }
   ]
 }

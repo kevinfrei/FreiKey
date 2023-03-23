@@ -1,9 +1,13 @@
 # Some simple details
+THIS_DIR := $(dir $(abspath $(firstword $(MAKEFILE_LIST))))
 ifeq ($(OS),Windows_NT)
 	SUF=win
-	ARD=${HOME}/AppData/Local
+	ARD=${USERPROFILE}/AppData/Local/Arduino15
 	SERIAL_PORT=COM8
-	RUNTIME_HARDWARE_PATH=c:/PROGRA~2/Arduino/hardware/tools
+# RUNTIME_HARDWARE_PATH=c:/PROGRA~2/Arduino/hardware/tools
+	RUNTIME_TOOLS_TEENSY_TOOLS_PATH=${ARD}/packages/teensy/tools/teensy-tools/1.57.2
+# RUNTIME_TOOLS_TEENSY_COMPILE_PATH=${THIS_DIR}../local_tools/arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-arm-none-eabi
+	RUNTIME_TOOLS_TEENSY_COMPILE_PATH=${ARD}/packages/teensy/tools/teensy-compile/5.4.1
 	CMD_PATH=${RUNTIME_HARDWARE_PATH}
 	BISON=bison
 else ifeq ($(shell uname -s), Darwin)
@@ -48,15 +52,16 @@ PROJ_NAME=laptype
 BUILD_PATH=out/laptype
 
 # My custom flags
-COMPILER_CPP_EXTRA_FLAGS=-flto -gsplit-dwarf
+COMPILER_CPP_EXTRA_FLAGS=-gsplit-dwarf
+# COMPILER_CPP_EXTRA_FLAGS=-flto -gsplit-dwarf
 # COMPILER_ELF_EXTRA_FLAGS=-Wl,--gdb-index
 # -DDEBUG=1
 
-# Libraries to use:
-LIB_BUSIO=1
+# Libraries to use (Updated for Arduino2Make v0.6)
+LIB_ADAFRUIT_BUSIO=1
 LIB_SPI=1
-LIB_GFX=1
-LIB_ST77XX=1
+LIB_ADAFRUIT_GFX_LIBRARY=1
+LIB_ADAFRUIT_ST7735_AND_ST7789_LIBRARY=1
 LIB_WIRE=1
 LIB_EEPROM=1
 
