@@ -30,10 +30,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         [null, {\
           "packageLocation": "./",\
           "packageDependencies": [\
-            ["@freik/arduino2proj", "npm:0.7.2"],\
+            ["@freik/arduino2proj", "npm:0.7.4"],\
             ["@freik/build-tools", "virtual:2780edab88232c62e812537bd83112d328c6e30b5bbf3727606f085167ffd217263a3b9999e79603d8ded2c4147bd912344b7b778662401296897f7097745348#npm:3.4.6"],\
             ["@freik/core-utils", "npm:1.3.1"],\
-            ["@freik/node-utils", "virtual:2780edab88232c62e812537bd83112d328c6e30b5bbf3727606f085167ffd217263a3b9999e79603d8ded2c4147bd912344b7b778662401296897f7097745348#npm:1.2.4"],\
             ["husky", "npm:8.0.3"],\
             ["prettier", "npm:2.8.6"],\
             ["rimraf", "npm:4.4.1"],\
@@ -3012,10 +3011,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@freik/arduino2proj", [\
-        ["npm:0.7.2", {\
-          "packageLocation": "./.yarn/cache/@freik-arduino2proj-npm-0.7.2-bad9d84493-20efaf14f7.zip/node_modules/@freik/arduino2proj/",\
+        ["npm:0.7.4", {\
+          "packageLocation": "./.yarn/cache/@freik-arduino2proj-npm-0.7.4-5567b431bf-c326ad99b7.zip/node_modules/@freik/arduino2proj/",\
           "packageDependencies": [\
-            ["@freik/arduino2proj", "npm:0.7.2"],\
+            ["@freik/arduino2proj", "npm:0.7.4"],\
             ["@freik/core-utils", "npm:1.3.1"],\
             ["minimist", "npm:1.2.8"]\
           ],\
@@ -3040,7 +3039,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/preset-flow", "virtual:fa016a7fd639259c58b22c0bd90b9d4765ff71c9d4056bfaaba4b6cb674e61d487c32f7fd6310d0f16136bf75e272ac8d744ceb34c43374d669b3a31bef48ec4#npm:7.18.6"],\
             ["@babel/preset-react", "virtual:fa016a7fd639259c58b22c0bd90b9d4765ff71c9d4056bfaaba4b6cb674e61d487c32f7fd6310d0f16136bf75e272ac8d744ceb34c43374d669b3a31bef48ec4#npm:7.18.6"],\
             ["@freik/core-utils", "npm:1.3.1"],\
-            ["@freik/node-utils", "virtual:2780edab88232c62e812537bd83112d328c6e30b5bbf3727606f085167ffd217263a3b9999e79603d8ded2c4147bd912344b7b778662401296897f7097745348#npm:1.2.4"],\
+            ["@freik/node-utils", "virtual:fa016a7fd639259c58b22c0bd90b9d4765ff71c9d4056bfaaba4b6cb674e61d487c32f7fd6310d0f16136bf75e272ac8d744ceb34c43374d669b3a31bef48ec4#npm:1.2.4"],\
             ["@rollup/plugin-babel", "virtual:fa016a7fd639259c58b22c0bd90b9d4765ff71c9d4056bfaaba4b6cb674e61d487c32f7fd6310d0f16136bf75e272ac8d744ceb34c43374d669b3a31bef48ec4#npm:6.0.3"],\
             ["@rollup/plugin-node-resolve", "virtual:fa016a7fd639259c58b22c0bd90b9d4765ff71c9d4056bfaaba4b6cb674e61d487c32f7fd6310d0f16136bf75e272ac8d744ceb34c43374d669b3a31bef48ec4#npm:15.0.1"],\
             ["@rollup/plugin-terser", "virtual:fa016a7fd639259c58b22c0bd90b9d4765ff71c9d4056bfaaba4b6cb674e61d487c32f7fd6310d0f16136bf75e272ac8d744ceb34c43374d669b3a31bef48ec4#npm:0.4.0"],\
@@ -3115,10 +3114,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:2780edab88232c62e812537bd83112d328c6e30b5bbf3727606f085167ffd217263a3b9999e79603d8ded2c4147bd912344b7b778662401296897f7097745348#npm:1.2.4", {\
-          "packageLocation": "./.yarn/__virtual__/@freik-node-utils-virtual-d5cf470eb8/0/cache/@freik-node-utils-npm-1.2.4-1d1848ce5d-807f6fce2a.zip/node_modules/@freik/node-utils/",\
+        ["virtual:fa016a7fd639259c58b22c0bd90b9d4765ff71c9d4056bfaaba4b6cb674e61d487c32f7fd6310d0f16136bf75e272ac8d744ceb34c43374d669b3a31bef48ec4#npm:1.2.4", {\
+          "packageLocation": "./.yarn/__virtual__/@freik-node-utils-virtual-3a3f34b82b/0/cache/@freik-node-utils-npm-1.2.4-1d1848ce5d-807f6fce2a.zip/node_modules/@freik/node-utils/",\
           "packageDependencies": [\
-            ["@freik/node-utils", "virtual:2780edab88232c62e812537bd83112d328c6e30b5bbf3727606f085167ffd217263a3b9999e79603d8ded2c4147bd912344b7b778662401296897f7097745348#npm:1.2.4"],\
+            ["@freik/node-utils", "virtual:fa016a7fd639259c58b22c0bd90b9d4765ff71c9d4056bfaaba4b6cb674e61d487c32f7fd6310d0f16136bf75e272ac8d744ceb34c43374d669b3a31bef48ec4#npm:1.2.4"],\
             ["@freik/core-utils", "npm:1.3.1"],\
             ["@freik/is-hidden-file", "npm:1.10.10"],\
             ["@types/freik__core-utils", null]\
@@ -6082,10 +6081,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",\
           "packageDependencies": [\
             ["freikey", "workspace:."],\
-            ["@freik/arduino2proj", "npm:0.7.2"],\
+            ["@freik/arduino2proj", "npm:0.7.4"],\
             ["@freik/build-tools", "virtual:2780edab88232c62e812537bd83112d328c6e30b5bbf3727606f085167ffd217263a3b9999e79603d8ded2c4147bd912344b7b778662401296897f7097745348#npm:3.4.6"],\
             ["@freik/core-utils", "npm:1.3.1"],\
-            ["@freik/node-utils", "virtual:2780edab88232c62e812537bd83112d328c6e30b5bbf3727606f085167ffd217263a3b9999e79603d8ded2c4147bd912344b7b778662401296897f7097745348#npm:1.2.4"],\
             ["husky", "npm:8.0.3"],\
             ["prettier", "npm:2.8.6"],\
             ["rimraf", "npm:4.4.1"],\
