@@ -1,10 +1,12 @@
 // This include is to work around an issue with linking with some Adafruit
 // libraries
-#include "Adafruit_DotStar.h"
 #include "Adafruit_TinyUSB.h"
 
 #include <Arduino.h>
 #include <stdint.h>
+
+#include "Adafruit_DotStar.h"
+#include "Adafruit_NeoPixel.h"
 
 // This runs on Adafruit nRF52840 devices
 
@@ -14,9 +16,8 @@ const uint32_t debounce_time = 15;
 
 #include "CoreCapability.hpp"
 
-// uint8_t colPins[COLS] = {12, 6, 5, A4, SCK, MOSI}; // Feather
+#if defined(ARDUINO_NRF52480_ITSYBITSY)
 uint8_t colPins[COLS] = {A4, MISO, 2, 7, 22, 21}; // ItsyBitsy
-// uint8_t rowPins[ROWS] = {A1, A0, A2, 10, 11, 13}; // Feather
 uint8_t rowPins[ROWS] = {11, 12, 10, 25, A5, A3}; // ItsyBitsy
 const uint8_t BLUE_LED = 3;
 
@@ -28,6 +29,20 @@ Adafruit_DotStar pixel(NumDotStarPixels,
                        DotStarData,
                        DotStarClock,
                        DOTSTAR_GBR);
+
+#elif defined(ARDUINO_NRF52840_FEATHER)
+
+uint8_t colPins[COLS] = {12, 6, 5, A4, SCK, MOSI}; // Feather
+uint8_t rowPins[ROWS] = {A1, A0, A2, 10, 11, 13}; // Feather
+
+const uint8_t BLUE_LED = 4;
+
+Adafruit_NeoPixel pixel(1, PIN_NEOPIXEL, NEO_GRB + NEO_KHZ800);
+
+#else 
+#error Sorry: unsupported hardware
+#endif
+
 
 void setupComms() {
   // If you don't use the debug serial port
@@ -87,7 +102,7 @@ void timeIndication(uint32_t now) {
   now = now >> 7;
   if (now != lastCol) {
     lastCol = now;
-    uint32_t hsv = makeHSV(now % 360, (now / 360) & 0xFF, 50);
+    uint32_t hsv = makeHSV(now % 360, (now / 360) & 0xFF, 20);
     uint32_t col = getColor(hsv);
     pixel.setPixelColor(0, (col >> 16) & 0xFF, (col >> 8) & 0xFF, col & 0xFF);
     pixel.show();
