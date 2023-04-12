@@ -35,12 +35,10 @@
   },
   "devDependencies": {
     "@freik/arduino2proj": "^0.7.5",
-    "@freik/build-tools": "^3.4.10",
-    "@freik/core-utils": "^1.3.5",
+    "@freik/build-tools": "^3.5.0",
     "husky": "^8.0.3",
     "prettier": "^2.8.7",
-    "rimraf": "^4.4.1",
-    "typescript": "^5.0.2"
+    "rimraf": "^5.0.0"
   },
   "packageManager": "yarn@3.5.0"
 }

@@ -39,10 +39,9 @@ const uint8_t BLUE_LED = 4;
 
 Adafruit_NeoPixel pixel(1, PIN_NEOPIXEL, NEO_GRB + NEO_KHZ800);
 
-#else 
+#else
 #error Sorry: unsupported hardware
 #endif
-
 
 void setupComms() {
   // If you don't use the debug serial port
