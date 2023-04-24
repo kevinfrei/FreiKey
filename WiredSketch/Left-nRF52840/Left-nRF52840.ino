@@ -47,7 +47,7 @@ void setupComms() {
   // If you don't use the debug serial port
   // you have to double-click the reset button to get the device
   // to a flashable state
-  Serial.begin(9600);
+  Serial.begin(115200);
   // Run at 1Mbps, which seems both plenty fast, and is also reliable
   Serial1.begin(1 << 20);
 }
@@ -67,16 +67,11 @@ void setupIndicators() {
   pinMode(BLUE_LED, OUTPUT);
   digitalWrite(BLUE_LED, LOW);
   pixel.begin();
-  pixel.setPixelColor(0, 0x10, 0x10, 0x10);
-  pixel.show();
-  delay(50);
-  pixel.setPixelColor(0, 0, 0, 0);
-  pixel.show();
 }
 
 void startColumn(uint8_t colIdx) {
   digitalWrite(colPins[colIdx], LOW);
-  delay(1);
+  delay(2);
 }
 
 bool readRow(uint8_t rowIdx) {
@@ -98,7 +93,7 @@ void endColumn(uint8_t colIdx) {
 uint32_t lastCol = 0;
 // Called for every loop: Indicate the passage of time
 void timeIndication(uint32_t now) {
-  now = now >> 7;
+  now = now >> 5;
   if (now != lastCol) {
     lastCol = now;
     uint32_t hsv = makeHSV(now % 360, (now / 360) & 0xFF, 20);

@@ -82,21 +82,18 @@ uint8_t encodeValue(uint8_t row, uint8_t col, bool pressed) {
   return code * 3 + code % 3 + 1;
 }
 
-void reportChange(uint8_t r, uint8_t c, uint8_t p) {
+// Record the state & the last-change time, and report it to the controller
+void reportChange(uint8_t r, uint8_t c, uint8_t p, uint32_t now) {
+  uint8_t idx = index(r, c);
+  pressed[idx] = p;
+  last_change[idx] = now;
   sendData(encodeValue(r, c, p));
+  indicateChange(r, c, p, now);
 }
 
 bool debouncedChange(uint8_t r, uint8_t c, bool p, uint32_t now) {
   uint8_t idx = index(r, c);
   return p != pressed[idx] && last_change[idx] < now - debounce_time;
-}
-
-// Record the state & the last-change time
-void recordChange(uint8_t r, uint8_t c, bool p, uint32_t now) {
-  uint8_t idx = index(r, c);
-  pressed[idx] = p;
-  last_change[idx] = now;
-  indicateChange(r, c, p, now);
 }
 
 void setup() {
@@ -106,18 +103,17 @@ void setup() {
 }
 
 void loop() {
-  uint32_t now = millis();
   for (uint8_t c = 0; c < COLS; c++) {
     startColumn(c);
+    uint32_t now = millis();
     for (uint8_t r = 0; r < ROWS; r++) {
       bool p = readRow(r);
       if (debouncedChange(r, c, p, now)) {
         // Report the change up the wire
-        reportChange(r, c, p);
-        recordChange(r, c, p, now);
+        reportChange(r, c, p, now);
       }
     }
     endColumn(c);
   }
-  timeIndication(now);
+  timeIndication(millis());
 }

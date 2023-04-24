@@ -4311,7 +4311,7 @@ __metadata:
     "@freik/arduino2proj": ^0.7.5
     "@freik/build-tools": ^3.5.0
     husky: ^8.0.3
-    prettier: ^2.8.7
+    prettier: ^2.8.8
     rimraf: ^5.0.0
   languageName: unknown
   linkType: soft
@@ -6883,7 +6883,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.8.7, prettier@npm:~2.8.7":
+"prettier@npm:^2.8.8":
+  version: 2.8.8
+  resolution: "prettier@npm:2.8.8"
+  bin:
+    prettier: bin-prettier.js
+  checksum: b49e409431bf129dd89238d64299ba80717b57ff5a6d1c1a8b1a28b590d998a34e083fa13573bc732bb8d2305becb4c9a4407f8486c81fa7d55100eb08263cf8
+  languageName: node
+  linkType: hard
+
+"prettier@npm:~2.8.7":
   version: 2.8.7
   resolution: "prettier@npm:2.8.7"
   bin:
