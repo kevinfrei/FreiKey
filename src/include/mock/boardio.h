@@ -8,6 +8,7 @@
 
 // clang-format off
 using MockMatrix = KeyMatrix<MockMPU, 
+  DIODE_DIR::ROW_TO_COL,
   // Cols, Rows
   12, 6,
   // Column Pins:

@@ -46,8 +46,9 @@ src/include/secrets.h
 **/build
 local_tools
 
+# Yarn stuff
 .yarn/*
-!.yarn/cache
+.pnp.*
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases

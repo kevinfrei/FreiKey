@@ -75,7 +75,7 @@ if (process.argv.length < 3 || process.argv.includes('nrf52')) {
     'libs/BusIO',
     'libs/GFX',
     'libs/NeoPixel',
-		'libs/SSD1306'
+    'libs/SSD1306',
   );
 }
 */
