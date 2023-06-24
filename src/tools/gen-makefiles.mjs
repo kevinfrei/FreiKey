@@ -2,8 +2,10 @@
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
-import { Type } from '@freik/core-utils';
+import { hasField } from '@freik/typechk';
 import main from '@freik/arduino2proj/lib/main.js';
+
+const teensyVersion = '1.58.1';
 
 const data = {
   win32: {
@@ -27,10 +29,10 @@ const data = {
   },
 };
 
-const teensyLoc = ['teensy', 'hardware', 'avr', '1.57.2'];
+const teensyLoc = ['teensy', 'hardware', 'avr', teensyVersion];
 
 const key = os.platform();
-if (!Type.has(data, key)) {
+if (!hasField(data, key)) {
   console.error(
     `Please configure this script (${process.argv[1]}) for the ${key} platform.`,
   );

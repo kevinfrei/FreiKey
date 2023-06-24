@@ -34,11 +34,15 @@
     "cfg": "yarn node src/tools/gen-makefiles.mjs"
   },
   "devDependencies": {
-    "@freik/arduino2proj": "^0.7.5",
-    "@freik/build-tools": "^3.5.0",
+    "@freik/arduino2proj": "^0.7.6",
+    "@freik/build-tools": "^3.6.0",
     "husky": "^8.0.3",
     "prettier": "^2.8.8",
-    "rimraf": "^5.0.0"
+    "rimraf": "^5.0.1",
+    "typescript": "5.0.4"
   },
-  "packageManager": "yarn@3.5.0"
+  "packageManager": "yarn@3.6.0",
+  "dependencies": {
+    "@freik/typechk": "^0.5.0"
+  }
 }

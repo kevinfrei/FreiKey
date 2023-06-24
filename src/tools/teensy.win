@@ -57,7 +57,7 @@ else
   endif
 endif
 RUNTIME_OS?=linux
-RUNTIME_PLATFORM_PATH=C:/Users/freik/AppData/Local/Arduino15/packages/teensy/hardware/avr/1.57.2
+RUNTIME_PLATFORM_PATH=C:/Users/freik/AppData/Local/Arduino15/packages/teensy/hardware/avr/1.58.1
 RUNTIME_IDE_VERSION=10819
 IDE_VERSION=10819
 BUILD_PROJECT_NAME=${PROJ_NAME}
@@ -82,7 +82,7 @@ ifeq (${BOARD_NAME}, teensy41)
   BUILD_FLAGS_LIBS=-larm_cortexM7lfsp_math -lm -lstdc++
   BUILD_FLAGS_S=-x assembler-with-cpp
   BUILD_FLAGS_CPP=-std=gnu++14 -fno-exceptions -fpermissive -fno-rtti -fno-threadsafe-statics -felide-constructors -Wno-error=narrowing
-  BUILD_FLAGS_DEFS=-D__IMXRT1062__ -DTEENSYDUINO=157
+  BUILD_FLAGS_DEFS=-D__IMXRT1062__ -DTEENSYDUINO=158
   BUILD_FLAGS_CPU=-mthumb -mcpu=cortex-m7 -mfloat-abi=hard -mfpu=fpv5-d16
   BUILD_FLAGS_OPTIMIZE=-Os
   BUILD_FLAGS_DEP=-MMD
@@ -274,7 +274,7 @@ else ifeq (${BOARD_NAME}, teensyMM)
   BUILD_FLAGS_LIBS=-larm_cortexM7lfsp_math -lm -lstdc++
   BUILD_FLAGS_S=-x assembler-with-cpp
   BUILD_FLAGS_CPP=-std=gnu++14 -fno-exceptions -fpermissive -fno-rtti -fno-threadsafe-statics -felide-constructors -Wno-error=narrowing
-  BUILD_FLAGS_DEFS=-D__IMXRT1062__ -DTEENSYDUINO=157
+  BUILD_FLAGS_DEFS=-D__IMXRT1062__ -DTEENSYDUINO=158
   BUILD_FLAGS_CPU=-mthumb -mcpu=cortex-m7 -mfloat-abi=hard -mfpu=fpv5-d16
   BUILD_FLAGS_OPTIMIZE=-Os
   BUILD_FLAGS_DEP=-MMD
@@ -466,7 +466,7 @@ else ifeq (${BOARD_NAME}, teensy40)
   BUILD_FLAGS_LIBS=-larm_cortexM7lfsp_math -lm -lstdc++
   BUILD_FLAGS_S=-x assembler-with-cpp
   BUILD_FLAGS_CPP=-std=gnu++14 -fno-exceptions -fpermissive -fno-rtti -fno-threadsafe-statics -felide-constructors -Wno-error=narrowing
-  BUILD_FLAGS_DEFS=-D__IMXRT1062__ -DTEENSYDUINO=157
+  BUILD_FLAGS_DEFS=-D__IMXRT1062__ -DTEENSYDUINO=158
   BUILD_FLAGS_CPU=-mthumb -mcpu=cortex-m7 -mfloat-abi=hard -mfpu=fpv5-d16
   BUILD_FLAGS_OPTIMIZE=-Os
   BUILD_FLAGS_DEP=-MMD
@@ -642,7 +642,7 @@ else ifeq (${BOARD_NAME}, teensy36)
   BUILD_FLAGS_LIBS=-larm_cortexM4lf_math -lm -lstdc++
   BUILD_FLAGS_S=-x assembler-with-cpp
   BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++14 -Wno-error=narrowing -fno-rtti
-  BUILD_FLAGS_DEFS=-D__MK66FX1M0__ -DTEENSYDUINO=157
+  BUILD_FLAGS_DEFS=-D__MK66FX1M0__ -DTEENSYDUINO=158
   BUILD_FLAGS_CPU=-mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -fsingle-precision-constant
   BUILD_FLAGS_OPTIMIZE=-Os
   BUILD_FLAGS_DEP=-MMD
@@ -871,7 +871,7 @@ else ifeq (${BOARD_NAME}, teensy35)
   BUILD_FLAGS_LIBS=-larm_cortexM4lf_math -lm -lstdc++
   BUILD_FLAGS_S=-x assembler-with-cpp
   BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++14 -Wno-error=narrowing -fno-rtti
-  BUILD_FLAGS_DEFS=-D__MK64FX512__ -DTEENSYDUINO=157
+  BUILD_FLAGS_DEFS=-D__MK64FX512__ -DTEENSYDUINO=158
   BUILD_FLAGS_CPU=-mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -fsingle-precision-constant
   BUILD_FLAGS_OPTIMIZE=-Os
   BUILD_FLAGS_DEP=-MMD
@@ -1100,7 +1100,7 @@ else ifeq (${BOARD_NAME}, teensy31)
   BUILD_FLAGS_LIBS=-larm_cortexM4l_math -lm -lstdc++
   BUILD_FLAGS_S=-x assembler-with-cpp
   BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++14 -Wno-error=narrowing -fno-rtti
-  BUILD_FLAGS_DEFS=-D__MK20DX256__ -DTEENSYDUINO=157
+  BUILD_FLAGS_DEFS=-D__MK20DX256__ -DTEENSYDUINO=158
   BUILD_FLAGS_CPU=-mthumb -mcpu=cortex-m4 -fsingle-precision-constant
   BUILD_FLAGS_OPTIMIZE=-Os
   BUILD_FLAGS_DEP=-MMD
@@ -1321,7 +1321,7 @@ else ifeq (${BOARD_NAME}, teensy30)
   BUILD_FLAGS_LDSPECS=--specs=nano.specs
   BUILD_FLAGS_S=-x assembler-with-cpp
   BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++14 -Wno-error=narrowing -fno-rtti
-  BUILD_FLAGS_DEFS=-D__MK20DX128__ -DTEENSYDUINO=157
+  BUILD_FLAGS_DEFS=-D__MK20DX128__ -DTEENSYDUINO=158
   BUILD_FLAGS_CPU=-mthumb -mcpu=cortex-m4 -fsingle-precision-constant
   BUILD_FLAGS_OPTIMIZE=-Os
   BUILD_FLAGS_DEP=-MMD
@@ -1489,7 +1489,7 @@ else ifeq (${BOARD_NAME}, teensyLC)
   BUILD_FLAGS_LIBS=-larm_cortexM0l_math -lm -lstdc++
   BUILD_FLAGS_S=-x assembler-with-cpp
   BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++14 -Wno-error=narrowing -fno-rtti
-  BUILD_FLAGS_DEFS=-D__MKL26Z64__ -DTEENSYDUINO=157
+  BUILD_FLAGS_DEFS=-D__MKL26Z64__ -DTEENSYDUINO=158
   BUILD_FLAGS_CPU=-mthumb -mcpu=cortex-m0plus -fsingle-precision-constant
   BUILD_FLAGS_DEP=-MMD
   BUILD_FLAGS_COMMON=-g -Wall -ffunction-sections -fdata-sections -nostdlib -mno-unaligned-access
@@ -1655,7 +1655,7 @@ else ifeq (${BOARD_NAME}, teensypp2)
   BUILD_FLAGS_LD=-Wl,--gc-sections,--relax
   BUILD_FLAGS_S=-x assembler-with-cpp
   BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++11
-  BUILD_FLAGS_DEFS=-DTEENSYDUINO=157 -DARDUINO_ARCH_AVR
+  BUILD_FLAGS_DEFS=-DTEENSYDUINO=158 -DARDUINO_ARCH_AVR
   BUILD_FLAGS_CPU=-mmcu=at90usb1286
   BUILD_FLAGS_OPTIMIZE=-Os
   BUILD_FLAGS_DEP=-MMD
@@ -1781,7 +1781,7 @@ else ifeq (${BOARD_NAME}, teensy2)
   BUILD_FLAGS_LD=-Wl,--gc-sections,--relax
   BUILD_FLAGS_S=-x assembler-with-cpp
   BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++11
-  BUILD_FLAGS_DEFS=-DTEENSYDUINO=157 -DARDUINO_ARCH_AVR
+  BUILD_FLAGS_DEFS=-DTEENSYDUINO=158 -DARDUINO_ARCH_AVR
   BUILD_FLAGS_CPU=-mmcu=atmega32u4
   BUILD_FLAGS_OPTIMIZE=-Os
   BUILD_FLAGS_DEP=-MMD
@@ -2670,9 +2670,7 @@ ifdef LIB_METRO
 endif
 ifdef LIB_MFRC522
   CPP_SYS_SRCS+=${RUNTIME_PLATFORM_PATH}/libraries/MFRC522/src/MFRC522.cpp \
-    ${RUNTIME_PLATFORM_PATH}/libraries/MFRC522/src/MFRC522Debug.cpp \
-    ${RUNTIME_PLATFORM_PATH}/libraries/MFRC522/src/MFRC522Extended.cpp \
-    ${RUNTIME_PLATFORM_PATH}/libraries/MFRC522/src/MFRC522Hack.cpp
+    ${RUNTIME_PLATFORM_PATH}/libraries/MFRC522/src/MFRC522Extended.cpp
   SYS_INCLUDES+=-I${RUNTIME_PLATFORM_PATH}/libraries/MFRC522/src
   VPATH_MORE+=${RUNTIME_PLATFORM_PATH}/libraries/MFRC522/src
 endif
@@ -2754,10 +2752,12 @@ ifdef LIB_QUADENCODER
   VPATH_MORE+=${RUNTIME_PLATFORM_PATH}/libraries/QuadEncoder
 endif
 ifdef LIB_RA8875
-  C_SYS_SRCS+=${RUNTIME_PLATFORM_PATH}/libraries/RA8875/glcdfont.c
-  CPP_SYS_SRCS+=${RUNTIME_PLATFORM_PATH}/libraries/RA8875/RA8875.cpp
-  SYS_INCLUDES+=-I${RUNTIME_PLATFORM_PATH}/libraries/RA8875
-  VPATH_MORE+=${RUNTIME_PLATFORM_PATH}/libraries/RA8875
+  C_SYS_SRCS+=${RUNTIME_PLATFORM_PATH}/libraries/RA8875/src/glcdfont.c
+  CPP_SYS_SRCS+=${RUNTIME_PLATFORM_PATH}/libraries/RA8875/src/RA8875.cpp
+  SYS_INCLUDES+=-I${RUNTIME_PLATFORM_PATH}/libraries/RA8875/src \
+    -I${RUNTIME_PLATFORM_PATH}/libraries/RA8875/src/_includes \
+    -I${RUNTIME_PLATFORM_PATH}/libraries/RA8875/src/_settings
+  VPATH_MORE+=${RUNTIME_PLATFORM_PATH}/libraries/RA8875/src
 endif
 ifdef LIB_RADIOHEAD
   CPP_SYS_SRCS+=${RUNTIME_PLATFORM_PATH}/libraries/RadioHead/RHCRC.cpp \
@@ -2955,13 +2955,13 @@ ifdef LIB_TEENSY_SSD1351
   VPATH_MORE+=${RUNTIME_PLATFORM_PATH}/libraries/ssd1351
 endif
 ifdef LIB_ST7735_T3
-  C_SYS_SRCS+=${RUNTIME_PLATFORM_PATH}/libraries/ST7735_t3/glcdfont.c \
-    ${RUNTIME_PLATFORM_PATH}/libraries/ST7735_t3/st7735_t3_font_Arial.c \
-    ${RUNTIME_PLATFORM_PATH}/libraries/ST7735_t3/st7735_t3_font_ComicSansMS.c
-  CPP_SYS_SRCS+=${RUNTIME_PLATFORM_PATH}/libraries/ST7735_t3/ST7735_t3.cpp \
-    ${RUNTIME_PLATFORM_PATH}/libraries/ST7735_t3/ST7789_t3.cpp
-  SYS_INCLUDES+=-I${RUNTIME_PLATFORM_PATH}/libraries/ST7735_t3
-  VPATH_MORE+=${RUNTIME_PLATFORM_PATH}/libraries/ST7735_t3
+  C_SYS_SRCS+=${RUNTIME_PLATFORM_PATH}/libraries/ST7735_t3/src/glcdfont.c \
+    ${RUNTIME_PLATFORM_PATH}/libraries/ST7735_t3/src/st7735_t3_font_Arial.c \
+    ${RUNTIME_PLATFORM_PATH}/libraries/ST7735_t3/src/st7735_t3_font_ComicSansMS.c
+  CPP_SYS_SRCS+=${RUNTIME_PLATFORM_PATH}/libraries/ST7735_t3/src/ST7735_t3.cpp \
+    ${RUNTIME_PLATFORM_PATH}/libraries/ST7735_t3/src/ST7789_t3.cpp
+  SYS_INCLUDES+=-I${RUNTIME_PLATFORM_PATH}/libraries/ST7735_t3/src
+  VPATH_MORE+=${RUNTIME_PLATFORM_PATH}/libraries/ST7735_t3/src
 endif
 ifdef LIB_TALKIE
   CPP_SYS_SRCS+=${RUNTIME_PLATFORM_PATH}/libraries/Talkie/Talkie.cpp
@@ -3019,6 +3019,7 @@ ifdef LIB_USBHOST_T36
   CPP_SYS_SRCS+=${RUNTIME_PLATFORM_PATH}/libraries/USBHost_t36/adk.cpp \
     ${RUNTIME_PLATFORM_PATH}/libraries/USBHost_t36/antplus.cpp \
     ${RUNTIME_PLATFORM_PATH}/libraries/USBHost_t36/bluetooth.cpp \
+    ${RUNTIME_PLATFORM_PATH}/libraries/USBHost_t36/BluetoothConnection.cpp \
     ${RUNTIME_PLATFORM_PATH}/libraries/USBHost_t36/digitizer.cpp \
     ${RUNTIME_PLATFORM_PATH}/libraries/USBHost_t36/ehci.cpp \
     ${RUNTIME_PLATFORM_PATH}/libraries/USBHost_t36/enumeration.cpp \
@@ -3076,6 +3077,9 @@ ifdef LIB_XPT2046_TOUCHSCREEN
   CPP_SYS_SRCS+=${RUNTIME_PLATFORM_PATH}/libraries/XPT2046_Touchscreen/XPT2046_Touchscreen.cpp
   SYS_INCLUDES+=-I${RUNTIME_PLATFORM_PATH}/libraries/XPT2046_Touchscreen
   VPATH_MORE+=${RUNTIME_PLATFORM_PATH}/libraries/XPT2046_Touchscreen
+endif
+ifdef LIB__TEENSY
+  SYS_INCLUDES+=-I${RUNTIME_PLATFORM_PATH}/libraries/_Teensy
 endif
 ifdef LIB_SDFAT___ADAFRUIT_FORK
   CPP_SYS_SRCS+=libs/SdFat/src/common/FmtNumber.cpp \
