@@ -8,6 +8,8 @@
 constexpr byte ROWS = 6;
 constexpr byte COLS = 6;
 
+// Compiled & uploaded to board on 2023-11-19
+
 /*
  26 27 28 29 24 25 18 19 20
  C5 R2 R0 R5 R4 R3 C4 C3 __
