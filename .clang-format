@@ -46,7 +46,6 @@ SpaceBeforeParens: ControlStatements
 SpaceInEmptyParentheses: false
 SpacesBeforeTrailingComments: 1
 SpacesInAngles: false
-SpacesInContainerLiterals: false
 SpacesInCStyleCastParentheses: false
 SpacesInParentheses: false
 SpacesInContainerLiterals: true

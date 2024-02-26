@@ -1,6 +1,6 @@
 // This include is to work around an issue with linking with some Adafruit
 // libraries
-#include "Adafruit_TinyUSB.h"
+// #include "Adafruit_TinyUSB.h"
 
 #include <Arduino.h>
 #include <stdint.h>
@@ -39,7 +39,21 @@ const uint8_t BLUE_LED = 4;
 
 Adafruit_NeoPixel pixel(1, PIN_NEOPIXEL, NEO_GRB + NEO_KHZ800);
 
+#define DataSerial Serial1
+
+#elif defined(ARDUINO_NRF52832_FEATHER)
+//                           A6
+uint8_t colPins[COLS] = {15, 30, 27, A4, SCK, MOSI}; // Feather
+uint8_t rowPins[ROWS] = {A1, A0, A2, 11, 7, 16}; // Feather
+
+const uint8_t BLUE_LED = 17;
+
+#define DataSerial Serial
+
+// Adafruit_NeoPixel pixel(1, PIN_NEOPIXEL, NEO_GRB + NEO_KHZ800);
+
 #else
+
 #error Sorry: unsupported hardware
 #endif
 
@@ -47,9 +61,11 @@ void setupComms() {
   // If you don't use the debug serial port
   // you have to double-click the reset button to get the device
   // to a flashable state
+#if !defined(ARDUINO_NRF52832_FEATHER)
   Serial.begin(115200);
+#endif
   // Run at 1Mbps, which seems both plenty fast, and is also reliable
-  Serial1.begin(1 << 20);
+  DataSerial.begin(1 << 20);
 }
 
 void setupMatrix() {
@@ -66,7 +82,9 @@ void setupMatrix() {
 void setupIndicators() {
   pinMode(BLUE_LED, OUTPUT);
   digitalWrite(BLUE_LED, LOW);
+#if !defined(ARDUINO_NRF52832_FEATHER)
   pixel.begin();
+#endif
 }
 
 void startColumn(uint8_t colIdx) {
@@ -79,7 +97,7 @@ bool readRow(uint8_t rowIdx) {
 }
 
 void sendData(uint8_t val) {
-  Serial1.write(val);
+  DataSerial.write(val);
 }
 
 void indicateChange(uint8_t r, uint8_t c, uint8_t p, uint32_t now) {
@@ -93,6 +111,7 @@ void endColumn(uint8_t colIdx) {
 uint32_t lastCol = 0;
 // Called for every loop: Indicate the passage of time
 void timeIndication(uint32_t now) {
+#if !defined(ARDUINO_NRF52832_FEATHER)
   now = now >> 5;
   if (now != lastCol) {
     lastCol = now;
@@ -101,4 +120,5 @@ void timeIndication(uint32_t now) {
     pixel.setPixelColor(0, (col >> 16) & 0xFF, (col >> 8) & 0xFF, col & 0xFF);
     pixel.show();
   }
+#endif
 }
