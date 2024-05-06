@@ -39,9 +39,9 @@
     "husky": "^9.0.11",
     "prettier": "^3.2.5",
     "rimraf": "^5.0.5",
-    "typescript": "5.3.3"
+    "typescript": "5.4.5"
   },
-  "packageManager": "yarn@4.1.0",
+  "packageManager": "yarn@4.2.1",
   "dependencies": {
     "@freik/typechk": "^0.5.11"
   }
