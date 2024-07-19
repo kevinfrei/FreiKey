@@ -6,7 +6,7 @@
     {
       "label": "Build",
       "type": "shell",
-      "command": "yarn make",
+      "command": "bun run make",
       "problemMatcher": "$gcc",
       "group": {
         "kind": "build",
@@ -17,49 +17,49 @@
     {
       "label": "Clean",
       "type": "shell",
-      "command": "yarn clean",
+      "command": "bun run clean",
       "problemMatcher": "$gcc",
       "group": "build"
     },
     {
       "label": "Make 3-Piece",
       "type": "shell",
-      "command": "yarn threepiece",
+      "command": "bun run threepiece",
       "problemMatcher": "$gcc",
       "group": "build"
     },
     {
       "label": "Make Laptype",
       "type": "shell",
-      "command": "yarn laptype",
+      "command": "bun run laptype",
       "problemMatcher": "$gcc",
       "group": "build"
     },
     {
       "label": "Make 41",
       "type": "shell",
-      "command": "yarn 41",
+      "command": "bun run 41",
       "problemMatcher": "$gcc",
       "group": "build"
     },
     {
       "label": "Flash 3-Piece",
       "type": "shell",
-      "command": "yarn 3pf",
+      "command": "bun run 3pf",
       "problemMatcher": "$gcc",
       "group": "build"
     },
     {
       "label": "Flash Laptype",
       "type": "shell",
-      "command": "yarn ltf",
+      "command": "bun run ltf",
       "problemMatcher": "$gcc",
       "group": "build"
     },
     {
       "label": "Flash 41",
       "type": "shell",
-      "command": "yarn 41f",
+      "command": "bun run 41f",
       "problemMatcher": "$gcc",
       "group": "build"
     }
