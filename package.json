@@ -35,7 +35,7 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "@freik/arduino2proj": "^0.8.2",
+    "@freik/arduino2proj": "^0.8.4",
     "@freik/build-tools": "^3.6.10",
     "@types/bun": "^1.1.6",
     "husky": "^9.1.1",

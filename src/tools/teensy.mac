@@ -690,7 +690,7 @@ BUILD_FLAGS_NRF= -DSOFTDEVICE_PRESENT -DARDUINO_NRF52_ADAFRUIT -DNRF52_SERIES -D
 COMPILER_S_FLAGS=-mcpu=${BUILD_MCU} -mthumb -mabi=aapcs ${COMPILER_OPTIMIZATION_FLAG} -g -c ${BUILD_FLOAT_FLAGS} -x assembler-with-cpp
 COMPILER_C_ELF_FLAGS=${COMPILER_OPTIMIZATION_FLAG} -Wl,--gc-sections -save-temps
 COMPILER_WARNING_FLAGS=-Werror=return-type
-COMPILER_CPP_FLAGS=-mcpu=${BUILD_MCU} -mthumb -c -g ${COMPILER_WARNING_FLAGS} ${BUILD_FLOAT_FLAGS} -std=gnu++11 -ffunction-sections -fdata-sections -fno-threadsafe-statics -nostdlib --param max-inline-insns-single=500 -fno-rtti -fno-exceptions -MMD
+COMPILER_CPP_FLAGS=-mcpu=${BUILD_MCU} -mthumb -c -g ${COMPILER_WARNING_FLAGS} ${BUILD_FLOAT_FLAGS} -std=gnu++17 -ffunction-sections -fdata-sections -fno-threadsafe-statics -nostdlib --param max-inline-insns-single=500 -fno-rtti -fno-exceptions -MMD
 COMPILER_C_FLAGS=-mcpu=${BUILD_MCU} -mthumb -c -g ${COMPILER_WARNING_FLAGS} ${BUILD_FLOAT_FLAGS} -std=gnu11 -ffunction-sections -fdata-sections -nostdlib --param max-inline-insns-single=500 -MMD
 COMPILER_WARNING_FLAGS_ALL=-Wall -Wextra -Werror=return-type -Wno-unused-parameter -Wno-missing-field-initializers -Wno-pointer-arith
 COMPILER_WARNING_FLAGS_MORE=-Wall -Werror=return-type
@@ -1002,7 +1002,6 @@ ifdef LIB_ADAFRUIT_BLUEFRUIT_NRF52_LIBRARIES
     ${RUNTIME_PLATFORM_PATH}/libraries/Bluefruit52Lib/src/services/BLEHidGamepad.cpp \
     ${RUNTIME_PLATFORM_PATH}/libraries/Bluefruit52Lib/src/services/BLEHidGeneric.cpp \
     ${RUNTIME_PLATFORM_PATH}/libraries/Bluefruit52Lib/src/services/BLEIas.cpp \
-    ${RUNTIME_PLATFORM_PATH}/libraries/Bluefruit52Lib/src/services/BLEMidi.cpp \
     ${RUNTIME_PLATFORM_PATH}/libraries/Bluefruit52Lib/src/services/BLEUart.cpp \
     ${RUNTIME_PLATFORM_PATH}/libraries/Bluefruit52Lib/src/services/EddyStone.cpp \
     ${RUNTIME_PLATFORM_PATH}/libraries/Bluefruit52Lib/src/utility/AdaMsg.cpp \
@@ -2870,7 +2869,7 @@ else ifeq (${BOARD_NAME}, teensypp2)
   BUILD_FLAGS_LIBS=-lm
   BUILD_FLAGS_LD=-Wl,--gc-sections,--relax
   BUILD_FLAGS_S=-x assembler-with-cpp
-  BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++11
+  BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++17
   BUILD_FLAGS_DEFS=-DTEENSYDUINO=159 -DARDUINO_ARCH_AVR
   BUILD_FLAGS_CPU=-mmcu=at90usb1286
   BUILD_FLAGS_OPTIMIZE=-Os
@@ -2996,7 +2995,7 @@ else ifeq (${BOARD_NAME}, teensy2)
   BUILD_FLAGS_LIBS=-lm
   BUILD_FLAGS_LD=-Wl,--gc-sections,--relax
   BUILD_FLAGS_S=-x assembler-with-cpp
-  BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++11
+  BUILD_FLAGS_CPP=-fno-exceptions -fpermissive -felide-constructors -std=gnu++17
   BUILD_FLAGS_DEFS=-DTEENSYDUINO=159 -DARDUINO_ARCH_AVR
   BUILD_FLAGS_CPU=-mmcu=atmega32u4
   BUILD_FLAGS_OPTIMIZE=-Os

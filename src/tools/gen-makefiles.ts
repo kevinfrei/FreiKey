@@ -2,10 +2,16 @@
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
-import { RunConfig, generate, main } from '@freik/arduino2proj/lib/main';
+import {
+  Config,
+  RunConfig,
+  generate,
+  main,
+} from '@freik/arduino2proj/lib/main';
 
 type HostConfig = { outputSuffix: string; platformPath: string[] };
 
+// These are the MCU's I've run on:
 const hostConfig: Map<string, HostConfig> = new Map([
   [
     'win32',
@@ -31,21 +37,59 @@ const hostConfig: Map<string, HostConfig> = new Map([
   ],
 ]);
 
+// This is the base config for all platforms.
+// Basically, I want to run on C++17, not C++11 or 14...
+const config: Partial<Config> = {
+  transforms: [
+    {
+      defmatch: '_FLAGS_CPP',
+      text: '-std=gnu++14',
+      replace: '-std=gnu++17',
+    },
+    {
+      defmatch: '_FLAGS_CPP',
+      text: '-std=gnu++11',
+      replace: '-std=gnu++17',
+    },
+    {
+      defmatch: '_CPP_FLAGS',
+      text: '-std=gnu++11',
+      replace: '-std=gnu++17',
+    },
+  ],
+  // TODO: There's something odd going on with this.
+  // It shows up in AF, but not Teensy
+  filters: [{ defmatch: 'CPP_SYS_SRCS', remove: 'BLEMidi.cpp' }],
+};
+
 type PlatformLocation = {
+  // Output name of the makefile to include
   makefile?: string;
+  // Path from the arduino platform stuff
   target: string;
+  // MCU from the arduino platform stuff
   mcu: string;
+  // Version of the arduino platform
   version: string;
+  // The config for the platform
+  config: Partial<Config>;
 };
 
 const platforms: PlatformLocation[] = [
-  { makefile: 'af_nrf52', target: 'adafruit', mcu: 'nrf52', version: '1.6.1' },
-  { target: 'teensy', mcu: 'avr', version: '1.59.0' },
-  { target: 'rp2040', mcu: 'rp2040', version: '3.9.3' },
+  {
+    makefile: 'af_nrf52',
+    target: 'adafruit',
+    mcu: 'nrf52',
+    version: '1.6.1',
+    config,
+  },
+  { target: 'teensy', mcu: 'avr', version: '1.59.0', config },
+  // This one's not working yet (Issue with Arduino2Proj)
+  // { target: 'rp2040', mcu: 'rp2040', version: '3.9.3', config },
 ];
 
 const srcDir = path.resolve(path.dirname(process.argv[1]), '..');
-for (const { makefile, target, mcu, version } of platforms) {
+for (const { makefile, target, mcu, version, config } of platforms) {
   const key = os.platform();
   if (!hostConfig.has(key)) {
     console.error(
@@ -65,7 +109,7 @@ for (const { makefile, target, mcu, version } of platforms) {
   process.chdir(srcDir);
   const runConfig: RunConfig = {
     outputFile: `tools/${makefile || target}.${outputSuffix}`,
-    configFile: `tools/${target}-make-config.json`,
+    config,
     root: plat,
     libs: [
       'libs/SdFat',
